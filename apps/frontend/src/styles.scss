@@ -1,0 +1,90 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+@use './styles/m3-theme.scss';
+// Plus imports for other components in your app.
+@use 'material-symbols';
+
+@include mat.elevation-classes();
+@include mat.app-background();
+
+:root {
+  @include mat.all-component-themes(m3-theme.$light-theme);
+}
+
+.dark {
+  @include mat.all-component-colors(m3-theme.$dark-theme);
+  @include mat.tooltip-overrides(
+    (
+      container-color: #191c1c,
+      supporting-text-color: #fff,
+    )
+  );
+}
+
+// Comment out the line below if you want to use the pre-defined typography utility classes.
+// For more information: https://material.angular.io/guide/typography#using-typography-styles-in-your-application.
+// @include mat.typography-hierarchy($frontend-theme);
+
+// Comment out the line below if you want to use the deprecated `color` inputs.
+// @include mat.color-variants-backwards-compatibility($frontend-theme);
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field
+  .mdc-notched-outline__notch {
+  border-right-style: hidden;
+}
+.mat-mdc-input-element {
+  box-shadow: none !important;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 0.6rem;
+  height: 0.6rem;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 0.6rem;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #505352;
+  border-radius: 0.6rem;
+}
+
+.mat-mdc-tab-body-content {
+  overflow: hidden !important;
+}
+
+.mat-expansion-panel-header {
+  border-radius: 6px !important;
+}
+.mat-expansion-panel {
+  border-radius: 6px !important;
+}
+
+.mdc-list-item {
+  border-radius: 4px !important;
+}
+.mdc-list-item:hover {
+  border-radius: 4px !important;
+}
+
+mat-expansion-panel {
+  box-shadow: none !important;
+}

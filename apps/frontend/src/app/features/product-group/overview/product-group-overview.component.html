@@ -1,0 +1,49 @@
+<div class="flex w-full justify-between px-8 pt-8">
+  <h2 class="text-xl" i18n>Meine Warengruppen</h2>
+  <button mat-flat-button (click)="sheet.open()">Hinzufügen</button>
+</div>
+
+<app-overview
+  [contentType]="ContentType.PRODUCT_GROUPS"
+  #overview
+></app-overview>
+
+<mat-accordion class="flex w-full justify-between px-8 pt-4">
+  <mat-expansion-panel
+    class="!bg-neutral-200"
+    (opened)="inflowPanelState.set(true)"
+    (closed)="inflowPanelState.set(false)"
+  >
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        @if (!inflowPanelState()) {
+          Auswertung Resourcenzuflüsse
+        }
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-inflow [productGroupId]="productGroupId()"></app-inflow>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<mat-accordion class="flex w-full justify-between px-8 py-4">
+  <mat-expansion-panel
+    class="!bg-neutral-200"
+    (opened)="outflowPanelState.set(true)"
+    (closed)="outflowPanelState.set(false)"
+  >
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        @if (!outflowPanelState()) {
+          Auswertung Resourcenabflüsse
+        }
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-waste-flow [productGroupId]="productGroupId()"></app-waste-flow>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<app-base-sheet #sheet>
+  <app-product-group-create
+    (closeSheetEvent)="sheet.close(); overview.query.refetch()"
+  ></app-product-group-create>
+</app-base-sheet>

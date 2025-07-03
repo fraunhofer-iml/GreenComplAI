@@ -1,0 +1,120 @@
+<app-base-sheet #parentSheet>
+  <form class="flex w-full flex-col gap-4" [formGroup]="billOfMaterialForm()">
+    <span>Stückliste</span>
+    <button mat-flat-button
+            (click)="openImportItemListDialog()">Importieren der Stückliste per CSV
+    </button>
+    <mat-form-field appearance="outline" class="mb-4">
+      <mat-label>Stücklistenbeschreibung</mat-label>
+      <textarea
+        [formControl]="billOfMaterialForm().controls.billOfMaterialDescription"
+        matInput
+        cdkTextareaAutosize
+        #autosize="cdkTextareaAutosize"
+        cdkAutosizeMinRows="1"
+      ></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Gewählte Produkte</mat-label>
+      <mat-chip-grid
+        #productsChips
+        [formControl]="billOfMaterialForm().controls.billOfMaterial"
+      >
+        @for (item of displayedBOMItems; track $index) {
+          <mat-chip-row
+            [value]="item"
+            [aria-description]="'product'"
+            (removed)="remove($index)"
+            >{{ item[0].name }} ({{ item[1] }})
+            <button
+              matChipRemove
+              [attr.aria-label]="'remove ' + item[0].productId"
+            >
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip-row>
+        }
+        <input matInput readonly [matChipInputFor]="productsChips" />
+      </mat-chip-grid>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Suche</mat-label>
+      <input matInput #input [formControl]="searchInput" />
+    </mat-form-field>
+
+    @if (searchQuery.isSuccess() && searchQuery.data().length > 0) {
+      <div class="flex flex-col gap-2 rounded-lg bg-neutral-200 p-2">
+        @for (item of searchQuery.data(); track $index) {
+          <div
+            class="hover:bg-neutral-250 flex w-full flex-row items-center justify-between rounded-md px-2 py-2"
+          >
+            <div class="flex flex-row items-center justify-center gap-2">
+              <mat-checkbox
+                [formControl]="item.selected"
+                (change)="validateSelection()"
+              ></mat-checkbox>
+              <div class="cursor-default">
+                <span>
+                  <strong>{{ item.product.name }}</strong>
+                </span>
+                <div>
+                  <span>Id: {{ item.product.id }} | </span>
+                  <span>Kategorie: {{ item.product.category }} | </span>
+                  <span
+                    >Hersteller: {{ item.product.manufacturer?.name }} |
+                  </span>
+                  <span>Lieferant: {{ item.product.supplier?.name }} </span>
+                </div>
+              </div>
+            </div>
+
+            <mat-form-field appearance="outline" class="w-28">
+              <input
+                matInput
+                [formControl]="item.amount"
+                type="number"
+                [min]="1"
+                (change)="validateSelection()"
+              />
+            </mat-form-field>
+          </div>
+        }
+      </div>
+
+      <div
+        class="flex flex-row items-center justify-between gap-2 rounded-lg bg-neutral-200 px-4 py-2"
+      >
+        <app-pagination
+          class="w-[100%]"
+          [page]="page()"
+          [pageSize]="pageSize()"
+          [totalPages]="totalPages()"
+          (pageChange)="pageChange($event)"
+          (pageSizeChange)="pageSizeChange($event)"
+        ></app-pagination>
+        <div class="flex h-full flex-row items-center gap-2">
+          <mat-divider class="min-h-[46px]" [vertical]="true"></mat-divider>
+          <button
+            mat-button
+            (click)="addProducts(searchQuery.data())"
+            [disabled]="!isSelectionValid()"
+          >
+            Hinzufügen
+          </button>
+        </div>
+      </div>
+
+      @if (showUpdateButton()) {
+        <div class="flex w-full justify-end">
+          <button mat-flat-button (click)="openDialog()">Speichern</button>
+        </div>
+      }
+    } @else if (searchQuery.isPending()) {
+      <span> Lade Daten </span>
+    } @else if (searchQuery.isSuccess() && searchQuery.data().length === 0) {
+      <span> Keine Element gefunden </span>
+    }
+  </form>
+</app-base-sheet>

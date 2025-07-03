@@ -1,0 +1,31 @@
+<div class="flex flex-row items-center justify-between">
+  <div class="flex flex-row items-center gap-2">
+    <span>Seite {{ page }} von {{ totalPages }}</span>
+    @if (pageSize) {
+      <span>Seitengröße: </span>
+      <mat-form-field appearance="outline">
+        <mat-select
+          [value]="pageSize"
+          (selectionChange)="changePageSize($event)"
+        >
+          <mat-option [value]="5">5</mat-option>
+          <mat-option [value]="10">10</mat-option>
+          <mat-option [value]="25">25</mat-option>
+        </mat-select>
+      </mat-form-field>
+    }
+  </div>
+
+  <div class="flex flex-row items-center gap-2">
+    <button mat-button (click)="changePage(page - 1)" [disabled]="page === 1">
+      Vorherige
+    </button>
+    <button
+      mat-button
+      (click)="changePage(page + 1)"
+      [disabled]="page === totalPages"
+    >
+      Nächste
+    </button>
+  </div>
+</div>

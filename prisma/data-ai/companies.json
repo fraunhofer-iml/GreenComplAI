@@ -1,0 +1,56 @@
+[
+  {
+    "id": "comp_tire_1",
+    "name": "Continental Tire",
+    "email": "contact@continental-tire.com",
+    "phone": "+49 511 938 0"
+  },
+  {
+    "id": "comp_tire_2",
+    "name": "Michelin",
+    "email": "contact@michelin.com",
+    "phone": "+33 1 45 66 22 22"
+  },
+  {
+    "id": "comp_tire_3",
+    "name": "Bridgestone",
+    "email": "contact@bridgestone.com",
+    "phone": "+81 3 6836 1111"
+  },
+  {
+    "id": "comp_tire_4",
+    "name": "Synthetic Rubber Solutions GmbH",
+    "email": "info@synthetic-rubber-solutions.de",
+    "phone": "+49 40 1234567"
+  },
+  {
+    "id": "comp_tire_5",
+    "name": "SteelCord Technologies",
+    "email": "contact@steelcord-tech.com",
+    "phone": "+49 30 9876543"
+  },
+  {
+    "id": "comp_tire_6",
+    "name": "Natural Rubber Supply Co.",
+    "email": "info@natural-rubber-supply.com",
+    "phone": "+49 69 4567890"
+  },
+  {
+    "id": "comp_tire_7",
+    "name": "ButylTech Industries",
+    "email": "contact@butyltech.com",
+    "phone": "+49 89 1237890"
+  },
+  {
+    "id": "comp_tire_8",
+    "name": "Carbon Black Solutions",
+    "email": "info@carbonblack-solutions.com",
+    "phone": "+49 40 9871234"
+  },
+  {
+    "id": "comp_tire_9",
+    "name": "SilicaTech GmbH",
+    "email": "contact@silicatech.de",
+    "phone": "+49 30 4561237"
+  }
+]

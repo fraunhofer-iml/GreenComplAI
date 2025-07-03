@@ -1,0 +1,37 @@
+[
+  {
+    "preliminaryProductId": "product-1",
+    "productId": "product-2",
+    "amount": 20
+  },
+  {
+    "preliminaryProductId": "product-3",
+    "productId": "product-4",
+    "amount": 30
+  },
+  {
+    "preliminaryProductId": "product-5",
+    "productId": "product-4",
+    "amount": 10
+  },
+  {
+    "preliminaryProductId": "product-6",
+    "productId": "product-4",
+    "amount": 10
+  },
+  {
+    "preliminaryProductId": "product-6",
+    "productId": "product-5",
+    "amount": 9
+  },
+  {
+    "preliminaryProductId": "product-6",
+    "productId": "product-3",
+    "amount": 10
+  },
+  {
+    "preliminaryProductId": "product-6",
+    "productId": "product-2",
+    "amount": 7
+  }
+]

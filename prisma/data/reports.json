@@ -1,0 +1,42 @@
+[
+  {
+    "id": "report-1",
+    "assetsBusinessActivitiesEvaluated": true,
+    "evaluationMethodsAssumptionsTools": "Materialflussanalyse (MFA), Einsatz von Umweltmanagementsystemen (z.B. EMAS, ISO 14001), Lebenszyklusanalysen (Life Cycle Assessments, LCA), Ökobilanzierung nach DIN EN ISO 14040:2006",
+    "consultationsConducted": true,
+    "consultationMethods": "Interviews, Umfragen und Fokusgruppendiskussionen.",
+    "evaluationYear": 2021,
+    "isFinalReport": true,
+    "flags": []
+  },
+  {
+    "id": "report-2",
+    "assetsBusinessActivitiesEvaluated": true,
+    "evaluationMethodsAssumptionsTools": "Materialflussanalyse (MFA), Einsatz von Umweltmanagementsystemen (z.B. EMAS, ISO 14001), Lebenszyklusanalysen (Life Cycle Assessments, LCA), Ökobilanzierung nach DIN EN ISO 14040:2006",
+    "consultationsConducted": true,
+    "consultationMethods": "Online-Fragebögen, persönliche Treffen und öffentliche Foren.",
+    "evaluationYear": 2022,
+    "isFinalReport": true,
+    "flags": []
+  },
+  {
+    "id": "report-3",
+    "assetsBusinessActivitiesEvaluated": true,
+    "evaluationMethodsAssumptionsTools": "Materialflussanalyse (MFA), Einsatz von Umweltmanagementsystemen (z.B. EMAS, ISO 14001), Lebenszyklusanalysen (Life Cycle Assessments, LCA), Ökobilanzierung nach DIN EN ISO 14040:2006",
+    "consultationsConducted": true,
+    "consultationMethods": "Workshops, Podiumsdiskussionen, Online-Fragebögen.",
+    "evaluationYear": 2023,
+    "isFinalReport": false,
+    "flags": []
+  },
+  {
+    "id": "report-4",
+    "assetsBusinessActivitiesEvaluated": true,
+    "evaluationMethodsAssumptionsTools": "Ökobilanzierung nach DIN EN ISO 14040, Energieflussanalyse, Carbon Footprint Analyse, Wasserverbrauchsanalyse, Kreislaufwirtschafts-Analyse, Ökosystemdienstleistungsanalyse , Abfallmanagementanalyse",
+    "consultationsConducted": true,
+    "consultationMethods": "Podiumsdiskussionen: Durch die Einladung von Experten, Praktikern und Interessengruppen auf einer öffentlichen Plattform wird der Austausch von Wissen und Erfahrungen angeregt. Diese Veranstaltungen ermöglichen kontroverse und inspirierende Diskussionen, bei denen unterschiedliche Standpunkte beleuchtet werden. Dadurch wird nicht nur das Bewusstsein für bestimmte Themen geschärft, sondern auch ein Raum für kritisches Nachdenken und neue Lösungsansätze geschaffen",
+    "evaluationYear": 2024,
+    "isFinalReport": false,
+    "flags": []
+  }
+]

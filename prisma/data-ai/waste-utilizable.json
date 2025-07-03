@@ -1,0 +1,54 @@
+[
+  {
+    "id": "uw_tire_1",
+    "preparationForRecyclingWeight": 55.0,
+    "recyclingWeight": 45.0,
+    "miscellaneousWeight": 5.0,
+    "generalWasteId": "gw_tire_1"
+  },
+  {
+    "id": "uw_tire_2",
+    "preparationForRecyclingWeight": 52.0,
+    "recyclingWeight": 42.0,
+    "miscellaneousWeight": 6.0,
+    "generalWasteId": "gw_tire_2"
+  },
+  {
+    "id": "uw_tire_3",
+    "preparationForRecyclingWeight": 50.0,
+    "recyclingWeight": 40.0,
+    "miscellaneousWeight": 5.0,
+    "generalWasteId": "gw_tire_3"
+  },
+  {
+    "id": "uw_tire_4",
+    "preparationForRecyclingWeight": 45.0,
+    "recyclingWeight": 35.0,
+    "miscellaneousWeight": 5.0,
+    "generalWasteId": "gw_tire_4_hazardous"
+  },
+  {
+    "id": "uw_tire_5",
+    "preparationForRecyclingWeight": 45.0,
+    "recyclingWeight": 35.0,
+    "miscellaneousWeight": 5.0
+  },
+  {
+    "id": "uw_tire_6",
+    "preparationForRecyclingWeight": 45.0,
+    "recyclingWeight": 35.0,
+    "miscellaneousWeight": 5.0
+  },
+  {
+    "id": "uw_tire_7",
+    "preparationForRecyclingWeight": 45.0,
+    "recyclingWeight": 35.0,
+    "miscellaneousWeight": 5.0
+  },
+  {
+    "id": "uw_tire_8",
+    "preparationForRecyclingWeight": 45.0,
+    "recyclingWeight": 35.0,
+    "miscellaneousWeight": 5.0
+  }
+]

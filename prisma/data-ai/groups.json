@@ -1,0 +1,17 @@
+[
+  {
+    "id": "group_tire_1",
+    "name": "Commercial Truck Tires",
+    "description": "High-performance commercial truck tires for various applications"
+  },
+  {
+    "id": "group_tire_2",
+    "name": "Long-Haul Tires",
+    "description": "Specialized tires for long-distance transportation"
+  },
+  {
+    "id": "group_tire_3",
+    "name": "Tire Components",
+    "description": "Specialized components used in tire manufacturing"
+  }
+]

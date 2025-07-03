@@ -1,0 +1,82 @@
+[
+  {
+    "id": "Metal",
+    "name": "Metal"
+  },
+  {
+    "id": "Aluminium",
+    "name": "Aluminium"
+  },
+  {
+    "id": "Pappe",
+    "name": "Pappe"
+  },
+  {
+    "id": "Plastik",
+    "name": "Plastik"
+  },
+  {
+    "id": "Messing",
+    "name": "Messing"
+  },
+  {
+    "id": "Glas",
+    "name": "Glas"
+  },
+  {
+    "id": "Holz",
+    "name": "Holz"
+  },
+  {
+    "id": "Cer",
+    "name": "Cer"
+  },
+  {
+    "id": "Europium",
+    "name": "Europium"
+  },
+  {
+    "id": "Terbium",
+    "name": "Terbium"
+  },
+  {
+    "id": "Phosphor",
+    "name": "Phosphor"
+  },
+  {
+    "id": "Lithium",
+    "name": "Lithium"
+  },
+  {
+    "id": "Magnesium",
+    "name": "Magnesium"
+  },
+  {
+    "id": "Graphit",
+    "name": "Graphit"
+  },
+  {
+    "id": "Kokskohle",
+    "name": "Kokskohle"
+  },
+  {
+    "id": "Niob",
+    "name": "Niob"
+  },
+  {
+    "id": "Yttrium",
+    "name": "Yttrium"
+  },
+  {
+    "id": "Bor",
+    "name": "Bor"
+  },
+  {
+    "id": "Arsen",
+    "name": "Arsen"
+  },
+  {
+    "id": "Strontium",
+    "name": "Strontium"
+  }
+]

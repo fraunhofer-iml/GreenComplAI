@@ -1,0 +1,6 @@
+[
+  { "measureId": "measure-1", "strategyId": "strategy-5" },
+  { "measureId": "measure-1", "strategyId": "strategy-1" },
+  { "measureId": "measure-2", "strategyId": "strategy-2" },
+  { "measureId": "measure-3", "strategyId": "strategy-2" }
+]

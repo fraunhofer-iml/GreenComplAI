@@ -1,0 +1,62 @@
+[
+  {
+    "productId": "product-1",
+    "materialName": "Phosphor",
+    "percentage": 2.5
+  },
+  {
+    "productId": "product-1",
+    "materialName": "Arsen",
+    "percentage": 2.5
+  },
+  {
+    "productId": "product-1",
+    "materialName": "Strontium",
+    "percentage": 2.5
+  },
+  {
+    "productId": "product-2",
+    "materialName": "Phosphor",
+    "percentage": 0.7
+  },
+  {
+    "productId": "product-3",
+    "materialName": "Phosphor",
+    "percentage": 2.5
+  },
+  {
+    "productId": "product-3",
+    "materialName": "Lithium",
+    "percentage": 10
+  },
+  {
+    "productId": "product-4",
+    "materialName": "Lithium",
+    "percentage": 0.38
+  },
+  {
+    "productId": "product-5",
+    "materialName": "Phosphor",
+    "percentage": 2.5
+  },
+  {
+    "productId": "product-5",
+    "materialName": "Magnesium",
+    "percentage": 3.8
+  },
+  {
+    "productId": "product-6",
+    "materialName": "Graphit",
+    "percentage": 3.8
+  },
+  {
+    "productId": "product-6",
+    "materialName": "Kokskohle",
+    "percentage": 4.7
+  },
+  {
+    "productId": "product-6",
+    "materialName": "Niob",
+    "percentage": 0.8
+  }
+]

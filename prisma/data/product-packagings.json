@@ -1,0 +1,42 @@
+[
+  {
+    "productId": "product-1",
+    "packagingId": "EcoBox-500",
+    "amount": 5
+  },
+  {
+    "productId": "product-2",
+    "packagingId": "GreenPack-250",
+    "amount": 10
+  },
+  {
+    "productId": "product-3",
+    "packagingId": "GreenPack-250",
+    "amount": 9
+  },
+  {
+    "productId": "product-5",
+    "packagingId": "GreenPack-250",
+    "amount": 12
+  },
+  {
+    "productId": "product-5",
+    "packagingId": "Biodegradable-Foil-2000",
+    "amount": 12
+  },
+  {
+    "productId": "product-6",
+    "packagingId": "GreenPack-250",
+    "amount": 4
+  },
+  {
+    "productId": "product-6",
+    "packagingId": "EcoBox-500",
+    "amount": 5
+  },
+  {
+    "productId": "product-6",
+    "packagingId": "Biodegradable-Foil-2000",
+    "amount": 8
+  }
+]

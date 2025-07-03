@@ -1,0 +1,46 @@
+[
+  {
+    "id": "EcoBox-500",
+    "name": "EcoBox 500",
+    "weight": 0.25,
+    "percentageOfRenewableMaterial": 0.25,
+    "percentageOfRecycledMaterial": 0.5,
+    "percentageOfRStrategies": 0.5,
+    "supplierId": "company-1",
+    "materialId": "Pappe",
+    "flags": []
+  },
+  {
+    "id": "GreenPack-250",
+    "name": "GreenPack 250",
+    "weight": 0.35,
+    "percentageOfRenewableMaterial": 0.5,
+    "percentageOfRecycledMaterial": 0.83,
+    "percentageOfRStrategies": 0.8,
+    "supplierId": "company-2",
+    "materialId": "Pappe",
+    "flags": []
+  },
+  {
+    "id": "GreenPack-500",
+    "name": "GreenPack 500",
+    "weight": 0.5,
+    "percentageOfRenewableMaterial": 0.5,
+    "percentageOfRecycledMaterial": 0.83,
+    "percentageOfRStrategies": 0.8,
+    "supplierId": "company-2",
+    "materialId": "Pappe",
+    "flags": []
+  },
+  {
+    "id": "Biodegradable-Foil-2000",
+    "name": "Biodegradable-Foil-2000",
+    "weight": 0.05,
+    "percentageOfRenewableMaterial": 0.5,
+    "percentageOfRecycledMaterial": 0.83,
+    "percentageOfRStrategies": 0.8,
+    "supplierId": "company-2",
+    "materialId": "Plastik",
+    "flags": []
+  }
+]

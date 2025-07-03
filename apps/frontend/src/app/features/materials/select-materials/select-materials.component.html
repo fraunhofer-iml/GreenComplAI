@@ -1,0 +1,155 @@
+<div class="flex w-full flex-col gap-4">
+  <span>Angaben zu Materialien</span>
+
+  @if (form) {
+    <form [formGroup]="form">
+      <div class="flex flex-col gap-2 rounded-lg bg-neutral-200 p-4">
+        <span>Materialien</span>
+        <div formArrayName="materials" class="space-y-4">
+          @for (
+            material of materials.controls;
+            track material;
+            let pindex = $index
+          ) {
+            <div
+              [formGroupName]="pindex"
+              class="flex w-full flex-row items-center gap-2"
+            >
+              <mat-form-field appearance="outline" class="flex-1">
+                <mat-label>Material</mat-label>
+                <input matInput formControlName="material" />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Anteil</mat-label>
+                <input type="number" matInput formControlName="percentage" />
+              </mat-form-field>
+              <button
+                mat-icon-button
+                (click)="removeMaterialEvent.emit(pindex)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          }
+          <button mat-flat-button (click)="addMaterialEvent.emit()">
+            <mat-icon>add</mat-icon>
+            Material hinzufügen
+          </button>
+        </div>
+      </div>
+    </form>
+  }
+
+  @if (rareEarthsForm) {
+    <form [formGroup]="rareEarthsForm">
+      <div class="flex flex-col gap-2 rounded-lg bg-neutral-200 p-4">
+        <span>Seltene Erden</span>
+        <div formArrayName="materials" class="space-y-4">
+          @for (
+            earth of rareEarths.controls;
+            track earth;
+            let pindex = $index
+          ) {
+            <div
+              [formGroupName]="pindex"
+              class="flex w-full flex-row items-center gap-2"
+            >
+              <mat-form-field appearance="outline" class="flex-1">
+                <mat-label>Erde</mat-label>
+                <input
+                  #earthsInput
+                  matInput
+                  formControlName="material"
+                  [matAutocomplete]="rareEarthsAuto"
+                  (input)="onEarthInputChange(earthsInput.value)"
+                />
+                <mat-autocomplete
+                  #rareEarthsAuto="matAutocomplete"
+                  requireSelection
+                >
+                  @for (option of rareEarths$(); track option) {
+                    <mat-option
+                      [value]="option.valueOf()"
+                      (click)="earthFilter.set('')"
+                      >{{ option }}</mat-option
+                    >
+                  }
+                </mat-autocomplete>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Anteil</mat-label>
+                <input type="number" matInput formControlName="percentage" />
+              </mat-form-field>
+              <button
+                mat-icon-button
+                (click)="removeRareEarthEvent.emit(pindex)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          }
+          <button mat-flat-button (click)="addRareEarthEvent.emit()">
+            <mat-icon>add</mat-icon>
+            Seltene Erde hinzufügen
+          </button>
+        </div>
+      </div>
+    </form>
+  }
+
+  @if (criticalRawMaterialsForm) {
+    <form [formGroup]="criticalRawMaterialsForm">
+      <div class="flex flex-col gap-2 rounded-lg bg-neutral-200 p-4">
+        <span>Kritische Rohstoffe</span>
+        <div formArrayName="materials" class="space-y-4">
+          @for (
+            material of criticalMaterials.controls;
+            track material;
+            let pindex = $index
+          ) {
+            <div
+              [formGroupName]="pindex"
+              class="flex w-full flex-row items-center gap-2"
+            >
+              <mat-form-field appearance="outline" class="flex-1">
+                <mat-label>Rohstoff</mat-label>
+                <input
+                  #criticalMaterialInput
+                  matInput
+                  formControlName="material"
+                  [matAutocomplete]="criticalMaterialAuto"
+                  (input)="
+                    onCriticalMaterialInputChange(criticalMaterialInput.value)
+                  "
+                />
+                <mat-autocomplete #criticalMaterialAuto="matAutocomplete">
+                  @for (option of criticalRawMaterials$(); track option) {
+                    <mat-option
+                      [value]="option"
+                      (click)="criticalMaterialsFilter.set('')"
+                      >{{ option }}</mat-option
+                    >
+                  }
+                </mat-autocomplete>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Anteil</mat-label>
+                <input type="number" matInput formControlName="percentage" />
+              </mat-form-field>
+              <button
+                mat-icon-button
+                (click)="removeCriticalRawMaterialEvent.emit(pindex)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          }
+          <button mat-flat-button (click)="addCriticalRawMaterialEvent.emit()">
+            <mat-icon>add</mat-icon>
+            Kritischen Rohstoff hinzufügen
+          </button>
+        </div>
+      </div>
+    </form>
+  }
+</div>

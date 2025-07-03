@@ -1,0 +1,10 @@
+[
+  {
+    "id": "wf_tire_1",
+    "name": "Tire Recycling Flow"
+  },
+  {
+    "id": "wf_tire_2",
+    "name": "Tire Material Recovery Flow"
+  }
+]

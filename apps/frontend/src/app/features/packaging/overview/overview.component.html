@@ -1,0 +1,8 @@
+<div class="flex w-full justify-between px-8 pt-8">
+  <h2 class="text-xl" i18n>Verpackung</h2>
+
+  @if (role === AuthRoles.BUYER) {
+    <a class="" mat-flat-button routerLink="/packaging/create">Hinzufügen</a>
+  }
+</div>
+<app-overview [contentType]="ContentType.PACKAGE"></app-overview>

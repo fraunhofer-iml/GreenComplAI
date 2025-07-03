@@ -1,0 +1,77 @@
+[
+  {
+    "productId": "prod_tire_1",
+    "materialId": "mat_tire_1",
+    "percentage": 30.0
+  },
+  {
+    "productId": "prod_tire_1",
+    "materialId": "mat_tire_2",
+    "percentage": 25.0
+  },
+  {
+    "productId": "prod_tire_1",
+    "materialId": "mat_tire_3",
+    "percentage": 20.0
+  },
+  {
+    "productId": "prod_tire_1",
+    "materialId": "mat_tire_4",
+    "percentage": 15.0
+  },
+  {
+    "productId": "prod_tire_1",
+    "materialId": "mat_tire_7",
+    "percentage": 10.0
+  },
+  {
+    "productId": "prod_tire_2",
+    "materialId": "mat_tire_1",
+    "percentage": 28.0
+  },
+  {
+    "productId": "prod_tire_2",
+    "materialId": "mat_tire_2",
+    "percentage": 27.0
+  },
+  {
+    "productId": "prod_tire_2",
+    "materialId": "mat_tire_3",
+    "percentage": 18.0
+  },
+  {
+    "productId": "prod_tire_2",
+    "materialId": "mat_tire_4",
+    "percentage": 17.0
+  },
+  {
+    "productId": "prod_tire_2",
+    "materialId": "mat_tire_7",
+    "percentage": 10.0
+  },
+  {
+    "productId": "prod_tire_3",
+    "materialId": "mat_tire_1",
+    "percentage": 32.0
+  },
+  {
+    "productId": "prod_tire_3",
+    "materialId": "mat_tire_2",
+    "percentage": 24.0
+  },
+  {
+    "productId": "prod_tire_3",
+    "materialId": "mat_tire_3",
+    "percentage": 22.0
+  },
+  {
+    "productId": "prod_tire_3",
+    "materialId": "mat_tire_4",
+    "percentage": 12.0
+  },
+  {
+    "productId": "prod_tire_3",
+    "materialId": "mat_tire_7",
+    "percentage": 10.0
+  }
+]

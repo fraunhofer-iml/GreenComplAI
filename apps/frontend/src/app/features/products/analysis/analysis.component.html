@@ -1,0 +1,144 @@
+<div class="flex flex-col gap-8 p-8">
+  <div class="flex flex-row items-center gap-2">
+    <button mat-icon-button [routerLink]="['/products/', id$()]">
+      <mat-icon class="text-foreground"> chevron_left </mat-icon></button
+    ><span class="text-xl">Auswertung</span>
+  </div>
+
+  <form class="grid grid-cols-1 gap-4 md:grid-cols-2" [formGroup]="form">
+    <mat-form-field appearance="outline">
+      <mat-label>Produkt</mat-label>
+      <input
+        matInput
+        #input
+        formControlName="product"
+        [matAutocomplete]="auto"
+        (keyup)="productSearchValue$.set(input.value)"
+      />
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+        @for (option of searchProductsQuery.data()?.data; track option) {
+          <mat-option [value]="option">{{ option.name }} </mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label i18n>Stückzahl</mat-label>
+      <input type="number" matInput formControlName="amount" />
+    </mat-form-field>
+  </form>
+
+  @if (analysisQuery.data(); as data) {
+    <div class="grid grid-cols-1 gap-4 text-sm md:grid-cols-5">
+      <div
+        class="col-span-3 grid grid-cols-1 gap-4 rounded-lg bg-neutral-200 p-4 md:grid-cols-2"
+      >
+        <span class="col-span-2 pb-4 text-base font-medium">
+          Allgemeine Produktinformationen
+        </span>
+        <div class="flex justify-between">
+          <span class="font-medium"
+            >Gesamtgewicht der produzierten Produkte</span
+          >
+          <span>{{ data.totalWeightOfProduct | number }} {{ unit }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="font-medium"
+            >Gesamtgewicht der eingesetzten Materialien
+          </span>
+          <span>{{ data.totalWeightOfMaterial | number }} {{ unit }}</span>
+        </div>
+
+        <div class="flex justify-between">
+          <span class="font-medium">Anteil erneuerbarer Materialien </span>
+          <span
+            >{{
+              data.percentageOfBiologicalMaterialsOfProduct | number
+            }}
+            %</span
+          >
+        </div>
+        <div class="flex justify-between">
+          <span class="font-medium">Menge erneuerbarer Materialien </span>
+          <span
+            >{{ data.amountOfRenewableMaterialOfProduct | number }}
+            {{ unit }}</span
+          >
+        </div>
+
+        <div class="flex justify-between">
+          <span class="font-medium">Menge potenziell gefährlicher Abfälle</span>
+          <span>{{ data.amountOfDangerousWaste | number }} {{ unit }}</span>
+        </div>
+
+        <div class="flex justify-between">
+          <span class="font-medium">Menge radioaktiver Abfälle </span>
+          <span>{{ data.amountOfRadioactiveWaste | number }} {{ unit }}</span>
+        </div>
+
+        <div class="flex justify-between">
+          <span class="font-medium">Menge recycelter Vorprodukte </span>
+          <span
+            >{{ data.amountOfRecycledPreProductOfProduct | number }}
+            {{ unit }}</span
+          >
+        </div>
+      </div>
+
+      <!-- PACKAGING -->
+      <div class="flex flex-col gap-4 rounded-lg bg-neutral-200 p-4">
+        <span class="pb-4 text-base font-medium">
+          Informationen zur Verpackung
+        </span>
+        <div class="flex justify-between">
+          <span class="font-medium">Anteil erneuerbarer Materialien </span>
+          <span
+            >{{
+              data.percentageOfRenewableMaterialOfPackaging | number
+            }}
+            %</span
+          >
+        </div>
+        <div class="flex justify-between">
+          <span class="font-medium">Menge erneuerbarer Materialien </span>
+          <span
+            >{{ data.amountOfRenewableMaterialOfPackaging | number }}
+            {{ unit }}</span
+          >
+        </div>
+
+        <div class="flex justify-between">
+          <span class="font-medium">Menge recycelter Materialien </span>
+          <span
+            >{{ data.amountOfRecycledMaterialOfPackaging | number }}
+            {{ unit }}</span
+          >
+        </div>
+      </div>
+
+      <!-- WATER -->
+      <div class="flex flex-col gap-4 rounded-lg bg-neutral-200 p-4">
+        <span class="pb-4 text-base font-medium">
+          Informationen zum Wasserverbrauch
+        </span>
+        <div class="flex justify-between">
+          <span class="font-medium">Vorgelagerte Wertschöpfungsstufen </span>
+          <span>{{ data.upstreamWaterConsumption | number }} l</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="font-medium">Eigene Wertschöpfungsstufe </span>
+          <span>{{ data.productionWaterConsumption | number }} l</span>
+        </div>
+
+        <div class="flex justify-between">
+          <span class="font-medium">Gesamt </span>
+          <span
+            >{{
+              data.upstreamWaterConsumption + data.productionWaterConsumption
+                | number
+            }}l
+          </span>
+        </div>
+      </div>
+    </div>
+  }
+</div>

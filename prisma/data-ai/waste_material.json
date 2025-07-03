@@ -1,0 +1,32 @@
+[
+  {
+    "wasteId": "waste_tire_1",
+    "materialId": "mat_tire_1",
+    "percentage": 0.3,
+    "weightInKg": 19.65
+  },
+  {
+    "wasteId": "waste_tire_1",
+    "materialId": "mat_tire_2",
+    "percentage": 0.25,
+    "weightInKg": 16.375
+  },
+  {
+    "wasteId": "waste_tire_1",
+    "materialId": "mat_tire_3",
+    "percentage": 20,
+    "weightInKg": 13.1
+  },
+  {
+    "wasteId": "waste_tire_1",
+    "materialId": "mat_tire_4",
+    "percentage": 0.15,
+    "weightInKg": 9.825
+  },
+  {
+    "wasteId": "waste_tire_1",
+    "materialId": "mat_tire_7",
+    "percentage": 0.1,
+    "weightInKg": 6.55
+  }
+]

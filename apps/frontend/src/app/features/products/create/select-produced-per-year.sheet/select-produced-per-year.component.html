@@ -1,0 +1,71 @@
+<div class="flex w-full flex-col gap-4">
+  <span>Angaben zu Einheiten/Jahr</span>
+
+  @if (form) {
+    <form [formGroup]="form">
+      <div class="flex flex-col gap-2 rounded-lg bg-neutral-200 p-4">
+        <span>Produzierte/Beschaffte Einheiten</span>
+        <div formArrayName="producedItems" class="space-y-4">
+          @for (
+            producedItem of producedItems.controls;
+            track producedItem;
+            let pindex = $index
+          ) {
+            <div
+              [formGroupName]="pindex"
+              class="flex w-full flex-row items-center gap-2"
+            >
+              <mat-form-field appearance="outline" class="flex-1">
+                <mat-label>Einheiten</mat-label>
+                <input type="number" matInput formControlName="amount" />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Jahr</mat-label>
+                <input
+                  [value]="producedItems.controls[pindex].value.year"
+                  matInput
+                  [matDatepicker]="fromPicker"
+                  formControlName="year"
+                  [defaultValue]=""
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="fromPicker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker
+                  #fromPicker
+                  startView="multi-year"
+                  (yearSelected)="fromYearHandler($event, pindex, fromPicker)"
+                >
+                </mat-datepicker>
+              </mat-form-field>
+
+              <button
+                mat-icon-button
+                (click)="removeProducedItemEvent.emit(pindex)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          }
+          <button mat-flat-button (click)="addProducedItemEvent.emit()">
+            <mat-icon>add</mat-icon>
+            Produktionswert hinzufügen
+          </button>
+        </div>
+      </div>
+
+      @if (showSaveButton()) {
+        <div class="mt-4 flex w-full justify-end">
+          <button
+            mat-flat-button
+            (click)="save()"
+            [disabled]="form.invalid || !form.touched"
+          >
+            <mat-icon>save</mat-icon> Speichern
+          </button>
+        </div>
+      }
+    </form>
+  }
+</div>

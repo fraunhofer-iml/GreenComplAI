@@ -1,0 +1,16 @@
+[
+  {
+    "id": "group-1",
+    "name": "Tür",
+    "description": "Türen und Türzubehör wie Klemmbeschläge, Türdrücker und andere Beschlagteile",
+    "wasteFlowId": "flow-1",
+    "flags": []
+  },
+  {
+    "id": "group-2",
+    "name": "Fenster",
+    "description": "Fenster und Fensterzubehör wie Beschläge, Griffe und Dichtungen",
+    "wasteFlowId": "flow-2",
+    "flags": []
+  }
+]

@@ -1,0 +1,30 @@
+<div class="grid w-full grid-cols-1 gap-2 rounded-lg bg-neutral-200 p-8">
+  <span class="col-span-2">Produktionszahlen pro Jahr</span>
+  <mat-form-field appearance="outline">
+    <mat-label>Einheiten pro Jahr</mat-label>
+    <mat-chip-grid #producedChips>
+      @for (item of producedItemsForm().value.producedItems; track $index) {
+        @if (item.year && item.amount) {
+          <mat-chip-row [aria-description]="'producedItems'"
+            >{{ item.year.getFullYear() }} ({{ item.amount }})
+          </mat-chip-row>
+        }
+      }
+      <input matInput readonly [matChipInputFor]="producedChips" />
+    </mat-chip-grid>
+    <button mat-icon-button (click)="yearSheet.open()" class="mr-2" matSuffix>
+      <mat-icon>add</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+
+<app-base-sheet #yearSheet>
+  <app-select-produced-per-year
+    (closeSheetEvent)="yearSheet.close()"
+    (addProducedItemEvent)="addProducedItems(producedItemsForm())"
+    (removeProducedItemEvent)="
+      removeProducedItemFormGroup(producedItemsForm(), $event)
+    "
+    [form]="producedItemsForm()"
+  ></app-select-produced-per-year>
+</app-base-sheet>

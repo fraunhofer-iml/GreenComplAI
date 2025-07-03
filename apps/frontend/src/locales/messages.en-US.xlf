@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="de" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="9044883928489789313" datatype="html">
+        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="an class=&quot;material-symbols-outlined&quot;&gt;"/> inventory <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> Produkte </source>
+        <target><x id="START_TAG_SPAN" ctype="x-span" equiv-text="an class=&quot;material-symbols-outlined&quot;&gt;"/> inventory <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> Products </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/frontend/src/app/core/components/sidebar.component.html</context>
+          <context context-type="linenumber">23,25</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

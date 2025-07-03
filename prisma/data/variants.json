@@ -1,0 +1,5 @@
+[
+  { "id": "variant-1", "name": "Glastüren", "productGroupId": "group-1" },
+  { "id": "variant-2", "name": "Schiebetüren", "productGroupId": "group-1" },
+  { "id": "variant-3", "name": "Haustüren", "productGroupId": "group-1" }
+]

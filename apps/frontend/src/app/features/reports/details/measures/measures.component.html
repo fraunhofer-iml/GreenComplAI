@@ -1,0 +1,285 @@
+<div class="w-full">
+  @if (form) {
+    <form [formGroup]="form">
+      @if (measures.controls.length === 0) {
+        <span class="pt-2">Keine Maßnahmen angegeben</span>
+      } @else {
+        <mat-tab-group
+          formArrayName="measures"
+          class="w-full"
+          [selectedIndex]="selectedTabIndex"
+          (selectedIndexChange)="selectedTabIndex = $event"
+        >
+          @for (
+            measure of measures.controls;
+            track measure;
+            let pindex = $index
+          ) {
+            <mat-tab [formGroupName]="pindex">
+              <ng-template mat-tab-label>
+                <span class="m-2">
+                  {{ 'Maßnahme ' + ($index + 1).toString() }}
+                </span>
+              </ng-template>
+
+              <div class="flex flex-col gap-2 py-4">
+                <div
+                  class="grid w-full grid-cols-4 gap-2 rounded-lg bg-neutral-200 p-4 pt-4"
+                >
+                  <div class="col-span-4 flex justify-between">
+                    <div class="flex content-center items-center gap-4">
+                      <span class="text-base">Allgemeine Angaben</span>
+
+                      @if (
+                        report().measures[pindex] &&
+                        report().measures[pindex].previousReport
+                      ) {
+                        <div
+                          class="bg-primary-900 rounded-md bg-opacity-15 px-2 py-1"
+                        >
+                          <span class="text-primary-950 text-sm"
+                            >Übernommen aus Berichtsjahr
+                            {{ report().measures[pindex].previousReport }}</span
+                          >
+                        </div>
+                      }
+                    </div>
+                    @if (!report().isFinalReport) {
+                      <button
+                        mat-stroked-button
+                        (click)="removeTab(pindex)"
+                        i18n
+                      >
+                        <mat-icon>delete </mat-icon>
+                        Entfernen
+                      </button>
+                    }
+                  </div>
+                  <mat-form-field appearance="outline" class="col-span-2">
+                    <mat-label>Titel</mat-label>
+                    <input
+                      matInput
+                      formControlName="title"
+                      [readonly]="report().isFinalReport"
+                    />
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>Status</mat-label>
+                    <mat-select formControlName="status">
+                      <mat-option [value]="MeasureStatus.PLANNED"
+                        >geplant</mat-option
+                      >
+                      <mat-option [value]="MeasureStatus.IN_PROGRESS"
+                        >ergriffen</mat-option
+                      >
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>Geplante Fertigstellung</mat-label>
+                    <input
+                      matInput
+                      [matDatepicker]="fromPicker"
+                      matInput
+                      formControlName="plannedCompletion"
+                      [readonly]="report().isFinalReport" />
+                    <mat-datepicker-toggle
+                      [disabled]="report().isFinalReport"
+                      matSuffix
+                      [for]="fromPicker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker
+                      #fromPicker
+                      startView="multi-year"
+                      (monthSelected)="dateHandler($event, fromPicker, pindex)"
+                    >
+                    </mat-datepicker
+                  ></mat-form-field>
+
+                  <mat-form-field appearance="outline" class="col-span-4"
+                    ><mat-label>Erwartetes Ergebnis</mat-label>
+
+                    <textarea
+                      matInput
+                      formControlName="expectedResult"
+                      [readonly]="report().isFinalReport"
+                    ></textarea>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="col-span-4">
+                    <mat-label>Beitrag zur Erreichung der Strategie</mat-label>
+
+                    <textarea
+                      matInput
+                      formControlName="contributionAchievingStrategy"
+                      [readonly]="report().isFinalReport"
+                    ></textarea>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="col-span-4">
+                    <mat-label
+                      >Beschreibung der Auswirkungen auf die Vor-/Nachgelagerte
+                      Wertschöpfungskette sowie Interessensgruppen</mat-label
+                    >
+                    <textarea
+                      matInput
+                      formControlName="impactOnValueChainAndStakeholders"
+                      [readonly]="report().isFinalReport"
+                    ></textarea>
+                  </mat-form-field>
+                </div>
+
+                <!-- OPTIONAL INFORMATION -->
+
+                <mat-expansion-panel class="col-span-4 w-full !bg-neutral-200">
+                  <mat-expansion-panel-header>
+                    <span class="col-span-4 text-sm"
+                      >Weitere optionale Angaben</span
+                    >
+                  </mat-expansion-panel-header>
+
+                  <div class="grid grid-cols-4 gap-2">
+                    <mat-form-field appearance="outline" class="col-span-4">
+                      <mat-label
+                        >Beitrag zu einer erhöhten
+                        Ressourceneffizienz</mat-label
+                      >
+                      <textarea
+                        matInput
+                        formControlName="contributionIncreasedResourceEfficiency"
+                        [readonly]="report().isFinalReport"
+                      ></textarea>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-span-4">
+                      <mat-label
+                        >Beitrag zu einer höheren Verwendungsrate von
+                        Sekundärrohstoffen</mat-label
+                      >
+                      <textarea
+                        matInput
+                        formControlName="contributionHigherUtilizationRateOfSecondaryMaterials"
+                        [readonly]="report().isFinalReport"
+                      ></textarea>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-span-4">
+                      <mat-label
+                        >Beitrag des kreislauffähigen Designs auf Haltbarkeit
+                        und R-Strategien
+                      </mat-label>
+                      <textarea
+                        matInput
+                        formControlName="contributionCircularDesignToDurabilityAndRStrategies"
+                        [readonly]="report().isFinalReport"
+                      ></textarea>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-span-4">
+                      <mat-label
+                        >Anwendung kreislauforientierter
+                        Geschäftspraktiken</mat-label
+                      >
+                      <textarea
+                        matInput
+                        formControlName="applicationOfCircularBusinessPractices"
+                        [readonly]="report().isFinalReport"
+                      ></textarea>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="col-span-4">
+                      <mat-label
+                        >Maßnahmen und Optimierung im Kontext Abfall</mat-label
+                      >
+                      <textarea
+                        matInput
+                        formControlName="measuresAndOptimizationInContextOfWaste"
+                        [readonly]="report().isFinalReport"
+                      ></textarea></mat-form-field
+                    ><mat-form-field appearance="outline" class="col-span-3">
+                      <mat-label>Fortschritt (qualitativ)</mat-label>
+                      <input
+                        matInput
+                        formControlName="progressQualitative"
+                        [readonly]="report().isFinalReport"
+                      />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-span-1">
+                      <mat-label
+                        >Fortschritt (quantitativ in Prozent)</mat-label
+                      >
+                      <input
+                        type="number"
+                        matInput
+                        formControlName="progressQuantitative"
+                        [readonly]="report().isFinalReport"
+                      />
+                    </mat-form-field>
+                  </div>
+                </mat-expansion-panel>
+
+                <!-- STRATEGIES -->
+
+                <mat-expansion-panel class="col-span-4 w-full !bg-neutral-200">
+                  <mat-expansion-panel-header>
+                    <span class="col-span-4 text-sm">Strategien</span>
+                  </mat-expansion-panel-header>
+
+                  @if (!report().isFinalReport) {
+                    <mat-selection-list
+                      #strategies
+                      formControlName="strategies"
+                    >
+                      @for (
+                        strategy of report().strategies;
+                        track strategy.id
+                      ) {
+                        <mat-list-option
+                          [disabled]="report().isFinalReport"
+                          [value]="strategy.id"
+                          class="felx-col flex content-center items-center"
+                        >
+                          <h3 matListItemTitle>{{ strategy.name }}</h3>
+                          <span matListItemLine class="overflow-ellipsis">{{
+                            strategy.conceptInformationResources
+                          }}</span>
+                        </mat-list-option>
+                      }
+                    </mat-selection-list>
+                  } @else {
+                    <mat-list>
+                      @for (
+                        strategy of report().measures[pindex].strategies;
+                        track strategy
+                      ) {
+                        <mat-list-item
+                          class="felx-col flex content-center items-center"
+                        >
+                          <mat-icon matListItemIcon>task</mat-icon>
+                          <span matListItemTitle>{{ strategy.name }}</span>
+                          <span matListItemLine class="overflow-ellipsis">{{
+                            strategy.conceptInformationResources
+                          }}</span>
+                        </mat-list-item>
+                      }
+                    </mat-list>
+                  }
+                </mat-expansion-panel>
+              </div>
+            </mat-tab>
+          }
+        </mat-tab-group>
+      }
+    </form>
+  }
+
+  @if (!report().isFinalReport) {
+    <div class="flex w-full justify-between gap-2">
+      <button mat-flat-button (click)="addTab()" i18n>
+        <mat-icon>add </mat-icon>
+        Maßnahme hinzufügen
+      </button>
+      <button mat-flat-button (click)="save()" i18n [disabled]="form.invalid">
+        <mat-icon>save </mat-icon>
+        Speichern
+      </button>
+    </div>
+  }
+</div>

@@ -1,0 +1,12 @@
+[
+  {
+    "id": "var_tire_1",
+    "name": "Winter",
+    "productGroupId": "group_tire_1"
+  },
+  {
+    "id": "var_tire_2",
+    "name": "Summer",
+    "productGroupId": "group_tire_1"
+  }
+]

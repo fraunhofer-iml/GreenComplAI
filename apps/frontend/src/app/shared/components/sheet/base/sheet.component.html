@@ -1,0 +1,15 @@
+<!-- Sheet overlay -->
+@if (visible) {
+  <div
+    role="none"
+    (click)="close()"
+    [attr.data-state]="(closing$ | async) ? 'closed' : 'open'"
+    class="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed bottom-0 left-0 right-0 top-0 z-40 data-[state=open]:bg-black/60 data-[state=open]:backdrop-blur-sm data-[state=closed]:duration-300"
+  ></div>
+  <div
+    [attr.data-state]="(closing$ | async) ? 'closed' : 'open'"
+    class="bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right bg-neutral-250 fixed inset-y-0 right-0 z-50 h-full w-1/2 gap-4 overflow-y-auto border-l border-neutral-200 p-6 shadow-lg transition ease-in-out data-[state=closed]:duration-500 data-[state=open]:duration-300"
+  >
+    <ng-content />
+  </div>
+}

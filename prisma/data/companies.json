@@ -1,0 +1,23 @@
+[
+  {
+    "id": "company-1",
+    "name": "Müller & Sons GmbH",
+    "email": "info@mueller-sons.de",
+    "phone": "+49 30 1234567",
+    "flags": []
+  },
+  {
+    "id": "company-2",
+    "name": "Schneider AG",
+    "email": "contact@schneider-ag.de",
+    "phone": "+49 40 9876543",
+    "flags": []
+  },
+  {
+    "id": "company-3",
+    "name": "Mayer AG",
+    "email": "contact@mayer-ag.de",
+    "phone": "+49 40 9876543",
+    "flags": []
+  }
+]

@@ -1,0 +1,12 @@
+[
+  {
+    "id": "fi_tire_1",
+    "type": "CHANCE",
+    "title": "Recycling Revenue",
+    "description": "Revenue from recycled tire materials",
+    "financialImpactMin": 1000000,
+    "financialImpactMax": 2000000,
+    "descriptionFinancialEffects": "Positive impact from recycling operations",
+    "reportId": "rep_tire_1"
+  }
+]

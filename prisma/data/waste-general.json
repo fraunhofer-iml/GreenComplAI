@@ -1,0 +1,62 @@
+[
+  {
+    "id": "test-general-waste-1",
+    "utilizableWasteId": "test-utilizable-waste-1",
+    "nonUtilizableWasteId": "test-non-utilizable-waste-1"
+  },
+  {
+    "id": "test-general-waste-2",
+    "utilizableWasteId": "test-utilizable-waste-2",
+    "nonUtilizableWasteId": "test-non-utilizable-waste-2"
+  },
+  {
+    "id": "test-general-waste-3",
+    "utilizableWasteId": "test-utilizable-waste-3",
+    "nonUtilizableWasteId": "test-non-utilizable-waste-3"
+  },
+  {
+    "id": "test-general-waste-4",
+    "utilizableWasteId": "test-utilizable-waste-4",
+    "nonUtilizableWasteId": "test-non-utilizable-waste-4"
+  },
+  {
+    "id": "test-general-waste-5",
+    "utilizableWasteId": "test-utilizable-waste-5",
+    "nonUtilizableWasteId": "test-non-utilizable-waste-5"
+  },
+  {
+    "id": "test-general-waste-6",
+    "utilizableWasteId": "test-utilizable-waste-6",
+    "nonUtilizableWasteId": "test-non-utilizable-waste-6"
+  },
+  {
+    "id": "test-general-waste-7",
+    "utilizableWasteId": "test-utilizable-waste-7",
+    "nonUtilizableWasteId": "test-non-utilizable-waste-7"
+  },
+  {
+    "id": "test-general-waste-8",
+    "utilizableWasteId": "test-utilizable-waste-8",
+    "nonUtilizableWasteId": "test-non-utilizable-waste-8"
+  },
+  {
+    "id": "test-general-waste-9",
+    "utilizableWasteId": "test-utilizable-waste-9",
+    "nonUtilizableWasteId": "test-non-utilizable-waste-9"
+  },
+  {
+    "id": "test-general-waste-10",
+    "utilizableWasteId": "test-utilizable-waste-10",
+    "nonUtilizableWasteId": "test-non-utilizable-waste-10"
+  },
+  {
+    "id": "test-general-waste-11",
+    "utilizableWasteId": "test-utilizable-waste-11",
+    "nonUtilizableWasteId": "test-non-utilizable-waste-11"
+  },
+  {
+    "id": "test-general-waste-12",
+    "utilizableWasteId": "test-utilizable-waste-12",
+    "nonUtilizableWasteId": "test-non-utilizable-waste-12"
+  }
+]

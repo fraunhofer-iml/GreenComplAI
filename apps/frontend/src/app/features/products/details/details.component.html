@@ -1,0 +1,387 @@
+<div class="p-8">
+  <div class="flex items-center gap-2 text-lg">
+    <a routerLink="/products" class="font-semibold hover:underline">Produkte</a>
+    <span class="material-symbols-outlined text-lg"> chevron_right </span>
+    @if (productQuery.isSuccess()) {
+      <h1 class="font-medium">
+        {{ productQuery.data().productId || productQuery.data().id }}
+      </h1>
+    }
+  </div>
+
+  @if (productQuery.isLoading()) {
+    <span class="material-symbols-outlined mt-4 animate-spin text-lg">
+      progress_activity
+    </span>
+  }
+
+  @if (productQuery.data(); as data) {
+    <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div class="col-span-2 rounded-lg bg-neutral-200 p-4">
+        <div class="col-span-2 flex items-center justify-between">
+          <h2 class="font-medium">Stammdaten</h2>
+          <button mat-button routerLink="edit">
+            <mat-icon>edit</mat-icon>
+            bearbeiten
+          </button>
+        </div>
+
+        <div class="mt-2 grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+          <app-flagable
+            [id]="id$() ?? ''"
+            [data]="data.flags"
+            [topic]="'Produktname'"
+            [element]="'name'"
+            ><span class="text-right">{{ data.name }}</span>
+          </app-flagable>
+
+          <app-flagable
+            [id]="id$() ?? ''"
+            [data]="data.flags"
+            [topic]="'Produkt ID'"
+            [element]="'productId'"
+            ><span class="text-right">{{
+              data.productId || 'Nicht angegeben'
+            }}</span>
+          </app-flagable>
+
+          <app-flagable
+            [id]="id$() ?? ''"
+            [data]="data.flags"
+            [topic]="'Verkaufsprodukt'"
+            [element]="'isSellable'"
+            ><span>{{ data.isSellable ? 'ja' : 'nein' }}</span>
+          </app-flagable>
+
+          <app-flagable
+            [id]="id$() ?? ''"
+            [data]="data.flags"
+            [topic]="'Konzipiert nach kreislauforientierten Grundsätzen'"
+            [element]="'circularPrinciple'"
+            ><span>{{ data.circularPrinciple ? 'ja' : 'nein' }}</span>
+          </app-flagable>
+
+          <app-flagable
+            [id]="id$() ?? ''"
+            [data]="data.flags"
+            [topic]="'Beschreibung'"
+            [element]="'description'"
+            ><span class="text-right">{{ data.description }} </span>
+          </app-flagable>
+
+          <app-flagable
+            [id]="id$() ?? ''"
+            [data]="data.flags"
+            [topic]="'Kategorie'"
+            [element]="'category'"
+            ><span>{{ data.category }} </span>
+          </app-flagable>
+
+          <app-flagable
+            [id]="id$() ?? ''"
+            [data]="data.flags"
+            [topic]="'Produktgruppe'"
+            [element]="'productGroup'"
+            ><span>{{ data.productGroup?.name }} </span>
+          </app-flagable>
+
+          <app-flagable
+            [id]="id$() ?? ''"
+            [data]="data.flags"
+            [topic]="'Variante'"
+            [element]="'variant'"
+            ><span>{{ data.variant ?? 'keine Angabe' }} </span>
+          </app-flagable>
+
+          <app-flagable
+            [id]="id$() ?? ''"
+            [data]="data.flags"
+            [topic]="'Hersteller'"
+            [element]="'manufacturer'"
+            ><span>{{ data.manufacturer?.name }}</span>
+          </app-flagable>
+
+          <app-flagable
+            [id]="id$() ?? ''"
+            [data]="data.flags"
+            [topic]="'Gewicht'"
+            [element]="'weight'"
+            ><span>{{ data.weight }}</span>
+          </app-flagable>
+
+          <app-flagable
+            [id]="id$() ?? ''"
+            [data]="data.flags"
+            [topic]="'Einheit (Gewicht)'"
+            [element]="'unit'"
+            ><span>{{ data.unit }}</span>
+          </app-flagable>
+
+          <app-flagable
+            [id]="id$() ?? ''"
+            [data]="data.flags"
+            [topic]="'Preis'"
+            [element]="'price'"
+            ><span>{{ (data.price / 100).toFixed(2) }}</span>
+          </app-flagable>
+
+          <app-flagable
+            [id]="id$() ?? ''"
+            [data]="data.flags"
+            [topic]="'Maße (Länge x Breite x Höhe)'"
+            [element]="'dimensions'"
+            ><span>{{ data.dimensions }}</span></app-flagable
+          >
+
+          <app-flagable
+            [id]="id$() ?? ''"
+            [data]="data.flags"
+            [topic]="'Produktionsstandort'"
+            [element]="'productionLocation'"
+          >
+            <span class="text-right">
+              @if (data.productionLocation) {
+                <span
+                  >{{ data.productionLocation.street }},
+                  {{ data.productionLocation.postalCode }}
+                  {{ data.productionLocation.city }},
+                  {{ data.productionLocation.country }}
+                </span>
+              } @else {
+                <span>Keine Angabe</span>
+              }
+            </span>
+          </app-flagable>
+
+          <app-flagable
+            [id]="id$() ?? ''"
+            [data]="data.flags"
+            [topic]="'Lagerstandort'"
+            [element]="'warehouseLocation'"
+            ><span class="text-right">
+              @if (data.warehouseLocation) {
+                <span
+                  >{{ data.warehouseLocation.street }},
+                  {{ data.warehouseLocation.postalCode }}
+                  {{ data.warehouseLocation.city }},
+                  {{ data.warehouseLocation.country }}
+                </span>
+              } @else {
+                <span>Keine Angabe</span>
+              }
+            </span>
+          </app-flagable>
+
+          <app-flagable
+            [id]="id$() ?? ''"
+            [data]="data.flags"
+            [topic]="'Anteil biologischer Materialien'"
+            [element]="'percentageOfBiologicalMaterials'"
+          >
+            <span class="text-right">{{
+              data.percentageOfBiologicalMaterials
+            }}</span></app-flagable
+          >
+
+          <app-flagable
+            [id]="id$() ?? ''"
+            [data]="data.flags"
+            [topic]="'Relevante Abfallströme'"
+            [element]="'wasteFlow'"
+            ><span>{{ data.wasteFlow }}</span></app-flagable
+          >
+          @if (data.materials) {
+            <app-flagable
+              [id]="id$() ?? ''"
+              [data]="data.flags"
+              [topic]="'Materialien'"
+              [element]="'materials'"
+              ><span>{{ displayMaterials(data.materials) }}</span></app-flagable
+            >
+          }
+          @if (data.cascadePrinciple) {
+            <app-flagable
+              [id]="id$() ?? ''"
+              [data]="data.flags"
+              [topic]="'Kaskadenprinzip'"
+              [element]="'cascadePrinciple'"
+              ><span>{{ data.cascadePrinciple }}</span></app-flagable
+            >
+          }
+          @if (data.certificationSystem) {
+            <app-flagable
+              [id]="id$() ?? ''"
+              [data]="data.flags"
+              [topic]="'Art der Zertifizierung'"
+              [element]="'certificationSystem'"
+              ><span>{{ data.certificationSystem }}</span></app-flagable
+            >
+          }
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-4">
+        <!-- Supplier -->
+        <div class="rounded-lg bg-neutral-200 p-4">
+          <div class="flex flex-row justify-between items-center">
+          <app-flagable
+            [id]="id$() ?? ''"
+            [topic]="'Lieferantendaten'"
+            [data]="data.flags"
+            [element]="'supplier'"
+          >
+          </app-flagable>
+
+          <button mat-button [routerLink]="[Uris.companies, data.supplier?.id]" [queryParams]="{callback: Uris.products + '/' + data.id}">
+            <mat-icon>edit</mat-icon>
+            bearbeiten
+          </button>
+        </div>
+          <div class="mt-4 space-y-2 text-sm">
+            <app-flagable
+              [id]="id$() ?? ''"
+              [topic]="'Name'"
+              [data]="data.flags"
+              [element]="'supplier.name'"
+            >
+              <a [routerLink]="[Uris.companies, data.supplier?.id]">
+                {{ data.supplier?.name }}</a
+              >
+            </app-flagable>
+
+            <app-flagable
+              [id]="id$() ?? ''"
+              [topic]="'Email'"
+              [data]="data.flags"
+              [element]="'supplier.email'"
+            >
+              <span>{{ data.supplier?.email }}</span>
+            </app-flagable>
+
+            <app-flagable
+              [id]="id$() ?? ''"
+              [topic]="'Telefon'"
+              [data]="data.flags"
+              [element]="'supplier.phone'"
+            >
+              <span>{{ data.supplier?.phone }}</span>
+            </app-flagable>
+
+            @if (
+              data.supplier?.addresses && (data.supplier?.addresses)!.length > 0
+            ) {
+              <app-flagable
+                [id]="id$() ?? ''"
+                [topic]="'Adresse'"
+                [data]="data.flags"
+                [element]="'supplier.addresses'"
+              >
+                <span class="flex justify-between text-right">
+                  {{ data.supplier!.addresses[0].street }},
+                  {{ data.supplier!.addresses[0].postalCode }}
+                  {{ data.supplier!.addresses[0].city }},
+                  {{ data.supplier!.addresses[0].country }}
+                </span>
+              </app-flagable>
+            }
+          </div>
+        </div>
+
+        <!-- Ressourcenzuflüsse -->
+        <div class="rounded-lg bg-neutral-200 p-4">
+          <h2 class="font-medium">Ressourcenzuflüsse</h2>
+
+          <div class="mt-4 space-y-2 text-sm">
+            <app-flagable
+              [id]="id$() ?? ''"
+              [topic]="
+                data.isSellable
+                  ? 'Verwendung von Wasser durch das Unternehmen'
+                  : 'Verwendung von Wasser in der vorgelagerten Wertschöpfungskette'
+              "
+              [data]="data.flags"
+              [element]="'waterUsed'"
+            >
+              <span class="text-right">
+                {{ data.waterUsed ?? 'keine Angabe' }}
+                {{ data.waterUsed ? 'l' : '' }}
+              </span>
+            </app-flagable>
+
+            <app-flagable
+              [id]="id$() ?? ''"
+              [topic]="'Seltene Erden'"
+              [data]="data.flags"
+              [element]="'rareEarths'"
+            >
+              <span class="text-right">{{
+                data.rareEarths && data.rareEarths.length > 0
+                  ? displayMaterials(data.rareEarths)
+                  : 'keine Angabe'
+              }}</span>
+            </app-flagable>
+
+            <app-flagable
+              [id]="id$() ?? ''"
+              [topic]="'Kritische Rohstoffe'"
+              [data]="data.flags"
+              [element]="'criticalRawMaterials'"
+            >
+              <span class="text-right">{{
+                data.criticalRawMaterials &&
+                data.criticalRawMaterials.length > 0
+                  ? displayMaterials(data.criticalRawMaterials)
+                  : 'keine Angabe'
+              }}</span>
+            </app-flagable>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOM -->
+      <app-bill-of-material
+        class="col-span-3"
+        [id$]="id$() ?? ''"
+        [description]="productQuery.data()?.billOfMaterialDescription"
+        [flags]="productQuery.data()?.flags ?? []"
+      ></app-bill-of-material>
+
+      <!-- PACKAGING -->
+      <app-product-packaging
+        class="col-span-3"
+        [id$]="id$() ?? ''"
+        [flags]="productQuery.data()?.flags ?? []"
+      ></app-product-packaging>
+
+      <!-- WASTE -->
+      <app-product-waste
+        [id]="id$() ?? ''"
+        [waste]="data.waste"
+        [flags]="data.flags"
+        class="col-span-3"
+      >
+      </app-product-waste>
+
+      <!-- PRODUCTION HISTORY -->
+
+      <div class="col-span-3 rounded-lg bg-neutral-200 p-4">
+        <app-order-history
+          [product]="data"
+          [productId]="id$()"
+          [year]="date.value?.year()"
+        ></app-order-history>
+      </div>
+    </div>
+    @if (role === AuthRoles.SUSTAINABILITY_MANAGER) {
+      <div class="mt-4 flex justify-end">
+        <button
+          mat-flat-button
+          i18n
+          [routerLink]="[Uris.products, productQuery.data()?.id, 'analysis']"
+        >
+          Auswertung
+        </button>
+      </div>
+    }
+  }
+</div>

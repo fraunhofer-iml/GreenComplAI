@@ -1,0 +1,81 @@
+[
+  {
+    "id": "measure-1",
+    "title": "Verbesserter Materialfluss",
+    "status": "PLANNED",
+    "expectedResult": "Verbesserte Ressourcennutzung und Abfallreduzierung.",
+    "contributionAchievingStrategy": "Optimierung der Materialnutzung innerhalb der Produktionszyklen.",
+    "plannedCompletion": "2025-06-30T00:00:00Z",
+    "impactOnValueChainAndStakeholders": "Reduzierung des Bedarfs an Rohstoffen und verstärkte Zusammenarbeit mit Stakeholdern.",
+    "contributionIncreasedResourceEfficiency": "Erhöhte Effizienz bei der Nutzung vorhandener Ressourcen.",
+    "progressQuantitative": 75,
+    "progressQualitative": "Wesentliche Fortschritte im Design des Materialflusses.",
+    "reportId": "report-1"
+  },
+  {
+    "id": "measure-2",
+    "title": "Einführung der EMAS-Zertifizierung",
+    "status": "PLANNED",
+    "expectedResult": "Implementierung eines akkreditierten Umweltmanagementsystems.",
+    "contributionAchievingStrategy": "Erreichung der EMAS-Zertifizierung für mehr Umweltverantwortung.",
+    "plannedCompletion": "2025-12-31T00:00:00Z",
+    "impactOnValueChainAndStakeholders": "Verbesserte Transparenz und Einhaltung von Umweltstandards.",
+    "applicationOfCircularBusinessPractices": "Einsatz von geschlossenen Kreislaufsystemen in den Betriebsabläufen.",
+    "reportId": "report-2"
+  },
+  {
+    "id": "measure-3",
+    "title": "Lebenszyklusanalyse-Implementierung",
+    "status": "PLANNED",
+    "expectedResult": "Umfassendes Verständnis der Auswirkungen des Produktlebenszyklus.",
+    "contributionAchievingStrategy": "Detaillierte Lebenszyklusanalysen für alle Produktlinien durchführen.",
+    "plannedCompletion": "2025-03-15T00:00:00Z",
+    "impactOnValueChainAndStakeholders": "Fundierte Entscheidungen durch Lebenszyklusanalysen.",
+    "contributionCircularDesignToDurabilityAndRStrategies": "Neugestaltung von Produkten zur Verlängerung der Lebensdauer.",
+    "reportId": "report-2"
+  },
+  {
+    "id": "measure-4",
+    "title": "Initiative Kreislaufwirtschaft",
+    "status": "PLANNED",
+    "expectedResult": "Integration von Prinzipien der Kreislaufwirtschaft in die Betriebsabläufe.",
+    "contributionAchievingStrategy": "Förderung von Wiederverwendung und Recycling in der Lieferkette.",
+    "plannedCompletion": "2025-09-01T00:00:00Z",
+    "impactOnValueChainAndStakeholders": "Verbesserte Zusammenarbeit mit Lieferanten zur Schließung von Ressourcenzyklen.",
+    "measuresAndOptimizationInContextOfWaste": "Optimierung der Prozesse zur Minimierung von Produktionsabfällen.",
+    "reportId": "report-2"
+  },
+  {
+    "id": "measure-5",
+    "title": "Reduzierung des CO2-Fußabdrucks",
+    "status": "PLANNED",
+    "expectedResult": "Geringere Treibhausgasemissionen in allen Bereichen.",
+    "contributionAchievingStrategy": "Analyse und Reduktion der wichtigsten Emissionsquellen.",
+    "plannedCompletion": "2026-03-30T00:00:00Z",
+    "impactOnValueChainAndStakeholders": "Verbesserung des Umweltrufs und Senkung des CO2-Fußabdrucks.",
+    "contributionHigherUtilizationRateOfSecondaryMaterials": "Maximierte Nutzung recycelter Materialien.",
+    "reportId": "report-3"
+  },
+  {
+    "id": "measure-6",
+    "title": "Reduzierung des CO2-Fußabdrucks",
+    "status": "IN_PROGRESS",
+    "expectedResult": "Geringere Treibhausgasemissionen in allen Bereichen.",
+    "contributionAchievingStrategy": "Analyse und Reduktion der wichtigsten Emissionsquellen.",
+    "plannedCompletion": "2026-03-30T00:00:00Z",
+    "impactOnValueChainAndStakeholders": "Verbesserung des Umweltrufs und Senkung des CO2-Fußabdrucks.",
+    "contributionHigherUtilizationRateOfSecondaryMaterials": "Maximierte Nutzung recycelter Materialien.",
+    "reportId": "report-4"
+  },
+  {
+    "id": "measure-7",
+    "title": "Initiative Kreislaufwirtschaft mit Fokus auf Regenerative Energien",
+    "status": "IN_PROGRESS",
+    "expectedResult": "Geringere Treibhausgasemissionen in allen Bereichen.",
+    "contributionAchievingStrategy": "Analyse und Reduktion der wichtigsten Emissionsquellen.",
+    "plannedCompletion": "2026-03-30T00:00:00Z",
+    "impactOnValueChainAndStakeholders": "Verbesserung des Umweltrufs und Senkung des CO2-Fußabdrucks.",
+    "contributionHigherUtilizationRateOfSecondaryMaterials": "Maximierte Nutzung recycelter Materialien.",
+    "reportId": "report-4"
+  }
+]

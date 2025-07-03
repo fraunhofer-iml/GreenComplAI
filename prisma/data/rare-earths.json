@@ -1,0 +1,47 @@
+[
+  {
+    "productId": "product-1",
+    "materialName": "Cer",
+    "percentage": 0.56
+  },
+  {
+    "productId": "product-2",
+    "materialName": "Cer",
+    "percentage": 0.02
+  },
+  {
+    "productId": "product-3",
+    "materialName": "Cer",
+    "percentage": 7.9
+  },
+  {
+    "productId": "product-3",
+    "materialName": "Europium",
+    "percentage": 2.5
+  },
+  {
+    "productId": "product-4",
+    "materialName": "Terbium",
+    "percentage": 1.7
+  },
+  {
+    "productId": "product-5",
+    "materialName": "Cer",
+    "percentage": 2.5
+  },
+  {
+    "productId": "product-5",
+    "materialName": "Europium",
+    "percentage": 0.28
+  },
+  {
+    "productId": "product-6",
+    "materialName": "Yttrium",
+    "percentage": 0.28
+  },
+  {
+    "productId": "product-6",
+    "materialName": "Terbium",
+    "percentage": 1.7
+  }
+]

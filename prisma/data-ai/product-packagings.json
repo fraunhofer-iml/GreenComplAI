@@ -1,0 +1,17 @@
+[
+  {
+    "productId": "prod_tire_1",
+    "packagingId": "pack_tire_1",
+    "amount": 1
+  },
+  {
+    "productId": "prod_tire_2",
+    "packagingId": "pack_tire_2",
+    "amount": 1
+  },
+  {
+    "productId": "prod_tire_3",
+    "packagingId": "pack_tire_1",
+    "amount": 1
+  }
+]

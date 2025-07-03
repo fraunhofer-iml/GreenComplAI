@@ -1,0 +1,17 @@
+[
+  {
+    "wasteId": "test-waste-1",
+    "materialName": "Metal",
+    "percentage": 50
+  },
+  {
+    "wasteId": "test-waste-1",
+    "materialName": "Aluminium",
+    "percentage": 10
+  },
+  {
+    "wasteId": "test-waste-1",
+    "materialName": "Pappe",
+    "percentage": 40
+  }
+]

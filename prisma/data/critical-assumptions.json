@@ -1,0 +1,79 @@
+[
+  {
+    "id": "assumption-1",
+    "title": "Kritische Annahme: Steigende Rohstoffpreise",
+    "sourceInformation": "Marktanalysen von Bloomberg prognostizieren, dass die Preise für wichtige Rohstoffe wie Öl und Kupfer um bis zu 30 % steigen könnten, was zu einem Anstieg der Produktionskosten um mindestens 15 % führt.",
+    "degreeOfUncertainty": "Hoch",
+    "financialImpactId": "impact-4"
+  },
+  {
+    "id": "assumption-2",
+    "title": "Kritische Annahme: Lieferkettenunterbrechungen",
+    "sourceInformation": "Berichte des World Economic Forum warnen, dass geopolitische Spannungen und Naturkatastrophen die globalen Lieferketten weiter destabilisieren könnten, was zu Produktionsausfällen von bis zu 20 % führen kann.",
+    "degreeOfUncertainty": "Hoch",
+    "financialImpactId": "impact-2"
+  },
+  {
+    "id": "assumption-3",
+    "title": "Kritische Annahme: Regulatorische Änderungen",
+    "sourceInformation": "Die Europäische Kommission plant, neue Umweltvorschriften einzuführen, die die Betriebskosten um bis zu 10 % erhöhen könnten, insbesondere für CO2-intensive Industrien.",
+    "degreeOfUncertainty": "Mittel",
+    "financialImpactId": "impact-3"
+  },
+  {
+    "id": "assumption-4",
+    "title": "Kritische Annahme: Technologische Störungen",
+    "sourceInformation": "Studien von Gartner zeigen, dass 25 % der Unternehmen in den nächsten zwei Jahren mit signifikanten technologischen Ausfällen rechnen müssen, was zu Produktionsverzögerungen und finanziellen Einbußen führen kann.",
+    "degreeOfUncertainty": "Mittel",
+    "financialImpactId": "impact-3"
+  },
+  {
+    "id": "assumption-5",
+    "title": "Kritische Annahme: Wettbewerbsdruck",
+    "sourceInformation": "Marktforschungsberichte von McKinsey prognostizieren, dass der Wettbewerbsdruck in der Branche zunehmen wird, was Preisnachlässe von bis zu 15 % erfordern könnte, um Marktanteile zu halten.",
+    "degreeOfUncertainty": "Hoch",
+    "financialImpactId": "impact-4"
+  },
+  {
+    "id": "assumption-7",
+    "title": "Kritische Annahme: Technologische Disruption",
+    "sourceInformation": "Berichte von Gartner deuten darauf hin, dass neue KI-Technologien bestehende Geschäftsmodelle innerhalb der nächsten drei Jahre beeinflussen könnten.",
+    "degreeOfUncertainty": "Hoch",
+    "financialImpactId": "impact-5"
+  },
+  {
+    "id": "assumption-8",
+    "title": "Kritische Annahme: Änderung im Kundenverhalten",
+    "sourceInformation": "Umfragen zeigen, dass 40 % der Kunden einen Wechsel zu nachhaltigeren Produkten in Betracht ziehen, was Auswirkungen auf die Nachfrage haben könnte.",
+    "degreeOfUncertainty": "Mittel",
+    "financialImpactId": "impact-6"
+  },
+  {
+    "id": "assumption-9",
+    "title": "Kritische Annahme: Lieferkettenrisiken",
+    "sourceInformation": "Experten warnen vor potenziellen Unterbrechungen aufgrund geopolitischer Spannungen, die Lieferkosten um bis zu 20 % steigern könnten.",
+    "degreeOfUncertainty": "Hoch",
+    "financialImpactId": "impact-7"
+  },
+  {
+    "id": "assumption-10",
+    "title": "Kritische Annahme: Rohstoffpreisvolatilität",
+    "sourceInformation": "Daten von Bloomberg zeigen starke Schwankungen bei den Rohstoffpreisen, was die Produktionskosten erheblich beeinflussen könnte.",
+    "degreeOfUncertainty": "Hoch",
+    "financialImpactId": "impact-7"
+  },
+  {
+    "id": "assumption-11",
+    "title": "Kritische Annahme: Wechselkursrisiken",
+    "sourceInformation": "Prognosen von Zentralbanken weisen auf volatile Wechselkurse hin, die die Import- und Exportkosten beeinflussen könnten.",
+    "degreeOfUncertainty": "Mittel",
+    "financialImpactId": "impact-8"
+  },
+  {
+    "id": "assumption-12",
+    "title": "Kritische Annahme: Fachkräftemangel",
+    "sourceInformation": "Studien von PwC zeigen, dass der Fachkräftemangel in Schlüsselbereichen zunimmt und die Rekrutierungskosten steigen könnten.",
+    "degreeOfUncertainty": "Mittel",
+    "financialImpactId": "impact-8"
+  }
+]

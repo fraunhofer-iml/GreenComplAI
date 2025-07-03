@@ -1,0 +1,74 @@
+[
+  {
+    "id": "test-utilizable-waste-1",
+    "preparationForRecyclingWeight": 12,
+    "recyclingWeight": 18,
+    "miscellaneousWeight": 25
+  },
+  {
+    "id": "test-utilizable-waste-2",
+    "preparationForRecyclingWeight": 15,
+    "recyclingWeight": 22,
+    "miscellaneousWeight": 28
+  },
+  {
+    "id": "test-utilizable-waste-3",
+    "preparationForRecyclingWeight": 8,
+    "recyclingWeight": 25,
+    "miscellaneousWeight": 32
+  },
+  {
+    "id": "test-utilizable-waste-4",
+    "preparationForRecyclingWeight": 11,
+    "recyclingWeight": 19,
+    "miscellaneousWeight": 27
+  },
+  {
+    "id": "test-utilizable-waste-5",
+    "preparationForRecyclingWeight": 13,
+    "recyclingWeight": 21,
+    "miscellaneousWeight": 29
+  },
+  {
+    "id": "test-utilizable-waste-6",
+    "preparationForRecyclingWeight": 10,
+    "recyclingWeight": 20,
+    "miscellaneousWeight": 26
+  },
+  {
+    "id": "test-utilizable-waste-7",
+    "preparationForRecyclingWeight": 14,
+    "recyclingWeight": 23,
+    "miscellaneousWeight": 34
+  },
+  {
+    "id": "test-utilizable-waste-8",
+    "preparationForRecyclingWeight": 16,
+    "recyclingWeight": 24,
+    "miscellaneousWeight": 35
+  },
+  {
+    "id": "test-utilizable-waste-9",
+    "preparationForRecyclingWeight": 17,
+    "recyclingWeight": 25,
+    "miscellaneousWeight": 36
+  },
+  {
+    "id": "test-utilizable-waste-10",
+    "preparationForRecyclingWeight": 12,
+    "recyclingWeight": 18,
+    "miscellaneousWeight": 25
+  },
+  {
+    "id": "test-utilizable-waste-11",
+    "preparationForRecyclingWeight": 12,
+    "recyclingWeight": 18,
+    "miscellaneousWeight": 25
+  },
+  {
+    "id": "test-utilizable-waste-12",
+    "preparationForRecyclingWeight": 12,
+    "recyclingWeight": 18,
+    "miscellaneousWeight": 25
+  }
+]

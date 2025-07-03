@@ -1,0 +1,82 @@
+[
+  {
+    "id": "impact-1",
+    "reportId": "report-1",
+    "title": "Einführung neuer nachhaltiger Produkte",
+    "type": "CHANCE",
+    "description": "Die Einführung neuer nachhaltiger Produktlinien kann den Marktanteil des Unternehmens erheblich erhöhen.",
+    "financialImpactMin": 200000,
+    "financialImpactMax": 800000,
+    "descriptionFinancialEffects": "Die finanziellen Auswirkungen beinhalten eine Erhöhung des Umsatzes durch steigende Nachfrage nach umweltfreundlichen Produkten sowie mögliche Kosteneinsparungen durch effizientere Produktionsmethoden."
+  },
+  {
+    "id": "impact-2",
+    "reportId": "report-2",
+    "title": "Erweiterung der Produktionskapazitäten",
+    "type": "CHANCE",
+    "description": "Die Erweiterung der Produktionskapazitäten kann die Fähigkeit des Unternehmens erhöhen, Marktbedürfnisse zu erfüllen.",
+    "financialImpactMin": 150000,
+    "financialImpactMax": 600000,
+    "descriptionFinancialEffects": "Die finanziellen Auswirkungen umfassen eine Umsatzsteigerung durch die Erhöhung der Produktion und die Möglichkeit, neue Kunden zu gewinnen."
+  },
+  {
+    "id": "impact-3",
+    "reportId": "report-3",
+    "title": "Implementierung neuer Technologien",
+    "type": "CHANCE",
+    "description": "Die Implementierung neuer Technologien kann die Effizienz der Produktionsprozesse verbessern.",
+    "financialImpactMin": 100000,
+    "financialImpactMax": 400000,
+    "descriptionFinancialEffects": "Die finanziellen Auswirkungen beinhalten Kosteneinsparungen durch optimierte Abläufe sowie eine mögliche Umsatzsteigerung durch schnellere Markteinführungen."
+  },
+  {
+    "id": "impact-4",
+    "reportId": "report-3",
+    "title": "Steigende Rohstoffpreise",
+    "type": "RISK",
+    "description": "Steigende Rohstoffpreise können die Produktionskosten erheblich erhöhen.",
+    "financialImpactMin": 50000,
+    "financialImpactMax": 300000,
+    "descriptionFinancialEffects": "Die finanziellen Auswirkungen umfassen erhöhte Produktionskosten, die den Gewinn schmälern und möglicherweise zu Preissteigerungen für Endkunden führen."
+  },
+  {
+    "id": "impact-5",
+    "reportId": "report-3",
+    "title": "Lieferkettenunterbrechungen",
+    "type": "RISK",
+    "description": "Lieferkettenunterbrechungen können zu Produktionsverzögerungen führen.",
+    "financialImpactMin": 30000,
+    "financialImpactMax": 200000,
+    "descriptionFinancialEffects": "Produktionsverzögerungen können zu entgangenen Einnahmen und erhöhten Kosten für alternative Beschaffungsquellen führen."
+  },
+  {
+    "id": "impact-6",
+    "reportId": "report-4",
+    "title": "Regulatorische Änderungen",
+    "type": "RISK",
+    "description": "Änderungen in der Gesetzgebung können zusätzliche Compliance-Kosten verursachen.",
+    "financialImpactMin": 20000,
+    "financialImpactMax": 150000,
+    "descriptionFinancialEffects": "Zusätzliche Compliance-Kosten können die Betriebskosten erhöhen und den Gewinn reduzieren."
+  },
+  {
+    "id": "impact-7",
+    "reportId": "report-4",
+    "title": "Technologische Störungen",
+    "type": "RISK",
+    "description": "Technologische Störungen können die Effizienz der Produktionsprozesse beeinträchtigen.",
+    "financialImpactMin": 40000,
+    "financialImpactMax": 250000,
+    "descriptionFinancialEffects": "Ineffiziente Produktionsprozesse können die Produktionskosten erhöhen und die Lieferfähigkeit beeinträchtigen."
+  },
+  {
+    "id": "impact-8",
+    "reportId": "report-4",
+    "title": "Wettbewerbsdruck",
+    "type": "RISK",
+    "description": "Zunehmender Wettbewerbsdruck kann zu Preissenkungen führen.",
+    "financialImpactMin": 10000,
+    "financialImpactMax": 100000,
+    "descriptionFinancialEffects": "Preissenkungen können den Umsatz und damit den Gewinn erheblich beeinträchtigen."
+  }
+]

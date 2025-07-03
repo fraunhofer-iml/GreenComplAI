@@ -1,0 +1,77 @@
+variables:
+  CRI_URL: $CI_REGISTRY
+  CRI_PATH: ${CRI_URL}/skala/ap2/core
+
+stages:
+  - danger
+  - test
+  - analysis
+  - build
+  - archive
+  - release
+  - deploy
+
+.default:
+  image: node:lts-alpine
+  interruptible: true
+  cache:
+    key:
+      files:
+        - package-lock.json
+    paths:
+      - .npm
+  before_script:
+    - npm install --cache .npm
+    - npx prisma generate
+
+danger:
+  stage: danger
+  extends: .default
+  script:
+    - bun install -g danger
+    - danger ci --failOnErrors
+  allow_failure: true
+  only:
+    - merge_requests
+
+include:
+  - 'apps/bff/.gitlab-ci.yml'
+  - 'apps/entity-management-svc/.gitlab-ci.yml'
+  - 'apps/frontend/.gitlab-ci.yml'
+
+release:
+  stage: release
+  image: node:lts-bullseye-slim
+  before_script:
+    - apt-get update && apt-get install -y --no-install-recommends git-core ca-certificates
+    - npm install -g semantic-release @semantic-release/gitlab @semantic-release/changelog @semantic-release/git
+  script:
+    - semantic-release
+  only:
+    - main
+  when: manual
+
+all:deploy:
+  stage: deploy
+  image: alpine:latest
+  variables:
+    GIT_STRATEGY: none
+  before_script:
+    - echo "Deploying images with tag $CI_COMMIT_TAG"
+    - apk add --no-cache git curl bash coreutils
+    - curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+    - mv kustomize /usr/local/bin/
+    - git clone https://pipeline-token:${GL_TOKEN}@gitlab.cc-asp.fraunhofer.de/skala/ap2/pipeline.git
+    - git config --global user.email "gitlab@oe260.iml.fhg.de"
+    - git config --global user.name "GitLab CI/CD"
+  script:
+    - cd pipeline/overlays/dev
+    - kustomize edit set image ${CRI_PATH}/bff:$CI_COMMIT_TAG
+    - kustomize edit set image ${CRI_PATH}/entity-management-svc:$CI_COMMIT_TAG
+    - kustomize edit set image ${CRI_PATH}/frontend:$CI_COMMIT_TAG
+    - git commit -am '[skip ci] manifest-image update'
+    - git push origin main
+  only:
+    - tags
+  except:
+    - branches

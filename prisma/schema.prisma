@@ -1,0 +1,480 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Action {
+  id          String @id @default(cuid())
+  name        String
+  description String
+
+  ecologicalThreshold   EcologicalThreshold? @relation(fields: [ecologicalThresholdId], references: [id])
+  ecologicalThresholdId String?
+}
+
+model Address {
+  id         String  @id @default(cuid())
+  street     String?
+  city       String?
+  postalCode String?
+  country    String?
+
+  company   Company? @relation(fields: [companyId], references: [id])
+  companyId String?
+
+  storedProducts   Product[] @relation("WarehouseLocation")
+  producedProducts Product[] @relation("ProductionLocation")
+}
+
+model Company {
+  id        String      @id @default(cuid())
+  name      String
+  email     String?
+  phone     String?
+  addresses Address[]
+  packaging Packaging[]
+
+  suppliedProducts     Product[]             @relation("Supplier")
+  manufacturedProducts Product[]             @relation("Manufacturer")
+  associatedCompanies  AssociatedCompanies[] @relation("AssociatedCompany")
+  parentCompanies      AssociatedCompanies[] @relation("ParentCompany")
+
+  employees User[]
+  flags            String[]
+}
+
+model AssociatedCompanies {
+  id                  String  @id @default(cuid())
+  company             Company @relation(fields: [companyId], references: [id], name: "ParentCompany")
+  associatedCompany   Company @relation(fields: [associatedCompanyId], references: [id], name: "AssociatedCompany")
+  associatedCompanyId String
+  companyId           String
+}
+
+model EcologicalParameter {
+  id                        String  @id @default(cuid())
+  name                      String
+  description               String
+  unit                      String
+  min                       Float?
+  max                       Float?
+  voluntary                 Boolean @default(false)
+  dataCollectionMethodology String
+
+  ecologicalThreshhold   EcologicalThreshold? @relation(fields: [ecologicalThreshholdId], references: [id])
+  ecologicalThreshholdId String?
+}
+
+model EcologicalThreshold {
+  id         String                @id @default(cuid())
+  name       String
+  parameters EcologicalParameter[]
+  actions    Action[]
+
+  product   Product? @relation(fields: [productId], references: [id])
+  productId String?
+}
+
+model Material {
+  id   String @id @default(cuid())
+  name String @unique
+
+  packaging Packaging[]
+
+  materials            WasteMaterial[]        @relation("Material")
+  products             ProductMaterials[]
+  rareEarths           RareEarths[]
+  criticalRawMaterials CriticalRawMaterials[]
+}
+
+model Packaging {
+  id                            String @id @default(cuid())
+  name                          String
+  weight                        Float
+  percentageOfRenewableMaterial Float?
+  percentageOfRStrategies       Float?
+  percentageOfRecycledMaterial  Float?
+
+  supplier   Company  @relation(fields: [supplierId], references: [id])
+  supplierId String
+  material   Material @relation(fields: [materialId], references: [id])
+  materialId String
+
+  partPackagings PackagingPartPackaging[] @relation("PartPackaging")
+  packagings     PackagingPartPackaging[] @relation("Packaging")
+
+  products ProductPackaging[] @relation(name: "Packaging")
+
+  waste   Waste?  @relation(fields: [wasteId], references: [id])
+  wasteId String? @unique
+  flags            String[]
+}
+
+model PackagingPartPackaging {
+  partPackaging   Packaging @relation(fields: [partPackagingId], references: [id], name: "PartPackaging")
+  partPackagingId String
+  packaging       Packaging @relation(fields: [packagingId], references: [id], name: "Packaging")
+  packagingId     String
+
+  amount Int
+
+  @@id([partPackagingId, packagingId])
+}
+
+model Product {
+  id                              String  @id @default(cuid())
+  productId                       String  @unique
+  name                            String
+  description                     String?
+  category                        String?
+  weight                          Float?
+  unit                            String?
+  price                           Int?
+  dimensions                      String?
+  percentageOfBiologicalMaterials Float?
+  isSellable                      Boolean @default(false)
+  certificationSystem             String?
+  cascadePrinciple                String?
+  circularPrinciple               Boolean @default(false)
+
+  durability           Float?
+  durabilityDifference Float?
+  reparability         Float?
+
+  billOfMaterial            ProductPreliminaryProduct[] @relation("Product")
+  billOfMaterialDescription String?
+
+  products ProductPreliminaryProduct[] @relation("PreliminaryProduct")
+
+  productGroup   ProductGroup? @relation(fields: [productGroupId], references: [id])
+  productGroupId String?
+
+  ecologicalThresholds EcologicalThreshold[]
+
+  waste   Waste?  @relation(fields: [wasteId], references: [id])
+  wasteId String? @unique
+
+  supplier   Company? @relation(fields: [supplierId], references: [id], name: "Supplier")
+  supplierId String?  @map("supplierId")
+
+  manufacturer   Company? @relation(fields: [manufacturerId], references: [id], name: "Manufacturer")
+  manufacturerId String?  @map("manufacturerId")
+
+  variants   Variant[]
+  packagings ProductPackaging[] @relation(name: "Product")
+
+  materials ProductMaterials[]
+
+  warehouseLocation    Address? @relation(fields: [warehouseLocationId], references: [id], name: "WarehouseLocation")
+  warehouseLocationId  String?
+  productionLocation   Address? @relation(fields: [productionLocationId], references: [id], name: "ProductionLocation")
+  productionLocationId String?
+
+  waterUsed Float?
+
+  wasteFlow            WasteFlow?             @relation(fields: [wasteFlowId], references: [id])
+  wasteFlowId          String?
+  rareEarths           RareEarths[]
+  criticalRawMaterials CriticalRawMaterials[]
+
+  productionHistory    ProductionHistory[]
+
+  flags            String[]
+}
+
+model ProductionHistory {
+  amount Int
+  year   Int
+
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+
+  @@id([productId, year])
+}
+
+model ProductMaterials {
+  product      Product  @relation(fields: [productId], references: [id])
+  productId    String
+  material     Material @relation(fields: [materialName], references: [name])
+  materialName String   @map("materialName")
+  percentage   Float
+
+  @@id([productId, materialName])
+}
+
+model ProductPackaging {
+  product     Product   @relation(fields: [productId], references: [id], name: "Product")
+  productId   String
+  packaging   Packaging @relation(fields: [packagingId], references: [id], name: "Packaging")
+  packagingId String
+  amount      Int
+
+  @@id([productId, packagingId])
+}
+
+model ProductPreliminaryProduct {
+  product   Product @relation(fields: [productId], references: [id], name: "Product")
+  productId String
+
+  preliminaryProduct   Product @relation(fields: [preliminaryProductId], references: [id], name: "PreliminaryProduct")
+  preliminaryProductId String
+
+  amount Int
+
+  @@id([productId, preliminaryProductId])
+}
+
+model ProductGroup {
+  id          String     @id @default(cuid())
+  name        String
+  description String
+  products    Product[]
+  variants    Variant[]
+  wasteFlow   WasteFlow? @relation(fields: [wasteFlowId], references: [id])
+  wasteFlowId String?
+  flags            String[]
+}
+
+model RareEarths {
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+
+  material     Material @relation(fields: [materialName], references: [name])
+  materialName String   @map("materialName")
+
+  percentage Float
+
+  @@id([productId, materialName])
+}
+
+model CriticalRawMaterials {
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+
+  material     Material @relation(fields: [materialName], references: [name])
+  materialName String   @map("materialName")
+
+  percentage Float
+
+  @@id([productId, materialName])
+}
+
+model User {
+  id        String   @id
+  company   Company? @relation(fields: [companyId], references: [id])
+  companyId String?
+}
+
+model Variant {
+  id             String                      @id @default(cuid())
+  name           String
+  productGroup   ProductGroup                @relation(fields: [productGroupId], references: [id])
+  product        Product?                    @relation(fields: [productId], references: [id])
+  productGroupId String
+  productId      String?
+  parentVariant  VariantPreliminaryVariant[] @relation("PreliminaryVariant")
+  variants       VariantPreliminaryVariant[] @relation("Variant")
+
+  @@unique([productGroupId, name])
+}
+
+model VariantPreliminaryVariant {
+  preliminaryVariant   Variant @relation(fields: [preliminaryVariantId], references: [id], name: "PreliminaryVariant")
+  preliminaryVariantId String
+  variant              Variant @relation(fields: [variantId], references: [id], name: "Variant")
+  variantId            String
+
+  @@id([preliminaryVariantId, variantId])
+}
+
+model Waste {
+  id String @id @default(cuid())
+
+  normalWaste      GeneralWaste? @relation(fields: [normalWasteId], references: [id], name: "NormalWaste")
+  normalWasteId    String?       @unique
+  hazardousWaste   GeneralWaste? @relation(fields: [hazardousWasteId], references: [id], name: "HazardousWaste")
+  hazardousWasteId String?       @unique
+
+  recycledWastePercentage Float
+  radioactiveAmount       Float?
+
+  wasteMaterials WasteMaterial[] @relation("Waste")
+  product        Product?
+  packaging      Packaging?
+}
+
+model GeneralWaste {
+  id String @id @default(cuid())
+
+  utilizableWaste      UtilizableWaste    @relation(fields: [utilizableWasteId], references: [id])
+  nonUtilizableWaste   NonUtilizableWaste @relation(fields: [nonUtilizableWasteId], references: [id])
+  utilizableWasteId    String             @unique
+  nonUtilizableWasteId String             @unique
+
+  hazardousType String?
+
+  // Relations to Waste Object
+  normalWaste      Waste?  @relation(name: "NormalWaste")
+  normalWasteId    String?
+  hazardousWaste   Waste?  @relation(name: "HazardousWaste")
+  hazardousWasteId String?
+}
+
+model UtilizableWaste {
+  id String @id @default(cuid())
+
+  preparationForRecyclingWeight Float
+  recyclingWeight               Float
+  miscellaneousWeight           Float
+  generalWaste                  GeneralWaste?
+  generalWasteId                String?
+}
+
+model NonUtilizableWaste {
+  id String @id @default(cuid())
+
+  landfillWeight      Float
+  combustionWeight    Float
+  miscellaneousWeight Float
+  generalWaste        GeneralWaste?
+  generalWasteId      String?
+}
+
+model WasteMaterial {
+  waste        Waste    @relation(fields: [wasteId], references: [id], name: "Waste")
+  wasteId      String
+  material     Material @relation(fields: [materialName], references: [name], name: "Material")
+  materialName String   @map("materialName")
+  percentage   Int
+
+  @@id([wasteId, materialName])
+}
+
+model WasteFlow {
+  id   String @id @default(cuid())
+  name String @unique
+
+  productGroups ProductGroup[]
+
+  products Product[]
+}
+
+model Report {
+  id                                String     @id @default(cuid())
+  assetsBusinessActivitiesEvaluated Boolean
+  evaluationMethodsAssumptionsTools String
+  consultationsConducted            Boolean
+  consultationMethods               String
+  evaluationYear                    Int        @unique
+  isFinalReport                     Boolean    @default(false)
+  strategies                        Strategy[]
+
+  continuedMeasures Measure[] @relation(name: "continuedMeasures")
+  measures          Measure[] @relation(name: "measures")
+
+  financialImpacts FinancialImpact[]
+  flags            String[]
+}
+
+model Strategy {
+  id                           String               @id @default(cuid())
+  name                         String
+  conceptInformationResources  String
+  resourceImpactAndRecycling   String
+  sustainableProcurementImpact String
+  Report                       Report?              @relation(fields: [reportId], references: [id])
+  reportId                     String?
+  measures                     MeasuresStrategies[]
+}
+
+model Measure {
+  id                                                    String        @id @default(cuid())
+  title                                                 String
+  status                                                MeasureStatus
+  expectedResult                                        String
+  contributionAchievingStrategy                         String
+  plannedCompletion                                     DateTime
+  impactOnValueChainAndStakeholders                     String
+  contributionIncreasedResourceEfficiency               String?
+  contributionHigherUtilizationRateOfSecondaryMaterials String?
+  contributionCircularDesignToDurabilityAndRStrategies  String?
+  applicationOfCircularBusinessPractices                String?
+  measuresAndOptimizationInContextOfWaste               String?
+  progressQuantitative                                  Float?
+  progressQualitative                                   String?
+
+  strategies MeasuresStrategies[]
+
+  report         Report  @relation(fields: [reportId], references: [id], name: "measures")
+  previousReport Report? @relation(fields: [previousReportId], references: [id], name: "continuedMeasures")
+
+  reportId         String
+  previousReportId String?
+}
+
+model MeasuresStrategies {
+  measure    Measure  @relation(fields: [measureId], references: [id], onDelete: Cascade)
+  measureId  String
+  strategy   Strategy @relation(fields: [strategyId], references: [id], onDelete: Cascade)
+  strategyId String
+
+  @@id([measureId, strategyId])
+}
+
+enum MeasureStatus {
+  PLANNED
+  IN_PROGRESS
+}
+
+model Mapping {
+  id              String           @id @default(cuid())
+  key             String           @unique
+  mappingElements MappingElement[]
+}
+
+model MappingElement {
+  id        String  @id @default(cuid())
+  key       String
+  value     String
+  mapping   Mapping @relation(fields: [mappingId], references: [key])
+  mappingId String
+}
+
+model FinancialImpact {
+  id                          String     @id @default(cuid())
+  type                        ImpactType
+  title                       String
+  description                 String
+  financialImpactMin          Int
+  financialImpactMax          Int
+  descriptionFinancialEffects String
+
+  criticalAssumptions CriticalAssumption[]
+  Report              Report?              @relation(fields: [reportId], references: [id])
+  reportId            String?
+}
+
+model CriticalAssumption {
+  id                  String @id @default(cuid())
+  title               String
+  sourceInformation   String
+  degreeOfUncertainty String
+
+  FinancialImpact   FinancialImpact? @relation(fields: [financialImpactId], references: [id])
+  financialImpactId String?
+}
+
+enum ImpactType {
+  RISK
+  CHANCE
+}

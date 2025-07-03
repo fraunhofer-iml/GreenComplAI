@@ -1,0 +1,106 @@
+[
+  {
+    "id": "strategy-1",
+    "reportId": "report-1",
+    "name": "Abfluss Beseitigung",
+    "conceptInformationResources": "Recyclat Initiative: Es wird das Ziel verfolgt, mehr Kunststoffe aus dem Haushaltsmüll nutzbar zu machen. Gemeinsam mit Partnern, darunter der Grüne Punkt, wird daran gearbeitet, die Recycling-Quote zu erhöhen. Derzeit bestehen die Verpackungen zu 80 % aus recyceltem Plastik. Ziel ist die Verpackungen zu 100 % aus wiederverwertbaren Materialien herzustellen.",
+    "resourceImpactAndRecycling": "Wegfall der Beschaffung von Primärrohstoffen. Reine Beschaffung und Sekundärrohstoffen und damit Veränderung der Wertschöpfungskette hin zur vollständigen Kreislaufwirtschaft.",
+    "sustainableProcurementImpact": "Zusätzlich wurde die gesamte Lieferkette überarbeitet, um eine nachhaltige Beschaffung von Sekundärrohstoffen sicherzustellen. Es werden nur noch Lieferanten ausgewählt, die zertifizierte Recyclingmaterialien bereitstellen und eine ressourcenschonende Produktion nachweisen können."
+  },
+  {
+    "id": "strategy-2",
+    "reportId": "report-2",
+    "name": "Recyclat Initiative",
+    "conceptInformationResources": "Es wurden innovative Recyclingverfahren eingeführt und nachhaltige Produktionsmethoden entwickelt, um Abfall zu reduzieren und Materialien wiederzuverwenden: Einführung eines geschlossenen Kreislaufs für Produktionsabfälle, sodass Verschnitte und Ausschussmaterialien direkt wiederverwendet werden.",
+    "resourceImpactAndRecycling": "Erhöhung des Anteils an recycelten Materialien in der Produktion, was zu einer signifikanten Reduzierung des Einsatzes von Primärrohstoffen führt.",
+    "sustainableProcurementImpact": "Zusätzlich wurde die Beschaffungspolitik angepasst, sodass vermehrt recycelte oder erneuerbare Materialien aus zertifizierten Quellen genutzt werden."
+  },
+  {
+    "id": "strategy-3",
+    "reportId": "report-3",
+    "name": "Recycling Initiative",
+    "conceptInformationResources": "Es wurden innovative Recyclingverfahren eingeführt und nachhaltige Produktionsmethoden entwickelt, um Abfall zu reduzieren und Materialien wiederzuverwenden: Einführung eines geschlossenen Kreislaufs für Produktionsabfälle, sodass Verschnitte und Ausschussmaterialien direkt wiederverwendet werden.",
+    "resourceImpactAndRecycling": "Erhöhung des Anteils an recycelten Materialien in der Produktion, was zu einer signifikanten Reduzierung des Einsatzes von Primärrohstoffen führt.",
+    "sustainableProcurementImpact": "Zusätzlich wurde die Beschaffungspolitik angepasst, sodass vermehrt recycelte oder erneuerbare Materialien aus zertifizierten Quellen genutzt werden."
+  },
+  {
+    "id": "strategy-4",
+    "reportId": "report-4",
+    "name": "Kunststoffreduktion",
+    "conceptInformationResources": "Ersetzung von Kunststoffverpackungen durch biologisch abbaubare Materialien. Tests mit verschiedenen organischen Stoffen wie Maisstärke oder Pilzmyzelien zur Entwicklung umweltfreundlicher Verpackungslösungen.",
+    "resourceImpactAndRecycling": "Deutliche Reduzierung von Kunststoffen in der Wertschöpfungskette und Förderung biologisch abbaubarer Alternativen.",
+    "sustainableProcurementImpact": "Zusammenarbeit mit Lieferanten biologischer Materialien zur Sicherstellung einer nachhaltigen Beschaffung und ökologisch unbedenklichen Produktion."
+  },
+  {
+    "id": "strategy-5",
+    "reportId": "report-1",
+    "name": "Nachhaltige Transportwege",
+    "conceptInformationResources": "Umstellung der Logistik auf umweltfreundliche Transportmethoden, einschließlich Elektromobilität und multimodaler Transportlösungen.",
+    "resourceImpactAndRecycling": "Wegfall fossiler Brennstoffe in der Logistik und signifikante Reduktion des CO2-Ausstoßes.",
+    "sustainableProcurementImpact": "Beschaffung energieeffizienter Transportmittel und Zusammenarbeit mit Logistikanbietern mit nachhaltigen Zertifizierungen."
+  },
+  {
+    "id": "strategy-6",
+    "reportId": "report-2",
+    "name": "Kreislaufkultur",
+    "conceptInformationResources": "Einführung eines internen Schulungsprogramms, um Mitarbeiter über Kreislaufwirtschaft und Recycling zu sensibilisieren und einzubinden.",
+    "resourceImpactAndRecycling": "Erhöhung des internen Recyclinganteils und Reduktion des Abfalls durch bessere Mitarbeiterschulungen.",
+    "sustainableProcurementImpact": "Förderung von Engagement entlang der Lieferkette zur Schaffung einer durchgängigen Kreislaufwirtschaft."
+  },
+  {
+    "id": "strategy-7",
+    "reportId": "report-2",
+    "name": "Wasserstoffenergie",
+    "conceptInformationResources": "Erforschung und Einsatz von Wasserstoff als alternative Energiequelle für Produktionsanlagen.",
+    "resourceImpactAndRecycling": "Reduktion von Kohlenstoffemissionen und fossilen Energiequellen durch Nutzung erneuerbarer Energien.",
+    "sustainableProcurementImpact": "Nutzung von Lieferanten, die erneuerbare und wasserstoffbasierte Energielösungen anbieten."
+  },
+  {
+    "id": "strategy-8",
+    "reportId": "report-2",
+    "name": "Reparaturinitiativen",
+    "conceptInformationResources": "Einführung eines Programms zur Reparatur und Wiederverwendung von Altprodukten, um Ressourcen zu schonen und Abfall zu minimieren.",
+    "resourceImpactAndRecycling": "Signifikante Verlängerung der Produktlebenszyklen und Reduzierung der Abfallströme.",
+    "sustainableProcurementImpact": "Zusammenarbeit mit Reparaturexperten und Förderung lokaler Kreislaufwirtschaften."
+  },
+  {
+    "id": "strategy-9",
+    "reportId": "report-4",
+    "name": "Nachhaltige Büros",
+    "conceptInformationResources": "Umstellung auf papierlose Arbeitsprozesse und energieeffiziente Büroeinrichtungen.",
+    "resourceImpactAndRecycling": "Signifikante Einsparungen von Papier und Energie im Büroalltag.",
+    "sustainableProcurementImpact": "Beschaffung von energiesparenden Geräten und Materialien aus nachhaltigen Quellen."
+  },
+  {
+    "id": "strategy-10",
+    "reportId": "report-4",
+    "name": "Abfallmanagement",
+    "conceptInformationResources": "Implementierung eines umfassenden Abfallmanagementsystems, um die Mülltrennung und Recyclingquoten zu verbessern.",
+    "resourceImpactAndRecycling": "Erhöhung der Wiederverwertungsrate und Reduktion von Restmüll.",
+    "sustainableProcurementImpact": "Zusammenarbeit mit Unternehmen, die auf Abfallverwertung spezialisiert sind."
+  },
+  {
+    "id": "strategy-11",
+    "reportId": "report-3",
+    "name": "Erneuerbare Energiequellen",
+    "conceptInformationResources": "Installation von Solar- und Windkraftanlagen, um die Produktionsanlagen mit erneuerbarer Energie zu versorgen.",
+    "resourceImpactAndRecycling": "Verringerung der Abhängigkeit von fossilen Brennstoffen und Reduzierung der CO2-Emissionen.",
+    "sustainableProcurementImpact": "Partnerschaften mit zertifizierten Anbietern erneuerbarer Energien."
+  },
+  {
+    "id": "strategy-12",
+    "reportId": "report-3",
+    "name": "Materialoptimierung",
+    "conceptInformationResources": "Optimierung der Materialverwendung, um Ausschuss zu minimieren und die Ressourceneffizienz zu steigern.",
+    "resourceImpactAndRecycling": "Weniger Materialverbrauch bei gleichzeitiger Maximierung der Ressourcennutzung.",
+    "sustainableProcurementImpact": "Förderung von Partnerschaften mit Lieferanten, die innovative Materiallösungen anbieten."
+  },
+  {
+    "id": "strategy-13",
+    "reportId": "report-3",
+    "name": "Ressourcenrückgewinnung",
+    "conceptInformationResources": "Einführung eines Systems zur Rückgewinnung von Ressourcen aus alten Produkten und Produktionsabfällen.",
+    "resourceImpactAndRecycling": "Erhöhung der Wiedergewinnungsrate von wertvollen Materialien aus Produkten und Abfällen.",
+    "sustainableProcurementImpact": "Sicherung einer geschlossenen Lieferkette durch Rückführung der Ressourcen in die Produktion."
+  }
+]

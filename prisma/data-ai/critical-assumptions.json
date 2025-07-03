@@ -1,0 +1,9 @@
+[
+  {
+    "id": "ca_tire_1",
+    "title": "Market Demand",
+    "sourceInformation": "Industry Market Analysis",
+    "degreeOfUncertainty": "Low",
+    "financialImpactId": "fi_tire_1"
+  }
+]

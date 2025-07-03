@@ -1,0 +1,14 @@
+[
+  {
+    "id": "flow-1",
+    "name": "Haldenabfälle"
+  },
+  {
+    "id": "flow-2",
+    "name": "Elektronikabfälle"
+  },
+  {
+    "id": "flow-3",
+    "name": "Lebensmittelabfälle"
+  }
+]

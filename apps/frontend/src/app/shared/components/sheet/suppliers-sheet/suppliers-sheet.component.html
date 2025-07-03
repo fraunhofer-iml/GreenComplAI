@@ -1,0 +1,66 @@
+<app-base-sheet #parentSheet>
+  <div class="flex w-full flex-col gap-4">
+    <span>{{ title }}</span>
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Suche</mat-label>
+      <input matInput #input (keyup.enter)="search(input.value)" />
+    </mat-form-field>
+
+    @if (searchQuery.isSuccess() && searchQuery.data().length > 0) {
+      <span>
+        Anzal der ausgewählten Elemente:
+        {{ list.selectedOptions.selected.length }}
+      </span>
+      <mat-selection-list
+        [multiple]="false"
+        #list
+        class="rounded-lg bg-neutral-200"
+      >
+        @for (item of searchQuery.data(); track item) {
+          <div class="flex w-full flex-row items-center">
+            <mat-list-option
+              class="!h-24"
+              [value]="item"
+              togglePosition="before"
+            >
+              <div class="flex flex-col">
+                <span>
+                  <strong>{{ item.company.name }}</strong>
+                </span>
+                <div>
+                  <span>Id: {{ item.company.id }} | </span>
+                  <span
+                    >Kategorie: {{ item.company.addresses[0].country }} |
+                  </span>
+                  <span
+                    >Hersteller: {{ item.company.addresses[0].street }}
+                  </span>
+                </div>
+              </div>
+            </mat-list-option>
+          </div>
+        }
+      </mat-selection-list>
+      <app-pagination
+        [page]="page()"
+        [pageSize]="pageSize()"
+        [totalPages]="totalPages()"
+        (pageChange)="pageChange($event)"
+        (pageSizeChange)="pageSizeChange($event)"
+      ></app-pagination>
+      <div class="flex w-full justify-end">
+        <button
+          mat-flat-button
+          (click)="parentSheet.close()"
+          (click)="addCompanies(list.selectedOptions.selected)"
+        >
+          Hinzufügen
+        </button>
+      </div>
+    } @else if (searchQuery.isPending()) {
+      <span> Lade Daten </span>
+    } @else if (searchQuery.isSuccess() && searchQuery.data().length === 0) {
+      <span> Keine Element gefunden </span>
+    }
+  </div>
+</app-base-sheet>

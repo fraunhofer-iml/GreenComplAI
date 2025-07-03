@@ -1,0 +1,17 @@
+[
+  {
+    "productId": "prod_tire_1",
+    "materialId": "mat_tire_8",
+    "percentage": 0.5
+  },
+  {
+    "productId": "prod_tire_2",
+    "materialId": "mat_tire_8",
+    "percentage": 0.4
+  },
+  {
+    "productId": "prod_tire_3",
+    "materialId": "mat_tire_8",
+    "percentage": 0.3
+  }
+]

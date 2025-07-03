@@ -1,0 +1,101 @@
+<div class="flex w-full flex-col p-8">
+  <div class="flex flex-row gap-6">
+    <!-- Form Section -->
+
+    <div class="grid w-full grid-cols-1 gap-2 rounded-lg bg-neutral-200 p-8">
+      <div class="col-span-1 flex items-center justify-between">
+        <span>Mapping Konfiguration</span>
+        <span
+          class="material-symbols-outlined text-primary-700 cursor-pointer"
+          [matTooltip]="UNIT_INFO_MESSAGE"
+          [matTooltipPosition]="'above'"
+        >
+          info
+        </span>
+      </div>
+      <div class="col-span-1 grid grid-cols-2 gap-x-8 gap-y-4">
+        <h3 class="font-medium text-neutral-600">Unsere Einteilung</h3>
+        <h3 class="font-medium text-neutral-600">Ihre Einteilung</h3>
+
+        @for (header of this.data; track header) {
+          <div>
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>Attribut für {{ header.key }}</mat-label>
+
+              <mat-select [(ngModel)]="header.value" class="font-medium">
+                <mat-option [value]="null">--</mat-option>
+                @for (option of this.mapStructure; track option) {
+                  <mat-option [value]="option" class="items-center"
+                    >{{ option }}
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="outline" class="w-full">
+              <input
+                matInput
+                class="font-medium"
+                [ngModel]="header.key"
+                [disabled]="true"
+              />
+            </mat-form-field>
+          </div>
+        }
+      </div>
+
+      <div class="col-span-1 flex justify-end border-t border-neutral-300 pt-4">
+        <button
+          mat-flat-button
+          color="primary"
+          (click)="saveMapping()"
+          class="flex items-center gap-2"
+        >
+          <mat-icon>save</mat-icon>
+          Import
+        </button>
+      </div>
+    </div>
+
+    <!-- Preview Section -->
+    <div class="grid w-full grid-cols-1 gap-2 rounded-lg bg-neutral-200 p-8">
+      <div class="col-span-1">CSV Vorschau</div>
+      <div
+        class="col-span-1 overflow-auto"
+        style="max-height: calc(100vh - 16rem)"
+      >
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-full">
+            <thead class="sticky top-0 bg-neutral-200">
+              <tr>
+                @for (header of data; track header) {
+                  <th
+                    class="whitespace-nowrap border-b border-neutral-300 p-2 text-left font-medium"
+                  >
+                    {{ header.key }}
+                  </th>
+                }
+              </tr>
+            </thead>
+            <tbody>
+              @if (csvs(); as preview) {
+                @for (row of preview.data; track row) {
+                  <tr>
+                    @for (key of data; track key) {
+                      <td
+                        class="whitespace-nowrap border-b border-neutral-300 p-2"
+                      >
+                        {{ row[key.key] }}
+                      </td>
+                    }
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

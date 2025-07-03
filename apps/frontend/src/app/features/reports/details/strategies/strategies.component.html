@@ -1,0 +1,122 @@
+<div class="flex w-full flex-col gap-4">
+  @if (form) {
+    <form [formGroup]="form">
+      <div class="flex flex-col gap-2">
+        <div formArrayName="strategies" class="space-y-4">
+          @for (
+            strategy of strategies.controls;
+            track strategy;
+            let pindex = $index
+          ) {
+            <div
+              [formGroupName]="pindex"
+              class="hover:border-primary-700 group col-span-2 flex w-full flex-row gap-2 rounded-lg border-[1px] border-solid border-transparent bg-neutral-200 p-4"
+            >
+              <div class="flex w-full flex-col gap-4">
+                <div class="flex w-full justify-between">
+                  <span>Strategie {{ pindex + 1 }}</span>
+
+                  @if (!report().isFinalReport) {
+                    <button
+                      mat-stroked-button
+                      (click)="removeStrategyGroup(this.form, pindex)"
+                      class="invisible group-hover:visible group-hover:cursor-pointer"
+                    >
+                      <mat-icon>delete</mat-icon>
+                      entfernen
+                    </button>
+                  }
+                </div>
+                <div>
+                  <mat-form-field appearance="outline" class="w-1/2">
+                    <mat-label>Name</mat-label>
+                    <input
+                      matInput
+                      formControlName="name"
+                      [readonly]="report().isFinalReport"
+                    />
+                  </mat-form-field>
+                </div>
+
+                <div class="flex flex-row items-center gap-2">
+                  <mat-form-field appearance="outline" class="flex-1">
+                    <mat-label>Konzept für Ressourcen-Informationen</mat-label>
+                    <textarea
+                      [readonly]="report().isFinalReport"
+                      matInput
+                      formControlName="conceptInformationResources"
+                    ></textarea>
+                  </mat-form-field>
+                  <mat-icon
+                    class="text-primary-800"
+                    [matTooltip]="
+                      ReportTooltip.conceptInformationResourcesTooltip
+                    "
+                    >info</mat-icon
+                  >
+                </div>
+
+                <div class="flex flex-row items-center gap-2">
+                  <mat-form-field appearance="outline" class="flex-1">
+                    <mat-label
+                      >Auswirkungen auf die Ressourcen und Recycling</mat-label
+                    >
+                    <textarea
+                      [readonly]="report().isFinalReport"
+                      matInput
+                      formControlName="resourceImpactAndRecycling"
+                    ></textarea>
+                  </mat-form-field>
+                  <mat-icon
+                    class="text-primary-800"
+                    [matTooltip]="
+                      ReportTooltip.resourceImpactAndRecyclingTooltip
+                    "
+                    >info</mat-icon
+                  >
+                </div>
+
+                <div class="flex flex-row items-center gap-2">
+                  <mat-form-field appearance="outline" class="flex-1">
+                    <mat-label
+                      >Nachhaltige Auswirkungen auf die Beschaffung</mat-label
+                    >
+                    <textarea
+                      matInput
+                      formControlName="sustainableProcurementImpact"
+                    ></textarea>
+                  </mat-form-field>
+                  <mat-icon
+                    class="text-primary-800"
+                    [matTooltip]="
+                      ReportTooltip.sustainableProcurementImpactTooltip
+                    "
+                    >info</mat-icon
+                  >
+                </div>
+              </div>
+            </div>
+          }
+          @if (strategies.controls.length === 0) {
+            <span>Keine Strategien angegeben</span>
+          }
+        </div>
+      </div>
+    </form>
+  }
+</div>
+
+@if (!report().isFinalReport) {
+  <div class="flex justify-between gap-2 pt-4">
+    @if (!report().isFinalReport) {
+      <button mat-flat-button (click)="addStrategyFormGroup(this.form)">
+        <mat-icon>add</mat-icon>
+        Strategie hinzufügen
+      </button>
+    }
+    <button mat-flat-button (click)="save()" i18n [disabled]="form.invalid">
+      <mat-icon>save </mat-icon>
+      Speichern
+    </button>
+  </div>
+}

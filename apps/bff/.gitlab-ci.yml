@@ -1,0 +1,92 @@
+bff:run-tests:
+  needs: []
+  stage: test
+  extends: .default
+  script:
+    - npx nx run bff:test --passWithNoTests
+  artifacts:
+    paths:
+      - ./apps/bff/coverage
+    expire_in: 1 week
+  only:
+    - merge_requests
+    - main
+
+bff:sonarqube-check-mr:
+  needs:
+    - bff:run-tests
+  stage: analysis
+  image:
+    name: sonarsource/sonar-scanner-cli:11.3
+    entrypoint: ['']
+  variables:
+    SONAR_USER_HOME: '${CI_PROJECT_DIR}/apps/bff/.sonar' # Defines the location of the analysis task cache
+    SONAR_PROJECT_BASE_DIR: '${CI_PROJECT_DIR}/apps/bff' # Defines the location of the project
+    GIT_DEPTH: '0' # Tells git to fetch all the branches of the project, required by the analysis task
+  cache:
+    key: '${CI_JOB_NAME}'
+    paths:
+      - ${CI_PROJECT_DIR}/apps/bff/.sonar
+  script:
+    - >
+      sonar-scanner
+      -Dsonar.projectBaseDir=${SONAR_PROJECT_BASE_DIR}
+      -Dsonar.pullrequest.key=${CI_MERGE_REQUEST_IID}
+      -Dsonar.pullrequest.branch=${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}
+      -Dsonar.pullrequest.base=${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}
+      -Dsonar.qualitygate.wait=true
+  allow_failure: true
+  only:
+    - merge_requests
+
+bff:sonarqube-check-main:
+  needs:
+    - bff:run-tests
+  stage: analysis
+  image:
+    name: sonarsource/sonar-scanner-cli:5.0
+    entrypoint: ['']
+  variables:
+    SONAR_USER_HOME: '${CI_PROJECT_DIR}/apps/bff/.sonar' # Defines the location of the analysis task cache
+    SONAR_PROJECT_BASE_DIR: '${CI_PROJECT_DIR}/apps/bff' # Defines the location of the project
+    GIT_DEPTH: '0' # Tells git to fetch all the branches of the project, required by the analysis task
+  cache:
+    key: '${CI_JOB_NAME}'
+    paths:
+      - ${CI_PROJECT_DIR}/apps/bff/.sonar
+  script:
+    - >
+      sonar-scanner
+      -Dsonar.projectBaseDir=${SONAR_PROJECT_BASE_DIR}
+      -Dsonar.qualitygate.wait=true
+  allow_failure: true
+  only:
+    - main
+
+bff:build:
+  stage: build
+  extends: .default
+  script:
+    - npx nx run bff:build
+  artifacts:
+    paths:
+      - dist/apps/bff
+  only:
+    - tags
+    - merge_requests
+    - main
+
+bff:archive:
+  needs:
+    - bff:build
+  stage: archive
+  image: docker
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker build --pull --cache-from ${CRI_PATH}/bff --build-arg APP=bff -t ${CRI_PATH}/bff:$CI_COMMIT_TAG -f docker/nest.dockerfile  .
+    - docker push ${CRI_PATH}/bff:$CI_COMMIT_TAG
+  only:
+    - tags

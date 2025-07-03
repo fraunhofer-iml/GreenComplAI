@@ -1,0 +1,161 @@
+<div class="flex w-full flex-col gap-4 p-8">
+  <div class="flex items-center gap-2 text-lg">
+    <a routerLink="/packaging" class="font-semibold hover:underline"
+      >Verpackung</a
+    >
+    <span class="material-symbols-outlined text-lg"> chevron_right </span>
+    <h1 class="font-medium">{{ id() }}</h1>
+  </div>
+  @if (packagingQuery.data(); as data) {
+    <div class="grid gap-4 md:grid-cols-3">
+      <div class="col-span-2 rounded-lg bg-neutral-200 p-4">
+        <div class="col-span-2 flex items-center justify-between">
+          <h2 class="font-medium">Stammdaten</h2>
+          <button mat-button (click)="sheet.open()" class="items-center">
+            <mat-icon>edit</mat-icon>
+            bearbeiten
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-1 text-sm">
+          <div class="flex justify-between">
+            <span class="font-medium">Name</span>
+            <span>{{ data.name }}</span>
+          </div>
+
+          <div class="flex justify-between">
+            <span class="font-medium">Anteil an R-Strategien</span>
+            <span>{{ data.percentageOfRStrategies }}</span>
+          </div>
+
+          <div class="flex justify-between">
+            <span class="font-medium">Anteil an erneuerbaren Materialien</span>
+            <span>{{ data.percentageOfRenewableMaterial }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="font-medium">Anteil an Recyclingmaterialien</span>
+            <span>{{ data.percentageOfRecycledMaterial }}</span>
+          </div>
+
+          <div class="flex justify-between">
+            <span class="font-medium">Gewicht</span>
+            <span>{{ data.weight }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="font-medium">Material</span>
+            <span>{{ data.material.name }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-1 rounded-lg bg-neutral-200 p-4">
+        <h2 class="font-medium">Lieferantendaten</h2>
+
+        <div class="mt-4 space-y-2 text-sm">
+          <div class="flex justify-between">
+            <span class="font-medium">Name</span>
+            <a [routerLink]="[Uris.companies, data.supplier.id]">{{
+              data.supplier.name
+            }}</a>
+          </div>
+          <div class="flex justify-between">
+            <span class="font-medium">Email</span>
+            <span>{{ data.supplier.email }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="font-medium">Telefon</span>
+            <span>{{ data.supplier.phone }}</span>
+          </div>
+          @if (data.supplier.addresses && data.supplier.addresses!.length > 0) {
+            <div class="flex justify-between">
+              <span class="font-medium">Adresse</span>
+              <span>
+                {{ data.supplier!.addresses[0].street }},
+                {{ data.supplier!.addresses[0].postalCode }}
+                {{ data.supplier!.addresses[0].city }},
+                {{ data.supplier!.addresses[0].country }}
+              </span>
+            </div>
+          }
+        </div>
+      </div>
+      <app-part-packaging
+        class="col-span-3"
+        [id$]="id() ?? ''"
+      ></app-part-packaging>
+
+      <!--WASTE-->
+      <app-product-waste
+        class="col-span-3"
+        [waste]="data.waste"
+      ></app-product-waste>
+    </div>
+  }
+</div>
+<app-base-sheet #sheet>
+  <form class="flex flex-col gap-4" [formGroup]="packagingForm">
+    <div
+      class="grid w-full grid-cols-1 gap-4 rounded-lg bg-neutral-200 p-8 md:grid-cols-2"
+    >
+      <span class="col-span-2" i18n>Verpackungs Informationen</span>
+      <mat-form-field appearance="outline">
+        <mat-label i18n>Name</mat-label>
+        <input matInput formControlName="name" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label i18n>Gewicht</mat-label>
+        <input matInput type="number" formControlName="weight" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label i18n>Prozentualer Anteil biologischer Materialien</mat-label>
+        <input
+          matInput
+          type="number"
+          formControlName="percentageOfRenewableMaterial"
+      /></mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label i18n
+          >Prozentualer Anteil an recycelten Materialien</mat-label
+        >
+        <input
+          matInput
+          type="number"
+          formControlName="percentageOfRecycledMaterial"
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label i18n
+          >Prozentualer Anteil wiederverwendeter oder recycelter
+          Verpackung</mat-label
+        >
+        <input
+          matInput
+          type="number"
+          formControlName="percentageOfRStrategies"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Lieferant</mat-label>
+        <input matInput formControlName="supplier" [matAutocomplete]="auto" />
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+          @for (option of associatedCompaniesQuery.data()?.data; track option) {
+            <mat-option [value]="option"
+              ><div class="flex flex-row items-center gap-1">
+                <span> {{ option.name }}</span>
+              </div>
+            </mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label i18n>Material</mat-label>
+        <input matInput formControlName="materialName" />
+      </mat-form-field>
+    </div>
+    <div class="flex w-full justify-end">
+      <button mat-flat-button (click)="sheet.close(); save()">Speichern</button>
+    </div>
+  </form>
+</app-base-sheet>

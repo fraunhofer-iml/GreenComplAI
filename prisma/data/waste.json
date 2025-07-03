@@ -1,0 +1,38 @@
+[
+  {
+    "id": "test-waste-1",
+    "recycledWastePercentage": 50,
+    "normalWasteId": "test-general-waste-1",
+    "hazardousWasteId": "test-general-waste-2"
+  },
+  {
+    "id": "test-waste-2",
+    "recycledWastePercentage": 75,
+    "normalWasteId": "test-general-waste-3",
+    "hazardousWasteId": "test-general-waste-4"
+  },
+  {
+    "id": "test-waste-3",
+    "recycledWastePercentage": 35,
+    "normalWasteId": "test-general-waste-5",
+    "hazardousWasteId": "test-general-waste-6"
+  },
+  {
+    "id": "test-waste-4",
+    "recycledWastePercentage": 65,
+    "normalWasteId": "test-general-waste-7",
+    "hazardousWasteId": "test-general-waste-8"
+  },
+  {
+    "id": "test-waste-5",
+    "recycledWastePercentage": 55,
+    "normalWasteId": "test-general-waste-9",
+    "hazardousWasteId": "test-general-waste-10"
+  },
+  {
+    "id": "test-waste-6",
+    "recycledWastePercentage": 72,
+    "normalWasteId": "test-general-waste-11",
+    "hazardousWasteId": "test-general-waste-12"
+  }
+]

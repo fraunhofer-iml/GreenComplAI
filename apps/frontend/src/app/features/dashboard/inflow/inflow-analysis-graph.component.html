@@ -1,0 +1,12 @@
+<div class="grid grid-cols-3 gap-4 !rounded-lg !bg-neutral-200 px-4 py-4">
+  <h2 class="text-l col-span-3" i18n>Ressourcenzuflüsse</h2>
+
+  @if (analysisQuery.data()) {
+    @for (item of analysisQuery.data(); track $index) {
+      <div echarts [options]="item" class="echart" [theme]="theme"></div>
+    }
+    @if (analysisQuery.data()?.length === 0) {
+      <span class="text-sm">Keine Daten vorhanden</span>
+    }
+  }
+</div>

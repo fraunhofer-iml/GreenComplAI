@@ -1,0 +1,44 @@
+[
+  {
+    "id": "gw_tire_1",
+    "hazardousType": "Non-hazardous",
+    "utilizableWasteId": "uw_tire_1",
+    "nonUtilizableWasteId": "nuw_tire_1",
+    "normalWasteId": "waste_tire_1"
+  },
+  {
+    "id": "gw_tire_2",
+    "hazardousType": "Non-hazardous",
+    "utilizableWasteId": "uw_tire_2",
+    "nonUtilizableWasteId": "nuw_tire_2",
+    "normalWasteId": "waste_tire_2"
+  },
+  {
+    "id": "gw_tire_3",
+    "hazardousType": "Non-hazardous",
+    "utilizableWasteId": "uw_tire_3",
+    "nonUtilizableWasteId": "nuw_tire_3",
+    "normalWasteId": "waste_tire_3"
+  },
+  {
+    "id": "gw_tire_4_hazardous",
+    "hazardousType": "Hazardous",
+    "utilizableWasteId": "uw_tire_4",
+    "nonUtilizableWasteId": "nuw_tire_4",
+    "hazardousWasteId": "waste_tire_1"
+  },
+  {
+    "id": "gw_tire_5_hazardous",
+    "hazardousType": "Hazardous",
+    "utilizableWasteId": "uw_tire_5",
+    "nonUtilizableWasteId": "nuw_tire_5",
+    "hazardousWasteId": "waste_tire_2"
+  },
+  {
+    "id": "gw_tire_6_hazardous",
+    "hazardousType": "Hazardous",
+    "utilizableWasteId": "uw_tire_6",
+    "nonUtilizableWasteId": "nuw_tire_6",
+    "hazardousWasteId": "waste_tire_3"
+  }
+]

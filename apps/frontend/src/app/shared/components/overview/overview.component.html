@@ -1,0 +1,69 @@
+<div class="flex w-full flex-col gap-4 p-8 pb-4">
+  @if (query.isSuccess()) {
+    <div class="flex w-full content-around gap-2">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Suche</mat-label>
+        <input matInput #input (keyup)="onFilterChange(input.value)" />
+        <mat-icon matPrefix>search</mat-icon>
+      </mat-form-field>
+    </div>
+  }
+
+  @if (query.isPending()) {
+    <span i18n>Daten werden geladen</span>
+  } @else if (query.isSuccess() && query.data().data) {
+    <table
+      mat-table
+      [dataSource]="query.data().data"
+      class="overflow-hidden !rounded-lg !bg-neutral-200"
+      matSort
+      (matSortChange)="onSortChange($event)"
+      matSortDisableClear
+    >
+      @for (item of tableProperties.columns; track $index) {
+        <ng-container [matColumnDef]="item">
+          <th
+            class="!border-neutral-350"
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="item"
+          >
+            {{ tableProperties.headers[$index] }}
+          </th>
+          <td
+            class="cursor-pointer"
+            mat-cell
+            *matCellDef="let element"
+            [routerLink]="[encodeURIComponent(element.id)]"
+          >
+            <div class="w-full">
+              {{ element[item] }}
+            </div>
+          </td>
+        </ng-container>
+      }
+
+      <tr mat-header-row *matHeaderRowDef="tableProperties.columns"></tr>
+      <tr
+        class="hover:bg-neutral-300"
+        mat-row
+        *matRowDef="let row; columns: tableProperties.columns"
+      ></tr>
+    </table>
+  }
+
+  @if (query.isSuccess() && query.data().data) {
+    <mat-paginator
+      class="overflow-hidden !rounded-lg !bg-neutral-200"
+      (page)="updateTable($event)"
+      [length]="query.data().meta.totalCount ?? totalLength"
+      [pageSize]="query.data().meta.pageSize ?? pageSize"
+      [pageSizeOptions]="[5, 10, 15, 20]"
+      [pageIndex]="(query.data().meta.page || 1) - 1"
+      aria-label="Select page"
+      showFirstLastButtons
+    >
+    </mat-paginator>
+  }
+</div>

@@ -1,0 +1,19 @@
+[
+  {
+    "id": "meas_tire_1",
+    "title": "Tire Recycling Program",
+    "status": "IN_PROGRESS",
+    "expectedResult": "90% recycling rate",
+    "contributionAchievingStrategy": "Direct impact on sustainability goals",
+    "plannedCompletion": "2024-12-31T00:00:00.000Z",
+    "impactOnValueChainAndStakeholders": "Positive impact on all stakeholders",
+    "contributionIncreasedResourceEfficiency": "High",
+    "contributionHigherUtilizationRateOfSecondaryMaterials": "Significant",
+    "contributionCircularDesignToDurabilityAndRStrategies": "Major",
+    "applicationOfCircularBusinessPractices": "Comprehensive",
+    "measuresAndOptimizationInContextOfWaste": "Complete waste management system",
+    "progressQuantitative": 75.0,
+    "progressQualitative": "On track",
+    "reportId": "rep_tire_1"
+  }
+]

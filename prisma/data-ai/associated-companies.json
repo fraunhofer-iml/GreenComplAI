@@ -1,0 +1,34 @@
+[
+  {
+    "companyId": "comp_tire_1",
+    "associatedCompanyId": "comp_tire_2"
+  },
+  {
+    "companyId": "comp_tire_1",
+    "associatedCompanyId": "comp_tire_3"
+  },
+  {
+    "companyId": "comp_tire_1",
+    "associatedCompanyId": "comp_tire_4"
+  },
+  {
+    "companyId": "comp_tire_1",
+    "associatedCompanyId": "comp_tire_5"
+  },
+  {
+    "companyId": "comp_tire_1",
+    "associatedCompanyId": "comp_tire_6"
+  },
+  {
+    "companyId": "comp_tire_1",
+    "associatedCompanyId": "comp_tire_7"
+  },
+  {
+    "companyId": "comp_tire_1",
+    "associatedCompanyId": "comp_tire_8"
+  },
+  {
+    "companyId": "comp_tire_1",
+    "associatedCompanyId": "comp_tire_9"
+  }
+]

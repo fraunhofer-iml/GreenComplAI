@@ -1,0 +1,237 @@
+<div class="rounded-lg bg-neutral-200 p-4">
+  <div class="flex items-center justify-between">
+    <app-flagable
+      [id]="id()"
+      [topic]="'Angaben zum Müll'"
+      [data]="flags()"
+      [element]="'waste'"
+    >
+    </app-flagable>
+    <button mat-button routerLink="waste">
+      <mat-icon>edit</mat-icon>
+      bearbeiten
+    </button>
+  </div>
+
+  @if (!waste()) {
+    <span class="text-sm">Keine Daten zum Abfall angegeben</span>
+  } @else {
+    <div class="mt-2 grid grid-cols-3 gap-x-4 gap-y-2 text-sm">
+      <app-flagable
+        [id]="id()"
+        [topic]="'Menge an radioaktiven Materialien'"
+        [data]="flags()"
+        [element]="'waste.radioactiveAmount'"
+      >
+        <span>
+          {{ waste()?.radioactiveAmount }}
+          {{ waste()?.radioactiveAmount ? 'kg' : 'keine Angabe' }}
+        </span>
+      </app-flagable>
+
+      <app-flagable
+        [id]="id()"
+        [topic]="'Anteil des Recycelten Abfalls'"
+        [data]="flags()"
+        [element]="'waste.recycledWastePercentage'"
+      >
+        <span>{{ waste()?.recycledWastePercentage }} %</span>
+      </app-flagable>
+
+      <app-flagable
+        [id]="id()"
+        [topic]="'Materialien'"
+        [data]="flags()"
+        [element]="'waste.wasteMaterials'"
+      >
+        <span>{{ displayWasteMaterials(waste()?.wasteMaterials ?? []) }}</span>
+      </app-flagable>
+
+      <mat-divider class="col-span-3"></mat-divider>
+
+      <h2 class="col-span-3 py-1 text-sm font-medium">
+        Nicht gefährliche Abfälle
+      </h2>
+
+      <app-flagable
+        [id]="id()"
+        [topic]="'Vorbereitung zur Wiederverwertung'"
+        [data]="flags()"
+        [element]="
+          '  waste.normalWaste.utilizableWaste.preparationForRecyclingWeight'
+        "
+      >
+        <span>
+          {{
+            waste()?.normalWaste?.utilizableWaste?.preparationForRecyclingWeight
+          }}
+          kg
+        </span>
+      </app-flagable>
+
+      <app-flagable
+        [id]="id()"
+        [topic]="'Recyclingfähig'"
+        [data]="flags()"
+        [element]="'waste.normalWaste.utilizableWaste?.recyclingWeight'"
+      >
+        <span>
+          {{ waste()?.normalWaste?.utilizableWaste?.recyclingWeight }}
+          kg
+        </span>
+      </app-flagable>
+
+      <app-flagable
+        [id]="id()"
+        [topic]="'Sonstige Verwertungsverfahren'"
+        [data]="flags()"
+        [element]="'waste.normalWaste.utilizableWaste?.miscellaneousWeight'"
+      >
+        <span>
+          {{ waste()?.normalWaste?.utilizableWaste?.miscellaneousWeight }}
+          kg
+        </span>
+      </app-flagable>
+
+      <app-flagable
+        [id]="id()"
+        [topic]="'Haldenabfall'"
+        [data]="flags()"
+        [element]="'waste.normalWaste.nonUtilizableWaste.landfillWeight'"
+      >
+        <span>
+          {{ waste()?.normalWaste?.nonUtilizableWaste?.landfillWeight }}
+          kg
+        </span>
+      </app-flagable>
+
+      <app-flagable
+        [id]="id()"
+        [topic]="'Verbrennung'"
+        [data]="flags()"
+        [element]="'waste.normalWaste.nonUtilizableWaste.combustionWeight'"
+      >
+        <span>
+          {{ waste()?.normalWaste?.nonUtilizableWaste?.combustionWeight }}
+          kg
+        </span>
+      </app-flagable>
+
+      <app-flagable
+        [id]="id()"
+        [topic]="'Sonstige Beseitigung'"
+        [data]="flags()"
+        [element]="'waste.normalWaste.nonUtilizableWaste.miscellaneousWeight'"
+      >
+        <span>
+          {{ waste()?.normalWaste?.nonUtilizableWaste?.miscellaneousWeight }}
+          kg
+        </span>
+      </app-flagable>
+
+      <mat-divider class="col-span-3"></mat-divider>
+
+      <app-flagable
+        [id]="id()"
+        [topic]="'Gefährliche Abfälle'"
+        [data]="flags()"
+        [element]="'waste.hazardousWaste'"
+      >
+      </app-flagable>
+
+      @if (waste()?.hazardousWaste) {
+        <app-flagable
+          [id]="id()"
+          [topic]="'Vorbereitung zur Wiederverwertung'"
+          [data]="flags()"
+          [element]="
+            'waste.hazardousWaste.utilizableWaste.preparationForRecyclingWeight'
+          "
+        >
+          <span>
+            {{
+              waste()?.hazardousWaste?.utilizableWaste
+                ?.preparationForRecyclingWeight
+            }}
+            kg
+          </span>
+        </app-flagable>
+
+        <app-flagable
+          [id]="id()"
+          [topic]="'Recyclingfähig'"
+          [data]="flags()"
+          [element]="'waste.hazardousWaste.utilizableWaste.recyclingWeight'"
+        >
+          <span>
+            {{ waste()?.hazardousWaste?.utilizableWaste?.recyclingWeight }}
+            kg
+          </span>
+        </app-flagable>
+
+        <app-flagable
+          [id]="id()"
+          [topic]="'Sonstige Verwertungsverfahren'"
+          [data]="flags()"
+          [element]="'waste.hazardousWaste.utilizableWaste.miscellaneousWeight'"
+        >
+          <span>
+            {{ waste()?.hazardousWaste?.utilizableWaste?.miscellaneousWeight }}
+            kg
+          </span>
+        </app-flagable>
+
+        <app-flagable
+          [id]="id()"
+          [topic]="'Haldenabfall'"
+          [data]="flags()"
+          [element]="'waste.hazardousWaste.nonUtilizableWaste.landfillWeight'"
+        >
+          <span>
+            {{ waste()?.hazardousWaste?.nonUtilizableWaste?.landfillWeight }}
+            kg
+          </span>
+        </app-flagable>
+
+        <app-flagable
+          [id]="id()"
+          [topic]="'Verbrennung'"
+          [data]="flags()"
+          [element]="'waste.hazardousWaste.nonUtilizableWaste.combustionWeight'"
+        >
+          <span>
+            {{ waste()?.hazardousWaste?.nonUtilizableWaste?.combustionWeight }}
+            kg
+          </span>
+        </app-flagable>
+
+        <app-flagable
+          [id]="id()"
+          [topic]="'Sonstige Beseitigung'"
+          [data]="flags()"
+          [element]="
+            'waste.hazardousWaste.nonUtilizableWaste.miscellaneousWeight'
+          "
+        >
+          <span>
+            {{
+              waste()?.hazardousWaste?.nonUtilizableWaste?.miscellaneousWeight
+            }}
+            kg
+          </span>
+        </app-flagable>
+
+        <app-flagable
+          [id]="id()"
+          [topic]="'Gefährlicher Abfalltyp'"
+          [data]="flags()"
+          [element]="'waste.hazardousType'"
+        >
+          <span>{{ waste()?.hazardousType ?? 'keine Angabe' }} </span>
+        </app-flagable>
+      } @else {
+        <span>Keine gefährlichen Abfälle enthalten</span>
+      }
+    </div>
+  }
+</div>

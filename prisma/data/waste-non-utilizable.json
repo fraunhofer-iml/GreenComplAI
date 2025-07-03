@@ -1,0 +1,74 @@
+[
+  {
+    "id": "test-non-utilizable-waste-1",
+    "landfillWeight": 15,
+    "combustionWeight": 25,
+    "miscellaneousWeight": 35
+  },
+  {
+    "id": "test-non-utilizable-waste-2",
+    "landfillWeight": 12,
+    "combustionWeight": 28,
+    "miscellaneousWeight": 32
+  },
+  {
+    "id": "test-non-utilizable-waste-3",
+    "landfillWeight": 18,
+    "combustionWeight": 22,
+    "miscellaneousWeight": 38
+  },
+  {
+    "id": "test-non-utilizable-waste-4",
+    "landfillWeight": 14,
+    "combustionWeight": 24,
+    "miscellaneousWeight": 34
+  },
+  {
+    "id": "test-non-utilizable-waste-5",
+    "landfillWeight": 16,
+    "combustionWeight": 26,
+    "miscellaneousWeight": 36
+  },
+  {
+    "id": "test-non-utilizable-waste-6",
+    "landfillWeight": 13,
+    "combustionWeight": 27,
+    "miscellaneousWeight": 33
+  },
+  {
+    "id": "test-non-utilizable-waste-7",
+    "landfillWeight": 17,
+    "combustionWeight": 23,
+    "miscellaneousWeight": 37
+  },
+  {
+    "id": "test-non-utilizable-waste-8",
+    "landfillWeight": 11,
+    "combustionWeight": 29,
+    "miscellaneousWeight": 31
+  },
+  {
+    "id": "test-non-utilizable-waste-9",
+    "landfillWeight": 19,
+    "combustionWeight": 21,
+    "miscellaneousWeight": 39
+  },
+  {
+    "id": "test-non-utilizable-waste-10",
+    "landfillWeight": 10,
+    "combustionWeight": 30,
+    "miscellaneousWeight": 30
+  },
+  {
+    "id": "test-non-utilizable-waste-11",
+    "landfillWeight": 10,
+    "combustionWeight": 14,
+    "miscellaneousWeight": 30
+  },
+  {
+    "id": "test-non-utilizable-waste-12",
+    "landfillWeight": 10,
+    "combustionWeight": 20,
+    "miscellaneousWeight": 30
+  }
+]

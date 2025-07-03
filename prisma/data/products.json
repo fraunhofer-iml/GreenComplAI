@@ -1,0 +1,205 @@
+[
+  {
+    "id": "product-1",
+    "productId": "Klemmbeschlag-8mm-klar-ggs",
+    "name": "Klemmbeschlag für Ganzglasanlage, 8mm Klar",
+    "description": "Klemmbeschlag für Ganzglasanlage, 8mm Klar",
+    "category": "Klemmbeschläge",
+    "weight": 0.39,
+    "unit": "kg",
+    "price": 100,
+    "dimensions": "2058x935x8",
+    "supplierId": "company-2",
+    "manufacturerId": "company-2",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.5,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-1",
+    "wasteId": "test-waste-1",
+    "waterUsed": 5200,
+    "circularPrinciple": true,
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 1345
+        }
+      ]
+    },
+    "flags": []
+  },
+  {
+    "id": "product-2",
+    "productId": "Lichtausschnitt-4mm-chinchilla",
+    "name": "Lichtausschnitt, 4mm, Chinchilla weiß, ESG",
+    "description": "Lichtausschnitt 4mm in Chinchilla weiß, ESG, DIN Links/Rechts, Strukturglas",
+    "category": "Lichtausschnitt",
+    "weight": 1.23,
+    "unit": "kg",
+    "price": 221,
+    "dimensions": "1545x410x4",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.8,
+    "productionLocationId": "address-2",
+    "warehouseLocationId": "address-3",
+    "isSellable": false,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-1",
+    "wasteId": "test-waste-2",
+    "waterUsed": 5200,
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2025,
+          "amount": 312
+        },
+        {
+          "year": 2024,
+          "amount": 1345
+        }
+      ]
+    },
+    "flags": []
+  },
+  {
+    "id": "product-3",
+    "productId": "Türdrückergarnitur-Rosettengarnitur-Buntbart-Messing-Glänzend",
+    "name": "Türdrückergarnitur, Rosettengarnitur Buntbart, Messing, Glänzend",
+    "description": "Türdrückergarnitur, Rosettengarnitur Buntbart,Oberflächenausführung Messing poliert",
+    "category": "Türdrückergarnitur",
+    "weight": 0.14,
+    "unit": "kg",
+    "price": 300,
+    "dimensions": "129.12x50x48",
+    "supplierId": "company-2",
+    "manufacturerId": "company-2",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.3,
+    "productionLocationId": "address-2",
+    "warehouseLocationId": "address-3",
+    "isSellable": true,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-1",
+    "wasteId": "test-waste-3",
+    "waterUsed": 387,
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2025,
+          "amount": 312
+        },
+        {
+          "year": 2024,
+          "amount": 1345
+        }
+      ]
+    },
+    "flags": []
+  },
+  {
+    "id": "product-4",
+    "productId": "Fenster-4mm-chinchilla",
+    "name": "Fenster, 4mm, Chinchilla weiß, ESG",
+    "description": "Fenster 4mm in Chinchilla weiß, ESG, DIN Links/Rechts, Strukturglas",
+    "category": "Fenster",
+    "weight": 1.23,
+    "unit": "kg",
+    "price": 221,
+    "dimensions": "1545x410x4",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.8,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-2",
+    "wasteId": "test-waste-4",
+    "waterUsed": 35,
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2025,
+          "amount": 232
+        },
+        {
+          "year": 2023,
+          "amount": 145
+        }
+      ]
+    },
+    "flags": []
+  },
+  {
+    "id": "product-5",
+    "productId": "Fenster-6mm-satiniert",
+    "name": "Fenster, 6mm, Satiniert grau, VSG",
+    "description": "Fenster 6mm in Satiniert grau, VSG, DIN Links/Rechts, Sicherheitsglas",
+    "category": "Fenster",
+    "weight": 1.85,
+    "unit": "kg",
+    "price": 289,
+    "dimensions": "1650x520x6",
+    "supplierId": "company-2",
+    "manufacturerId": "company-2",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.65,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-2",
+    "wasteId": "test-waste-5",
+    "waterUsed": 5200,
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2025,
+          "amount": 1000
+        },
+        {
+          "year": 2024,
+          "amount": 500
+        },
+        {
+          "year": 2023,
+          "amount": 200
+        }
+      ]
+    },
+    "flags": []
+  },
+  {
+    "id": "product-6",
+    "productId": "Fensterdübel-9mm-satiniert",
+    "name": "Fensterdübel, 9mm, Satiniert schwarz, VSG",
+    "description": "Fenster 6mm in Satiniert schwarz, VSG, DIN Links/Rechts, Sicherheitsglas",
+    "category": "Fenster",
+    "weight": 1.85,
+    "unit": "kg",
+    "price": 289,
+    "dimensions": "1650x520x6",
+    "supplierId": "company-2",
+    "manufacturerId": "company-2",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.65,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-2",
+    "wasteId": "test-waste-6",
+    "waterUsed": 3500,
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2025,
+          "amount": 1000
+        },
+        {
+          "year": 2024,
+          "amount": 500
+        },
+        {
+          "year": 2023,
+          "amount": 200
+        }
+      ]
+    },
+    "flags": []
+  }
+]

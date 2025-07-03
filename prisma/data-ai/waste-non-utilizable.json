@@ -1,0 +1,53 @@
+[
+  {
+    "id": "nuw_tire_1",
+    "landfillWeight": 5.0,
+    "combustionWeight": 3.0,
+    "miscellaneousWeight": 2.0,
+    "generalWasteId": "gw_tire_1"
+  },
+  {
+    "id": "nuw_tire_2",
+    "landfillWeight": 6.0,
+    "combustionWeight": 4.0,
+    "miscellaneousWeight": 2.0,
+    "generalWasteId": "gw_tire_2"
+  },
+  {
+    "id": "nuw_tire_3",
+    "landfillWeight": 7.0,
+    "combustionWeight": 3.0,
+    "miscellaneousWeight": 3.0,
+    "generalWasteId": "gw_tire_3"
+  },
+  {
+    "id": "nuw_tire_4",
+    "landfillWeight": 8.0,
+    "combustionWeight": 4.0,
+    "miscellaneousWeight": 4.0
+  },
+  {
+    "id": "nuw_tire_5",
+    "landfillWeight": 8.0,
+    "combustionWeight": 4.0,
+    "miscellaneousWeight": 4.0
+  },
+  {
+    "id": "nuw_tire_6",
+    "landfillWeight": 8.0,
+    "combustionWeight": 4.0,
+    "miscellaneousWeight": 4.0
+  },
+  {
+    "id": "nuw_tire_7",
+    "landfillWeight": 8.0,
+    "combustionWeight": 4.0,
+    "miscellaneousWeight": 4.0
+  },
+  {
+    "id": "nuw_tire_8",
+    "landfillWeight": 8.0,
+    "combustionWeight": 4.0,
+    "miscellaneousWeight": 4.0
+  }
+]

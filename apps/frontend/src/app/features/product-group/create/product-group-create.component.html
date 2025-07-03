@@ -1,0 +1,53 @@
+<div class="flex w-full flex-col px-4 pt-4">
+  <div class="flex items-center gap-2 pb-2 text-lg">
+    <a routerLink="/companies" class="font-semibold hover:underline"
+      >Allgemeine Informationen</a
+    >
+  </div>
+  <form class="flex flex-col gap-4" [formGroup]="form">
+    <div
+      class="grid w-full grid-cols-1 gap-4 rounded-lg bg-neutral-200 p-8 md:grid-cols-3"
+    >
+      <mat-form-field appearance="outline" class="col-span-1">
+        <mat-label i18n>Name</mat-label>
+        <input matInput formControlName="name" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-span-2">
+        <mat-label i18n>Relevante Abfallströme</mat-label>
+        <input matInput formControlName="wasteFlow" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-span-3">
+        <mat-label i18n>Beschreibung</mat-label>
+        <textarea matInput formControlName="description"> </textarea>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-span-3">
+        <mat-label>Varianten</mat-label>
+        <mat-chip-grid
+          #chipGrid
+          aria-label="Enter variants"
+          formControlName="variants"
+        >
+          @for (variant of variants; track variant) {
+            <mat-chip-row (removed)="removeVariant(variant)">
+              {{ variant }}
+              <button matChipRemove aria-label="'remove ' + variant">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+          }
+          <input
+            placeholder="Variante hinzufügen..."
+            [matChipInputFor]="chipGrid"
+            (matChipInputTokenEnd)="addVariant($event)"
+          />
+        </mat-chip-grid>
+      </mat-form-field>
+    </div>
+
+    <div class="col-span-2 flex justify-end gap-2">
+      <button mat-flat-button (click)="save()" i18n [disabled]="form.invalid">
+        Speichern
+      </button>
+    </div>
+  </form>
+</div>

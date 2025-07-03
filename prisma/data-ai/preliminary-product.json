@@ -1,0 +1,27 @@
+[
+  {
+    "productId": "prod_tire_1",
+    "preliminaryProductId": "prod_tire_comp_1",
+    "amount": 1
+  },
+  {
+    "productId": "prod_tire_1",
+    "preliminaryProductId": "prod_tire_comp_2",
+    "amount": 1
+  },
+  {
+    "productId": "prod_tire_1",
+    "preliminaryProductId": "prod_tire_comp_3",
+    "amount": 1
+  },
+  {
+    "productId": "prod_tire_1",
+    "preliminaryProductId": "prod_tire_comp_4",
+    "amount": 1
+  },
+  {
+    "productId": "prod_tire_1",
+    "preliminaryProductId": "prod_tire_comp_5",
+    "amount": 1
+  }
+]

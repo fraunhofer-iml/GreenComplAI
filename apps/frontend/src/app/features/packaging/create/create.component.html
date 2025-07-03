@@ -1,0 +1,114 @@
+<div class="flex w-full flex-col gap-4 p-8">
+  <div class="flex items-center gap-2 text-lg">
+    <a routerLink="/packaging" class="font-semibold hover:underline"
+      >Verpackung</a
+    >
+    <span class="material-symbols-outlined text-lg"> chevron_right </span>
+    <h1 class="font-medium">hinzufügen</h1>
+  </div>
+
+  <app-upload-csv
+    [contentType]="ContentType.PACKAGE"
+    (useImport)="usesImport = $event"
+  ></app-upload-csv>
+
+  @if (!usesImport) {
+    <form class="flex flex-col gap-4" [formGroup]="packagingForm">
+      <div
+        class="grid w-full grid-cols-1 gap-4 rounded-lg bg-neutral-200 p-8 md:grid-cols-3"
+      >
+        <span class="col-span-3" i18n>Verpackungs Informationen</span>
+        <mat-form-field appearance="outline">
+          <mat-label i18n>Name</mat-label>
+          <input matInput formControlName="name" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label i18n>Gewicht</mat-label>
+          <input matInput type="number" formControlName="weight" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label i18n
+            >Prozentualer Anteil biologischer Materialien</mat-label
+          >
+          <input
+            matInput
+            type="number"
+            formControlName="percentageOfRenewableMaterial"
+        /></mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label i18n
+            >Prozentualer Anteil an recycelten Materialien</mat-label
+          >
+          <input
+            matInput
+            type="number"
+            formControlName="percentageOfRecycledMaterial"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label i18n
+            >Prozentualer Anteil wiederverwendeter oder recycelter
+            Verpackung</mat-label
+          >
+          <input
+            matInput
+            type="number"
+            formControlName="percentageOfRStrategies"
+          /> </mat-form-field
+        ><mat-form-field class="w-full" appearance="outline">
+          <mat-label i18n>Lieferant</mat-label>
+          <mat-chip-grid #companyChips>
+            @if (company) {
+              <mat-chip-row [aria-description]="'company'">
+                {{ company.name }}
+              </mat-chip-row>
+            }
+            <input matInput readonly [matChipInputFor]="companyChips" />
+          </mat-chip-grid>
+
+          <button
+            mat-icon-button
+            (click)="companySheet.open()"
+            class="mr-2"
+            matSuffix
+          >
+            <mat-icon>add</mat-icon>
+          </button>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label i18n>Material</mat-label>
+          <input matInput formControlName="materialName" />
+        </mat-form-field>
+      </div>
+
+      <!-- Part-packaging-->
+      <app-packaging-selection
+        [title]="'Teilverpackungen'"
+        [packagingsForm]="packagingForm.controls.partPackagings"
+      ></app-packaging-selection>
+
+      <!--Waste-->
+      <app-waste-create
+        [waste]="packagingForm.controls.waste"
+      ></app-waste-create>
+
+      <div class="col-span-2 flex justify-end gap-2">
+        <button
+          mat-flat-button
+          (click)="save()"
+          i18n
+          [disabled]="packagingForm.invalid"
+          routerLink="/packaging"
+        >
+          Speichern
+        </button>
+      </div>
+    </form>
+  }
+</div>
+
+<app-suppliers-sheet
+  #companySheet
+  (resultEmitter)="addCompanyId($event)"
+  [title]="'Lieferanten'"
+></app-suppliers-sheet>

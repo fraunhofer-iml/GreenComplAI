@@ -1,0 +1,22 @@
+[
+  {
+    "id": "pack_tire_1",
+    "name": "Standard Tire Box",
+    "weight": 2.5,
+    "percentageOfRenewableMaterial": 0.8,
+    "percentageOfRStrategies": 0.9,
+    "percentageOfRecycledMaterial": 0.7,
+    "supplierId": "comp_tire_1",
+    "materialId": "mat_tire_5"
+  },
+  {
+    "id": "pack_tire_2",
+    "name": "Premium Tire Box",
+    "weight": 3.0,
+    "percentageOfRenewableMaterial": 0.85,
+    "percentageOfRStrategies": 0.95,
+    "percentageOfRecycledMaterial": 0.75,
+    "supplierId": "comp_tire_2",
+    "materialId": "mat_tire_5"
+  }
+]

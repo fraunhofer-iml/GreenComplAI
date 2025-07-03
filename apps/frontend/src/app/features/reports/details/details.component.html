@@ -1,0 +1,55 @@
+<div class="flex flex-col gap-2 p-8">
+  <div class="flex justify-between gap-2">
+    <div class="flex items-center text-lg">
+      <a routerLink="/reports" class="font-semibold hover:underline"
+        >Berichte</a
+      >
+      <span class="material-symbols-outlined text-lg"> chevron_right </span>
+      <h1 class="font-medium" *ngIf="reportsQuery.isSuccess()">
+        {{ reportsQuery.data().evaluationYear }}
+      </h1>
+    </div>
+    @if (reportsQuery.data()?.isFinalReport) {
+      <mat-chip>
+        <mat-icon class="!text-primary-800" matChipAvatar>lock</mat-icon>
+        <span class="!text-primary-800">abgeschlossen</span>
+      </mat-chip>
+    }
+  </div>
+
+  @if (reportsQuery.isFetching()) {
+    <mat-icon class="animate-spin">autorenew</mat-icon>
+  }
+
+  <mat-tab-group class="w-full">
+    <mat-tab label="Allgemeine Informationen">
+      <app-report-information
+        class="m-4"
+        (refetchEvent)="reportsQuery.refetch()"
+        [report]="reportsQuery.data()"
+      ></app-report-information>
+    </mat-tab>
+    @if (id() && reportsQuery.data() && reportsQuery.isSuccess()) {
+      <mat-tab label="Strategien">
+        <app-strategies
+          class="m-4"
+          (refetchEvent)="reportsQuery.refetch()"
+          [report]="reportsQuery.data()"
+        ></app-strategies>
+      </mat-tab>
+      <mat-tab label="Maßnahmen">
+        <app-measures
+          class="m-4"
+          (refetchEvent)="reportsQuery.refetch()"
+          [report]="reportsQuery.data()"
+        ></app-measures> </mat-tab
+      ><mat-tab label="Finanzielle Auswirkungen">
+        <app-financial-impact
+          class="m-4"
+          (refetchEvent)="reportsQuery.refetch()"
+          [report]="reportsQuery.data()"
+        ></app-financial-impact>
+      </mat-tab>
+    }
+  </mat-tab-group>
+</div>

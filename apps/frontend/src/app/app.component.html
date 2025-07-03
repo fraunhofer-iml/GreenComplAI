@@ -1,0 +1,9 @@
+<div class="fixed h-full md:w-[280px]">
+  <app-sidebar />
+</div>
+<div class="w-[calc(100svw - 280px)] ml-[280px] h-full py-4 pr-4">
+  <div class="bg-neutral-250 h-full w-full overflow-y-auto rounded-lg">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+<ngx-sonner-toaster theme="dark" />

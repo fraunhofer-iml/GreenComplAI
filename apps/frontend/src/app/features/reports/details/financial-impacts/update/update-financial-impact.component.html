@@ -1,0 +1,164 @@
+<div class="flex w-full flex-col gap-4">
+  <span>Keine Angaben</span>
+  <span>{{ this.form().controls.title.value }}</span>
+  <form [formGroup]="form()">
+    <mat-tab-group>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <span class="m-2"> Allgemeine Informationen </span>
+        </ng-template>
+
+        <div class="flex flex-col gap-4 py-4">
+          <div
+            class="grid w-full grid-cols-2 gap-2 rounded-lg bg-neutral-200 p-4 pt-4"
+          >
+            <mat-form-field appearance="outline">
+              <mat-label>Titel</mat-label>
+              <input matInput formControlName="title" [readonly]="isFinal()" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Typ</mat-label>
+              <mat-select formControlName="type">
+                <mat-option [value]="ImpactType.CHANCE">Chance</mat-option>
+                <mat-option [value]="ImpactType.RISK">Risiko</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="col-span-2"
+              ><mat-label>Beschreibung</mat-label>
+
+              <textarea
+                cdkTextareaAutosize
+                #autosize="cdkTextareaAutosize"
+                matInput
+                formControlName="description"
+                [readonly]="isFinal()"
+              ></textarea>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="col-span-2">
+              <mat-label
+                >Beschreibung der finanziellen Effekte hinsichtlich ihrer
+                Auswirkungen und der verbundenen Zeithorizonte</mat-label
+              >
+              <textarea
+                matInput
+                formControlName="descriptionFinancialEffects"
+                [readonly]="isFinal()"
+              ></textarea>
+            </mat-form-field>
+
+            <span class="col-span-2 mt-2 text-sm">
+              Erwartete finanzielle Auswirkungen bevor Maßnahmen ergriffen
+              werden
+            </span>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Von (€)</mat-label>
+              <input
+                matInput
+                type="number"
+                formControlName="financialImpactMin"
+              /> </mat-form-field
+            ><mat-form-field appearance="outline">
+              <mat-label>Bis (€)</mat-label>
+              <input
+                matInput
+                type="number"
+                formControlName="financialImpactMax"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Kritische Annahmen">
+        <div class="mt-2 flex w-full flex-col gap-2">
+          @if (form().controls.criticalAssumptions.controls.length === 0) {
+            <span>Keine Krtischen Annahmen angegeben</span>
+          }
+          @for (
+            assumption of form().controls.criticalAssumptions.controls;
+            track assumption;
+            let cindex = $index
+          ) {
+            <form
+              [formGroup]="form().controls.criticalAssumptions.controls[cindex]"
+            >
+              <div
+                class="hover:border-primary-700 group grid w-full grid-cols-2 gap-2 rounded-lg border-[1px] border-solid border-transparent bg-neutral-200 p-4"
+              >
+                <div class="col-span-2 flex justify-between">
+                  <span>Annahme {{ cindex + 1 }}</span>
+
+                  @if (!isFinal()) {
+                    <button
+                      mat-stroked-button
+                      (click)="
+                        removeCriticalAssumptionFormGroup(
+                          form().controls.criticalAssumptions,
+                          cindex
+                        )
+                      "
+                      class="invisible group-hover:visible group-hover:cursor-pointer"
+                    >
+                      <mat-icon>delete</mat-icon>
+                      entfernen
+                    </button>
+                  }
+                </div>
+
+                <mat-form-field appearance="outline" class="col-span-2">
+                  <mat-label>Titel</mat-label>
+                  <input
+                    matInput
+                    formControlName="title"
+                    [readonly]="isFinal()"
+                  />
+                </mat-form-field>
+                <mat-form-field appearance="outline"
+                  ><mat-label
+                    >Welche Quellen unterstützen diese Angaben?</mat-label
+                  >
+
+                  <textarea
+                    cdkTextareaAutosize
+                    #sourceInformation="cdkTextareaAutosize"
+                    matInput
+                    formControlName="sourceInformation"
+                    [readonly]="isFinal()"
+                  ></textarea>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label
+                    >Welchen Grad der Unsicherheit hat die kritische
+                    Annahme?</mat-label
+                  >
+                  <textarea
+                    cdkTextareaAutosize
+                    #degreeOfUncertainty="cdkTextareaAutosize"
+                    matInput
+                    formControlName="degreeOfUncertainty"
+                    [readonly]="isFinal()"
+                  ></textarea>
+                </mat-form-field>
+              </div>
+            </form>
+          }
+          <button
+            class="w-1/3"
+            mat-flat-button
+            (click)="
+              addCriticalAssumptionFormGroup(
+                form().controls.criticalAssumptions
+              )
+            "
+            i18n
+          >
+            <mat-icon>add </mat-icon>
+            Kritische Annahme hinzufügen
+          </button>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </form>
+</div>

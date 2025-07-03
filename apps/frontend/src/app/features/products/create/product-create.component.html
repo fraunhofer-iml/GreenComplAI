@@ -1,0 +1,109 @@
+<div class="flex w-full flex-col gap-4 p-8" #overview>
+  <div class="flex items-center gap-2 text-lg">
+    <a routerLink="/products" class="font-semibold hover:underline">Produkte</a>
+    <span class="material-symbols-outlined text-lg"> chevron_right </span>
+    <h1 class="font-medium">hinzufügen</h1>
+  </div>
+
+  <app-upload-csv
+    (useImport)="usesImport = $event"
+    [contentType]="ContentType.PRODUCTS"
+  ></app-upload-csv>
+
+  @if (!usesImport) {
+    <div class="flex flex-col gap-4">
+      <app-product-master-data-form
+        [productGroupId]="productGroupId()"
+        [form]="masterDataForm"
+        [criticalRawMaterialsForm]="criticalRawMaterialsForm"
+        [materialsForm]="materialsForm"
+        [rareEarthsForm]="rareEarthsForm"
+      ></app-product-master-data-form>
+
+      <!-- PRODUCTION HISTORY-->
+      <app-production-history
+        [producedItemsForm]="producedItemsForm"
+      ></app-production-history>
+
+      <!-- Waste-->
+      @if (wasteForm) {
+        <app-waste-create [waste]="wasteForm"></app-waste-create>
+      }
+
+      <!-- Packaging-->
+
+      <app-packaging-selection
+        [packagingsForm]="packagingsForm"
+        [title]="'Angaben zur Verpackung'"
+      ></app-packaging-selection>
+
+      <!-- Bill Of Material-->
+      <div
+        class="grid w-full grid-cols-1 gap-4 rounded-lg bg-neutral-200 p-8 md:grid-cols-2"
+      >
+        <div class="col-span-2 flex w-full justify-between align-text-bottom">
+          <span>Stückliste</span>
+        </div>
+
+        <mat-form-field appearance="outline" class="col-span-2">
+          <mat-label>Gewählte Vorprodukte</mat-label>
+          <mat-chip-grid #productsChips>
+            @for (item of selectedProducts; track $index) {
+              <mat-chip-row [aria-description]="'product'"
+                >{{ item[0].name }} ({{ item[1] }})
+              </mat-chip-row>
+            }
+            <input matInput readonly [matChipInputFor]="productsChips" />
+          </mat-chip-grid>
+          <button mat-icon-button (click)="sheet.open()" class="mr-2" matSuffix>
+            <mat-icon>add</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="flex w-full justify-end">
+      <button
+        mat-flat-button
+        (click)="saveProduct()"
+        [disabled]="
+          masterDataForm.invalid ||
+          billOfMaterialForm.invalid ||
+          materialsForm.invalid ||
+          rareEarthsForm.invalid ||
+          criticalRawMaterialsForm.invalid ||
+          packagingsForm.invalid
+        "
+        i18n
+        routerLink="/products"
+      >
+        Speichern
+      </button>
+    </div>
+  }
+</div>
+
+<app-products-sheet
+  #sheet
+  [title]="'Vorprodukte'"
+  [billOfMaterialForm]="billOfMaterialForm"
+></app-products-sheet>
+
+<app-base-sheet #materialSheet>
+  <app-select-materials
+    (closeSheetEvent)="materialSheet.close()"
+    (addMaterialEvent)="addMaterialFormGroup(materialsForm)"
+    (removeMaterialEvent)="removeMaterialFormGroup(materialsForm, $event)"
+    (addRareEarthEvent)="addMaterialFormGroup(rareEarthsForm)"
+    (removeRareEarthEvent)="removeMaterialFormGroup(rareEarthsForm, $event)"
+    (addCriticalRawMaterialEvent)="
+      addMaterialFormGroup(criticalRawMaterialsForm)
+    "
+    (removeCriticalRawMaterialEvent)="
+      removeMaterialFormGroup(rareEarthsForm, $event)
+    "
+    [form]="materialsForm"
+    [rareEarthsForm]="rareEarthsForm"
+    [criticalRawMaterialsForm]="criticalRawMaterialsForm"
+  ></app-select-materials>
+</app-base-sheet>

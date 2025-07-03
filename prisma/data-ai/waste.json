@@ -1,0 +1,17 @@
+[
+  {
+    "id": "waste_tire_1",
+    "recycledWastePercentage": 85,
+    "radioactiveAmount": 0.0
+  },
+  {
+    "id": "waste_tire_2",
+    "recycledWastePercentage": 82,
+    "radioactiveAmount": 0.0
+  },
+  {
+    "id": "waste_tire_3",
+    "recycledWastePercentage": 80,
+    "radioactiveAmount": 0.0
+  }
+]

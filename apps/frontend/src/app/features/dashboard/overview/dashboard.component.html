@@ -1,0 +1,93 @@
+<div class="flex flex-col px-8 pt-8">
+  <h2 class="text-xl" i18n>Dashboard</h2>
+
+  <div class="my-4 flex w-full flex-col gap-4 rounded-lg bg-neutral-200 p-4">
+    <h2 class="font-medium" i18n>Filter nach Produktgruppe und Produkt</h2>
+    <div class="flex flex-row gap-4">
+      <mat-form-field class="w-1/6" appearance="outline">
+        <mat-label>Produktgruppe</mat-label>
+        <input
+          #input
+          matInput
+          [matAutocomplete]="groupAuto"
+          [(ngModel)]="productGroup"
+        />
+
+        <mat-autocomplete
+          #groupAuto="matAutocomplete"
+          [displayWith]="displayFn"
+          (optionSelected)="product = undefined; navigate()"
+        >
+          @for (option of groupsQuery.data()?.data; track option) {
+            <mat-option [value]="option">{{ option.name }}</mat-option>
+          }
+          <mat-option [value]="undefined">alle</mat-option>
+        </mat-autocomplete> </mat-form-field
+      ><mat-form-field class="w-1/2" appearance="outline">
+        <mat-label>Produkt</mat-label>
+        <input
+          matInput
+          [matAutocomplete]="productAuto"
+          [(ngModel)]="product"
+          [disabled]="productGroup === undefined"
+        />
+
+        <mat-autocomplete
+          #productAuto="matAutocomplete"
+          [displayWith]="displayFn"
+          (optionSelected)="navigate()"
+        >
+          @for (option of productGroup?.products; track option) {
+            <mat-option [value]="option">{{ option.name }}</mat-option>
+          }
+          <mat-option [value]="undefined">alle</mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-form-field class="w-1/6" appearance="outline">
+        <mat-label>Von</mat-label>
+        <input [(ngModel)]="fromYear" matInput [matDatepicker]="fromPicker" />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="fromPicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker
+          #fromPicker
+          startView="multi-year"
+          (yearSelected)="fromYearHandler($event, fromPicker)"
+        >
+        </mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="w-1/6" appearance="outline">
+        <mat-label>Bis</mat-label>
+        <input [(ngModel)]="toYear" matInput [matDatepicker]="toPicker" />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="toPicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker
+          #toPicker
+          startView="multi-year"
+          (yearSelected)="toYearHandler($event, toPicker)"
+        >
+        </mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="grid grid-cols-1 gap-4 md:grid-cols-5">
+    <app-wasteflow-analysis-graph
+      class="col-span-3"
+      [from$]="fromYear"
+      [to$]="toYear"
+      [productGroupId$]="productGroup?.id ?? ''"
+      [productId$]="product?.id ?? ''"
+    ></app-wasteflow-analysis-graph>
+    <app-inflow-analysis-graph
+      class="col-span-2"
+      [from$]="fromYear"
+      [to$]="toYear"
+      [productGroupId$]="productGroup?.id ?? ''"
+      [productId$]="product?.id ?? ''"
+    ></app-inflow-analysis-graph>
+  </div>
+</div>

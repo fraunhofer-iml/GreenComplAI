@@ -1,0 +1,419 @@
+<div class="flex flex-col gap-8 p-4">
+  <div class="flex flex-row items-center gap-2">
+    <span class="text-xl">
+      Auswertung Resourcenabflüsse
+      <span class="text-sm text-neutral-500">
+        @if (productGroupId()) {
+          Produkte
+        } @else {
+          Produktgruppen
+        }
+      </span>
+    </span>
+  </div>
+
+  <div class="flex h-full w-full flex-col gap-4 pb-4">
+    <div class="flex w-full gap-2">
+      <mat-form-field appearance="outline" class="flex-1">
+        <mat-label>Suche</mat-label>
+        <input
+          matInput
+          #filterInput
+          (keyup)="onFilterChange(filterInput.value)"
+          [value]="filter()"
+        />
+        <mat-icon matPrefix>search</mat-icon>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Von</mat-label>
+        <input [value]="fromYear$()" matInput [matDatepicker]="fromPicker" />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="fromPicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker
+          #fromPicker
+          startView="multi-year"
+          (yearSelected)="fromYearHandler($event, fromPicker)"
+        >
+        </mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Bis</mat-label>
+        <input [value]="toYear$()" matInput [matDatepicker]="toPicker" />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="toPicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker
+          #toPicker
+          startView="multi-year"
+          (yearSelected)="toYearHandler($event, toPicker)"
+        >
+        </mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    @if (analysisQuery.isPending()) {
+      <span i18n>Daten werden geladen</span>
+    } @else if (analysisQuery.isSuccess() && analysisQuery.data()) {
+      <table
+        mat-table
+        [dataSource]="filteredAndSortedAnalysis() ?? []"
+        class="overflow-hidden !rounded-lg !bg-neutral-200"
+        matSort
+        (matSortChange)="onSortChange($event)"
+        matSortDisableClear
+      >
+        <ng-container matColumnDef="name">
+          <th
+            class="!border-neutral-350"
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header="name"
+          >
+            @if (productGroupId()) {
+              <span i18n>Produktname</span>
+            } @else {
+              <span i18n>Produktgruppe</span>
+            }
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            class="cursor-pointer"
+            (click)="navigate(element.id)"
+          >
+            {{ element.name }}
+          </td>
+          <td mat-footer-cell *matFooterCellDef>Gesamt</td>
+        </ng-container>
+
+        <ng-container matColumnDef="producedItems">
+          <th
+            class="!border-neutral-350"
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="producedItems"
+          >
+            <span i18n>Produzierte Einheiten</span>
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            class="cursor-pointer"
+            (click)="navigate(element.id)"
+          >
+            {{ element.producedItems }}
+          </td>
+          <td mat-footer-cell *matFooterCellDef>
+            {{ analysisQuery.data().totalProducedItems }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="wasteWeight">
+          <th
+            class="!border-neutral-350"
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="wasteWeight"
+          >
+            Gesamtabfluss
+          </th>
+          <td
+            class="cursor-pointer"
+            (click)="navigate(element.id)"
+            mat-cell
+            *matCellDef="let element"
+          >
+            <div class="w-full">
+              {{ element.wasteWeight | number: '1.0-0' }} kg
+            </div>
+          </td>
+          <td mat-footer-cell *matFooterCellDef>
+            {{ analysisQuery.data().totalWeight | number: '1.0-0' }} kg
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="reusableNonHazardous">
+          <th
+            class="!border-neutral-350"
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="reusableNonHazardous"
+          >
+            Wertstoffkreislauf (nicht gefährliche Abfälle)
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            class="cursor-pointer"
+            (click)="navigate(element.id)"
+          >
+            <div class="w-full">
+              Vorbereitung zur Wiederverwertung:
+              {{
+                element.normalWaste.utilizableWaste
+                  .preparationForRecyclingWeight | number: '1.0-0'
+              }}
+              kg
+            </div>
+            <div class="w-full">
+              Recycling:
+              {{
+                element.normalWaste.utilizableWaste.recyclingWeight
+                  | number: '1.0-0'
+              }}
+              kg
+            </div>
+            <div class="w-full">
+              Sonstiges:
+              {{
+                element.normalWaste.utilizableWaste.miscellaneousWeight
+                  | number: '1.0-0'
+              }}
+              kg
+            </div>
+          </td>
+          <td mat-footer-cell *matFooterCellDef>
+            {{
+              analysisQuery.data().normalUtilizableWasteWeight | number: '1.0-0'
+            }}
+            kg
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="reusableHazardous">
+          <th
+            class="!border-neutral-350"
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+          >
+            <span i18n>Wertstoffkreislauf (gefährliche Abfälle)</span>
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            class="cursor-pointer"
+            (click)="navigate(element.id)"
+          >
+            <div class="w-full">
+              Vorbereitung zur Wiederverwertung:
+              {{
+                element.hazardousWaste.utilizableWaste
+                  .preparationForRecyclingWeight | number: '1.0-0'
+              }}
+              kg
+            </div>
+            <div class="w-full">
+              Recycling:
+              {{
+                element.hazardousWaste.utilizableWaste.recyclingWeight
+                  | number: '1.0-0'
+              }}
+              kg
+            </div>
+            <div class="w-full">
+              Sonstiges:
+              {{
+                element.hazardousWaste.utilizableWaste.miscellaneousWeight
+                  | number: '1.0-0'
+              }}
+              kg
+            </div>
+          </td>
+          <td mat-footer-cell *matFooterCellDef>
+            {{
+              analysisQuery.data().hazardousUtilizableWasteWeight
+                | number: '1.0-0'
+            }}
+            kg
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nonReusableNonHazardous">
+          <th
+            class="!border-neutral-350"
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+          >
+            <span i18n>Beseitigung (nicht gefährliche Abfälle)</span>
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            class="cursor-pointer"
+            (click)="navigate(element.id)"
+          >
+            <div class="w-full">
+              Verbrennung:
+              {{
+                element.normalWaste.nonUtilizableWaste.combustionWeight
+                  | number: '1.0-0'
+              }}
+              kg
+            </div>
+            <div class="w-full">
+              Deponierung:
+              {{
+                element.normalWaste.nonUtilizableWaste.landfillWeight
+                  | number: '1.0-0'
+              }}
+              kg
+            </div>
+            <div class="w-full">
+              Sonstiges:
+              {{
+                element.normalWaste.nonUtilizableWaste.miscellaneousWeight
+                  | number: '1.0-0'
+              }}
+              kg
+            </div>
+          </td>
+          <td mat-footer-cell *matFooterCellDef>
+            {{
+              analysisQuery.data().normalNonUtilizableWasteWeight
+                | number: '1.0-0'
+            }}
+            kg
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nonReusableHazardous">
+          <th
+            class="!border-neutral-350"
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+          >
+            <span i18n>Beseitigung (gefährliche Abfälle)</span>
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            class="cursor-pointer"
+            (click)="navigate(element.id)"
+          >
+            <div class="w-full">
+              Verbrennung:
+              {{
+                element.hazardousWaste.nonUtilizableWaste.combustionWeight
+                  | number: '1.0-0'
+              }}
+              kg
+            </div>
+            <div class="w-full">
+              Deponierung:
+              {{
+                element.hazardousWaste.nonUtilizableWaste.landfillWeight
+                  | number: '1.0-0'
+              }}
+              kg
+            </div>
+            <div class="w-full">
+              Sonstiges:
+              {{
+                element.hazardousWaste.nonUtilizableWaste.miscellaneousWeight
+                  | number: '1.0-0'
+              }}
+              kg
+            </div>
+          </td>
+          <td mat-footer-cell *matFooterCellDef>
+            {{
+              analysisQuery.data().hazardousNonUtilizableWasteWeight
+                | number: '1.0-0'
+            }}
+            kg
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="wasteWeightNotRecyclable">
+          <th
+            class="!border-neutral-350"
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="wasteWeightNotRecyclable"
+          >
+            Gesamtmenge nicht recycelbarer Abfälle
+          </th>
+          <td
+            class="cursor-pointer"
+            (click)="navigate(element.id)"
+            mat-cell
+            *matCellDef="let element"
+          >
+            <div class="w-full">
+              {{ element.wasteWeightNotRecyclable | number: '1.0-0' }} kg
+            </div>
+          </td>
+          <td mat-footer-cell *matFooterCellDef>
+            {{
+              analysisQuery.data().totalWasteWeightNotRecyclable
+                | number: '1.0-0'
+            }}
+            kg
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="wasteWeightNotRecyclablePercentage">
+          <th
+            class="!border-neutral-350"
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="wasteWeightNotRecyclablePercentage"
+          >
+            Anteil nicht recycelbarer Abfälle
+          </th>
+          <td
+            class="cursor-pointer"
+            (click)="navigate(element.id)"
+            mat-cell
+            *matCellDef="let element"
+          >
+            <div class="w-full">
+              {{
+                element.wasteWeightNotRecyclablePercentage | percent: '1.2-2'
+              }}
+            </div>
+          </td>
+          <td mat-footer-cell *matFooterCellDef>
+            {{
+              analysisQuery.data().totalWasteWeightNotRecyclablePercentage
+                | percent: '1.2-2'
+            }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr
+          class="hover:bg-neutral-300"
+          mat-row
+          *matRowDef="let row; columns: displayedColumns"
+        ></tr>
+        <tr
+          mat-footer-row
+          *matFooterRowDef="displayedColumns"
+          class="border-t-2"
+        ></tr>
+      </table>
+    }
+
+    @if (analysisQuery.isSuccess() && analysisQuery.data()) {
+      <mat-paginator
+        class="overflow-hidden !rounded-lg !bg-neutral-200"
+        [pageSizeOptions]="[5, 10, 15, 20]"
+        aria-label="Select page"
+        showFirstLastButtons
+      >
+      </mat-paginator>
+    }
+  </div>
+</div>

@@ -1,0 +1,30 @@
+<div
+  class="flex justify-between gap-2 hover:bg-stone-700"
+  (mouseenter)="flag = 'flagOutline.svg'"
+  (mouseleave)="flag = ''"
+>
+  <div class="inline-flex items-baseline gap-2 font-medium">
+    {{ topic }}
+    <div class="cursor-pointer" role="none" (click)="toggleFlag()">
+      <div *ngIf="!data.includes(element); else SelectedFlag">
+        <img
+          class="min-h-2 min-w-2"
+          *ngIf="flag !== ''; else None"
+          (mouseenter)="flag = 'flagSelected.svg'"
+          (mouseleave)="flag = 'flagOutline.svg'"
+          [src]="flag"
+          [alt]="alt"
+        />
+      </div>
+    </div>
+  </div>
+  <ng-content></ng-content>
+</div>
+
+<ng-template #SelectedFlag>
+  <img class="min-h-2 min-w-2" [src]="'flagSelected.svg'" [alt]="alt" />
+</ng-template>
+
+<ng-template #None>
+  <div class="min-h-2 min-w-2"></div>
+</ng-template>

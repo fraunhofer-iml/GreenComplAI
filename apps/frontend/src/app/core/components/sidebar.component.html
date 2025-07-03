@@ -1,0 +1,95 @@
+<div class="flex h-full flex-col justify-between p-4">
+  <div>
+    <div class="flex flex-row items-center gap-2 text-xl font-medium">
+      <div>
+        <span class="text-primary-800 text-xl font-medium">Green</span>ComplAI
+      </div>
+    </div>
+
+    <mat-tree
+      class="mt-8"
+      #tree
+      [dataSource]="dataSource"
+      [childrenAccessor]="childrenAccessor"
+    >
+      <!--leaf nodes -->
+      <mat-tree-node
+        *matTreeNodeDef="let node"
+        matTreeNodePadding
+        class="bg-zinc-800"
+      >
+        @if (node.roles.includes(role)) {
+          <a
+            class="hover:bg-primary-300 flex w-full cursor-pointer select-none items-center gap-2 rounded-full px-4 py-2"
+            matTreeNodeToggle
+            [attr.aria-label]="'Toggle ' + node.name"
+            [routerLink]="node.routerLink"
+          >
+            <span class="material-symbols-outlined"> {{ node.icon }} </span>
+            {{ node.name }}
+          </a>
+        }
+      </mat-tree-node>
+      <!--expandable nodes -->
+      <mat-tree-node
+        class="bg-zinc-800"
+        *matTreeNodeDef="let node; when: hasChild"
+        matTreeNodePadding
+        matTreeNodeToggle
+        [cdkTreeNodeTypeaheadLabel]="node.name"
+      >
+        @if (node.roles.includes(role)) {
+          <a
+            class="hover:bg-primary-300 flex w-full cursor-pointer select-none justify-between rounded-full px-4 py-2"
+            matTreeNodeToggle
+            [attr.aria-label]="'Toggle ' + node.name"
+            [routerLink]="node.routerLink"
+          >
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined"> {{ node.icon }} </span
+              >{{ node.name }}
+            </div>
+            <span class="material-symbols-outlined">
+              {{
+                tree.isExpanded(node)
+                  ? 'keyboard_arrow_up'
+                  : 'keyboard_arrow_down'
+              }}
+            </span>
+          </a>
+        }
+      </mat-tree-node>
+    </mat-tree>
+  </div>
+
+  <div class="flex flex-row items-center justify-between">
+    <div class="flex flex-row items-center gap-2">
+      <span
+        class="bg-primary-400 flex h-12 w-12 items-center justify-center rounded-full text-lg font-medium"
+      >
+        {{ firstName?.charAt(0) }}{{ lastName?.charAt(0) }}
+      </span>
+      <p
+        class="max-w-40 overflow-hidden overflow-ellipsis whitespace-nowrap text-sm"
+      >
+        <strong>{{ firstName }} {{ lastName }}</strong>
+
+        <br />
+        {{ role ?? '' | role }}
+      </p>
+    </div>
+
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="menu"
+      aria-label="Example icon-button with a menu"
+    >
+      <span class="material-symbols-outlined"> keyboard_arrow_down </span>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="logout()">
+        <span i18n>Logout</span>
+      </button>
+    </mat-menu>
+  </div>
+</div>

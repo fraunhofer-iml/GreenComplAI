@@ -1,0 +1,120 @@
+<div class="col-span-2 rounded-lg bg-neutral-200 p-4">
+  <div class="flex justify-between"></div>
+  <form [formGroup]="reportForm">
+    <div class="flex flex-col gap-2">
+      <mat-form-field appearance="outline" class="w-1/4">
+        <mat-label>Jahr</mat-label>
+
+        <input
+          [value]="reportForm.controls['evaluationYear'].value"
+          matInput
+          [matDatepicker]="fromPicker"
+          formControlName="evaluationYear"
+          [defaultValue]=""
+        />
+        <mat-datepicker-toggle
+          [disabled]="report()?.isFinalReport"
+          matSuffix
+          [for]="fromPicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker
+          #fromPicker
+          startView="multi-year"
+          (yearSelected)="yearHandler($event, fromPicker)"
+        >
+        </mat-datepicker>
+      </mat-form-field>
+      <div class="mt-4 grid gap-y-4 text-sm">
+        <div class="grid gap-2">
+          <section class="flex w-full flex-row items-center gap-2 align-middle">
+            <mat-checkbox formControlName="assetsBusinessActivitiesEvaluated">
+              Auswirkungen, Risiken und Chancen in der Wertschöpfungskette
+              bewertet?
+            </mat-checkbox>
+            <mat-icon
+              [matTooltip]="ReportTooltip.assetsEvaluatedTooltip"
+              class="text-primary-800"
+              >info</mat-icon
+            >
+          </section>
+
+          @if (reportForm.get('assetsBusinessActivitiesEvaluated')?.value) {
+            <div class="flex flex-row items-center gap-2">
+              <mat-form-field appearance="outline" class="flex-1">
+                <mat-label>Instrumente der Überprüfung</mat-label>
+                <textarea
+                  matInput
+                  class="font-medium"
+                  formControlName="evaluationMethodsAssumptionsTools"
+                  [readonly]="report()?.isFinalReport"
+                >
+                </textarea>
+              </mat-form-field>
+
+              <mat-icon
+                [matTooltip]="ReportTooltip.evaluationMethodsTooltip"
+                class="text-primary-800"
+                >info</mat-icon
+              >
+            </div>
+          }
+        </div>
+
+        <div class="grid gap-2">
+          <section class="flex w-full flex-row items-center gap-2 align-middle">
+            <mat-checkbox formControlName="consultationsConducted">
+              Konsultationen durchgeführt?
+            </mat-checkbox>
+            <mat-icon
+              [matTooltip]="ReportTooltip.consultationsConductedTooltip"
+              class="text-primary-800"
+              >info</mat-icon
+            >
+          </section>
+
+          @if (reportForm.get('consultationsConducted')?.value) {
+            <div class="flex flex-row items-center gap-2">
+              <mat-form-field appearance="outline" class="flex-1">
+                <mat-label>Methoden der Konsultation</mat-label>
+                <textarea
+                  matInput
+                  class="font-medium"
+                  formControlName="consultationMethods"
+                  [readonly]="report()?.isFinalReport"
+                >
+                </textarea>
+              </mat-form-field>
+
+              <mat-icon
+                [matTooltip]="ReportTooltip.consultationMethodsTooltip"
+                class="text-primary-800"
+                >info</mat-icon
+              >
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+@if (!report()?.isFinalReport) {
+  <div class="mt-4 flex justify-end gap-2">
+    <button
+      mat-flat-button
+      (click)="save(false)"
+      i18n
+      [disabled]="reportForm.invalid"
+    >
+      <mat-icon>save </mat-icon>
+      Speichern</button
+    ><button
+      mat-flat-button
+      (click)="openDialog()"
+      i18n
+      [disabled]="reportForm.invalid"
+    >
+      <mat-icon>lock </mat-icon>
+      Abschließen
+    </button>
+  </div>
+}

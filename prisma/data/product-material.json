@@ -1,0 +1,52 @@
+[
+  {
+    "productId": "product-1",
+    "materialName": "Metal",
+    "percentage": 50
+  },
+  {
+    "productId": "product-2",
+    "materialName": "Aluminium",
+    "percentage": 10
+  },
+  {
+    "productId": "product-3",
+    "materialName": "Pappe",
+    "percentage": 40
+  },
+  {
+    "productId": "product-3",
+    "materialName": "Aluminium",
+    "percentage": 10
+  },
+  {
+    "productId": "product-4",
+    "materialName": "Pappe",
+    "percentage": 40
+  },
+  {
+    "productId": "product-5",
+    "materialName": "Pappe",
+    "percentage": 10
+  },
+  {
+    "productId": "product-5",
+    "materialName": "Glas",
+    "percentage": 35
+  },
+  {
+    "productId": "product-5",
+    "materialName": "Holz",
+    "percentage": 35
+  },
+  {
+    "productId": "product-6",
+    "materialName": "Plastik",
+    "percentage": 35
+  },
+  {
+    "productId": "product-6",
+    "materialName": "Aluminium",
+    "percentage": 65
+  }
+]

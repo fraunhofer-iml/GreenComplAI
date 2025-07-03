@@ -1,0 +1,34 @@
+[
+  {
+    "id": "address-1",
+    "street": "Main Street 123",
+    "city": "Berlin",
+    "postalCode": "10115",
+    "country": "Germany",
+    "companyId": "company-1"
+  },
+  {
+    "id": "address-2",
+    "street": "Second Avenue 45",
+    "city": "Munich",
+    "postalCode": "80331",
+    "country": "Germany",
+    "companyId": "company-2"
+  },
+  {
+    "id": "address-3",
+    "street": "Industrial Road 78",
+    "city": "Hamburg",
+    "postalCode": "20095",
+    "country": "Germany",
+    "companyId": "company-2"
+  },
+  {
+    "id": "address-4",
+    "street": "Forest Road 78",
+    "city": "Frankfurt",
+    "postalCode": "20095",
+    "country": "Germany",
+    "companyId": "company-3"
+  }
+]

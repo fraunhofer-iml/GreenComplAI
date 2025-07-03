@@ -1,0 +1,26 @@
+[
+  {
+    "id": "addr_tire_1",
+    "street": "Vahrenwalder Straße 9",
+    "city": "Hannover",
+    "postalCode": "30165",
+    "country": "Germany",
+    "companyId": "comp_tire_1"
+  },
+  {
+    "id": "addr_tire_2",
+    "street": "23 Place des Carmes",
+    "city": "Clermont-Ferrand",
+    "postalCode": "63000",
+    "country": "France",
+    "companyId": "comp_tire_2"
+  },
+  {
+    "id": "addr_tire_3",
+    "street": "1-1 Kyobashi 3-chome",
+    "city": "Tokyo",
+    "postalCode": "104-8340",
+    "country": "Japan",
+    "companyId": "comp_tire_3"
+  }
+]

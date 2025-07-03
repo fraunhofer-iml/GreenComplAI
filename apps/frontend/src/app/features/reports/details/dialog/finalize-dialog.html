@@ -1,0 +1,11 @@
+<h3 mat-dialog-title>Abschließen des Reports</h3>
+<mat-dialog-content>
+  <p>
+    Möchten Sie den Bericht wirklich abschließen? <br />
+    Der Bericht kann danach nicht mehr bearbeitet werden.
+  </p>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="finalize(true)">Bericht abschließen</button>
+  <button mat-button (click)="finalize(false)">Abbrechen</button>
+</mat-dialog-actions>

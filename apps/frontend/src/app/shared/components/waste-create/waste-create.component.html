@@ -1,0 +1,221 @@
+<div class="flex w-full flex-col gap-2 rounded-lg bg-neutral-200 p-8">
+  <span class="col-span-3">Angaben zum Abfall</span>
+  @if (waste) {
+    <div class="grid grid-cols-1 gap-2 md:grid-cols-3" [formGroup]="waste">
+      <mat-form-field appearance="outline">
+        <mat-label>Menge an radioaktiven Materialien</mat-label>
+        <input
+          matInput
+          type="number"
+          [formControl]="waste.controls.radioactiveAmount"
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Anteil des recycelten Abfalls</mat-label>
+        <input
+          matInput
+          type="number"
+          [formControl]="waste.controls.recycledWastePercentage"
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Materialien</mat-label>
+        <mat-chip-grid #materialsChips>
+          @for (
+            item of waste.controls.wasteMaterials.value.materials;
+            track $index
+          ) {
+            @if (item.material && item.percentage) {
+              <mat-chip-row [aria-description]="'material'"
+                >{{ item.material }} ({{ item.percentage }}%)</mat-chip-row
+              >
+            }
+          }
+          <input matInput readonly [matChipInputFor]="materialsChips" />
+        </mat-chip-grid>
+        <button
+          mat-icon-button
+          (click)="materialSheet.open()"
+          class="mr-2"
+          matSuffix
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+
+    <div class="my-4 h-[1px] w-full bg-neutral-400"></div>
+
+    <div
+      class="grid grid-cols-1 gap-2 md:grid-cols-3"
+      [formGroup]="waste.controls.normalWaste"
+    >
+      <h2 class="col-span-3 mb-4">Nicht gefährliche Abfälle</h2>
+      <mat-form-field appearance="outline">
+        <mat-label>Vorbereitung zur Wiederverwertung (kg)</mat-label>
+        <input
+          matInput
+          type="number"
+          [formControl]="
+            waste.controls.normalWaste.controls.utilizableWaste.controls
+              .preparationForRecyclingWeight
+          "
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Recyclingfähig (kg)</mat-label>
+        <input
+          matInput
+          type="number"
+          [formControl]="
+            waste.controls.normalWaste.controls.utilizableWaste.controls
+              .recyclingWeight
+          "
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Sonstige Verwertungsverfahren (kg)</mat-label>
+        <input
+          matInput
+          type="number"
+          [formControl]="
+            waste.controls.normalWaste.controls.utilizableWaste.controls
+              .miscellaneousWeight
+          "
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Haldenabfall (kg)</mat-label>
+        <input
+          matInput
+          type="number"
+          [formControl]="
+            waste.controls.normalWaste.controls.nonUtilizableWaste.controls
+              .landfillWeight
+          "
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Verbrennung (kg)</mat-label>
+        <input
+          matInput
+          type="number"
+          [formControl]="
+            waste.controls.normalWaste.controls.nonUtilizableWaste.controls
+              .combustionWeight
+          "
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Sonstige Beseitigung (kg)</mat-label>
+        <input
+          matInput
+          type="number"
+          [formControl]="
+            waste.controls.normalWaste.controls.nonUtilizableWaste.controls
+              .miscellaneousWeight
+          "
+        />
+      </mat-form-field>
+    </div>
+
+    <div class="my-4 h-[1px] w-full bg-neutral-400"></div>
+
+    <div class="mt-4 grid grid-cols-1 gap-2 md:grid-cols-3" [formGroup]="waste">
+      <h2>Gefährliche Abfälle</h2>
+      <section class="col-span-2">
+        <mat-checkbox formControlName="hasHazardousWaste"
+          >Enthält gefährliche Abfälle</mat-checkbox
+        >
+      </section>
+      @if (waste.controls.hasHazardousWaste.value) {
+        <mat-form-field appearance="outline">
+          <mat-label>Vorbereitung zur Wiederverwertung (kg)</mat-label>
+          <input
+            matInput
+            type="number"
+            [formControl]="
+              waste.controls.hazardousWaste.controls.utilizableWaste.controls
+                .preparationForRecyclingWeight
+            "
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Recyclingfähig (kg)</mat-label>
+          <input
+            matInput
+            type="number"
+            [formControl]="
+              waste.controls.hazardousWaste.controls.utilizableWaste.controls
+                .recyclingWeight
+            "
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Sonstige Verwertungsverfahren (kg)</mat-label>
+          <input
+            matInput
+            type="number"
+            [formControl]="
+              waste.controls.hazardousWaste.controls.utilizableWaste.controls
+                .miscellaneousWeight
+            "
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Haldenabfall (kg)</mat-label>
+          <input
+            matInput
+            type="number"
+            [formControl]="
+              waste.controls.hazardousWaste.controls.nonUtilizableWaste.controls
+                .landfillWeight
+            "
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Verbrennung (kg)</mat-label>
+          <input
+            matInput
+            type="number"
+            [formControl]="
+              waste.controls.hazardousWaste.controls.nonUtilizableWaste.controls
+                .combustionWeight
+            "
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Sonstige Beseitigung (kg)</mat-label>
+          <input
+            matInput
+            type="number"
+            [formControl]="
+              waste.controls.hazardousWaste.controls.nonUtilizableWaste.controls
+                .miscellaneousWeight
+            "
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Gefährlicher Abfalltyp</mat-label>
+          <input
+            matInput
+            [formControl]="
+              waste.controls.hazardousWaste.controls.hazardousWasteType!
+            "
+          />
+        </mat-form-field>
+      }
+    </div>
+  }
+</div>
+
+<app-base-sheet #materialSheet>
+  <app-select-materials
+    (closeSheetEvent)="materialSheet.close()"
+    (addMaterialEvent)="addMaterialFormGroup(waste.controls.wasteMaterials)"
+    (removeMaterialEvent)="
+      removeMaterialFormGroup(waste.controls.wasteMaterials, $event)
+    "
+    [form]="waste.controls.wasteMaterials"
+  ></app-select-materials>
+</app-base-sheet>

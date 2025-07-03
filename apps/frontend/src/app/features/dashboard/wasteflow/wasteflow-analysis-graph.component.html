@@ -1,0 +1,65 @@
+<div class="flex h-full w-full flex-col gap-4">
+  <div class="grid grid-cols-2 gap-2 !rounded-lg !bg-neutral-200 px-4 py-4">
+    <h2 class="text-l col-span-2" i18n>ESRS-Berichtsdaten</h2>
+    @if (analysisQuery.data()?.analysis; as data) {
+      <div class="flex justify-between">
+        <span class="font-medium">Gesamtabfluss</span>
+        <span>{{ data.totalWeight | number }} kg</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="font-medium">Gesamtmenge nicht recycelbarer Abfälle</span>
+        <span>{{ data.totalWasteWeightNotRecyclable | number }} kg</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="font-medium"
+          >Wertstoffkreislauf (nicht gefährlich Abfälle)</span
+        >
+        <span>{{ data.normalUtilizableWasteWeight | number }} kg</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="font-medium">Beseitigung (nicht gefährlich Abfälle)</span>
+        <span>{{ data.hazardousNonUtilizableWasteWeight | number }} kg</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="font-medium">Wertstoffkreislauf (gefährlich Abfälle)</span>
+        <span>{{ data.hazardousUtilizableWasteWeight | number }} kg</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="font-medium">Beseitigung (gefährlich Abfälle)</span>
+        <span>{{ data.normalNonUtilizableWasteWeight | number }} kg</span>
+      </div>
+    }
+  </div>
+
+  <!-- CHART -->
+  <div class="!rounded-lg !bg-neutral-200 px-4 py-4">
+    <h2 class="text-l" i18n>Ressourcenabflüsse</h2>
+
+    @if (analysisQuery.data() && analysisQuery.data()?.analysis?.totalWeight) {
+      <div class="max-h-[600px] overflow-y-auto">
+        <div
+          echarts
+          [options]="analysisQuery.data()?.chartData ?? {}"
+          class="echart w-full"
+          [theme]="theme"
+          [style]="{
+            height:
+              150 * (analysisQuery.data()?.analysis?.analysis?.length ?? 1) +
+              'px',
+          }"
+        ></div>
+      </div>
+      <div
+        echarts
+        [options]="analysisQuery.data()?.legend ?? {}"
+        class="echart w-full"
+        [theme]="theme"
+        [style]="{
+          height: '140px',
+        }"
+      ></div>
+    } @else {
+      <span class="text-sm">Keine Daten vorhanden</span>
+    }
+  </div>
+</div>

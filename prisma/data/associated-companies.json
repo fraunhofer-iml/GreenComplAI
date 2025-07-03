@@ -1,0 +1,10 @@
+[
+  {
+    "associatedCompanyId": "company-1",
+    "companyId": "company-2"
+  },
+  {
+    "associatedCompanyId": "company-1",
+    "companyId": "company-3"
+  }
+]

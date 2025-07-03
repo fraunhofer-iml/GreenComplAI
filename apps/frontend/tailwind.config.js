@@ -1,0 +1,126 @@
+/*
+ * Copyright Fraunhofer Institute for Material Flow and Logistics
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License").
+ * For details on the licensing terms, see the LICENSE file.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+const { createGlobPatternsForDependencies } = require('@nx/angular/tailwind');
+const { join } = require('path');
+
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    join(__dirname, 'src/**/!(*.stories|*.spec).{ts,html}'),
+    ...createGlobPatternsForDependencies(__dirname),
+  ],
+  darkMode: 'selector',
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          0: '#000000',
+          100: '#00201d',
+          200: '#003733',
+          300: '#194f49',
+          400: '#346761',
+          500: '#4d807a',
+          600: '#679a94',
+          700: '#81b5ae',
+          800: '#9cd1c9',
+          900: '#b8ede5',
+          950: '#c6fbf3',
+          980: '#f2fffc',
+          990: '#f9ffe9',
+        },
+        secondary: {
+          0: '#000000',
+          100: '#0c1f1d',
+          200: '#213431',
+          250: '#2c3f3c',
+          300: '#384a48',
+          350: '#435653',
+          400: '#4f625f',
+          500: '#677b78',
+          600: '#819591',
+          700: '#9bafac',
+          800: '#b6cbc7',
+          900: '#d2e7e3',
+          950: '#e0f5f1',
+          980: '#e9fefa',
+          990: '#f2fffc',
+        },
+        tertiary: {
+          0: '#000000',
+          100: '#1f1637',
+          200: '#342b4d',
+          250: '#403659',
+          300: '#4b4165',
+          350: '#574d71',
+          400: '#63597e',
+          500: '#7d7198',
+          600: '#978bb3',
+          700: '#b2a5ce',
+          800: '#cec0eb',
+          900: '#e9ddff',
+          950: '#f6edff',
+          980: '#fef7ff',
+          990: '#fffbff',
+        },
+        neutral: {
+          0: '#000000',
+          100: '#191c1c',
+          200: '#2e3130',
+          250: '#393c3b',
+          300: '#454746',
+          350: '#505352',
+          400: '#5c5f5e',
+          500: '#757776',
+          600: '#8f9190',
+          700: '#aaacaa',
+          800: '#c5c7c5',
+          900: '#e1e3e1',
+          950: '#f0f1ef',
+          980: '#f9faf8',
+          990: '#fbfcfb',
+        },
+        'neutral-variant': {
+          0: '#000000',
+          100: '#151d1c',
+          200: '#2a3231',
+          250: '#353d3c',
+          300: '#404847',
+          350: '#4c5453',
+          400: '#57605e',
+          500: '#707977',
+          600: '#8a9391',
+          700: '#a4adab',
+          800: '#bfc8c6',
+          900: '#dce4e2',
+          950: '#eaf3f0',
+          980: '#f2fbf9',
+          990: '#f5fefc',
+        },
+        error: {
+          0: '#000000',
+          100: '#410002',
+          200: '#690005',
+          250: '#7e0007',
+          300: '#93000a',
+          350: '#a80710',
+          400: '#ba1a1a',
+          500: '#de3730',
+          600: '#ff5449',
+          700: '#ff897d',
+          800: '#ffb4ab',
+          900: '#ffdad6',
+          950: '#ffedea',
+          980: '#fff8f7',
+          990: '#fffbff',
+        },
+      },
+    },
+  },
+  plugins: [require('tailwindcss-animate')],
+};

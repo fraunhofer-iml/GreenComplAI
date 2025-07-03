@@ -1,0 +1,33 @@
+<div class="w-full rounded-lg bg-neutral-200 p-8">
+  <span>{{ title }}</span>
+
+  <mat-form-field appearance="outline" class="w-full pt-4">
+    <mat-label>Verpackungen</mat-label>
+    <mat-chip-grid
+      #packagingChips
+      aria-label="Enter Packagings"
+      [formControl]="packagingsForm().controls.packagings"
+    >
+      @for (item of selectedPackagings; track item) {
+        <mat-chip-row [value]="item">
+          {{ item[0].name }} | {{ item[0].material.name }} ({{ item[1] }})
+        </mat-chip-row>
+      }
+    </mat-chip-grid>
+    <button
+      mat-icon-button
+      (click)="packagingSheet.open()"
+      class="mr-2"
+      matSuffix
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+
+    <input readonly [matChipInputFor]="packagingChips" #packagingInput />
+  </mat-form-field>
+</div>
+
+<app-packaging-sheet
+  [packagings]="packagingsForm()"
+  #packagingSheet
+></app-packaging-sheet>

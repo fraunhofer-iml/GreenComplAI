@@ -1,0 +1,119 @@
+<div class="h-full w-full">
+  @if (impacts.controls.length === 0) {
+    <span class="pt-2">Keine finanziellen Auswirkungen angegeben</span>
+  } @else {
+    <div class="flex flex-col gap-2">
+      @for (impact of impacts.controls; track impact; let pindex = $index) {
+        <div class="flex flex-row items-center justify-between gap-2">
+          <div
+            role="none"
+            (click)="selectedAssumptionIndex = pindex; sheet.open()"
+            matBadge="!"
+            [matBadgeHidden]="impact.valid || report().isFinalReport"
+            [ngClass]="
+              impact.controls.type.value === ImpactType.CHANCE
+                ? 'hover:border-primary-800'
+                : 'hover:border-error-800'
+            "
+            class="flex w-full cursor-pointer flex-row items-center justify-between rounded border-[1px] border-transparent !bg-neutral-200 p-4"
+          >
+            <div class="flex flex-row items-center gap-2 text-sm">
+              <div>{{ impact.value.title }}</div>
+
+              @if (impact.controls.type.value === ImpactType.CHANCE) {
+                <div class="bg-primary-600 rounded-md bg-opacity-15 px-2 py-1">
+                  <span class="text-primary-950 text-sm">CHANCE</span>
+                </div>
+              } @else {
+                <div class="bg-error-600 rounded-md bg-opacity-15 px-2 py-1">
+                  <span class="text-error-900 text-sm">RISIKO</span>
+                </div>
+              }
+            </div>
+            <div>
+              {{ impact.value.financialImpactMin | number }} bis
+              {{ impact.value.financialImpactMax | number }} €
+            </div>
+          </div>
+          @if (!report().isFinalReport) {
+            <button
+              mat-icon-button
+              (click)="removeFinancialImpactsFormGroup(this.form, pindex)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          }
+        </div>
+      }
+      <div
+        [ngClass]="!report().isFinalReport ? 'mr-12' : 'mr-0'"
+        class="flex flex-col rounded border-[1px] border-transparent !bg-neutral-200 p-4"
+      >
+        <div
+          class="flex w-full flex-row items-center justify-between pb-2 text-sm font-semibold"
+        >
+          <div>Finanzielle Auswirkungen</div>
+          <div>
+            {{
+              getImpactsSum().chances.min - getImpactsSum().risks.max | number
+            }}
+            bis
+            {{
+              getImpactsSum().chances.max - getImpactsSum().risks.min | number
+            }}
+            €
+          </div>
+        </div>
+        <div
+          class="text-error-800 flex w-full flex-row items-center justify-between text-sm"
+        >
+          <div>Risiken</div>
+          <div>
+            {{ getImpactsSum().risks.min | number }} bis
+            {{ getImpactsSum().risks.max | number }} €
+          </div>
+        </div>
+        <div
+          class="text-primary-800 flex w-full flex-row items-center justify-between text-sm"
+        >
+          <div>Chancen</div>
+          <div>
+            {{ getImpactsSum().chances.min | number }} bis
+            {{ getImpactsSum().chances.max | number }} €
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (!report().isFinalReport) {
+    <div class="mt-4 flex w-full justify-between gap-2">
+      <button
+        mat-flat-button
+        (click)="
+          addFinancialImpactsFormGroup(this.form);
+          selectedAssumptionIndex = impacts.controls.length - 1;
+          sheet.open()
+        "
+        i18n
+      >
+        <mat-icon>add </mat-icon>
+        Auswirkung hinzufügen
+      </button>
+      <button mat-flat-button (click)="save()" i18n [disabled]="form.invalid">
+        <mat-icon>save </mat-icon>
+        Speichern
+      </button>
+    </div>
+  }
+</div>
+
+<app-base-sheet #sheet class="h-full">
+  @if (impacts.controls.length > 0) {
+    <app-update-financial-impact
+      [form]="form.controls.impacts.controls[selectedAssumptionIndex]"
+      [isFinal]="report().isFinalReport"
+    >
+    </app-update-financial-impact>
+  }
+</app-base-sheet>
