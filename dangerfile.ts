@@ -1,3 +1,7 @@
+// Parts of this Dangerfile are based on example code from the Danger JS documentation:
+// https://danger.systems/js/guides/getting_started.html
+// MIT License
+
 import { danger, markdown, warn } from 'danger';
 
 // ENFORCE LOCKFILE UP TO DATE
