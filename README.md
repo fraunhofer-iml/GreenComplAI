@@ -36,8 +36,18 @@
 
 ### 📄 Description <a id="description"></a>
 
-GreenComplAI will describe itself here in the future. You can find detailed
-[documentation](./documentation) in this repository.
+GreenComplAI provides companies with an innovative digital solution that has
+been specially designed to meet the challenges of sustainable supply chain
+development. The web-based platform records sustainability data along the entire
+value chain, automatically checks it for consistency using AI-supported
+plausibility mechanisms and documents it in a tamper-proof manner. A central
+dashboard provides real-time insights into key performance indicators - such as
+resource flows or product-specific circularity data such as recycling rates. In
+this way, GreenComplAI uncovers previously hidden sustainability potential in
+supply chains and actively supports companies in their sustainable
+transformation. The particular advantage: the data-based approach is flexible
+and can be applied to the most diverse aspects of supply chain transparency. You
+can find detailed [documentation](./documentation) in this repository.
 
 ### 🛠️ Built With <a id="built-with"></a>
 
