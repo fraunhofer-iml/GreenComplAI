@@ -3,7 +3,7 @@
 
   @if (analysisQuery.data()) {
     @for (item of analysisQuery.data(); track $index) {
-      <div echarts [options]="item" class="echart" [theme]="theme"></div>
+      <div echarts [options]="item" class="echart mb-12" [theme]="theme"></div>
     }
     @if (analysisQuery.data()?.length === 0) {
       <span class="text-sm">Keine Daten vorhanden</span>

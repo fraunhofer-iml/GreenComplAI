@@ -1,3 +1,4 @@
+;
 /*
  * Copyright Fraunhofer Institute for Material Flow and Logistics
  *
@@ -8,13 +9,17 @@
 
 import { EChartsOption, PieSeriesOption } from 'echarts';
 
+//Chart colours get overridden by the SkalaTheme (see styles/chart-theme.ts)
+
 export const getDefaultOption = (
-  legendItemsSelectable: boolean
+  legendItemsSelectable: boolean,
+  unit?: string
 ): EChartsOption => {
   return {
-    title: { text: '' },
+    title: {},
     tooltip: {
       trigger: 'item',
+      formatter: `{b}:<br/> {c} ${unit ? `${unit}` : ''}`,
     },
     legend: {
       bottom: '0',
@@ -38,10 +43,7 @@ export const getDefaultSeries = (): PieSeriesOption => {
       borderColor: '#2e3130',
       borderWidth: 1,
     },
-    label: {
-      show: false,
-      position: 'center',
-    },
+    label: { position: 'inside', formatter: '{d}%' },
     labelLine: {
       show: false,
     },

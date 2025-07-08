@@ -86,19 +86,23 @@ export class InflowAnalysisGraphComponent {
   ): EChartsOption[] {
     const rareEarths = this.createChartOption(
       'Eingekaufte seltene Erden',
-      analysis.rareEarths
+      analysis.rareEarths,
+      "kg"
     );
     const packaging = this.createChartOption(
       'Eingekaufte Verpackungen',
-      analysis.packagings
+      analysis.packagings,
+      "stk"
     );
     const materials = this.createChartOption(
       'Eingekaufte Materialien',
-      analysis.materials
+      analysis.materials,
+      "kg"
     );
     const criticalRawMaterials = this.createChartOption(
       'Eingekaufte kritische Rohstoffe',
-      analysis.criticalMaterials
+      analysis.criticalMaterials,
+      "kg"
     );
     return [packaging, rareEarths, materials, criticalRawMaterials];
   }
@@ -108,11 +112,13 @@ export class InflowAnalysisGraphComponent {
   ): EChartsOption[] {
     const amount = this.createChartOption(
       'Eingekaufte Produkte',
-      analysis.analysis.map((item) => [item.name, item.amount])
+      analysis.analysis.map((item) => [item.name, item.amount]),
+      "stk"
     );
     const water = this.createChartOption(
       'Verwendetes Wasser',
-      analysis.analysis.map((item) => [item.name, item.water])
+      analysis.analysis.map((item) => [item.name, item.water]),
+      "l"
     );
 
     return [water, amount];
@@ -123,21 +129,22 @@ export class InflowAnalysisGraphComponent {
   ): EChartsOption[] {
     const amount = this.createChartOption('Eingekaufte Produkte', [
       [analysis.name, analysis.amount],
-    ]);
+    ],"stk");
 
     const water = this.createChartOption('Verwendetes Wasser', [
       [analysis.name, analysis.water],
-    ]);
+    ], "l");
 
     return [amount, water];
   }
 
   private createChartOption(
     title: string,
-    data: [string, number][]
+    data: [string, number][],
+    unit?: string
   ): EChartsOption {
-    const chartOption: EChartsOption = getDefaultOption(true);
-    chartOption.title = { text: title };
+    const chartOption: EChartsOption = getDefaultOption(true, unit);
+    chartOption.title = { text: title,  };
 
     if (data.length === 0) chartOption.title.subtext = 'Keine Daten';
     else {
@@ -146,7 +153,7 @@ export class InflowAnalysisGraphComponent {
         value: +material[1].toFixed(2),
         name: material[0],
       }));
-      chartOption.series = tmpSeries;
+      chartOption.series = [tmpSeries];
     }
 
     return chartOption;

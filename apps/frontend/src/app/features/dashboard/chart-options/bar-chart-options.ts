@@ -8,6 +8,7 @@
 
 import { BarSeriesOption, EChartsOption } from 'echarts';
 
+//Chart colours get overridden by the SkalaTheme (see styles/chart-theme.ts)
 export const getBarChartOptions = (data: string[]): EChartsOption => {
   const option: EChartsOption = {
     tooltip: {
