@@ -1,0 +1,26 @@
+{
+  "modelType": "Submodel",
+  "id": "lawn-mower_compliance",
+  "idShort": "Compliance",
+  "kind": "Instance",
+  "displayName": [
+    {
+      "language": "en",
+      "text": "Compliance"
+    }
+  ],
+  "description": [
+    {
+      "language": "en",
+      "text": "Contains the compliance of the lawn mower."
+    }
+  ],
+  "submodelElements": [
+     {
+      "idShort": "EUBatteryDirective",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "[link]"
+    }
+  ]
+}

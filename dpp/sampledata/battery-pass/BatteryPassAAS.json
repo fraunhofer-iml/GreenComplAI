@@ -1,0 +1,91 @@
+{
+  "modelType": "AssetAdministrationShell",
+  "id": "urn:battery-pass:aas:demo-001",
+  "idShort": "BatteryPassDemo",
+  "assetInformation": {
+    "assetKind": "Instance",
+    "globalAssetId": "urn:battery-pass:product:nlz-dpp:v1"
+  },
+  "submodels": [
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "urn:battery-pass:submodel:general-product-information"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "urn:battery-pass:submodel:labeling"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "urn:battery-pass:submodel:material-composition"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "urn:battery-pass:submodel:chemical-composition"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "urn:battery-pass:submodel:carbon-footprint"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "urn:battery-pass:submodel:technical-specification"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "urn:battery-pass:submodel:state-of-health"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "urn:battery-pass:submodel:battery-certification"
+        }
+      ]
+    }
+  ]
+}

@@ -1,17 +1,10 @@
-import {AssetAdministrationShell} from "../data/AasZod";
-import {z} from "zod";
+import {AssetAdministrationShell, BaSyxAASResponse, Submodel} from "../data/AasZod";
 
 class AASService {
 
-    public static parseAASJsonToDataModel(json: unknown) {
-        // console.log(`AAS received - json: ${JSON.stringify(json)}`);
-        const parsed = typeof json === 'string' ? JSON.parse(json) : json;
-
-        // BaSyx liefert das Array unter dem Key "result"
-        const aasArray = parsed.result;
-        console.log(`AAS received - aasArray: ${JSON.stringify(aasArray)}`);
-
-        const result = z.array(AssetAdministrationShell).safeParse(aasArray);
+    public static async parseAASJsonToDataModel(json: unknown) {
+        console.log("parseAASJsonToDataModel: ", json);
+        const result = AssetAdministrationShell.safeParse(json);
 
         if (!result.success) {
             console.error('❌ Parsing/Validation Fehler:', JSON.stringify(result.error.format(), null, 2));
@@ -19,9 +12,19 @@ class AASService {
         }
 
         console.log("✅ JSON erfolgreich validiert.");
-        // console.log(`AAS received - result.data: ${JSON.stringify(result.data)}`);
-        // console.log(`AAS received - result.data[0]: ${JSON.stringify(result.data[0])}`);
-        return result.data[0]; // getyptes und validiertes AAS-Objekt
+        return result.data; // getyptes und validiertes AAS-Objekt
+    }
+
+    public static async parseSubmodelJsonToDataModel(json: unknown) {
+        const result = Submodel.safeParse(json);
+
+        if (!result.success) {
+            console.error("❌ Parsing/Validation Fehler:", JSON.stringify(result.error.format(), null, 2));
+            throw new Error("Ungültiges Submodel JSON.");
+        }
+
+        console.log("✅ Submodel JSON erfolgreich validiert.");
+        return result.data; // getyptes und validiertes Submodel-Objekt
     }
 }
 

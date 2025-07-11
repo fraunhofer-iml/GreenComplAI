@@ -1,0 +1,32 @@
+{
+  "modelType": "Submodel",
+  "id": "lawn-mower_environmental-footprint",
+  "idShort": "EnvironmentalFootprint",
+  "kind": "Instance",
+  "displayName": [
+    {
+      "language": "en",
+      "text": "Environmental Footprint"
+    }
+  ],
+  "description": [
+    {
+      "language": "en",
+      "text": "Contains the environmental footprint of the lawn mower."
+    }
+  ],
+  "submodelElements": [
+     {
+      "idShort": "CO2 footprint",
+      "modelType": "Property",
+      "valueType": "int",
+      "value": "69"
+    },
+    {
+      "idShort": "EnergyConsumption",
+      "modelType": "Property",
+      "valueType": "int",
+      "value": "100"
+    }
+  ]
+}

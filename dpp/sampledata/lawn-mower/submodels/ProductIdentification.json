@@ -1,0 +1,50 @@
+{
+  "modelType": "Submodel",
+  "id": "lawn-mower_product-identification",
+  "idShort": "ProductIdentification",
+  "kind": "Instance",
+  "displayName": [
+    {
+      "language": "en",
+      "text": "Product Identification"
+    }
+  ],
+  "description": [
+    {
+      "language": "en",
+      "text": "Contains product identification for the lawn mower."
+    }
+  ],
+  "submodelElements": [
+     {
+      "idShort": "ID",
+      "modelType": "Property",
+      "valueType": "int",
+      "value": "1234"
+    },
+    {
+      "idShort": "ProduceFamily",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "law mower"
+    },
+      {
+      "idShort": "ManufacturerName",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "Green Machines GmbH"
+    },
+      {
+      "idShort": "ModelNimber",
+      "modelType": "Property",
+      "valueType": "int",
+      "value": "567"
+    },
+      {
+      "idShort": "ProductionDate",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "2025-19-05"
+    }
+  ]
+}

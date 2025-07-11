@@ -2,9 +2,8 @@ services:
   aas-env:
     image: eclipsebasyx/aas-environment:2.0.0-SNAPSHOT
     container_name: aas-env
-    environment:
-      - SERVER_PORT=8081
-      - BASYX_CORS_ALLOWED-ORIGINS=http://localhost:3003,http://localhost:3003/*,http://localhost:8081,http://localhost:8081/*,*
+    env_file:
+      - ./basyx/aas-env.properties
     volumes:
       - ./aas:/application/aas
       - ./basyx/aas-env.properties:/application/application.properties
@@ -75,7 +74,7 @@ services:
     image: eclipsebasyx/aas-gui:SNAPSHOT
     container_name: aas-ui
     ports:
-      - '3003:3000'
+      - '3000:3000'
     environment:
       AAS_REGISTRY_PATH: http://localhost:8082/shell-descriptors
       SUBMODEL_REGISTRY_PATH: http://localhost:8083/submodel-descriptors

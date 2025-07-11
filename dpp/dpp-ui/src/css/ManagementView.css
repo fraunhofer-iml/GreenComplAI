@@ -1,0 +1,19 @@
+.create-dpp-paper {
+    width: 48%;
+    height: 100%;
+    text-align: center;
+    margin: auto;
+}
+
+.output-paper {
+    width: 48%;
+    height: 100%;
+    text-align: center;
+    margin: auto;
+}
+
+.output-field {
+    width: 80%;
+    margin-bottom: 5px !important;
+    margin-top: 5px !important;
+}

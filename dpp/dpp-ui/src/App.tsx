@@ -1,53 +1,26 @@
-import React, {useState} from 'react';
+import React from 'react';
 import './css/App.css';
-import {Box, Paper} from "@mui/material";
-import AASSelectPanel from "./view/AASSelectPanel";
-import {AAS} from "./data/AasZod";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LoginView from './view/LoginView';
+import ProfileView from "./view/ProfileView";
+import DashboardLayout from "./view/DashboardLayout";
+import Dashboard from "./view/Dashboard";
+import ManagementView from './view/ManagementView';
 
 function App() {
-
-    const [dpp, setDpp] = useState<AAS | null>(null);
-
     return (
-        <div style={{height: '100vh'}}>
-            <Box
-                sx={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    border: 'solid black 1px',
-                    background: '#ededed',
-                }}
-            >
-                {/*{dpp === null && (*/}
-                <>
-                    <Paper className="App-header">
-                        <h1>
-                            DPP App
-                        </h1>
-                    </Paper>
-                    <Paper className="select-dpp-paper">
-                        <AASSelectPanel
-                            setDpp={setDpp}
-                        />
-                    </Paper>
-                </>
-                {/*)}*/}
-                {dpp && (
-                    <>
-                        <Paper className="info-paper">
-                            <h1>
-                                DPP with ID {dpp.id}
-                            </h1>
-                            <br />
-                            <span>
-                                {JSON.stringify(dpp, null, 2)}
-                            </span>
-                            {/*<AASDisplayPanel/>*/}
-                        </Paper>
-                    </>
-                )}
-            </Box>
-        </div>
+        <Router>
+            <Routes>
+                <Route path="/" element={<LoginView />} />
+
+                {/* Protected layout */}
+                <Route path="/dashboard" element={<DashboardLayout />}>
+                    <Route index element={<Dashboard />} />
+                    <Route path="profile" element={<ProfileView />} />
+                    <Route path="management" element={<ManagementView />} />
+                </Route>
+            </Routes>
+        </Router>
     );
 }
 

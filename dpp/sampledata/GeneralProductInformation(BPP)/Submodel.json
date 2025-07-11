@@ -1,0 +1,596 @@
+{
+  "modelType": "Submodel",
+  "kind": "Template",
+  "semanticId": {
+    "keys": [
+      {
+        "type": "GlobalReference",
+        "value": "urn:samm:io.BatteryPass.GeneralProductInformation:1.2.0#GeneralProductInformation"
+      }
+    ],
+    "type": "ExternalReference"
+  },
+  "administration": {},
+  "id": "urn:samm:io.BatteryPass.GeneralProductInformation:1.2.0#GeneralProductInformation/submodel",
+  "description": [
+    {
+      "language": "en",
+      "text": "Mandatory data: Product identification; manufacturer?s identification; manufacturing place; manufacturing date; battery category; battery weight; battery status (Annex VI, Part A and Annex XIII)\nCopyright ? 2023 Circulor (for and on behalf of the Battery Pass Consortium). This work is li-censed under a Creative Commons License Attribution-NonCommercial 4.0 International (CC BY-NC 4.0). Readers may reproduce material for their own publications, as long as it is not sold com-mercially and is given appropriate attribution."
+    }
+  ],
+  "idShort": "GeneralProductInformation",
+  "submodelElements": [
+    {
+      "modelType": "Property",
+      "semanticId": {
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "urn:samm:io.BatteryPass.GeneralProductInformation:1.2.0#productIdentifier"
+          }
+        ],
+        "type": "ExternalReference"
+      },
+      "valueType": "xs:string",
+      "displayName": [
+        {
+          "language": "en",
+          "text": "ProductIdentifier"
+        }
+      ],
+      "idShort": "productIdentifier"
+    },
+    {
+      "modelType": "Property",
+      "semanticId": {
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "urn:samm:io.BatteryPass.GeneralProductInformation:1.2.0#batteryPassportIdentifier"
+          }
+        ],
+        "type": "ExternalReference"
+      },
+      "valueType": "xs:string",
+      "displayName": [
+        {
+          "language": "en",
+          "text": "BatteryPassportIdentifier"
+        }
+      ],
+      "idShort": "batteryPassportIdentifier"
+    },
+    {
+      "modelType": "Property",
+      "semanticId": {
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "urn:samm:io.BatteryPass.GeneralProductInformation:1.2.0#batteryCategory"
+          }
+        ],
+        "type": "ExternalReference"
+      },
+      "valueType": "xs:string",
+      "displayName": [
+        {
+          "language": "en",
+          "text": "BatteryCategory"
+        }
+      ],
+      "idShort": "batteryCategory"
+    },
+    {
+      "modelType": "SubmodelElementCollection",
+      "description": [
+        {
+          "language": "en",
+          "text": "Unambiguous identification of the manufacturer of the battery, suggested via a unique operator identifier (as \"unique string of characters for the identification of actors involved in the value chain of products\", ESPR Art. 2(32)). \n\nDIN DKE Spec chapter reference: 6.1.2.4"
+        }
+      ],
+      "displayName": [
+        {
+          "language": "en",
+          "text": "ManufacturerIdentification"
+        }
+      ],
+      "idShort": "manufacturerInformation",
+      "value": [
+        {
+          "modelType": "Property",
+          "semanticId": {
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "urn:samm:io.BatteryPass.GeneralProductInformation:1.2.0#contactName"
+              }
+            ],
+            "type": "ExternalReference"
+          },
+          "valueType": "xs:string",
+          "idShort": "contactName"
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "supplementalSemanticIds": [
+            {
+              "keys": [
+                {
+                  "type": "GlobalReference",
+                  "value": "https://schema.org/PostalAddress"
+                }
+              ],
+              "type": "ExternalReference"
+            }
+          ],
+          "idShort": "postalAddress",
+          "value": [
+            {
+              "modelType": "Property",
+              "semanticId": {
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "urn:samm:io.BatteryPass.GeneralProductInformation:1.2.0#addressCountry"
+                  }
+                ],
+                "type": "ExternalReference"
+              },
+              "supplementalSemanticIds": [
+                {
+                  "keys": [
+                    {
+                      "type": "GlobalReference",
+                      "value": "https://schema.org/addressCountry"
+                    }
+                  ],
+                  "type": "ExternalReference"
+                }
+              ],
+              "valueType": "xs:string",
+              "idShort": "addressCountry"
+            },
+            {
+              "modelType": "Property",
+              "semanticId": {
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "urn:samm:io.BatteryPass.GeneralProductInformation:1.2.0#postalCode"
+                  }
+                ],
+                "type": "ExternalReference"
+              },
+              "supplementalSemanticIds": [
+                {
+                  "keys": [
+                    {
+                      "type": "GlobalReference",
+                      "value": "https://schema.org/postalCode"
+                    }
+                  ],
+                  "type": "ExternalReference"
+                }
+              ],
+              "valueType": "xs:string",
+              "idShort": "postalCode"
+            },
+            {
+              "modelType": "Property",
+              "semanticId": {
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "urn:samm:io.BatteryPass.GeneralProductInformation:1.2.0#streetAddress"
+                  }
+                ],
+                "type": "ExternalReference"
+              },
+              "supplementalSemanticIds": [
+                {
+                  "keys": [
+                    {
+                      "type": "GlobalReference",
+                      "value": "https://schema.org/streetAddress"
+                    }
+                  ],
+                  "type": "ExternalReference"
+                }
+              ],
+              "valueType": "xs:string",
+              "idShort": "streetAddress"
+            }
+          ]
+        },
+        {
+          "modelType": "Property",
+          "semanticId": {
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "urn:samm:io.BatteryPass.GeneralProductInformation:1.2.0#identifier"
+              }
+            ],
+            "type": "ExternalReference"
+          },
+          "valueType": "xs:string",
+          "idShort": "identifier"
+        },
+        {
+          "modelType": "Property",
+          "semanticId": {
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "urn:samm:io.BatteryPass.GeneralProductInformation:1.2.0#emailAddress"
+              }
+            ],
+            "type": "ExternalReference"
+          },
+          "valueType": "xs:string",
+          "idShort": "emailAddress"
+        },
+        {
+          "modelType": "Property",
+          "semanticId": {
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "urn:samm:io.BatteryPass.GeneralProductInformation:1.2.0#webAddress"
+              }
+            ],
+            "type": "ExternalReference"
+          },
+          "valueType": "xs:anyURI",
+          "idShort": "webAddress"
+        }
+      ]
+    },
+    {
+      "modelType": "Property",
+      "semanticId": {
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "urn:samm:io.BatteryPass.GeneralProductInformation:1.2.0#manufacturingDate"
+          }
+        ],
+        "type": "ExternalReference"
+      },
+      "valueType": "xs:dateTime",
+      "idShort": "manufacturingDate"
+    },
+    {
+      "modelType": "Property",
+      "semanticId": {
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "urn:samm:io.BatteryPass.GeneralProductInformation:1.2.0#batteryStatus"
+          }
+        ],
+        "type": "ExternalReference"
+      },
+      "valueType": "xs:string",
+      "displayName": [
+        {
+          "language": "en",
+          "text": "BatteryStatus"
+        }
+      ],
+      "idShort": "batteryStatus"
+    },
+    {
+      "modelType": "Property",
+      "semanticId": {
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "urn:samm:io.BatteryPass.GeneralProductInformation:1.2.0#batteryMass"
+          }
+        ],
+        "type": "ExternalReference"
+      },
+      "valueType": "xs:float",
+      "idShort": "batteryMass"
+    },
+    {
+      "modelType": "SubmodelElementCollection",
+      "supplementalSemanticIds": [
+        {
+          "keys": [
+            {
+              "type": "GlobalReference",
+              "value": "https://schema.org/PostalAddress"
+            }
+          ],
+          "type": "ExternalReference"
+        }
+      ],
+      "description": [
+        {
+          "language": "en",
+          "text": "Unambiguous identification of the manufacturing facility (e.g. country, city, street, building (if needed)), suggested via a unique facility identifier (as \"unique string of characters for the identification of locations or buildings involved in the value chain of a product or used by actors involved in the value chain of a product\", ESPR Art. 2(33)).\n\nDIN DKE Spec chapter reference: 6.1.3.1"
+        }
+      ],
+      "displayName": [
+        {
+          "language": "en",
+          "text": "ManufacturingPlace"
+        }
+      ],
+      "idShort": "manufacturingPlace",
+      "value": [
+        {
+          "modelType": "Property",
+          "semanticId": {
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "urn:samm:io.BatteryPass.GeneralProductInformation:1.2.0#addressCountry"
+              }
+            ],
+            "type": "ExternalReference"
+          },
+          "supplementalSemanticIds": [
+            {
+              "keys": [
+                {
+                  "type": "GlobalReference",
+                  "value": "https://schema.org/addressCountry"
+                }
+              ],
+              "type": "ExternalReference"
+            }
+          ],
+          "valueType": "xs:string",
+          "idShort": "addressCountry"
+        },
+        {
+          "modelType": "Property",
+          "semanticId": {
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "urn:samm:io.BatteryPass.GeneralProductInformation:1.2.0#postalCode"
+              }
+            ],
+            "type": "ExternalReference"
+          },
+          "supplementalSemanticIds": [
+            {
+              "keys": [
+                {
+                  "type": "GlobalReference",
+                  "value": "https://schema.org/postalCode"
+                }
+              ],
+              "type": "ExternalReference"
+            }
+          ],
+          "valueType": "xs:string",
+          "idShort": "postalCode"
+        },
+        {
+          "modelType": "Property",
+          "semanticId": {
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "urn:samm:io.BatteryPass.GeneralProductInformation:1.2.0#streetAddress"
+              }
+            ],
+            "type": "ExternalReference"
+          },
+          "supplementalSemanticIds": [
+            {
+              "keys": [
+                {
+                  "type": "GlobalReference",
+                  "value": "https://schema.org/streetAddress"
+                }
+              ],
+              "type": "ExternalReference"
+            }
+          ],
+          "valueType": "xs:string",
+          "idShort": "streetAddress"
+        }
+      ]
+    },
+    {
+      "modelType": "SubmodelElementCollection",
+      "description": [
+        {
+          "language": "en",
+          "text": "State the name, trade name or mark, postal address, web ad-dress, e-mail address. Suggested reporting via a unique operator identifier (see requirements of unique battery identifier).\n\nDIN DKE Spec chapter reference: 6.1.2.3"
+        }
+      ],
+      "displayName": [
+        {
+          "language": "en",
+          "text": "OperatorInformation"
+        }
+      ],
+      "idShort": "operatorInformation",
+      "value": [
+        {
+          "modelType": "Property",
+          "semanticId": {
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "urn:samm:io.BatteryPass.GeneralProductInformation:1.2.0#contactName"
+              }
+            ],
+            "type": "ExternalReference"
+          },
+          "valueType": "xs:string",
+          "idShort": "contactName"
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "supplementalSemanticIds": [
+            {
+              "keys": [
+                {
+                  "type": "GlobalReference",
+                  "value": "https://schema.org/PostalAddress"
+                }
+              ],
+              "type": "ExternalReference"
+            }
+          ],
+          "idShort": "postalAddress",
+          "value": [
+            {
+              "modelType": "Property",
+              "semanticId": {
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "urn:samm:io.BatteryPass.GeneralProductInformation:1.2.0#addressCountry"
+                  }
+                ],
+                "type": "ExternalReference"
+              },
+              "supplementalSemanticIds": [
+                {
+                  "keys": [
+                    {
+                      "type": "GlobalReference",
+                      "value": "https://schema.org/addressCountry"
+                    }
+                  ],
+                  "type": "ExternalReference"
+                }
+              ],
+              "valueType": "xs:string",
+              "idShort": "addressCountry"
+            },
+            {
+              "modelType": "Property",
+              "semanticId": {
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "urn:samm:io.BatteryPass.GeneralProductInformation:1.2.0#postalCode"
+                  }
+                ],
+                "type": "ExternalReference"
+              },
+              "supplementalSemanticIds": [
+                {
+                  "keys": [
+                    {
+                      "type": "GlobalReference",
+                      "value": "https://schema.org/postalCode"
+                    }
+                  ],
+                  "type": "ExternalReference"
+                }
+              ],
+              "valueType": "xs:string",
+              "idShort": "postalCode"
+            },
+            {
+              "modelType": "Property",
+              "semanticId": {
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "urn:samm:io.BatteryPass.GeneralProductInformation:1.2.0#streetAddress"
+                  }
+                ],
+                "type": "ExternalReference"
+              },
+              "supplementalSemanticIds": [
+                {
+                  "keys": [
+                    {
+                      "type": "GlobalReference",
+                      "value": "https://schema.org/streetAddress"
+                    }
+                  ],
+                  "type": "ExternalReference"
+                }
+              ],
+              "valueType": "xs:string",
+              "idShort": "streetAddress"
+            }
+          ]
+        },
+        {
+          "modelType": "Property",
+          "semanticId": {
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "urn:samm:io.BatteryPass.GeneralProductInformation:1.2.0#identifier"
+              }
+            ],
+            "type": "ExternalReference"
+          },
+          "valueType": "xs:string",
+          "idShort": "identifier"
+        },
+        {
+          "modelType": "Property",
+          "semanticId": {
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "urn:samm:io.BatteryPass.GeneralProductInformation:1.2.0#emailAddress"
+              }
+            ],
+            "type": "ExternalReference"
+          },
+          "valueType": "xs:string",
+          "idShort": "emailAddress"
+        },
+        {
+          "modelType": "Property",
+          "semanticId": {
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "urn:samm:io.BatteryPass.GeneralProductInformation:1.2.0#webAddress"
+              }
+            ],
+            "type": "ExternalReference"
+          },
+          "valueType": "xs:anyURI",
+          "idShort": "webAddress"
+        }
+      ]
+    },
+    {
+      "modelType": "Property",
+      "semanticId": {
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "urn:samm:io.BatteryPass.GeneralProductInformation:1.2.0#puttingIntoService"
+          }
+        ],
+        "type": "ExternalReference"
+      },
+      "valueType": "xs:dateTime",
+      "idShort": "puttingIntoService"
+    },
+    {
+      "modelType": "Property",
+      "semanticId": {
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "urn:samm:io.BatteryPass.GeneralProductInformation:1.2.0#warrentyPeriod"
+          }
+        ],
+        "type": "ExternalReference"
+      },
+      "valueType": "xs:gMonth",
+      "idShort": "warrentyPeriod"
+    }
+  ]
+}

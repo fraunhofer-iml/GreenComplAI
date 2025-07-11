@@ -1,0 +1,83 @@
+{
+  "modelType": "AssetAdministrationShell",
+  "assetInformation": {
+    "assetKind": "Instance",
+    "assetType": "lawn-mower",
+    "globalAssetId": "lawn-mower"
+  },
+  "submodels": [
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "lawn-mower_product-identification"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "lawn-mower_technical-specification"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "lawn-mower_material-composition"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "lawn-mower_environmental-footprint"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "lawn-mower_repairability"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "lawn-mower_eol"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "lawn-mower_compliance"
+        }
+      ]
+    }
+  ],
+  "id": "lawn-mower",
+  "idShort": "lm"
+}
+
