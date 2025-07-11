@@ -1,0 +1,64 @@
+meta {
+  name: Creates a new Submodel
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:8081/submodels
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "modelType": "Submodel",
+    "id": "https://example.com/submodels/lawn-mower/technical-specification",
+    "idShort": "TechnicalSpecification",
+    "kind": "Instance",
+    "displayName": [
+      {
+        "language": "en",
+        "text": "Technical Specification"
+      }
+    ],
+    "description": [
+      {
+        "language": "en",
+        "text": "Contains technical specification for the lawn mower."
+      }
+    ],
+    "submodelElements": [
+       {
+        "idShort": "EngineType",
+        "modelType": "Property",
+        "valueType": "string",
+        "value": "Electric"
+      },
+      {
+        "idShort": "PowerRating",
+        "modelType": "Property",
+        "valueType": "string",
+        "value": "A"
+      },
+        {
+        "idShort": "Specs",
+        "modelType": "Property",
+        "valueType": "string",
+        "value": "Example specs"
+      },
+        {
+        "idShort": "dimensiosn",
+        "modelType": "Property",
+        "valueType": "int",
+        "value": "3x2"
+      },
+        {
+        "idShort": "weight",
+        "modelType": "Property",
+        "valueType": "int",
+        "value": "100"
+      }
+    ]
+  }
+}

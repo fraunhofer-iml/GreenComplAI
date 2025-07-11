@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "DPP AAS",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

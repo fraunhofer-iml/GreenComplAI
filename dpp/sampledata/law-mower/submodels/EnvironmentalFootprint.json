@@ -1,0 +1,32 @@
+{
+  "modelType": "Submodel",
+  "id": "https://example.com/submodels/lawn-mower/environmental-footprint",
+  "idShort": "EnvironmentalFootprint",
+  "kind": "Instance",
+  "displayName": [
+    {
+      "language": "en",
+      "text": "Environmental Footprint"
+    }
+  ],
+  "description": [
+    {
+      "language": "en",
+      "text": "Contains the environmental footpring of the lawn mower."
+    }
+  ],
+  "submodelElements": [
+    {
+      "idShort": "CO2 footpring",
+      "modelType": "Property",
+      "valueType": "int",
+      "value": "69"
+    },
+    {
+      "idShort": "EnergyConsumption",
+      "modelType": "Property",
+      "valueType": "int",
+      "value": "100"
+    }
+  ]
+}

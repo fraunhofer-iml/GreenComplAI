@@ -1,0 +1,22 @@
+.App-header {
+  background-color: white;
+  /*border: 1px solid black;*/
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  margin: 10px;
+}
+
+.info-paper {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  margin: 10px;
+}
+
+.select-dpp-paper {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  margin: 10px;
+}

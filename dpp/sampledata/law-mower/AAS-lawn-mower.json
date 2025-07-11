@@ -1,0 +1,83 @@
+{
+  "modelType": "AssetAdministrationShell",
+  "assetInformation": {
+    "assetKind": "Instance",
+    "assetType": "lawn-mower",
+    "globalAssetId": "https://example.com/shell/lawn-mower"
+  },
+  "submodels": [
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "https://example.com/submodels/lawn-mower/product-identification"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "https://example.com/submodels/lawn-mower/technical-specification"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "https://example.com/submodels/lawn-mower/material-composition"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "https://example.com/submodels/lawn-mower/environmental-footprint"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "https://example.com/submodels/lawn-mower/repairability"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "https://example.com/submodels/lawn-mower/eol"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "https://example.com/submodels/lawn-mower/compliance"
+        }
+      ]
+    }
+  ],
+  "id": "https://example.com/shell/lawn-mower",
+  "idShort": "lawn-mower"
+}
+

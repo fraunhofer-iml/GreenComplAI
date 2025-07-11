@@ -1,0 +1,93 @@
+meta {
+  name: Creates a new AAS
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:8081/shells
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "modelType": "AssetAdministrationShell",
+    "assetInformation": {
+      "assetKind": "Instance",
+      "assetType": "law-mower",
+      "defaultThumbnail": {
+        "contentType": "",
+        "path": ""
+      },
+      "globalAssetId": "https://example.com/shell/lawn-mower"
+    },
+    "submodels": [
+      {
+        "keys": [
+          {
+            "type": "Submodel",
+            "value": "https://example.com/submodels/lawn-mower/product-identification"
+          }
+        ],
+        "type": "ExternalReference"
+      },
+      {
+        "keys": [
+          {
+            "type": "Submodel",
+            "value": "https://example.com/submodels/lawn-mower/technical-specification"
+          }
+        ],
+        "type": "ExternalReference"
+      },
+        {
+        "keys": [
+          {
+            "type": "Submodel",
+            "value": "https://example.com/submodels/lawn-mower/material-composition"
+          }
+        ],
+        "type": "ExternalReference"
+      },
+      {
+        "keys": [
+          {
+            "type": "Submodel",
+            "value": "https://example.com/submodels/lawn-mower/environmental-footprint"
+          }
+        ],
+        "type": "ExternalReference"
+      },
+      {
+        "keys": [
+          {
+            "type": "Submodel",
+            "value": "https://example.com/submodels/lawn-mower/repairability"
+          }
+        ],
+        "type": "ExternalReference"
+      },
+       {
+        "keys": [
+          {
+            "type": "Submodel",
+            "value": "https://example.com/submodels/lawn-mower/eol"
+          }
+        ],
+        "type": "ExternalReference"
+      },
+      {
+        "keys": [
+          {
+            "type": "Submodel",
+            "value": "https://example.com/submodels/lawn-mower/compliance"
+          }
+        ],
+        "type": "ExternalReference"
+      }
+    ],
+    "id": "https://example.com/shell/lawn-mower",
+    "idShort": "law-mower"
+  }
+}
