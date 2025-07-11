@@ -1,0 +1,33 @@
+{
+  "idShort": "ProductionLocation",
+  "id": "Klemmbeschlag-8mm-klar-ggs:production-location",
+  "semanticId": {
+    "type": "ModelReference",
+    "keys": [
+      {
+        "type": "Submodel",
+        "value": "submodel-production-location"
+      }
+    ]
+  },
+  "description": [
+    {
+      "language": "en",
+      "text": "Contains production location information"
+    }
+  ],
+  "submodelElements": [
+    {
+      "idShort": "location",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "null",
+      "description": [
+        {
+          "language": "en",
+          "text": "Production location (currently empty)"
+        }
+      ]
+    }
+  ]
+}

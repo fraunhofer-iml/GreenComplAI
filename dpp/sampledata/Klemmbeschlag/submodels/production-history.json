@@ -1,0 +1,45 @@
+{
+  "idShort": "ProductionHistory",
+  "id": "Klemmbeschlag-8mm-klar-ggs:production-history",
+  "semanticId": {
+    "type": "ModelReference",
+    "keys": [
+      {
+        "type": "Submodel",
+        "value": "submodel-production-history"
+      }
+    ]
+  },
+  "description": [
+    {
+      "language": "en",
+      "text": "Contains production history information"
+    }
+  ],
+  "submodelElements": [
+    {
+      "idShort": "amount",
+      "modelType": "Property",
+      "valueType": "integer",
+      "value": 1345,
+      "description": [
+        {
+          "language": "en",
+          "text": "amount of products produced"
+        }
+      ]
+    },
+    {
+      "idShort": "year",
+      "modelType": "Property",
+      "valueType": "integer",
+      "value": 2024,
+      "description": [
+        {
+          "language": "en",
+          "text": "year of production"
+        }
+      ]
+    }
+  ]
+}

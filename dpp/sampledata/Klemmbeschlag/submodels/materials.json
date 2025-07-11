@@ -1,0 +1,45 @@
+{
+  "idShort": "Materials",
+  "id": "Klemmbeschlag-8mm-klar-ggs:materials",
+  "semanticId": {
+    "type": "ModelReference",
+    "keys": [
+      {
+        "type": "Submodel",
+        "value": "submodel-materials"
+      }
+    ]
+  },
+  "description": [
+    {
+      "language": "en",
+      "text": "Contains material information"
+    }
+  ],
+  "submodelElements": [
+    {
+      "idShort": "Material",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "Metal",
+      "description": [
+        {
+          "language": "en",
+          "text": "Name of the material"
+        }
+      ]
+    },
+    {
+      "idShort": "Percentage",
+      "modelType": "Property",
+      "valueType": "double",
+      "value": 50,
+      "description": [
+        {
+          "language": "en",
+          "text": "Percentage of the material"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "idShort": "Waste",
+  "id": "Klemmbeschlag-8mm-klar-ggs:waste",
+  "semanticId": {
+    "type": "ModelReference",
+    "keys": [
+      {
+        "type": "Submodel",
+        "value": "submodel-waste"
+      }
+    ]
+  },
+  "description": [
+    {
+      "language": "en",
+      "text": "Contains waste information"
+    }
+  ],
+  "submodelElements": [
+    {
+      "idShort": "recycledWastePercentage",
+      "modelType": "Property",
+      "valueType": "double",
+      "value": 50,
+      "description": [
+        {
+          "language": "en",
+          "text": "Percentage of waste that is recycled"
+        }
+      ]
+    },
+    {
+      "idShort": "wasteMaterials",
+      "modelType": "SubmodelElementCollection",
+      "value": [
+        {
+          "idShort": "Material1",
+          "modelType": "Property",
+          "valueType": "string",
+          "value": "Metal (50%, 13350 kg)",
+          "description": [
+            {
+              "language": "en",
+              "text": "Waste material details"
+            }
+          ]
+        },
+        {
+          "idShort": "Material2",
+          "modelType": "Property",
+          "valueType": "string",
+          "value": "Aluminium (10%, 2670 kg)",
+          "description": [
+            {
+              "language": "en",
+              "text": "Waste material details"
+            }
+          ]
+        },
+        {
+          "idShort": "Material3",
+          "modelType": "Property",
+          "valueType": "string",
+          "value": "Pappe (40%, 10680 kg)",
+          "description": [
+            {
+              "language": "en",
+              "text": "Waste material details"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

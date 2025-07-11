@@ -1,0 +1,33 @@
+{
+  "idShort": "WarehouseLocation",
+  "id": "Klemmbeschlag-8mm-klar-ggs:warehouse-location",
+  "semanticId": {
+    "type": "ModelReference",
+    "keys": [
+      {
+        "type": "Submodel",
+        "value": "submodel-warehouse-location"
+      }
+    ]
+  },
+  "description": [
+    {
+      "language": "en",
+      "text": "Contains warehouse location information"
+    }
+  ],
+  "submodelElements": [
+    {
+      "idShort": "location",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "null",
+      "description": [
+        {
+          "language": "en",
+          "text": "Warehouse location (currently empty)"
+        }
+      ]
+    }
+  ]
+}

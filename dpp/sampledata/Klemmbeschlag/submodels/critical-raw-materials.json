@@ -1,0 +1,57 @@
+{
+  "idShort": "CriticalRawMaterials",
+  "id": "Klemmbeschlag-8mm-klar-ggs:critical-raw-materials",
+  "semanticId": {
+    "type": "ModelReference",
+    "keys": [
+      {
+        "type": "Submodel",
+        "value": "submodel-critical-raw-materials"
+      }
+    ]
+  },
+  "description": [
+    {
+      "language": "en",
+      "text": "Contains critical raw material information"
+    }
+  ],
+  "submodelElements": [
+    {
+      "idShort": "Material1",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "Phosphor: 2.5%",
+      "description": [
+        {
+          "language": "en",
+          "text": "Critical raw material details"
+        }
+      ]
+    },
+    {
+      "idShort": "Material2",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "Arsen: 2.5%",
+      "description": [
+        {
+          "language": "en",
+          "text": "Critical raw material details"
+        }
+      ]
+    },
+    {
+      "idShort": "Material3",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "Strontium: 2.5%",
+      "description": [
+        {
+          "language": "en",
+          "text": "Critical raw material details"
+        }
+      ]
+    }
+  ]
+}

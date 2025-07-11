@@ -74,7 +74,7 @@ services:
     image: eclipsebasyx/aas-gui:SNAPSHOT
     container_name: aas-ui
     ports:
-      - '3000:3000'
+      - '3007:3000'
     environment:
       AAS_REGISTRY_PATH: http://localhost:8082/shell-descriptors
       SUBMODEL_REGISTRY_PATH: http://localhost:8083/submodel-descriptors

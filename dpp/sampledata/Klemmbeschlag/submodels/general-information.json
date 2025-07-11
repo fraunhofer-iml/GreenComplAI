@@ -1,0 +1,237 @@
+{
+  "idShort": "GeneralInformation",
+  "id": "Klemmbeschlag-8mm-klar-ggs:general-information",
+  "semanticId": {
+    "type": "ModelReference",
+    "keys": [
+      {
+        "type": "Submodel",
+        "value": "submodel-general-info"
+      }
+    ]
+  },
+  "description": [
+    {
+      "language": "en",
+      "text": "Contains general product information"
+    }
+  ],
+  "submodelElements": [
+    {
+      "idShort": "name",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "Klemmbeschlag für Ganzglasanlage, 8mm Klar",
+      "description": [
+        {
+          "language": "en",
+          "text": "name of the product"
+        }
+      ]
+    },
+    {
+      "idShort": "description",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "Klemmbeschlag für Ganzglasanlage, 8mm Klar",
+      "description": [
+        {
+          "language": "en",
+          "text": "description of the product"
+        }
+      ]
+    },
+    {
+      "idShort": "category",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "Klemmbeschläge",
+      "description": [
+        {
+          "language": "en",
+          "text": "category of the product"
+        }
+      ]
+    },
+    {
+      "idShort": "weight",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "0.39",
+      "description": [
+        {
+          "language": "en",
+          "text": "weight of the product"
+        }
+      ]
+    },
+    {
+      "idShort": "unit",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "kg",
+      "description": [
+        {
+          "language": "en",
+          "text": "unit of the product"
+        }
+      ]
+    },
+    {
+      "idShort": "price",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "100",
+      "description": [
+        {
+          "language": "en",
+          "text": "price of the product"
+        }
+      ]
+    },
+    {
+      "idShort": "dimensions",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "2058x935x8",
+      "description": [
+        {
+          "language": "en",
+          "text": "dimensions of the product"
+        }
+      ]
+    },
+    {
+      "idShort": "percentageOfBiologicalMaterials",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "0.5",
+      "description": [
+        {
+          "language": "en",
+          "text": "percentageOfBiologicalMaterials of the product"
+        }
+      ]
+    },
+    {
+      "idShort": "isSellable",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "False",
+      "description": [
+        {
+          "language": "en",
+          "text": "isSellable of the product"
+        }
+      ]
+    },
+    {
+      "idShort": "certificationSystem",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "",
+      "description": [
+        {
+          "language": "en",
+          "text": "certificationSystem of the product"
+        }
+      ]
+    },
+    {
+      "idShort": "cascadePrinciple",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "",
+      "description": [
+        {
+          "language": "en",
+          "text": "cascadePrinciple of the product"
+        }
+      ]
+    },
+    {
+      "idShort": "circularPrinciple",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "True",
+      "description": [
+        {
+          "language": "en",
+          "text": "circularPrinciple of the product"
+        }
+      ]
+    },
+    {
+      "idShort": "durability",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "",
+      "description": [
+        {
+          "language": "en",
+          "text": "durability of the product"
+        }
+      ]
+    },
+    {
+      "idShort": "durabilityDifference",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "",
+      "description": [
+        {
+          "language": "en",
+          "text": "durabilityDifference of the product"
+        }
+      ]
+    },
+    {
+      "idShort": "reparability",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "",
+      "description": [
+        {
+          "language": "en",
+          "text": "reparability of the product"
+        }
+      ]
+    },
+    {
+      "idShort": "billOfMaterialDescription",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "",
+      "description": [
+        {
+          "language": "en",
+          "text": "billOfMaterialDescription of the product"
+        }
+      ]
+    },
+    {
+      "idShort": "waterUsed",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "5200",
+      "description": [
+        {
+          "language": "en",
+          "text": "waterUsed of the product"
+        }
+      ]
+    },
+    {
+      "idShort": "wasteFlow",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "Haldenabfälle",
+      "description": [
+        {
+          "language": "en",
+          "text": "wasteFlow of the product"
+        }
+      ]
+    }
+  ]
+}

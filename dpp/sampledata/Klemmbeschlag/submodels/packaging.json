@@ -1,0 +1,75 @@
+{
+  "idShort": "Packagings",
+  "id": "Klemmbeschlag-8mm-klar-ggs:packagings",
+  "semanticId": {
+    "type": "ModelReference",
+    "keys": [
+      {
+        "type": "Submodel",
+        "value": "submodel-packagings"
+      }
+    ]
+  },
+  "description": [
+    {
+      "language": "en",
+      "text": "Contains packaging information"
+    }
+  ],
+  "submodelElements": [
+    {
+      "idShort": "Packaging1",
+      "modelType": "SubmodelElementCollection",
+      "value": [
+        {
+          "idShort": "name",
+          "modelType": "Property",
+          "valueType": "string",
+          "value": "EcoBox 500",
+          "description": [
+            {
+              "language": "en",
+              "text": "Name of the packaging"
+            }
+          ]
+        },
+        {
+          "idShort": "weight",
+          "modelType": "Property",
+          "valueType": "double",
+          "value": 0.25,
+          "description": [
+            {
+              "language": "en",
+              "text": "Weight of the packaging"
+            }
+          ]
+        },
+        {
+          "idShort": "percentageOfRenewableMaterial",
+          "modelType": "Property",
+          "valueType": "double",
+          "value": 0.25,
+          "description": [
+            {
+              "language": "en",
+              "text": "Percentage of renewable material"
+            }
+          ]
+        },
+        {
+          "idShort": "percentageOfRecycledMaterial",
+          "modelType": "Property",
+          "valueType": "double",
+          "value": 0.5,
+          "description": [
+            {
+              "language": "en",
+              "text": "Percentage of recycled material"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

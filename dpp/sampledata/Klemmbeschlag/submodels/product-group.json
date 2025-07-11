@@ -1,0 +1,57 @@
+{
+  "idShort": "ProductGroup",
+  "id": "Klemmbeschlag-8mm-klar-ggs:product-group",
+  "semanticId": {
+    "type": "ModelReference",
+    "keys": [
+      {
+        "type": "Submodel",
+        "value": "submodel-product-group"
+      }
+    ]
+  },
+  "description": [
+    {
+      "language": "en",
+      "text": "Contains product group information"
+    }
+  ],
+  "submodelElements": [
+    {
+      "idShort": "id",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "group-1",
+      "description": [
+        {
+          "language": "en",
+          "text": "ID of the product group"
+        }
+      ]
+    },
+    {
+      "idShort": "name",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "Tür",
+      "description": [
+        {
+          "language": "en",
+          "text": "Name of the product group"
+        }
+      ]
+    },
+    {
+      "idShort": "description",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "Türen und Türzubehör wie Klemmbeschläge, Türdrücker und andere Beschlagteile",
+      "description": [
+        {
+          "language": "en",
+          "text": "Description of the product group"
+        }
+      ]
+    }
+  ]
+}

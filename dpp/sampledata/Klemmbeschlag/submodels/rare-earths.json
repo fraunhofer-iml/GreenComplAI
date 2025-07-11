@@ -1,0 +1,33 @@
+{
+  "idShort": "RareEarths",
+  "id": "Klemmbeschlag-8mm-klar-ggs:rare-earths",
+  "semanticId": {
+    "type": "ModelReference",
+    "keys": [
+      {
+        "type": "Submodel",
+        "value": "submodel-rare-earths"
+      }
+    ]
+  },
+  "description": [
+    {
+      "language": "en",
+      "text": "Contains rare earth materials information"
+    }
+  ],
+  "submodelElements": [
+    {
+      "idShort": "RareEarth1",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "Cer: 0.56%",
+      "description": [
+        {
+          "language": "en",
+          "text": "Rare earth material details"
+        }
+      ]
+    }
+  ]
+}

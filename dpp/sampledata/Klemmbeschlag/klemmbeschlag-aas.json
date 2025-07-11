@@ -1,0 +1,131 @@
+{
+  "modelType": "AssetAdministrationShell",
+  "id": "Klemmbeschlag-8mm-klar-ggs",
+  "idShort": "product-1",
+  "assetInformation": {
+    "assetKind": "Instance",
+    "globalAssetId": "Klemmbeschlag-8mm-klar-ggs"
+  },
+  "submodels": [
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "Klemmbeschlag-8mm-klar-ggs:general-information"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "Klemmbeschlag-8mm-klar-ggs:production-history"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "Klemmbeschlag-8mm-klar-ggs:manufacturer"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "Klemmbeschlag-8mm-klar-ggs:materials"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "Klemmbeschlag-8mm-klar-ggs:supplier"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "Klemmbeschlag-8mm-klar-ggs:waste"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "Klemmbeschlag-8mm-klar-ggs:product-group"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "Klemmbeschlag-8mm-klar-ggs:warehouse-location"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "Klemmbeschlag-8mm-klar-ggs:production-location"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "Klemmbeschlag-8mm-klar-ggs:rare-earths"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "Klemmbeschlag-8mm-klar-ggs:critical-raw-materials"
+        }
+      ]
+    },
+    {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "local": true,
+          "value": "Klemmbeschlag-8mm-klar-ggs:packagings"
+        }
+      ]
+    }
+  ]
+}

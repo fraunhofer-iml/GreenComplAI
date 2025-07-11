@@ -1,0 +1,99 @@
+{
+  "idShort": "Manufacturer",
+  "id": "Klemmbeschlag-8mm-klar-ggs:manufacturer",
+  "semanticId": {
+    "type": "ModelReference",
+    "keys": [
+      {
+        "type": "Submodel",
+        "value": "submodel-manufacturer"
+      }
+    ]
+  },
+  "description": [
+    {
+      "language": "en",
+      "text": "Contains manufacturer information"
+    }
+  ],
+  "submodelElements": [
+    {
+      "idShort": "id",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "company-2",
+      "description": [
+        {
+          "language": "en",
+          "text": "ID of the manufacturer"
+        }
+      ]
+    },
+    {
+      "idShort": "name",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "Schneider AG",
+      "description": [
+        {
+          "language": "en",
+          "text": "Name of the manufacturer"
+        }
+      ]
+    },
+    {
+      "idShort": "email",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "contact@schneider-ag.de",
+      "description": [
+        {
+          "language": "en",
+          "text": "Email of the manufacturer"
+        }
+      ]
+    },
+    {
+      "idShort": "phone",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "+49 40 9876543",
+      "description": [
+        {
+          "language": "en",
+          "text": "Phone number of the manufacturer"
+        }
+      ]
+    },
+    {
+      "idShort": "addresses",
+      "modelType": "SubmodelElementCollection",
+      "value": [
+        {
+          "idShort": "address-1",
+          "modelType": "Property",
+          "valueType": "string",
+          "value": "Second Avenue 45, 80331 Munich, Germany",
+          "description": [
+            {
+              "language": "en",
+              "text": "Address of the manufacturer"
+            }
+          ]
+        },
+        {
+          "idShort": "address-2",
+          "modelType": "Property",
+          "valueType": "string",
+          "value": "Industrial Road 78, 20095 Hamburg, Germany",
+          "description": [
+            {
+              "language": "en",
+              "text": "Additional address of the manufacturer"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

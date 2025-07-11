@@ -1,0 +1,69 @@
+{
+  "idShort": "Supplier",
+  "id": "Klemmbeschlag-8mm-klar-ggs:supplier",
+  "semanticId": {
+    "type": "ModelReference",
+    "keys": [
+      {
+        "type": "Submodel",
+        "value": "submodel-supplier"
+      }
+    ]
+  },
+  "description": [
+    {
+      "language": "en",
+      "text": "Contains supplier information"
+    }
+  ],
+  "submodelElements": [
+    {
+      "idShort": "id",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "company-2",
+      "description": [
+        {
+          "language": "en",
+          "text": "ID of the supplier"
+        }
+      ]
+    },
+    {
+      "idShort": "name",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "Schneider AG",
+      "description": [
+        {
+          "language": "en",
+          "text": "Name of the supplier"
+        }
+      ]
+    },
+    {
+      "idShort": "email",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "contact@schneider-ag.de",
+      "description": [
+        {
+          "language": "en",
+          "text": "Email of the supplier"
+        }
+      ]
+    },
+    {
+      "idShort": "phone",
+      "modelType": "Property",
+      "valueType": "string",
+      "value": "+49 40 9876543",
+      "description": [
+        {
+          "language": "en",
+          "text": "Phone number of the supplier"
+        }
+      ]
+    }
+  ]
+}

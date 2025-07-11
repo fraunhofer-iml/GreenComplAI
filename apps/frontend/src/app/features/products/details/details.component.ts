@@ -90,7 +90,9 @@ export class ProductDetailsComponent {
   productQuery = injectQuery(() => ({
     queryKey: ['products', this.id$()],
     queryFn: async (): Promise<ProductDto> => {
-      return this.productService.getById(this.id$() ?? '');
+      const prod = await this.productService.getById(this.id$() ?? '');
+      console.log(`prod: ${JSON.stringify(prod)}`);
+      return prod;
     },
     enabled: !!this.id$(),
   }));
