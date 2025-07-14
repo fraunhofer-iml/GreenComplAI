@@ -47,6 +47,7 @@
               150 * (analysisQuery.data()?.analysis?.analysis?.length ?? 1) +
               'px',
           }"
+          (chartInit)="onChartInit($event)"
         ></div>
       </div>
       <div
@@ -57,6 +58,7 @@
         [style]="{
           height: '140px',
         }"
+        (chartInit)="onChartLegendInit($event)"
       ></div>
     } @else {
       <span class="text-sm">Keine Daten vorhanden</span>

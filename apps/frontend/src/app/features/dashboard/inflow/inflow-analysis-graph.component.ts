@@ -22,7 +22,7 @@ import { SkalaTheme } from '../../../../styles/chart-theme';
 import { AnalysisService } from '../../../core/services/analysis/analysis.service';
 import {
   getDefaultOption,
-  getDefaultSeries,
+  getDefaultPieSeries,
 } from '../chart-options/pie-chart-options';
 
 @Component({
@@ -148,7 +148,7 @@ export class InflowAnalysisGraphComponent {
 
     if (data.length === 0) chartOption.title.subtext = 'Keine Daten';
     else {
-      const tmpSeries: PieSeriesOption = getDefaultSeries();
+      const tmpSeries: PieSeriesOption = getDefaultPieSeries();
       tmpSeries.data = data.map((material) => ({
         value: +material[1].toFixed(2),
         name: material[0],

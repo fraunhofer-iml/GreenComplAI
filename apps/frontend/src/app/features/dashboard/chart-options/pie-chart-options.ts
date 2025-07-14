@@ -24,6 +24,7 @@ export const getDefaultOption = (
     legend: {
       bottom: '0',
       left: '0',
+      show: true,
       textStyle: {
         color: '#fff',
       },
@@ -33,7 +34,7 @@ export const getDefaultOption = (
   };
 };
 
-export const getDefaultSeries = (): PieSeriesOption => {
+export const getDefaultPieSeries = (): PieSeriesOption => {
   return {
     type: 'pie',
     radius: ['40%', '90%'],
