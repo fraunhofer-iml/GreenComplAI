@@ -1,30 +1,41 @@
 <div
-  class="flex justify-between gap-2 hover:bg-stone-700"
+  class="flex items-center justify-between gap-2 hover:bg-neutral-300"
   (mouseenter)="flag = 'flagOutline.svg'"
   (mouseleave)="flag = ''"
 >
-  <div class="inline-flex items-baseline gap-2 font-medium">
+  <div class="inline-flex items-center gap-2 font-medium">
     {{ topic }}
-    <div class="cursor-pointer" role="none" (click)="toggleFlag()">
-      <div *ngIf="!data.includes(element); else SelectedFlag">
-        <img
-          class="min-h-2 min-w-2"
-          *ngIf="flag !== ''; else None"
-          (mouseenter)="flag = 'flagSelected.svg'"
-          (mouseleave)="flag = 'flagOutline.svg'"
-          [src]="flag"
-          [alt]="alt"
-        />
+    <div class="flex flex-row items-center">
+      <div class="cursor-pointer px-1" role="none" (click)="toggleFlag()">
+        <div *ngIf="!data.includes(element); else SelectedFlag">
+          <img
+            class="min-h-2 min-w-3"
+            *ngIf="flag !== ''; else None"
+            (mouseenter)="flag = 'flagSelected.svg'"
+            (mouseleave)="flag = 'flagOutline.svg'"
+            [src]="flag"
+            [alt]="alt"
+          />
+        </div>
       </div>
+      @if (outlier()?.includes(element.split('.')[1])) {
+        <span
+          class="material-symbols-outlined text-error-700 cursor-pointer"
+          matTooltip="als Ausreißer erkannt"
+          matTooltipPosition="above"
+          >smart_toy
+        </span>
+      }
     </div>
   </div>
+
   <ng-content></ng-content>
 </div>
 
 <ng-template #SelectedFlag>
-  <img class="min-h-2 min-w-2" [src]="'flagSelected.svg'" [alt]="alt" />
+  <img class="min-h-2 min-w-3" [src]="'flagSelected.svg'" [alt]="alt" />
 </ng-template>
 
 <ng-template #None>
-  <div class="min-h-2 min-w-2"></div>
+  <div class="min-h-2 min-w-3"></div>
 </ng-template>

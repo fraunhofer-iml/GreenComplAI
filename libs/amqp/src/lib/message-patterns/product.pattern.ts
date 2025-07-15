@@ -21,5 +21,7 @@ export enum ProductMessagePatterns {
   PACKAGING = '/products/find-packaging',
   GET_ANALYSIS = '/products/get-analysis',
   GET_FOR_OUTLIER_DETECTION = '/products/get-for-outlier-detection',
+  OUTLIERS = '/products/find-outliers',
   UPDATE_FLAGS = '/products/flags',
+  OUTLIERS_VALIDATE = '/products/validate',
 }

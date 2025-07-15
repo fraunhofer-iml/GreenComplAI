@@ -32,7 +32,7 @@
             [data]="data.flags"
             [topic]="'Produktname'"
             [element]="'name'"
-            ><span class="text-right">{{ data.name }}</span>
+            ><span class="text-right">{{ data.name }} test</span>
           </app-flagable>
 
           <app-flagable
@@ -342,7 +342,7 @@
       <app-bill-of-material
         class="col-span-3"
         [id$]="id$() ?? ''"
-        [description]="productQuery.data()?.billOfMaterialDescription"
+        [description]="productQuery.data()?.billOfMaterialDescription ?? ''"
         [flags]="productQuery.data()?.flags ?? []"
       ></app-bill-of-material>
 
@@ -358,6 +358,7 @@
         [id]="id$() ?? ''"
         [waste]="data.waste"
         [flags]="data.flags"
+        [outlier]="data.outlier ?? []"
         class="col-span-3"
       >
       </app-product-waste>

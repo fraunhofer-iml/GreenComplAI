@@ -11,7 +11,10 @@
     Abfall
   </div>
 
-  <app-waste-create [waste]="form"></app-waste-create>
+  <app-waste-create
+    [waste]="form"
+    [outlier]="productQuery.data()?.outlier ?? []"
+  ></app-waste-create>
 
   <div class="flex justify-end">
     <button mat-flat-button (click)="openDialog()">Speichern</button>

@@ -7,7 +7,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, computed, input, Input } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconButton } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -22,6 +22,8 @@ import {
 } from '../../../features/products/create/material.form-group';
 import { BaseSheetComponent } from '../sheet/base/sheet.component';
 import { WasteFormGroup } from './waste-form';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-waste-create',
@@ -37,12 +39,15 @@ import { WasteFormGroup } from './waste-form';
     SelectMaterialsComponent,
     MatIconButton,
     MatCheckboxModule,
+    MatBadgeModule,
+    MatTooltipModule,
   ],
   templateUrl: './waste-create.component.html',
 })
 export class WasteCreateComponent {
-  @Input()
-  waste!: FormGroup<WasteFormGroup>;
+  waste = input.required<FormGroup<WasteFormGroup>>();
+
+  outlier = input<string[]>([]);
 
   protected readonly addMaterialFormGroup = addMaterialFormGroup;
   protected readonly removeMaterialFormGroup = removeMaterialFormGroup;

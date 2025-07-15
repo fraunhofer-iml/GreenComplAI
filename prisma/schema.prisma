@@ -196,7 +196,9 @@ model Product {
 
   productionHistory ProductionHistory[]
 
-  flags String[]
+  flags     String[]
+  outlier   String[]
+  validated Boolean  @default(true)
 }
 
 model ProductionHistory {

@@ -25,4 +25,5 @@ export enum ApiUris {
   inFlow = '/analysis/in',
   reports = '/reports',
   mapping = '/mappings',
+  outlierAnalysis = '/analysis/outlier-detection',
 }

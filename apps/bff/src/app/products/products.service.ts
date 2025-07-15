@@ -16,16 +16,27 @@ import {
   GenerateAnalysisProp,
   PackagingDto,
   PaginatedData,
+  ProductCreateDto,
   ProductDto,
+  ProductOutlierDto,
+  ProductUpdateFlagsDto,
   SearchProductsProps,
+  UpdateFlagProductProps,
   UpdateProductDependenciesProps,
   UpdateProductionHistoryProps,
   UpdateProductProps,
   UpdateProductWasteProps,
 } from '@ap2/api-interfaces';
-import { firstValueFrom } from 'rxjs';
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import axios from 'axios';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class ProductsService {
@@ -33,16 +44,26 @@ export class ProductsService {
 
   constructor(
     @Inject(AmqpClientEnum.QUEUE_ENTITY_MANAGEMENT)
-    private readonly entityManagementService: ClientProxy
+    private readonly entityManagementService: ClientProxy,
   ) {}
 
-  create(props: CreateProductProps): Promise<ProductDto> {
-    return firstValueFrom(
-      this.entityManagementService.send<ProductDto>(
-        ProductMessagePatterns.CREATE,
-        props
-      )
-    );
+  async create({ dto }: Partial<CreateProductProps>): Promise<ProductDto> {
+    try {
+      const outlierDetectionEnabled = process.env.OUTLIER_DETECTION_ENABLED === 'true';
+      let outlierDetectionResult: string[] = [];
+      if (outlierDetectionEnabled) {
+        outlierDetectionResult = await this.runOutlierDetection(dto);
+      }
+
+      return firstValueFrom(
+        this.entityManagementService.send(ProductMessagePatterns.CREATE, {
+          dto,
+          outlierDetectionResult,
+        }),
+      );
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   findAll(props: FindAllProductsProps): Promise<PaginatedData<ProductDto>> {
@@ -51,6 +72,12 @@ export class ProductsService {
         ProductMessagePatterns.READ_ALL,
         props
       )
+    );
+  }
+
+  findOutliers(): Promise<ProductOutlierDto[]> {
+    return firstValueFrom(
+      this.entityManagementService.send(ProductMessagePatterns.OUTLIERS, {}),
     );
   }
 
@@ -123,12 +150,24 @@ export class ProductsService {
     );
   }
 
-  updateWaste(props: UpdateProductWasteProps): Promise<ProductDto> {
-    return firstValueFrom(
-      this.entityManagementService.send<ProductDto>(
+  async updateWaste(props: UpdateProductWasteProps) {
+    await firstValueFrom(
+      this.entityManagementService.send(
         ProductMessagePatterns.UPDATE_WASTE,
-        props
-      )
+        props,
+      ),
+    );
+
+    const validateProps: UpdateFlagProductProps = {
+      id: props.id,
+      dto: { flags: props.dto.fieldsToValidate },
+    };
+
+    return firstValueFrom(
+      this.entityManagementService.send(
+        ProductMessagePatterns.OUTLIERS_VALIDATE,
+        validateProps,
+      ),
     );
   }
 
@@ -159,12 +198,36 @@ export class ProductsService {
     );
   }
 
-  updateFlags(props: { id: string; dto: string[] }) {
+  updateFlags(props: { id: string; dto: ProductUpdateFlagsDto }) {
     return firstValueFrom(
       this.entityManagementService.send<ProductDto>(
         ProductMessagePatterns.UPDATE_FLAGS,
         props
       )
     );
+  }
+
+  validate(props: UpdateFlagProductProps): Promise<ProductOutlierDto> {
+    return firstValueFrom(
+      this.entityManagementService.send<ProductOutlierDto>(
+        ProductMessagePatterns.OUTLIERS_VALIDATE,
+        props,
+      ),
+    );
+  }
+
+  async runOutlierDetection(dto: ProductCreateDto): Promise<string[]> {
+    const res = await axios.post(
+      `${process.env.OUTLIER_DETECTION_URL}/outliers`,
+      {
+        recycledWastePercentage: dto.waste?.recycledWastePercentage ?? 0,
+      },
+    );
+
+    if (res.status !== 200) {
+      throw new Error('Failed to run outlier detection');
+    }
+
+    return res.data.outlier ? ['recycledWastePercentage'] : [];
   }
 }

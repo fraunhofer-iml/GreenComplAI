@@ -9,6 +9,7 @@
 import {
   AnalysisDto,
   GenerateAnalysisProp,
+  OutlierDetectionAnalysisDto,
   PackagingDto,
   ProductDto,
 } from '@ap2/api-interfaces';
@@ -20,6 +21,7 @@ import {
 } from '../utils/weight.utils';
 import { ProductService } from './products.service';
 import { productionHistoryAggregationQuery } from './queries/production-history-aggregation.query';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class ProductAnalysisService {
@@ -192,5 +194,62 @@ export class ProductAnalysisService {
       productionHistoryAggregationQuery(productIds, from, to)
     );
     return new Map(aggregation.map((a) => [a.productId, a._sum.amount]));
+  }
+
+  async getOutlierAnalysis(
+    productGroupId: string,
+  ): Promise<OutlierDetectionAnalysisDto> {
+    const where: Prisma.ProductWhereInput = {
+      AND: [
+        { NOT: { outlier: { equals: null } } },
+        { NOT: { outlier: { equals: [] } } },
+      ],
+    };
+
+    if (productGroupId) {
+      (where.AND as Prisma.ProductWhereInput[]).push({
+        productGroupId: productGroupId,
+      });
+    }
+
+    const products = await this.prismaService.product.groupBy({
+      by: [productGroupId ? 'id' : 'productGroupId'],
+      where: productGroupId ? { productGroupId: productGroupId } : undefined,
+      _count: true,
+    });
+
+    const outliers = await this.prismaService.product.groupBy({
+      by: [productGroupId ? 'id' : 'productGroupId'],
+      where: where,
+      _count: true,
+    });
+
+    const dto: OutlierDetectionAnalysisDto = {
+      totalNumberOfOutliers: 0,
+      totalNumberOfProducts: 0,
+      outliesByItem: [],
+    };
+
+    products.forEach((product) => {
+      dto.totalNumberOfProducts += product._count;
+      dto.outliesByItem.push({
+        id: productGroupId ? product.id : product.productGroupId,
+        numberOfOutliers: 0,
+        numberOfProducts: product._count,
+      });
+    });
+
+    outliers.forEach((outlier) => {
+      dto.totalNumberOfOutliers += outlier._count;
+      const index = dto.outliesByItem.findIndex(
+        (i) => i.id === (productGroupId ? outlier.id : outlier.productGroupId),
+      );
+
+      if (index > -1) {
+        dto.outliesByItem[index].numberOfOutliers += outlier._count;
+      }
+    });
+
+    return dto;
   }
 }

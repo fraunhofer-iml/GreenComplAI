@@ -31,6 +31,15 @@ export const productRoutes: Route[] = [
     data: { roles: [AuthRoles.SUSTAINABILITY_MANAGER, AuthRoles.BUYER] },
   },
   {
+    path: 'outliers',
+    loadComponent: () =>
+      import('./overview/outliers/outlier-table.component').then(
+        (m) => m.OutlierTableComponent
+      ),
+    canActivate: [AuthenticationGuard, RoleGuard],
+    data: { roles: [AuthRoles.SUSTAINABILITY_MANAGER, AuthRoles.BUYER] },
+  },
+  {
     path: ':id',
     loadComponent: () =>
       import('./details/details.component').then(

@@ -11,7 +11,11 @@ import {
   AnalysisMessagePatterns,
   AnalysisQuery,
 } from '@ap2/amqp';
-import { InFlowAnalysisDto, WasteFlowAnalysisDto } from '@ap2/api-interfaces';
+import {
+  InFlowAnalysisDto,
+  OutlierDetectionAnalysisDto,
+  WasteFlowAnalysisDto,
+} from '@ap2/api-interfaces';
 import { lastValueFrom } from 'rxjs';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
@@ -40,6 +44,15 @@ export class AnalysisService {
         AnalysisMessagePatterns.GET_IN_FLOW_ANALYSIS,
         query
       )
+    );
+  }
+
+  getOutlierDetectionAnalysis(productGroupId?: string) {
+    return lastValueFrom(
+      this.entityManagementService.send<OutlierDetectionAnalysisDto>(
+        AnalysisMessagePatterns.GET_OUTLIER_ANALYSIS,
+        productGroupId,
+      ),
     );
   }
 }

@@ -59,10 +59,11 @@ export class ProductCreateDto {
   circularPrinciple?: boolean;
   productionHistory?: { amount: number; year: number }[];
   flags: string[];
+  outliers?: string[];
 
   constructor(
     name: string,
-    flags: string[],
+    flags?: string[],
     isSellable?: boolean,
     description?: string,
     category?: string,
@@ -95,7 +96,8 @@ export class ProductCreateDto {
     wasteFlow?: string,
     cascadePrincipal?: string,
     certification?: string,
-    circularPrinciple?: boolean
+    circularPrinciple?: boolean,
+    outliers?: string[],
   ) {
     this.name = name;
     this.isSellable = isSellable;
@@ -128,6 +130,7 @@ export class ProductCreateDto {
     this.reparability = reparability;
     this.circularPrinciple = circularPrinciple;
     this.productionHistory = producedItemsPerYear;
-    this.flags = flags;
+    this.flags = flags ?? [];
+    this.outliers = outliers ?? [];
   }
 }

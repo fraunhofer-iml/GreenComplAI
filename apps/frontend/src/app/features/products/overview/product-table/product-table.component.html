@@ -28,6 +28,21 @@
       (matSortChange)="onSortChange($event)"
       matSortDisableClear
     >
+      <ng-container matColumnDef="flagged">
+        <th class="!border-neutral-350" mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element" [routerLink]="[element.id]">
+          @if (element.flags && element.flags.length > 0) {
+            <span>
+              <img
+                class="min-h-2.5 min-w-3"
+                [src]="'flagSelected.svg'"
+                [alt]="'Element is flagged'"
+                [matTooltip]="TooltipMessages.tooltipEdit"
+              />
+            </span>
+          }
+        </td>
+      </ng-container>
       <ng-container matColumnDef="productId">
         <th
           class="!border-neutral-350"
@@ -44,11 +59,8 @@
           *matCellDef="let element"
           [routerLink]="[element.id]"
         >
-          <div class="w-full flex gap-2">
+          <div class="flex w-full gap-2">
             {{ element.productId }}
-            @if (element.flags && element.flags.length > 0){
-              <img class="h-4" [src]="'flagSelected.svg'" [alt]="'Element is flagged'" [matTooltip]="TooltipMessages.tooltipEdit"/>
-            }
           </div>
         </td>
       </ng-container>

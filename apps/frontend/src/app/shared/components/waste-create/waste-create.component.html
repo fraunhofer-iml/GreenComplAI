@@ -1,33 +1,44 @@
 <div class="flex w-full flex-col gap-2 rounded-lg bg-neutral-200 p-8">
   <span class="col-span-3">Angaben zum Abfall</span>
-  @if (waste) {
-    <div class="grid grid-cols-1 gap-2 md:grid-cols-3" [formGroup]="waste">
+  @if (waste()) {
+    <div class="grid grid-cols-1 gap-2 md:grid-cols-3" [formGroup]="waste()">
       <mat-form-field appearance="outline">
         <mat-label>Menge an radioaktiven Materialien</mat-label>
         <input
           matInput
           type="number"
-          [formControl]="waste.controls.radioactiveAmount"
+          [formControl]="waste().controls.radioactiveAmount"
         />
       </mat-form-field>
+
       <mat-form-field appearance="outline">
         <mat-label>Anteil des recycelten Abfalls</mat-label>
         <input
           matInput
           type="number"
-          [formControl]="waste.controls.recycledWastePercentage"
+          [formControl]="waste().controls.recycledWastePercentage"
         />
+        @if (outlier().includes('recycledWastePercentage')) {
+          <span
+            matSuffix
+            matTooltip="als Ausreißer erkannt"
+            matTooltipPosition="above"
+            class="text-error-700 material-symbols-outlined mr-2 cursor-pointer"
+            >smart_toy</span
+          >
+        }
       </mat-form-field>
+
       <mat-form-field appearance="outline">
         <mat-label>Materialien</mat-label>
         <mat-chip-grid #materialsChips>
           @for (
-            item of waste.controls.wasteMaterials.value.materials;
+            item of waste().controls.wasteMaterials.value.materials;
             track $index
           ) {
             @if (item.material && item.percentage) {
               <mat-chip-row [aria-description]="'material'"
-                >{{ item.material }} ({{ item.percentage }}%)</mat-chip-row
+                >{{ item.material }} ({{ item.percentage }} %)</mat-chip-row
               >
             }
           }
@@ -48,7 +59,7 @@
 
     <div
       class="grid grid-cols-1 gap-2 md:grid-cols-3"
-      [formGroup]="waste.controls.normalWaste"
+      [formGroup]="waste().controls.normalWaste"
     >
       <h2 class="col-span-3 mb-4">Nicht gefährliche Abfälle</h2>
       <mat-form-field appearance="outline">
@@ -57,7 +68,7 @@
           matInput
           type="number"
           [formControl]="
-            waste.controls.normalWaste.controls.utilizableWaste.controls
+            waste().controls.normalWaste.controls.utilizableWaste.controls
               .preparationForRecyclingWeight
           "
         />
@@ -68,7 +79,7 @@
           matInput
           type="number"
           [formControl]="
-            waste.controls.normalWaste.controls.utilizableWaste.controls
+            waste().controls.normalWaste.controls.utilizableWaste.controls
               .recyclingWeight
           "
         />
@@ -79,7 +90,7 @@
           matInput
           type="number"
           [formControl]="
-            waste.controls.normalWaste.controls.utilizableWaste.controls
+            waste().controls.normalWaste.controls.utilizableWaste.controls
               .miscellaneousWeight
           "
         />
@@ -90,7 +101,7 @@
           matInput
           type="number"
           [formControl]="
-            waste.controls.normalWaste.controls.nonUtilizableWaste.controls
+            waste().controls.normalWaste.controls.nonUtilizableWaste.controls
               .landfillWeight
           "
         />
@@ -101,7 +112,7 @@
           matInput
           type="number"
           [formControl]="
-            waste.controls.normalWaste.controls.nonUtilizableWaste.controls
+            waste().controls.normalWaste.controls.nonUtilizableWaste.controls
               .combustionWeight
           "
         />
@@ -112,7 +123,7 @@
           matInput
           type="number"
           [formControl]="
-            waste.controls.normalWaste.controls.nonUtilizableWaste.controls
+            waste().controls.normalWaste.controls.nonUtilizableWaste.controls
               .miscellaneousWeight
           "
         />
@@ -121,21 +132,24 @@
 
     <div class="my-4 h-[1px] w-full bg-neutral-400"></div>
 
-    <div class="mt-4 grid grid-cols-1 gap-2 md:grid-cols-3" [formGroup]="waste">
+    <div
+      class="mt-4 grid grid-cols-1 gap-2 md:grid-cols-3"
+      [formGroup]="waste()"
+    >
       <h2>Gefährliche Abfälle</h2>
       <section class="col-span-2">
         <mat-checkbox formControlName="hasHazardousWaste"
           >Enthält gefährliche Abfälle</mat-checkbox
         >
       </section>
-      @if (waste.controls.hasHazardousWaste.value) {
+      @if (waste().controls.hasHazardousWaste.value) {
         <mat-form-field appearance="outline">
           <mat-label>Vorbereitung zur Wiederverwertung (kg)</mat-label>
           <input
             matInput
             type="number"
             [formControl]="
-              waste.controls.hazardousWaste.controls.utilizableWaste.controls
+              waste().controls.hazardousWaste.controls.utilizableWaste.controls
                 .preparationForRecyclingWeight
             "
           />
@@ -146,7 +160,7 @@
             matInput
             type="number"
             [formControl]="
-              waste.controls.hazardousWaste.controls.utilizableWaste.controls
+              waste().controls.hazardousWaste.controls.utilizableWaste.controls
                 .recyclingWeight
             "
           />
@@ -157,7 +171,7 @@
             matInput
             type="number"
             [formControl]="
-              waste.controls.hazardousWaste.controls.utilizableWaste.controls
+              waste().controls.hazardousWaste.controls.utilizableWaste.controls
                 .miscellaneousWeight
             "
           />
@@ -168,8 +182,8 @@
             matInput
             type="number"
             [formControl]="
-              waste.controls.hazardousWaste.controls.nonUtilizableWaste.controls
-                .landfillWeight
+              waste().controls.hazardousWaste.controls.nonUtilizableWaste
+                .controls.landfillWeight
             "
           />
         </mat-form-field>
@@ -179,8 +193,8 @@
             matInput
             type="number"
             [formControl]="
-              waste.controls.hazardousWaste.controls.nonUtilizableWaste.controls
-                .combustionWeight
+              waste().controls.hazardousWaste.controls.nonUtilizableWaste
+                .controls.combustionWeight
             "
           />
         </mat-form-field>
@@ -190,8 +204,8 @@
             matInput
             type="number"
             [formControl]="
-              waste.controls.hazardousWaste.controls.nonUtilizableWaste.controls
-                .miscellaneousWeight
+              waste().controls.hazardousWaste.controls.nonUtilizableWaste
+                .controls.miscellaneousWeight
             "
           />
         </mat-form-field>
@@ -200,7 +214,7 @@
           <input
             matInput
             [formControl]="
-              waste.controls.hazardousWaste.controls.hazardousWasteType!
+              waste().controls.hazardousWaste.controls.hazardousWasteType!
             "
           />
         </mat-form-field>
@@ -212,10 +226,10 @@
 <app-base-sheet #materialSheet>
   <app-select-materials
     (closeSheetEvent)="materialSheet.close()"
-    (addMaterialEvent)="addMaterialFormGroup(waste.controls.wasteMaterials)"
+    (addMaterialEvent)="addMaterialFormGroup(waste().controls.wasteMaterials)"
     (removeMaterialEvent)="
-      removeMaterialFormGroup(waste.controls.wasteMaterials, $event)
+      removeMaterialFormGroup(waste().controls.wasteMaterials, $event)
     "
-    [form]="waste.controls.wasteMaterials"
+    [form]="waste().controls.wasteMaterials"
   ></app-select-materials>
 </app-base-sheet>

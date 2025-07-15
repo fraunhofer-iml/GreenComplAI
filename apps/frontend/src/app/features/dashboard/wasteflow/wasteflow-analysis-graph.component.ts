@@ -17,13 +17,20 @@ import { Component, input } from '@angular/core';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { SkalaTheme } from '../../../../styles/chart-theme';
 import { AnalysisService } from '../../../core/services/analysis/analysis.service';
-import { getBarChartOptions, getDefaultSeries } from '../chart-options/bar-chart-options';
+import {
+  getBarChartOptions,
+  getDefaultSeries,
+} from '../chart-options/bar-chart-options';
 import { getDefaultOption, getDefaultPieSeries } from '../chart-options/pie-chart-options';
-
+import { OutlierDetectionAnalysisComponent } from '../outliers/outlier-detection-analysis.component';
 
 @Component({
   selector: 'app-wasteflow-analysis-graph',
-  imports: [CommonModule, NgxEchartsDirective],
+  imports: [
+    CommonModule,
+    NgxEchartsDirective,
+    OutlierDetectionAnalysisComponent,
+  ],
   providers: [provideEchartsCore({ echarts })],
   templateUrl: './wasteflow-analysis-graph.component.html',
 })

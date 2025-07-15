@@ -12,6 +12,7 @@ import {
   PaginatedData,
   ProductCreateDto,
   ProductDto,
+  ProductOutlierDto,
   ProductUpdateHistoryDto,
   ProductUpdateMapDto,
   WasteCreateDto,
@@ -51,6 +52,14 @@ export class ProductsService extends DataService<PaginatedData<ProductDto>> {
           params,
         }
       )
+    );
+  }
+
+  fetchOutliers(): Promise<ProductOutlierDto[]> {
+    return lastValueFrom(
+      this.http.get<ProductOutlierDto[]>(
+        `${this.url}${ApiUris.products}/outliers`,
+      ),
     );
   }
 
@@ -156,7 +165,15 @@ export class ProductsService extends DataService<PaginatedData<ProductDto>> {
     return lastValueFrom(
       this.http.patch(`${this.url}${ApiUris.products}/${id}/flags`, {
         flags: data,
-      })
+      }),
+    );
+  }
+
+  validateOutlier(id: string, keys: string[]) {
+    return lastValueFrom(
+      this.http.patch(`${this.url}${ApiUris.products}/${id}/outlier`, {
+        flags: keys,
+      }),
     );
   }
 }

@@ -11,6 +11,7 @@ import {
   AuthRoles,
   getRealmRole,
   InFlowAnalysisDto,
+  OutlierDetectionAnalysisDto,
   WasteFlowAnalysisDto,
 } from '@ap2/api-interfaces';
 import { Roles } from 'nest-keycloak-connect';
@@ -75,5 +76,28 @@ export class AnalysisController {
     query: AnalysisQuery
   ): Promise<InFlowAnalysisDto> {
     return this.analysisService.getInFlowAnalysis(query);
+  }
+
+  @Get('outlier-detection')
+  @Roles({
+    roles: [
+      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+      getRealmRole(AuthRoles.BUYER),
+    ],
+  })
+  @ApiBearerAuth()
+  @ApiOperation({
+    description:
+      'Generates an analysis for the specified product id and returns it.',
+  })
+  @ApiOkResponse({
+    description: 'Returns the generated analysis of the specified product.',
+  })
+  @ApiQuery({ name: 'productGroupId', required: false })
+  getOutlierDetectionAnalysis(
+    @Query()
+    productGroupId?: string,
+  ): Promise<OutlierDetectionAnalysisDto> {
+    return this.analysisService.getOutlierDetectionAnalysis(productGroupId);
   }
 }

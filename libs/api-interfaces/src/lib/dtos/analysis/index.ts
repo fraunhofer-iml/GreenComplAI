@@ -9,3 +9,4 @@
 export * from './analysis.dto';
 export * from './waste-flow-analysis.dto';
 export * from './inflow-analysis.dto';
+export * from './outlier-detection-analysis.dto';

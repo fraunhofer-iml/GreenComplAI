@@ -28,4 +28,5 @@ export type WasteCreateDto = {
   hasHazardousWaste: boolean;
   normalWaste: GeneralWasteCreateDto;
   hazardousWaste?: GeneralWasteCreateDto;
+  fieldsToValidate?: string[];
 };

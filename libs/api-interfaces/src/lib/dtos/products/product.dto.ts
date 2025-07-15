@@ -48,6 +48,7 @@ export class ProductDto {
   circularPrinciple?: boolean;
   productionHistory?: { amount: number; year: number }[];
   flags: string[];
+  outlier?: string[];
 
   // Generate constructor
   constructor(
@@ -67,6 +68,7 @@ export class ProductDto {
     criticalRawMaterials: [MaterialDto, number][],
     billOfMaterialDescription: string,
     flags: string[],
+    outlier?: string[],
     supplier?: CompanyDto,
     manufacturer?: CompanyDto,
     waste?: WasteDto,
@@ -83,7 +85,7 @@ export class ProductDto {
     cascadePrinciple?: string,
     certificationSystem?: string,
     circularPrinciple?: boolean,
-    productionHistory?: { amount: number; year: number }[]
+    productionHistory?: { amount: number; year: number }[],
   ) {
     this.id = id;
     this.name = name;
@@ -118,5 +120,6 @@ export class ProductDto {
     this.productionHistory = productionHistory;
     this.billOfMaterialDescription = billOfMaterialDescription;
     this.flags = flags;
+    this.outlier = outlier;
   }
 }
