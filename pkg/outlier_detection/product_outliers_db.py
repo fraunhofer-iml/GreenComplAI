@@ -26,7 +26,7 @@ class ProductOutlierDetector:
         self.db_client = db_client
         self.feature_columns = ['recycledWastePercentage']
         
-    def load_data(self) -> pd.DataFrame:
+    async def load_data(self) -> pd.DataFrame:
         """
         Retrieve and process product data from the database.
         
@@ -37,7 +37,7 @@ class ProductOutlierDetector:
             ValueError: If no valid product data is found
             Exception: For any communication or processing errors
         """
-        products = self.db_client.get_products_with_waste_data()
+        products = await self.db_client.get_products_with_waste_data()
         
         data = []
         for product in products:
@@ -52,7 +52,7 @@ class ProductOutlierDetector:
             
         return pd.DataFrame(data)
     
-    def train(self) -> None:
+    async def train(self) -> None:
         """
         Train the Isolation Forest model on the available product data.
         
@@ -60,7 +60,7 @@ class ProductOutlierDetector:
             ValueError: If insufficient data is available for training
             Exception: For any model training errors
         """
-        df = self.load_data()
+        df = await self.load_data()
         
         if len(df) == 0:
             raise ValueError("No data available for training")
@@ -94,7 +94,7 @@ class ProductOutlierDetector:
             Exception: For any prediction errors
         """
         if self.model is None:
-            self.train()
+            await self.train()
             
         X = pd.DataFrame({
             'recycledWastePercentage': [recycled_waste_percentage]
@@ -122,9 +122,9 @@ class ProductOutlierDetector:
             Exception: For any processing errors
         """
         if self.model is None:
-            self.train()
+            await self.train()
             
-        df = self.load_data()
+        df = await self.load_data()
         X = df[self.feature_columns]
         
         predictions = self.model.predict(X)

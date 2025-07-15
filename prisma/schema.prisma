@@ -1,18 +1,16 @@
-/**
- * Copyright Fraunhofer Institute for Material Flow and Logistics
- * Licensed under the Apache License, Version 2.0 (the "License").
- * For details on the licensing terms, see the LICENSE file.
- * SPDX-License-Identifier: Apache-2.0
- */
-
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
-generator client {
+generator jsclient {
   provider = "prisma-client-js"
+}
+
+generator pyclient {
+  provider             = "prisma-client-py"
+  recursive_type_depth = 2
 }
 
 datasource db {
@@ -445,17 +443,17 @@ enum MeasureStatus {
   IN_PROGRESS
 }
 
-model Mapping {
-  id              String           @id @default(cuid())
-  key             String           @unique
-  mappingElements MappingElement[]
+model GCMapping {
+  id              String             @id @default(cuid())
+  key             String             @unique
+  mappingElements GCMappingElement[]
 }
 
-model MappingElement {
-  id        String  @id @default(cuid())
+model GCMappingElement {
+  id        String    @id @default(cuid())
   key       String
   value     String
-  mapping   Mapping @relation(fields: [mappingId], references: [key])
+  mapping   GCMapping @relation(fields: [mappingId], references: [key])
   mappingId String
 }
 

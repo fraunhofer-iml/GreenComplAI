@@ -12,7 +12,7 @@ COPY --chown=node:node ./dist/apps/${APP} .
 COPY --chown=node:node ./prisma .
 
 RUN npm install --omit=dev
-RUN npx prisma generate
+RUN npx prisma generate --generator jsclient
 
 USER node
 

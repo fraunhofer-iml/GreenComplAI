@@ -11,6 +11,11 @@ class DatabaseClient:
         """Initialize the database client with Prisma."""
         # Set the schema path to the root schema file
         schema_path = Path(__file__).parent.parent.parent / "prisma" / "schema.prisma"
+        if not schema_path.exists():
+            schema_path = Path(__file__).parent / "prisma" / "schema.prisma"
+            if not schema_path.exists():
+                raise FileNotFoundError("Schema file not found")
+        
         if schema_path.exists():
             os.environ["PRISMA_SCHEMA"] = str(schema_path)
             logger.info(f"Using schema file: {schema_path}")
@@ -18,24 +23,24 @@ class DatabaseClient:
         self.prisma = Prisma()
         self._is_connected = False
     
-    def connect(self) -> None:
+    async def connect(self) -> None:
         """Connect to the database using the DATABASE_URL environment variable."""
         try:
-            self.prisma.connect()
+            await self.prisma.connect()
             self._is_connected = True
             logger.info("Successfully connected to database")
         except Exception as e:
             logger.error(f"Failed to connect to database: {str(e)}")
             raise
     
-    def disconnect(self) -> None:
+    async def disconnect(self) -> None:
         """Disconnect from the database."""
         if self._is_connected:
-            self.prisma.disconnect()
+            await self.prisma.disconnect()
             self._is_connected = False
             logger.info("Disconnected from database")
     
-    def get_products_with_waste_data(self) -> List[Dict]:
+    async def get_products_with_waste_data(self) -> List[Dict]:
         """
         Retrieve all products with waste data from the database.
         
@@ -51,7 +56,7 @@ class DatabaseClient:
         
         try:
             # Query products with waste data
-            products = self.prisma.product.find_many(
+            products = await self.prisma.product.find_many(
                 where={
                     "waste": {
                         "is_not": None
@@ -96,7 +101,7 @@ class DatabaseClient:
             logger.error(f"Error retrieving products: {str(e)}")
             raise
     
-    def get_product_by_id(self, product_id: str) -> Optional[Dict]:
+    async def get_product_by_id(self, product_id: str) -> Optional[Dict]:
         """
         Retrieve a specific product by its ID.
         
@@ -114,7 +119,7 @@ class DatabaseClient:
             raise RuntimeError("Not connected to database")
         
         try:
-            product = self.prisma.product.find_unique(
+            product = await self.prisma.product.find_unique(
                 where={"productId": product_id},
                 include={
                     "waste": True,

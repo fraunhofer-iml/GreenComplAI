@@ -34,12 +34,12 @@ async def lifespan(app: FastAPI):
     
     # Initialize database client
     db_client = DatabaseClient()
-    db_client.connect()
+    await db_client.connect()
     
     # Initialize and train the outlier detection model
     detector = ProductOutlierDetector(db_client)
     logger.info("Training model with existing data...")
-    detector.train()
+    await detector.train()
     logger.info("Model training completed")
     
     logger.info("Outlier detection service started successfully")
@@ -49,7 +49,7 @@ async def lifespan(app: FastAPI):
     # Shutdown
     logger.info("Shutting down outlier detection service...")
     if db_client:
-        db_client.disconnect()
+        await db_client.disconnect()
     logger.info("Outlier detection service shutdown complete")
 
 # Create FastAPI app
@@ -158,7 +158,7 @@ async def retrain_model(detector_instance: ProductOutlierDetector = Depends(get_
         Success message
     """
     try:
-        detector_instance.train()
+        await detector_instance.train()
         return {"message": "Model retrained successfully"}
         
     except Exception as e:

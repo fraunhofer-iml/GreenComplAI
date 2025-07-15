@@ -24,7 +24,10 @@ def setup_prisma():
     
     if not schema_path.exists():
         print(f"Error: Schema file not found at {schema_path}")
-        sys.exit(1)
+        schema_path = current_dir / "prisma" / "schema.prisma"
+        if not schema_path.exists():
+            print(f"Error: Schema file not found at {schema_path}")
+            sys.exit(1)
     
     print(f"Using schema file: {schema_path}")
     
@@ -35,7 +38,8 @@ def setup_prisma():
     try:
         subprocess.run([
             "prisma", "generate", 
-            "--schema", str(schema_path)
+            "--schema", str(schema_path),
+            "--generator", "pyclient"
         ], check=True)
         print("Prisma client generated successfully")
     except subprocess.CalledProcessError as e:
