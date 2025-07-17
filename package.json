@@ -4,8 +4,8 @@
   "license": "MIT",
   "scripts": {
     "clean": "rm -rf .angular dist node_modules && npx nx clear-cache",
-    "set-up-database": "npx prisma db push --force-reset && npx prisma db seed",
-    "set-up-database-ai": "npx prisma db push --force-reset && npx prisma db seed ai",
+    "set-up-database": "npx prisma db push --force-reset --skip-generate && npx prisma generate --generator jsclient && npx prisma db seed",
+    "set-up-database-ai": "npx prisma db push --force-reset --skip-generate && npx prisma generate --generator jsclient && npx prisma db seed ai",
     "sud": "npm run set-up-database",
     "sud-ai": "npm run set-up-database-ai",
     "clean-install": "npm run clean && npm install && npm run sud",

@@ -9,7 +9,6 @@ WORKDIR /app
 COPY ./pkg/${PACKAGE_NAME} ./
 COPY ./prisma ./prisma
 
-
 RUN uv sync --locked && uv run prisma_config.py
 
 CMD ["uv", "run", "main.py"]
