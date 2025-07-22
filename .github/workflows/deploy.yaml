@@ -20,17 +20,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          filter: tree:0
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-
+          cache: 'npm'
       - name: Install dependencies
         run: npm ci && npx prisma generate --generator jsclient
-
-      - name: Build all nx apps
-        run: npx nx run-many --target=build --all
+      - uses: nrwl/nx-set-shas@v4
+      - run: npx nx format:check
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -42,12 +44,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push Docker images for all apps
+      - name: 'Build images'
         run: |
-          APPS=$(npx nx show projects --type=app)
-          TAG=${GITHUB_REF#refs/tags/}
-          for APP in $APPS; do
-            IMAGE="ghcr.io/${{ github.actor }}/$APP:$TAG"
-            docker build -t $IMAGE -f apps/$APP/Dockerfile .
-            docker push $IMAGE
-          done
+          INPUT_GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} npx nx affected --target=container

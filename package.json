@@ -79,6 +79,7 @@
     "@eslint/js": "^9.8.0",
     "@nestjs/schematics": "^10.2.3",
     "@nestjs/testing": "^10.4.15",
+    "@nx-tools/nx-container": "^6.8.0",
     "@nx/angular": "20.3.0",
     "@nx/devkit": "20.3.0",
     "@nx/eslint": "20.3.0",

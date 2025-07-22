@@ -5,8 +5,10 @@ on:
     branches:
       - main
   pull_request:
-    branches:
-      - main
+
+permissions:
+  actions: read
+  contents: read
 
 jobs:
   test:
@@ -14,6 +16,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          filter: tree:0
       - name: Install node
         uses: actions/setup-node@v4
         with:
@@ -21,13 +26,21 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: npm ci && npx prisma generate --generator jsclient
-      - name: Test all nx apps
-        run: npx nx run-many --all -t test --parallel -- --passWithNoTests
+      - uses: nrwl/nx-set-shas@v4
+      - run: npx nx format:check
+      - name: Lint affected apps
+        run: npx nx affected -t lint
+      - name: Test affected apps
+        run: npx nx affected -t test
+
   build:
     name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          filter: tree:0
       - name: Install node
         uses: actions/setup-node@v4
         with:
@@ -35,5 +48,7 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: npm ci && npx prisma generate --generator jsclient
+      - uses: nrwl/nx-set-shas@v4
+      - run: npx nx format:check
       - name: Build all Nx Apps
-        run: npx nx run-many --all -t build --parallel
+        run: npx nx affected -t build --parallel

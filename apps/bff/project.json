@@ -34,6 +34,25 @@
           "ci": true
         }
       }
+    },
+    "container": {
+      "executor": "@nx-tools/nx-container:build",
+      "options": {
+        "push": true,
+        "metadata": {
+          "images": ["ghcr.io/fraunhofer-iml/greencomplai/bff"],
+          "tags": [
+            "type=schedule",
+            "type=ref,event=branch",
+            "type=ref,event=tag",
+            "type=ref,event=pr",
+            "type=semver,pattern={{version}}",
+            "type=semver,pattern={{major}}.{{minor}}",
+            "type=semver,pattern={{major}}",
+            "type=sha"
+          ]
+        }
+      }
     }
   }
 }
