@@ -29,9 +29,9 @@ jobs:
       - uses: nrwl/nx-set-shas@v4
       - run: npx nx format:check
       - name: Lint affected apps
-        run: npx nx affected -t lint
+        run: npx nx affected -t lint --parallel
       - name: Test affected apps
-        run: npx nx affected -t test
+        run: npx nx affected -t test --passWithNoTests --parallel
 
   build:
     name: Build
