@@ -41,6 +41,13 @@
       "options": {
         "targetName": "e2e"
       }
+    },
+    {
+      "plugin": "@nx-tools/nx-container",
+      "options": {
+        "defaultEngine": "docker",
+        "defaultRegistry": "ghcr.io"
+      }
     }
   ],
   "targetDefaults": {
