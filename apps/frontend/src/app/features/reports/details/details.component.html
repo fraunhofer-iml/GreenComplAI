@@ -50,6 +50,13 @@
           [report]="reportsQuery.data()"
         ></app-financial-impact>
       </mat-tab>
+      <mat-tab label="Ziele">
+        <app-goal-information
+          class="m-4"
+          (refetchEvent)="reportsQuery.refetch()"
+          [report]="reportsQuery.data()"
+        ></app-goal-information>
+      </mat-tab>
     }
   </mat-tab-group>
 </div>

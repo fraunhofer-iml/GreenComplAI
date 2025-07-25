@@ -34,6 +34,8 @@ import { FinancialImpactComponent } from './financial-impacts/overview/financial
 import { MeasuresComponent } from './measures/measures.component';
 import { ReportInformationComponent } from './report-information/report-information.component';
 import { StrategiesComponent } from './strategies/strategies.component';
+import { GoalInformationComponent } from './goal-informations/goal-information.component';
+
 
 @Component({
   selector: 'app-reports-overview',
@@ -57,6 +59,7 @@ import { StrategiesComponent } from './strategies/strategies.component';
     MatTabsModule,
     ReportInformationComponent,
     FinancialImpactComponent,
+    GoalInformationComponent
   ],
   providers: [
     ReportsService,

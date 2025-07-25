@@ -1,0 +1,391 @@
+<div class="w-full">
+  @if (form) {
+    <form [formGroup]="form" class="flex flex-col gap-2">
+      <mat-expansion-panel [expanded]="true" class="col-span-4 w-full !bg-neutral-200">
+        <mat-expansion-panel-header>
+          <span class="col-span-4 text-sm">Allgemeine Information </span>
+        </mat-expansion-panel-header>
+        <div class="grid w-full grid-cols-3 gap-2 rounded-lg bg-neutral-200 p-4 pt-4">
+
+          <mat-form-field appearance="outline" class="col-span-2 m-2">
+            <mat-label i18n>Title</mat-label>
+            <input
+              matInput
+              formControlName="title"
+              [readonly]="report()?.isFinalReport"
+              placeholder="Title des Berichtsziels"
+            />
+          </mat-form-field>
+
+          <mat-form-field
+            appearance="outline"
+            class="w-full m-2">
+            <mat-label>Gültigkeit</mat-label>
+            <mat-date-range-input [formGroup]="form.controls.validDate" [rangePicker]="picker">
+              <input matStartDate formControlName="from" placeholder="Start date">
+              <input matEndDate formControlName="to" placeholder="End date">
+            </mat-date-range-input>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+
+        </div>
+
+        <div class="grid w-full grid-cols-4 gap-2 rounded-lg bg-neutral-200 p-4 pt-4">
+          <mat-form-field appearance="outline" class="flex-1 m-2">
+            <mat-label i18n>Verbindlichkeit</mat-label>
+            <mat-select
+              formControlName="obligation"
+              placeholder="Verbindlichkeit des Berichtsziels"
+            >
+              <mat-option value="mandatory" i18n>Verbindlich (gemäß Rechtsvorschrift)</mat-option>
+              <mat-option value="voluntary" i18n>Freiwillig</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Zielniveau</mat-label>
+            <input
+              matInput
+              formControlName="target"
+              [readonly]="report()?.isFinalReport"
+              placeholder="Zielniveau des Berichtsziels">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label i18n>Einheit</mat-label>
+            <input
+              matInput
+              formControlName="unit"
+              [readonly]="report()?.isFinalReport"
+              placeholder="€, kg,t Co2, ... etc."
+            />
+          </mat-form-field>
+
+          <section>
+            <mat-checkbox formControlName="isRelative">Relatives Ziel</mat-checkbox>
+          </section>
+        </div>
+        <div class="grid w-full gap-2 rounded-lg bg-neutral-200 p-4 pt-4">
+          <mat-form-field
+            appearance="outline"
+            class="m-2 w-full"
+          >
+            <mat-label i18n>Umfang des Ziels</mat-label>
+            <textarea
+              matInput
+              [readonly]="report()?.isFinalReport"
+              formControlName="scope"
+              placeholder="Umfang des Ziels"
+            ></textarea>
+          </mat-form-field>
+
+          <mat-form-field
+            appearance="outline"
+            class="m-2 w-full"
+          >
+            <mat-label i18n> Unternehmensaktivitäten der vor- und/oder nachgelagerten Wertschöpfungskette</mat-label>
+            <textarea
+              matInput
+              [readonly]="report()?.isFinalReport"
+              formControlName="action"
+              placeholder="Unternehmensaktivitäten der vor- und/oder nachgelagerten Wertschöpfungskette"
+            ></textarea>
+          </mat-form-field>
+
+          <mat-form-field
+            appearance="outline"
+            class="m-2 w-full"
+          >
+            <mat-label i18n>Geographische Grenzen</mat-label>
+            <textarea
+              matInput
+              [readonly]="report()?.isFinalReport"
+              formControlName="geographicScope"
+              placeholder="Geographische Grenzen"
+            ></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="grid w-full grid-cols-3 gap-2 rounded-lg bg-neutral-200 p-4 pt-4">
+          <mat-form-field
+            appearance="outline"
+            class="m-2 w-full col-span-2"
+          >
+            <mat-label i18n>Bezugswert</mat-label>
+            <textarea
+              matInput
+              [readonly]="report()?.isFinalReport"
+              formControlName="referenceValue"
+              placeholder="Bezugswert"
+            ></textarea>
+          </mat-form-field>
+
+          <app-datepicker [disabled]="report()?.isFinalReport === true" [form]="form.controls.referenceDate">
+            <mat-label>Bezugsjahr</mat-label>
+          </app-datepicker>
+        </div>
+
+        <div class="grid w-full gap-2 rounded-lg bg-neutral-200 p-4 pt-4">
+          <mat-form-field
+            appearance="outline"
+            class="m-2 w-full "
+          >
+            <mat-label i18n>Methoden und Annahmen</mat-label>
+            <textarea
+              matInput
+              [readonly]="report()?.isFinalReport"
+              formControlName="methodsAndAssumptions"
+              placeholder="Methoden und Annahmen"
+            ></textarea>
+          </mat-form-field>
+          <section class="grid w-full grid-cols-4 gap-2 rounded-lg bg-neutral-200">
+            <mat-checkbox formControlName="isScientificReferenced">Aufgrund wissenschaftlichen Erkentnissen?
+            </mat-checkbox>
+            <mat-checkbox formControlName="stakeholderInclusion">Einbeziehen der Stakeholder notwendig?</mat-checkbox>
+            @if (form.controls.stakeholderInclusion.value) {
+              <mat-form-field
+                appearance="outline"
+                class="m-2 w-full col-span-2"
+              >
+                <mat-label i18n>Beschreibung des Stakeholder Involvements</mat-label>
+                <textarea
+                  matInput
+                  [readonly]="report()?.isFinalReport"
+                  formControlName="stakeholderInclusionComment"
+                  placeholder="Beschreibung des Stakeholder Involvements"
+                ></textarea>
+              </mat-form-field>
+            }
+          </section>
+        </div>
+
+        <div class="grid w-full grid-cols-2 gap-2 rounded-lg bg-neutral-200 p-4 pt-4">
+          <mat-form-field
+            appearance="outline"
+            class="m-2 w-full"
+          >
+            <mat-label i18n>Änderungen der Ziele, der entsprechenden Parameter oder der zugrunde liegenden Methoden
+            </mat-label>
+            <textarea
+              matInput
+              [readonly]="report()?.isFinalReport"
+              formControlName="changeOfGoalsOrMethods"
+              placeholder="Änderungen der Ziele, der entsprechenden Parameter oder der zugrunde liegenden Methoden"
+            ></textarea>
+          </mat-form-field>
+          <mat-form-field
+            appearance="outline"
+            class="m-2 w-full"
+          >
+            <mat-label i18n>Leistung im Vergleich zu den angegebenen Zielen, einschließlich Informationen darüber, wie
+              ein Ziel überwacht wird
+            </mat-label>
+            <textarea
+              matInput
+              [readonly]="report()?.isFinalReport"
+              formControlName="effortsAndMonitoring"
+              placeholder="Leistung im Vergleich zu den angegebenen Zielen, einschließlich Informationen darüber, wie ein Ziel überwacht wird"
+            ></textarea>
+          </mat-form-field>
+        </div>
+      </mat-expansion-panel>
+      <mat-expansion-panel class=" w-full !bg-neutral-200">
+        <mat-expansion-panel-header>
+          <span class="col-span-4 text-sm">Nachhaltigkeit</span>
+        </mat-expansion-panel-header>
+        <section class="m-3">
+          <mat-checkbox formControlName="hasEcologicalImpact">ökologische Schwellenwerte wurden beachtet</mat-checkbox>
+        </section>
+        <section class="grid w-full grid-cols-2 gap-2 m-2">
+          <mat-label class="m-2">Das Ziel bezieht sich auf folgende Ebene der Abfallhierarchie</mat-label>
+          <mat-radio-group formControlName="wasteHLevel">
+            <mat-radio-button value="avoidance">1. Stufe Vermeidung</mat-radio-button>
+            <mat-radio-button value="reuse">2. Stufe Vorbereitung zur Wiederverwendung</mat-radio-button>
+            <mat-radio-button value="recycle">3. Stufe Recycling</mat-radio-button>
+            <mat-radio-button value="misc">4. Stufe Sonstige Verwertung</mat-radio-button>
+            <mat-radio-button value="disposal">5. Stufe Beseitigung</mat-radio-button>
+          </mat-radio-group>
+        </section>
+
+        @if (form.controls.hasEcologicalImpact.value){
+        <div class="grid w-full grid-cols-2 gap-2 m-2">
+          <mat-form-field
+            appearance="outline"
+            class="m-2 w-full"
+          >
+            <mat-label i18n>Ökologischen Schwellenwerte und die Methode zur Ermittlung dieser Schwellenwerte</mat-label>
+            <textarea
+              matInput
+              [readonly]="report()?.isFinalReport"
+              formControlName="ecologicalThresholdDescription"
+              placeholder="Ökologischen Schwellenwerte und die Methode zur Ermittlung dieser Schwellenwerte"
+            ></textarea>
+          </mat-form-field>
+
+          <mat-form-field
+            appearance="outline"
+            class="m-2 w-full"
+          >
+            <mat-label i18n>Sind die Ökologischen Schwellenwerte unternehmensspezifisch? Wie wurden diese Festgelegt?</mat-label>
+            <textarea
+              matInput
+              [readonly]="report()?.isFinalReport"
+              formControlName="ecologicalThresholdDetermination"
+              placeholder="Sind die Ökologischen Schwellenwerte unternehmensspezifisch? Wie wurden diese Festgelegt?"
+            ></textarea>
+          </mat-form-field>
+
+          <mat-form-field
+            appearance="outline"
+            class="m-2 w-full"
+          >
+            <mat-label i18n>Wie werden die verantwortungen aufgeteilt?</mat-label>
+            <textarea
+              matInput
+              [readonly]="report()?.isFinalReport"
+              formControlName="ecologicalTresholdResponsibilities"
+              placeholder="Wie werden Verantwortung für die Einhaltung der festgelegten ökologischen Schwellenwerte innerhalb des Unternehmens aufgeteilt?"
+            ></textarea>
+          </mat-form-field>
+
+
+        </div>
+        }
+
+        <div class="grid w-full grid-cols-2 gap-2 rounded-lg !bg-neutral-200 p-4 pt-4">
+          <mat-form-field
+            appearance="outline"
+            class="m-2 w-full"
+          >
+            <mat-label i18n>Einfluss auf die Ausweitung des kreislauforientierten Produktdesigns</mat-label>
+            <textarea
+              matInput
+              [readonly]="report()?.isFinalReport"
+              formControlName="impactOnExtensionOfCircularityProductDesign"
+              placeholder="(z. B. für Haltbarkeit, Demontage, Reparierbarkeit, Recyclingfähigkeit usw.)"
+            ></textarea>
+          </mat-form-field>
+
+          <mat-form-field
+            appearance="outline"
+            class="m-2 w-full"
+          >
+            <mat-label i18n>Einfluss auf die Erhöhung der kreislauforientierten Materialnutzungsrate</mat-label>
+            <textarea
+              matInput
+              [readonly]="report()?.isFinalReport"
+              formControlName="impactOnCircularityMaterialRate"
+              placeholder="Einfluss auf die Erhöhung der kreislauforientierten Materialnutzungsrate"
+            ></textarea>
+          </mat-form-field>
+
+          <mat-form-field
+            appearance="outline"
+            class="m-2 w-full"
+          >
+            <mat-label i18n>Einfluss auf die Minimierung von Primärrohstoffen</mat-label>
+            <textarea
+              matInput
+              [readonly]="report()?.isFinalReport"
+              formControlName="impactOnMinimizingOfPrimaryMaterialUse"
+              placeholder="Einfluss auf die Minimierung von Primärrohstoffen"
+            ></textarea>
+          </mat-form-field>
+
+          <mat-form-field
+            appearance="outline"
+            class="m-2 w-full"
+          >
+            <mat-label i18n>Einfluss auf die nachhaltige Beschaffung und Nutzung erneuerbarer Ressourcen (im Einklang
+              mit dem Kaskadenprinzip)
+            </mat-label>
+            <textarea
+              matInput
+              [readonly]="report()?.isFinalReport"
+              formControlName="impactOnSustainableSourcing"
+              placeholder="Einfluss auf die nachhaltige Beschaffung und Nutzung erneuerbarer Ressourcen (im Einklang mit dem Kaskadenprinzip)"
+            ></textarea>
+          </mat-form-field>
+
+          <mat-form-field
+            appearance="outline"
+            class="m-2 w-full"
+          >
+            <mat-label i18n>Einfluss auf die Abfallbewirtschaftung, einschließlich der Vorbereitung auf eine
+              ordnungsgemäße Behandlung
+            </mat-label>
+            <textarea
+              matInput
+              [readonly]="report()?.isFinalReport"
+              formControlName="impactOnWasteManagement"
+              placeholder="Einfluss auf die Abfallbewirtschaftung, einschließlich der Vorbereitung auf eine ordnungsgemäße Behandlung"
+            ></textarea>
+          </mat-form-field>
+
+          <mat-form-field
+            appearance="outline"
+            class="m-2 w-full"
+          >
+            <mat-label i18n>Einfluss auf sonstige Aspekte im Zusammenhang mit der Ressourcennutzung oder der
+              Kreislaufwirtschaft
+            </mat-label>
+            <textarea
+              matInput
+              [readonly]="report()?.isFinalReport"
+              formControlName="impactOnMiscellaneous"
+              placeholder="Einfluss auf sonstige Aspekte im Zusammenhang mit der Ressourcennutzung oder der Kreislaufwirtschaft"
+            ></textarea>
+          </mat-form-field>
+        </div>
+
+      </mat-expansion-panel>
+      <mat-expansion-panel class="col-span-4 w-full !bg-neutral-200">
+        <mat-expansion-panel-header>
+          <span class="col-span-4 text-sm">Strategien</span>
+        </mat-expansion-panel-header>
+
+        @if (!report()?.isFinalReport) {
+          <div formArrayName="strategies">
+            @for (strategy of report()?.strategies;
+              track strategy.id; let index = $index
+
+              ) {
+
+              <section
+                [formGroupName]="index"
+              >
+                <mat-checkbox
+                  formControlName="strategy"
+                  [disabled]="report()?.isFinalReport ?? false"
+                  [value]="strategy.id"
+                  class="w-full mb-5"
+                >
+                  <h3 matListItemTitle>{{ strategy.name }}</h3>
+                  <span matListItemLine class="overflow-ellipsis">{{
+                      strategy.conceptInformationResources
+                    }}</span>
+                  @if (this.form.controls.strategies.controls[index].controls.strategy.value) {
+                    <mat-form-field
+                      appearance="outline"
+                      class="m-2 w-full"
+                    >
+                      <mat-label i18n>Verbindung zum Ziel</mat-label>
+                      <textarea
+                        matInput
+                        [readonly]="report()?.isFinalReport"
+                        formControlName="connection"
+                        placeholder="Verbindung zum Ziel"
+                      ></textarea>
+                    </mat-form-field>
+                  }
+                </mat-checkbox>
+              </section>
+
+
+            }</div>
+        }
+      </mat-expansion-panel>
+    </form>
+  }
+</div>
