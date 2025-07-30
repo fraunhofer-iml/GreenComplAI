@@ -71,5 +71,21 @@
       "style": "css"
     }
   },
-  "useLegacyCache": true
+  "useLegacyCache": true,
+  "release": {
+    "projects": ["apps/*", "!apps/**-e2e"],
+    "projectsRelationship": "independent",
+    "releaseTagPattern": "{projectName}/v{version}",
+    "changelog": {
+      "projectChangelogs": {
+        "createRelease": "github",
+        "renderOptions": {
+          "authors": false
+        }
+      }
+    },
+    "version": {
+      "conventionalCommits": true
+    }
+  }
 }
