@@ -6,10 +6,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-@Todo: Dto zum createn definieren
+// TODO: Dto zum createn definieren
 export class CreateGoalReportDto {
-  followUpProcudure: string;
-  target:string;
-  progression: string;
-  referenzPeriod
+  // followUpProcudure: string;
+  // target: string;
+  // progression: string;
+  // referenzPeriod;
 }

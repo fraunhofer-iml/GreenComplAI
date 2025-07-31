@@ -5,40 +5,51 @@
         class="hover:border-primary-700 group col-span-2 flex w-full flex-row gap-2 rounded-lg border-[1px] border-solid border-transparent bg-neutral-200 p-4"
       >
         <div class="flex w-full flex-col gap-4">
-
           Es wurden noch keine Ziele hinzugefügt.
 
           <div class="flex w-full flex-col">
             <div>
-              <section class="grid w-full gap-2 m-2">
-                <mat-radio-group formControlName="goalsPlanned" class="flex flex-row gap-4">
+              <section class="m-2 grid w-full gap-2">
+                <mat-radio-group
+                  formControlName="goalsPlanned"
+                  class="flex flex-row gap-4"
+                >
                   <mat-label i18n>Wurden bereits Ziele geplant?</mat-label>
                   <mat-radio-button value="true" i18n>Ja</mat-radio-button>
                   <mat-radio-button value="false" i18n>Nein</mat-radio-button>
                 </mat-radio-group>
               </section>
-              @if (form.controls.goalsPlanned.value === "true") {
-                <mat-form-field
-                  appearance="outline"
-                  class="w-full m-2">
+              @if (form.controls.goalsPlanned.value === 'true') {
+                <mat-form-field appearance="outline" class="m-2 w-full">
                   <mat-label>Frist</mat-label>
-                  <mat-date-range-input [formGroup]="form.controls.validDate" [rangePicker]="picker">
-                    <input matStartDate formControlName="from" placeholder="Start date">
-                    <input matEndDate formControlName="to" placeholder="End date">
+                  <mat-date-range-input
+                    [formGroup]="form.controls.validDate"
+                    [rangePicker]="picker"
+                  >
+                    <input
+                      matStartDate
+                      formControlName="from"
+                      placeholder="Start date"
+                    />
+                    <input
+                      matEndDate
+                      formControlName="to"
+                      placeholder="End date"
+                    />
                   </mat-date-range-input>
-                  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker-toggle
+                    matIconSuffix
+                    [for]="picker"
+                  ></mat-datepicker-toggle>
                   <mat-date-range-picker #picker></mat-date-range-picker>
                 </mat-form-field>
               }
-              @if (form.controls.goalsPlanned.value === "false") {
-                <mat-form-field
-                  appearance="outline"
-                  class="m-2 w-full"
-                >
+              @if (form.controls.goalsPlanned.value === 'false') {
+                <mat-form-field appearance="outline" class="m-2 w-full">
                   <mat-label i18n>Begründung</mat-label>
                   <textarea
                     matInput
-                    [readonly]="report()?.isFinalReport"
+                    [readonly]="report().isFinalReport"
                     formControlName="noGoalsExplanation"
                     placeholder="Warum wurden keine Ziele geplant?"
                   ></textarea>
@@ -46,66 +57,83 @@
               }
             </div>
             <section>
-              <mat-checkbox #goalstracked>Wirksamkeit der Strategien und Ziele werden nachverfolgt</mat-checkbox>
-            </section>
-            @if (goalstracked.checked){
-              <mat-form-field
-                appearance="outline"
-                class="m-2 w-full"
+              <mat-checkbox #goalstracked
+                >Wirksamkeit der Strategien und Ziele werden
+                nachverfolgt</mat-checkbox
               >
-                <mat-label i18n>Welche verfahren zur Nachverfolgung werden genutzt?</mat-label>
+            </section>
+            @if (goalstracked.checked) {
+              <mat-form-field appearance="outline" class="m-2 w-full">
+                <mat-label i18n
+                  >Welche verfahren zur Nachverfolgung werden
+                  genutzt?</mat-label
+                >
                 <textarea
                   matInput
-                  [readonly]="report()?.isFinalReport"
+                  [readonly]="report().isFinalReport"
                   formControlName="followUpProcedure"
                   placeholder="Welche verfahren zur Nachverfolgung werden genutzt"
                 ></textarea>
               </mat-form-field>
 
-              <mat-form-field
-                appearance="outline"
-                class="m-2 w-full"
-              >
+              <mat-form-field appearance="outline" class="m-2 w-full">
                 <mat-label i18n>Welche Zielvorgaben existieren?</mat-label>
                 <textarea
                   matInput
-                  [readonly]="report()?.isFinalReport"
+                  [readonly]="report().isFinalReport"
                   formControlName="targets"
                   placeholder="Zielvorgaben"
                 ></textarea>
               </mat-form-field>
 
-              <mat-form-field
-                appearance="outline"
-                class="m-2 w-full"
-              >
-                <mat-label i18n>qualitative oder quantitative Indikatoren der Fortschrittsbewertung</mat-label>
+              <mat-form-field appearance="outline" class="m-2 w-full">
+                <mat-label i18n
+                  >qualitative oder quantitative Indikatoren der
+                  Fortschrittsbewertung</mat-label
+                >
                 <textarea
                   matInput
-                  [readonly]="report()?.isFinalReport"
+                  [readonly]="report().isFinalReport"
                   formControlName="progression"
                   placeholder="Indikatoren der Fortschrittsbewertung"
                 ></textarea>
               </mat-form-field>
 
-              <mat-form-field
-                appearance="outline"
-                class="w-full m-2">
+              <mat-form-field appearance="outline" class="m-2 w-full">
                 <mat-label>Bezugszeitraum der Fortschrittsmessung</mat-label>
-                <mat-date-range-input [formGroup]="form.controls.referencePeriodForProgression" [rangePicker]="referencePeriodForProgression">
-                  <input matStartDate formControlName="from" placeholder="Start date">
-                  <input matEndDate formControlName="to" placeholder="End date">
+                <mat-date-range-input
+                  [formGroup]="form.controls.referencePeriodForProgression"
+                  [rangePicker]="referencePeriodForProgression"
+                >
+                  <input
+                    matStartDate
+                    formControlName="from"
+                    placeholder="Start date"
+                  />
+                  <input
+                    matEndDate
+                    formControlName="to"
+                    placeholder="End date"
+                  />
                 </mat-date-range-input>
-                <mat-datepicker-toggle matIconSuffix [for]="referencePeriodForProgression"></mat-datepicker-toggle>
-                <mat-date-range-picker #referencePeriodForProgression></mat-date-range-picker>
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="referencePeriodForProgression"
+                ></mat-datepicker-toggle>
+                <mat-date-range-picker
+                  #referencePeriodForProgression
+                ></mat-date-range-picker>
               </mat-form-field>
             }
           </div>
         </div>
-
       </div>
     }
-    @for (goal of form.controls.goals.controls; track goal; let pindex = $index) {
+    @for (
+      goal of form.controls.goals.controls;
+      track goal;
+      let pindex = $index
+    ) {
       <mat-expansion-panel class="w-full !bg-neutral-200">
         <mat-expansion-panel-header>
           <mat-panel-title>
@@ -115,7 +143,7 @@
             <button
               mat-stroked-button
               (click)="removeGoal(pindex)"
-              class="opacity-25 max-w-sm hover:opacity-100 hover:cursor-pointer col-start-2 justify-self-end"
+              class="col-start-2 max-w-sm justify-self-end opacity-25 hover:cursor-pointer hover:opacity-100"
             >
               <mat-icon>delete</mat-icon>
               entfernen
@@ -124,12 +152,11 @@
         </mat-expansion-panel-header>
         <div class="grid grid-cols-2">
           <app-goals
-            class="m-4 col-span-2"
+            class="col-span-2 m-4"
             (refetchEvent)="updateGoal(pindex, $event)"
             [report]="report()"
           ></app-goals>
         </div>
-
       </mat-expansion-panel>
     }
   </div>

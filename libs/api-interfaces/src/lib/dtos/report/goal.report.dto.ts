@@ -6,8 +6,5 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-@Todo Dto definieren und Goals über ReportDto zurück geben
-export class GoalReportDto {
-
-
-}
+// TODO Dto definieren und Goals über ReportDto zurück geben
+export class GoalReportDto {}
