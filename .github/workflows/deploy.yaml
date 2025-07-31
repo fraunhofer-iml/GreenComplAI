@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-and-push-frontend:
-    if: startsWith(github.ref, 'refs/tags/frontend/')
+    # if: startsWith(github.ref, 'refs/tags/frontend/')
     name: Build and Push Docker Images for Frontend App
     runs-on: ubuntu-latest
     permissions:
@@ -51,7 +51,7 @@ jobs:
           INPUT_GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} npx nx container frontend
 
   build-and-push-entity-management-svc:
-    if: startsWith(github.ref, 'refs/tags/entity-management-svc/')
+    # if: startsWith(github.ref, 'refs/tags/entity-management-svc/')
     name: Build and Push Docker Images for Entity Management Service App
     runs-on: ubuntu-latest
     permissions:
@@ -92,7 +92,7 @@ jobs:
           INPUT_GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} npx nx container entity-management-svc
 
   build-and-push-bff:
-    if: startsWith(github.ref, 'refs/tags/bff/')
+    # if: startsWith(github.ref, 'refs/tags/bff/')
     name: Build and Push Docker Images for BFF App
     runs-on: ubuntu-latest
     permissions:
