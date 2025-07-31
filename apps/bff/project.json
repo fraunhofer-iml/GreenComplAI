@@ -36,22 +36,14 @@
       }
     },
     "container": {
-      "executor": "@nx-tools/nx-container:build",
+      "executor": "@mschoenbo/nx-build-tools:tag-and-build",
       "options": {
+        "appName": "bff",
+        "dockerRepository": "ghcr.io/fraunhofer-iml/greencomplai",
+        "dockerfile": "apps/bff/Dockerfile",
+        "tagPrefix": "v",
         "push": true,
-        "metadata": {
-          "images": ["ghcr.io/fraunhofer-iml/greencomplai/bff"],
-          "tags": [
-            "type=schedule",
-            "type=ref,event=branch",
-            "type=ref,event=tag",
-            "type=ref,event=pr",
-            "type=semver,pattern={{version}}",
-            "type=semver,pattern={{major}}.{{minor}}",
-            "type=semver,pattern={{major}}",
-            "type=sha"
-          ]
-        }
+        "additionalTags": ["latest"]
       }
     }
   }
