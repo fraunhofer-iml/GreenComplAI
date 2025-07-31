@@ -1,15 +1,15 @@
 <div class="w-full">
-  <div class="flex flex-col gap-2" [formGroup]="form">
-    @if (this.form.controls.goals.controls.length === 0) {
+  @if (goalsFormGroup.controls.goals.length === 0) {
+    <div class="flex flex-col gap-2" [formGroup]="form">
       <div
         class="hover:border-primary-700 group col-span-2 flex w-full flex-row gap-2 rounded-lg border-[1px] border-solid border-transparent bg-neutral-200 p-4"
       >
         <div class="flex w-full flex-col gap-4">
           Es wurden noch keine Ziele hinzugefügt.
 
-          <div class="flex w-full flex-col">
+          <div class="flex w-full flex-col gap-2">
             <div>
-              <section class="m-2 grid w-full gap-2">
+              <section class="">
                 <mat-radio-group
                   formControlName="goalsPlanned"
                   class="flex flex-row items-center gap-4"
@@ -20,7 +20,7 @@
                 </mat-radio-group>
               </section>
               @if (form.controls.goalsPlanned.value === true) {
-                <mat-form-field appearance="outline" class="m-2 w-full">
+                <mat-form-field appearance="outline">
                   <mat-label>Frist</mat-label>
                   <mat-date-range-input
                     [formGroup]="form.controls.deadline"
@@ -45,7 +45,7 @@
                 </mat-form-field>
               }
               @if (form.controls.goalsPlanned.value === false) {
-                <mat-form-field appearance="outline" class="m-2 w-full">
+                <mat-form-field appearance="outline">
                   <mat-label i18n>Begründung</mat-label>
                   <textarea
                     matInput
@@ -63,10 +63,8 @@
               >
             </section>
 
-            {{ form.value.goalsTracked }}
-
             @if (goalstracked.checked) {
-              <mat-form-field appearance="outline" class="m-2 w-full">
+              <mat-form-field appearance="outline">
                 <mat-label i18n
                   >Welche verfahren zur Nachverfolgung werden
                   genutzt?</mat-label
@@ -79,7 +77,7 @@
                 ></textarea>
               </mat-form-field>
 
-              <mat-form-field appearance="outline" class="m-2 w-full">
+              <mat-form-field appearance="outline">
                 <mat-label i18n>Welche Zielvorgaben existieren?</mat-label>
                 <textarea
                   matInput
@@ -89,7 +87,7 @@
                 ></textarea>
               </mat-form-field>
 
-              <mat-form-field appearance="outline" class="m-2 w-full">
+              <mat-form-field appearance="outline">
                 <mat-label i18n
                   >qualitative oder quantitative Indikatoren der
                   Fortschrittsbewertung</mat-label
@@ -102,7 +100,7 @@
                 ></textarea>
               </mat-form-field>
 
-              <mat-form-field appearance="outline" class="m-2 w-full">
+              <mat-form-field appearance="outline">
                 <mat-label>Bezugszeitraum der Fortschrittsmessung</mat-label>
                 <mat-date-range-input
                   [formGroup]="form.controls.referencePeriodForProgression"
@@ -131,50 +129,46 @@
           </div>
         </div>
       </div>
-    }
-    @for (
-      goal of form.controls.goals.controls;
-      track goal;
-      let pindex = $index
-    ) {
-      <mat-expansion-panel class="w-full !bg-neutral-200" expanded="true">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Ziel {{ goal.controls.title.value }}
-          </mat-panel-title>
-          <mat-panel-description>
-            <button
-              mat-stroked-button
-              (click)="removeGoal(pindex)"
-              class="col-start-2 max-w-sm justify-self-end opacity-25 hover:cursor-pointer hover:opacity-100"
-            >
-              <mat-icon>delete</mat-icon>
-              entfernen
-            </button>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <div class="grid grid-cols-2">
-          <app-goals
-            class="col-span-2"
-            (refetchEvent)="updateGoal(pindex, $event)"
-            [report]="report()"
-          ></app-goals>
-        </div>
-      </mat-expansion-panel>
-    }
-  </div>
-  @if (!report().isFinalReport) {
-    <div class="flex justify-between gap-2 pt-4">
-      @if (!report().isFinalReport) {
-        <button mat-flat-button (click)="addGoal()">
-          <mat-icon>add</mat-icon>
-          Ziel hinzufügen
-        </button>
-      }
-      <button mat-flat-button (click)="save()" i18n [disabled]="form.invalid">
-        <mat-icon>save</mat-icon>
-        Speichern
-      </button>
     </div>
   }
+
+  <div [formGroup]="goalsFormGroup">
+    <mat-tab-group
+      formArrayName="goals"
+      class="w-full"
+      [selectedIndex]="selectedTabIndex"
+      (selectedIndexChange)="selectedTabIndex = $event"
+    >
+      @for (
+        goal of goalsFormGroup.controls.goals.controls;
+        track goal;
+        let pindex = $index
+      ) {
+        <mat-tab [formGroupName]="pindex" label="Ziel">
+          <div class="grid grid-cols-2">
+            <app-goals
+              class="col-span-2"
+              (refetchEvent)="updateGoal(pindex, $event)"
+              (removeEvent)="removeGoal(pindex)"
+              [report]="report()"
+            ></app-goals>
+          </div>
+        </mat-tab>
+      }
+    </mat-tab-group>
+    @if (!report().isFinalReport) {
+      <div class="flex justify-between gap-2 pt-4">
+        @if (!report().isFinalReport) {
+          <button mat-flat-button (click)="addGoal()">
+            <mat-icon>add</mat-icon>
+            Ziel hinzufügen
+          </button>
+        }
+        <button mat-flat-button (click)="save()" i18n [disabled]="form.invalid">
+          <mat-icon>save</mat-icon>
+          Speichern
+        </button>
+      </div>
+    }
+  </div>
 </div>

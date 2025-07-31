@@ -50,6 +50,7 @@ import { GoalForm, newGoalForm } from '../goal.forms';
 export class GoalsComponent implements OnInit {
   report = input<ReportDto>();
   refetchEvent = output<any>();
+  removeEvent = output<void>();
   form: GoalForm;
 
   constructor() {

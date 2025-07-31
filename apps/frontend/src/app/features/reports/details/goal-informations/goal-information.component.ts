@@ -57,6 +57,10 @@ import { GoalsComponent } from './goals/goals.component';
 export class GoalInformationComponent implements OnInit {
   report = input.required<ReportDto>();
   refetchEvent = output<void>();
+  goalsFormGroup = new FormGroup<{ goals: FormArray<GoalForm> }>({
+    goals: new FormArray<GoalForm>([]),
+  });
+
   form = new FormGroup({
     followUpProcedure: new FormControl<string | null>(null),
     targets: new FormControl<string | null>(null),
@@ -72,9 +76,10 @@ export class GoalInformationComponent implements OnInit {
     goalsPlanned: new FormControl<boolean | null>(null),
     goalsTracked: new FormControl<boolean | null>(null),
     noGoalsExplanation: new FormControl<string | null>(null),
-    goals: new FormArray<GoalForm>([]),
   });
   reportsService = inject(ReportsService);
+
+  selectedTabIndex = 0;
 
   goalPlanningMutation = injectMutation(() => ({
     mutationFn: (props: { planning: GoalReportDto; id: string }) =>
@@ -84,17 +89,15 @@ export class GoalInformationComponent implements OnInit {
   }));
 
   addGoal(): void {
-    const goals = this.form.controls.goals as FormArray<GoalForm>;
-    goals.push(newGoalForm());
+    this.goalsFormGroup.controls.goals.push(newGoalForm());
   }
 
   removeGoal(index: number): void {
-    const goals = this.form.controls.goals as FormArray<GoalForm>;
-    goals.removeAt(index);
+    this.goalsFormGroup.controls.goals.removeAt(index);
   }
 
   updateGoal(index: number, event: any): void {
-    this.form.controls.goals.at(index).patchValue(event);
+    this.goalsFormGroup.controls.goals.at(index).patchValue(event);
   }
 
   ngOnInit(): void {

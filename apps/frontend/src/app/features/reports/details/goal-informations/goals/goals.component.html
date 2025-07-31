@@ -7,6 +7,14 @@
       >
         <mat-expansion-panel-header>
           <span class="col-span-4 text-sm">Allgemeine Information </span>
+          <button
+            mat-stroked-button
+            (click)="removeEvent.emit()"
+            class="col-start-2 max-w-sm justify-self-end opacity-25 hover:cursor-pointer hover:opacity-100"
+          >
+            <mat-icon>delete</mat-icon>
+            entfernen
+          </button>
         </mat-expansion-panel-header>
         <div class="grid w-full grid-cols-4 gap-2 rounded-lg bg-neutral-200">
           <mat-form-field appearance="outline" class="col-span-3">
