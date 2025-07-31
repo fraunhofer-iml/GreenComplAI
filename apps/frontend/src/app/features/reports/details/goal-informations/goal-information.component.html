@@ -12,18 +12,18 @@
               <section class="m-2 grid w-full gap-2">
                 <mat-radio-group
                   formControlName="goalsPlanned"
-                  class="flex flex-row gap-4"
+                  class="flex flex-row items-center gap-4"
                 >
                   <mat-label i18n>Wurden bereits Ziele geplant?</mat-label>
-                  <mat-radio-button value="true" i18n>Ja</mat-radio-button>
-                  <mat-radio-button value="false" i18n>Nein</mat-radio-button>
+                  <mat-radio-button [value]="true" i18n>Ja</mat-radio-button>
+                  <mat-radio-button [value]="false" i18n>Nein</mat-radio-button>
                 </mat-radio-group>
               </section>
-              @if (form.controls.goalsPlanned.value === 'true') {
+              @if (form.controls.goalsPlanned.value === true) {
                 <mat-form-field appearance="outline" class="m-2 w-full">
                   <mat-label>Frist</mat-label>
                   <mat-date-range-input
-                    [formGroup]="form.controls.validDate"
+                    [formGroup]="form.controls.deadline"
                     [rangePicker]="picker"
                   >
                     <input
@@ -44,7 +44,7 @@
                   <mat-date-range-picker #picker></mat-date-range-picker>
                 </mat-form-field>
               }
-              @if (form.controls.goalsPlanned.value === 'false') {
+              @if (form.controls.goalsPlanned.value === false) {
                 <mat-form-field appearance="outline" class="m-2 w-full">
                   <mat-label i18n>Begründung</mat-label>
                   <textarea
@@ -57,11 +57,14 @@
               }
             </div>
             <section>
-              <mat-checkbox #goalstracked
+              <mat-checkbox #goalstracked formControlName="goalsTracked"
                 >Wirksamkeit der Strategien und Ziele werden
                 nachverfolgt</mat-checkbox
               >
             </section>
+
+            {{ form.value.goalsTracked }}
+
             @if (goalstracked.checked) {
               <mat-form-field appearance="outline" class="m-2 w-full">
                 <mat-label i18n

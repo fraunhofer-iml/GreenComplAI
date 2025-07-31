@@ -7,7 +7,8 @@
  */
 
 import { GoalReportDto, ReportDto } from '@ap2/api-interfaces';
-import { Component, input, output } from '@angular/core';
+import { toast } from 'ngx-sonner';
+import { Component, inject, input, OnInit, output } from '@angular/core';
 import {
   FormArray,
   FormControl,
@@ -28,7 +29,9 @@ import { MatInput } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
-import { goalForm, newGoalForm } from './goal.forms';
+import { injectMutation } from '@tanstack/angular-query-experimental';
+import { ReportsService } from '../../../../core/services/reports/reports.service';
+import { GoalForm, newGoalForm } from './goal.forms';
 import { GoalsComponent } from './goals/goals.component';
 
 @Component({
@@ -51,9 +54,9 @@ import { GoalsComponent } from './goals/goals.component';
   providers: [provideNativeDateAdapter()],
   templateUrl: './goal-information.component.html',
 })
-export class GoalInformationComponent {
+export class GoalInformationComponent implements OnInit {
   report = input.required<ReportDto>();
-  refetchEvent = output<any>();
+  refetchEvent = output<void>();
   form = new FormGroup({
     followUpProcedure: new FormControl<string | null>(null),
     targets: new FormControl<string | null>(null),
@@ -62,22 +65,31 @@ export class GoalInformationComponent {
       from: new FormControl<Date | null>(null),
       to: new FormControl<Date | null>(null),
     }),
-    validDate: new FormGroup({
+    deadline: new FormGroup({
       from: new FormControl<Date | null>(null),
       to: new FormControl<Date | null>(null),
     }),
-    goalsPlanned: new FormControl<string | null>(null),
+    goalsPlanned: new FormControl<boolean | null>(null),
+    goalsTracked: new FormControl<boolean | null>(null),
     noGoalsExplanation: new FormControl<string | null>(null),
-    goals: new FormArray<goalForm>([]),
+    goals: new FormArray<GoalForm>([]),
   });
+  reportsService = inject(ReportsService);
+
+  goalPlanningMutation = injectMutation(() => ({
+    mutationFn: (props: { planning: GoalReportDto; id: string }) =>
+      this.reportsService.updateGoalPlanning(props.planning, props.id),
+    onSuccess: () => this.refetchEvent.emit(),
+    onError: () => toast('Speichern fehlgeschlagen'),
+  }));
 
   addGoal(): void {
-    const goals = this.form.controls.goals as FormArray<goalForm>;
+    const goals = this.form.controls.goals as FormArray<GoalForm>;
     goals.push(newGoalForm());
   }
 
   removeGoal(index: number): void {
-    const goals = this.form.controls.goals as FormArray<goalForm>;
+    const goals = this.form.controls.goals as FormArray<GoalForm>;
     goals.removeAt(index);
   }
 
@@ -85,8 +97,39 @@ export class GoalInformationComponent {
     this.form.controls.goals.at(index).patchValue(event);
   }
 
+  ngOnInit(): void {
+    const goalPlanning = this.report().goalPlanning;
+    this.form.patchValue({
+      ...goalPlanning,
+      deadline: {
+        from: goalPlanning?.deadlineStart,
+        to: goalPlanning?.deadlineEnd,
+      },
+      referencePeriodForProgression: {
+        from: goalPlanning?.referencePeriodForProgressStart,
+        to: goalPlanning?.referencePeriodForProgressEnd,
+      },
+      goalsPlanned: goalPlanning?.hasPlannedGoals,
+      goalsTracked: goalPlanning?.goalsTracked,
+      progression: goalPlanning?.progressEvaluation,
+    });
+  }
+
   save() {
-    //@Todo DTO builden und definieren und dann speichern
-    const goals = new GoalReportDto();
+    const dto = {
+      ...this.form.value,
+      id: this.report().goalPlanning?.id,
+      deadlineEnd: this.form.value.deadline?.to,
+      deadlineStart: this.form.value.deadline?.from,
+      referencePeriodForProgressStart:
+        this.form.value.referencePeriodForProgression?.from,
+      referencePeriodForProgressEnd:
+        this.form.value.referencePeriodForProgression?.to,
+      hasPlannedGoals: this.form.value.goalsPlanned,
+      goalsTracked: this.form.value.goalsTracked,
+      progressEvaluation: this.form.value.progression,
+    } as GoalReportDto;
+
+    this.goalPlanningMutation.mutate({ planning: dto, id: this.report().id });
   }
 }

@@ -13,6 +13,7 @@ import {
   FinancialImpactCreateDto,
   FinancialImpactDto,
   FindAllReportsForCompanyProps,
+  GoalReportDto,
   ImpactType,
   MeasureCreateDto,
   MeasureDto,
@@ -258,6 +259,7 @@ export class ReportsService {
           },
           orderBy: { title: 'asc' },
         },
+        goalPlanning: true,
       },
     });
 
@@ -277,6 +279,7 @@ export class ReportsService {
             : MeasureStatus.PLANNED,
         previousReport: m.previousReport?.evaluationYear,
       })),
+      goalPlanning: { ...res.goalPlanning },
     };
   }
 
@@ -316,7 +319,7 @@ export class ReportsService {
     );
 
     if (measuresToCopy.length > 0) {
-      let nextReport = await this.prisma.report.findUnique({
+      let nextReport: Partial<ReportDto> = await this.prisma.report.findUnique({
         where: { evaluationYear: currentReport.evaluationYear + 1 },
       });
 
@@ -411,5 +414,42 @@ export class ReportsService {
     }
 
     return await Promise.all(updateCalls);
+  }
+
+  async updateGoals(
+    reportId: string,
+    goal: GoalReportDto
+  ): Promise<GoalReportDto> {
+    const report = await this.getReportById(reportId);
+    if (report.isFinalReport) return;
+
+    const res = await this.prisma.goalPlanning.upsert({
+      where: { id: goal.id ?? '' },
+      create: {
+        hasPlannedGoals: goal.hasPlannedGoals,
+        deadlineEnd: goal.deadlineEnd,
+        deadlineStart: goal.deadlineStart,
+        followUpProcedure: goal.followUpProcedure,
+        progressEvaluation: goal.progressEvaluation,
+        referencePeriodForProgressEnd: goal.referencePeriodForProgressEnd,
+        referencePeriodForProgressStart: goal.referencePeriodForProgressStart,
+        targets: goal.targets,
+        reportId: reportId,
+        goalsTracked: goal.goalsTracked,
+      },
+      update: {
+        hasPlannedGoals: goal.hasPlannedGoals,
+        deadlineEnd: goal.deadlineEnd,
+        deadlineStart: goal.deadlineStart,
+        followUpProcedure: goal.followUpProcedure,
+        progressEvaluation: goal.progressEvaluation,
+        referencePeriodForProgressEnd: goal.referencePeriodForProgressEnd,
+        referencePeriodForProgressStart: goal.referencePeriodForProgressStart,
+        targets: goal.targets,
+        goalsTracked: goal.goalsTracked,
+      },
+    });
+
+    return res;
   }
 }

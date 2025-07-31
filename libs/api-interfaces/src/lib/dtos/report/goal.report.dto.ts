@@ -7,4 +7,16 @@
  */
 
 // TODO Dto definieren und Goals über ReportDto zurück geben
-export class GoalReportDto {}
+export class GoalReportDto {
+  id?: string;
+  noGoalsExplanation?: string;
+  hasPlannedGoals?: boolean;
+  followUpProcedure?: string;
+  targets?: string;
+  progressEvaluation?: string;
+  referencePeriodForProgressStart?: Date;
+  referencePeriodForProgressEnd?: Date;
+  deadlineStart?: Date;
+  deadlineEnd?: Date;
+  goalsTracked?: boolean;
+}

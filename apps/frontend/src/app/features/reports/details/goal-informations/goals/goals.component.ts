@@ -8,7 +8,12 @@
 
 import { ReportDto } from '@ap2/api-interfaces';
 import { Component, input, OnInit, output } from '@angular/core';
-import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormArray,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -21,8 +26,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { YearlyDatepickerComponent } from '../datePicker/YearDatePicker.component';
-import { goalForm, newGoalForm } from '../goal.forms';
-
+import { GoalForm, newGoalForm } from '../goal.forms';
 
 @Component({
   selector: 'app-goals',
@@ -39,20 +43,19 @@ import { goalForm, newGoalForm } from '../goal.forms';
     MatCheckboxModule,
     MatDatepickerModule,
     YearlyDatepickerComponent, // Custom datepicker component for selecting only the year, needed because of a dual datepicker format was needed
-    MatRadioModule
+    MatRadioModule,
   ],
   templateUrl: './goals.component.html',
 })
 export class GoalsComponent implements OnInit {
   report = input<ReportDto>();
-  refetchEvent = output<any>()
-  form: goalForm;
+  refetchEvent = output<any>();
+  form: GoalForm;
 
   constructor() {
-    this.form = newGoalForm()
-    this.form.valueChanges.subscribe((value:any) => {
-      console.log(value)
-      this.refetchEvent.emit(value)
+    this.form = newGoalForm();
+    this.form.valueChanges.subscribe((value: any) => {
+      this.refetchEvent.emit(value);
     });
   }
 
@@ -68,5 +71,4 @@ export class GoalsComponent implements OnInit {
       });
     }
   }
-
 }

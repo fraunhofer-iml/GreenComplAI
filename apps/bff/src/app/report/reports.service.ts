@@ -12,6 +12,7 @@ import {
   FinancialImpactCreateDto,
   FinancialImpactDto,
   FindAllReportsForCompanyProps,
+  GoalReportDto,
   MeasureDto,
   PaginatedData,
   ReportDto,
@@ -80,6 +81,7 @@ export class ReportsService {
       )
     );
   }
+
   async updateMeasures(id: string, dtos: MeasureDto[]): Promise<MeasureDto[]> {
     return firstValueFrom(
       this.entityManagementService.send<MeasureDto[]>(
@@ -91,6 +93,7 @@ export class ReportsService {
       )
     );
   }
+
   async updateFinancialImpacts(
     id: string,
     dtos: FinancialImpactCreateDto[]
@@ -101,6 +104,18 @@ export class ReportsService {
         {
           id,
           dtos,
+        }
+      )
+    );
+  }
+
+  async updateGoals(id: string, dto: GoalReportDto): Promise<GoalReportDto> {
+    return firstValueFrom(
+      this.entityManagementService.send<GoalReportDto>(
+        ReportMessagePatterns.UPDATE_GOALS,
+        {
+          id,
+          dto,
         }
       )
     );

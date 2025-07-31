@@ -11,12 +11,14 @@ import {
   CreateReportProps,
   FinancialImpactDto,
   FindAllReportsForCompanyProps,
+  GoalReportDto,
   MeasureDto,
   PaginatedData,
   ReportDto,
   ReportOverviewDto,
   StrategyDto,
   UpdateFinancialImpactsProps,
+  UpdateGoalsProps,
   UpdateMeasuresProps,
   UpdateReportProps,
   UpdateStrategiesProps,
@@ -69,6 +71,13 @@ export class ReportsController {
     @Payload() props: UpdateFinancialImpactsProps
   ): Promise<FinancialImpactDto[]> {
     return this.reportsService.updateFinancialImpacts(props.dtos, props.id);
+  }
+
+  @MessagePattern(ReportMessagePatterns.UPDATE_GOALS)
+  async updateGoals(
+    @Payload() props: UpdateGoalsProps
+  ): Promise<GoalReportDto> {
+    return this.reportsService.updateGoals(props.id, props.dto);
   }
 
   @MessagePattern(ReportMessagePatterns.GET_REPORT_BY_ID)

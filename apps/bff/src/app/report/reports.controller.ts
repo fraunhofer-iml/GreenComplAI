@@ -12,6 +12,7 @@ import {
   FinancialImpactCreateDto,
   FinancialImpactDto,
   getRealmRole,
+  GoalReportDto,
   MeasureDto,
   PaginatedData,
   ProductDto,
@@ -167,13 +168,32 @@ export class ReportsController {
   })
   @ApiOkResponse({
     description: 'Successfull request: Return updated report with id',
-    type: ProductDto,
+    type: FinancialImpactDto,
   })
   updateFinancialImpacts(
     @Param('id') id: string,
     @Body() measures: FinancialImpactCreateDto[]
   ): Promise<FinancialImpactDto[]> {
     return this.reportsService.updateFinancialImpacts(id, measures);
+  }
+
+  @Patch(':id/goals')
+  @ApiBearerAuth()
+  @Roles({
+    roles: [getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER)],
+  })
+  @ApiBody({
+    type: ReportDto,
+  })
+  @ApiOkResponse({
+    description: 'Successfull request: Return updated report with id',
+    type: GoalReportDto,
+  })
+  updateGoals(
+    @Param('id') id: string,
+    @Body() goals: GoalReportDto
+  ): Promise<GoalReportDto> {
+    return this.reportsService.updateGoals(id, goals);
   }
 
   @Get(':id')
