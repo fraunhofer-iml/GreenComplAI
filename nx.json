@@ -79,6 +79,7 @@
     "changelog": {
       "projectChangelogs": {
         "createRelease": "github",
+        "file": false,
         "renderOptions": {
           "authors": false
         }
