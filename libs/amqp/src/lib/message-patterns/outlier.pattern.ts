@@ -5,3 +5,7 @@
  * For details on the licensing terms, see the LICENSE file.
  * SPDX-License-Identifier: Apache-2.0
  */
+
+export enum OutlierMessagePattern {
+  CHECK_OUTLIER = 'check_outlier',
+}

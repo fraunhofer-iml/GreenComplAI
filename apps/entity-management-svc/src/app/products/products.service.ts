@@ -15,6 +15,7 @@ import {
   PaginatedData,
   ProductCreateDto,
   ProductDto,
+  ProductOutlierDto,
   SearchProductsProps,
   UpdateFlagProductProps,
   UpdateProductDependenciesProps,
@@ -50,7 +51,10 @@ export class ProductService {
     private readonly flagService: FlagsService
   ) {}
 
-  async create({ dto }: CreateProductProps): Promise<ProductDto> {
+  async create({
+    dto,
+    outlierDetectionResult,
+  }: CreateProductProps): Promise<ProductDto> {
     if (!Object.values(ValidUnits).some((u) => u == dto.unit)) {
       dto.flags.push('unit');
       dto.unit = undefined;
@@ -63,7 +67,7 @@ export class ProductService {
     );
 
     const product = await this.prismaService.product.create(
-      productCreateQuery(dto)
+      productCreateQuery(dto, outlierDetectionResult),
     );
 
     if (dto.billOfMaterial)
@@ -91,12 +95,18 @@ export class ProductService {
 
   async getForOutlierDetection(): Promise<ProductDto[]> {
     return this.prismaService.product.findMany({
+      where: {
+        validated: true,
+      },
       include: {
         waste: {
           select: {
             recycledWastePercentage: true,
           },
         },
+      },
+      omit: {
+        outlier: true,
       },
     });
   }
@@ -174,6 +184,34 @@ export class ProductService {
     };
   }
 
+  async findOutliers(): Promise<ProductOutlierDto[]> {
+    const outliers = await this.prismaService.product.findMany({
+      where: {
+        AND: [
+          { NOT: { outlier: { equals: null } } },
+          { NOT: { outlier: { equals: [] } } },
+        ],
+      },
+      select: {
+        id: true,
+        name: true,
+        productId: true,
+        productGroup: { select: { name: true } },
+        waste: { select: { recycledWastePercentage: true } },
+        outlier: true,
+      },
+    });
+
+    return outliers.map(
+      (o) =>
+        ({
+          ...o,
+          productGroup: o.productGroup.name,
+          recycledWastePercentage: o.waste?.recycledWastePercentage ?? 0,
+        }) as ProductOutlierDto,
+    );
+  }
+
   async findPreliminaryProducts({
     id,
   }: FindProductByIdProps): Promise<[ProductDto, number][]> {
@@ -204,6 +242,9 @@ export class ProductService {
             ),
             criticalRawMaterials: p.preliminaryProduct.criticalRawMaterials.map(
               (m) => [m.material, m.percentage] as const
+            ),
+            outlier: (p.preliminaryProduct.outlier as Prisma.JsonArray).map(
+              (o: { key: string; value: number }) => o.key,
             ),
           },
           p.amount,
@@ -270,6 +311,9 @@ export class ProductService {
 
     return {
       ...product,
+      outlier: (product.outlier as Prisma.JsonArray).map(
+        (o: { key: string; value: number }) => o.key,
+      ),
     };
   }
 
@@ -281,6 +325,9 @@ export class ProductService {
     });
     return {
       ...p,
+      outlier: (p.outlier as Prisma.JsonArray).map(
+        (o: { key: string; value: number }) => o.key,
+      ),
     };
   }
 
@@ -312,6 +359,9 @@ export class ProductService {
       rareEarths: p.rareEarths.map((m) => [m.material, m.percentage] as const),
       criticalRawMaterials: p.criticalRawMaterials.map(
         (m) => [m.material, m.percentage] as const
+      ),
+      outlier: ((p.outlier as Prisma.JsonArray) ?? []).map(
+        (o: { key: string; value: number }) => o.key,
       ),
     }));
   }
@@ -350,7 +400,31 @@ export class ProductService {
     return product as ProductDto;
   }
 
-  async updateWaste({ id, dto }: UpdateProductWasteProps): Promise<ProductDto> {
+  async validateOutlier({
+    id,
+    dto,
+  }: UpdateFlagProductProps): Promise<ProductDto> {
+    const { outlier } = await this.prismaService.product.findUnique({
+      where: { id: id },
+      select: { outlier: true },
+    });
+
+    const filteredOutliers = (outlier ?? []).filter(
+      (key) => !dto.flags.includes(key),
+    );
+
+    const validatedProduct = await this.prismaService.product.update({
+      where: { id: id },
+      data: {
+        outlier: filteredOutliers,
+        validated: filteredOutliers.length === 0,
+      },
+    });
+
+    return validatedProduct;
+  }
+
+  async updateWaste({ id, dto }: UpdateProductWasteProps) {
     const { wasteId } = await this.prismaService.product.findFirst({
       select: { wasteId: true },
       where: { id: id },
@@ -428,7 +502,9 @@ export class ProductService {
     });
     if (!existing || existing.length === 0) {
       this.logger.debug(`No product with id ${product.id} found. Creating...`);
-      existing = [await this.create({ dto: product })];
+      existing = [
+        await this.create({ dto: product, outlierDetectionResult: [] }),
+      ];
     }
     return existing[0].id;
   }

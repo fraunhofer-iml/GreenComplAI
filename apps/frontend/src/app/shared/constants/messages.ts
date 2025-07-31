@@ -17,7 +17,7 @@ export enum Messages {
 }
 
 export enum TooltipMessages {
-  tooltipEdit = 'Item wurde zum manuellen Editieren Markiert. Bitte lösen Sie alle markierten elemente auf.',
+  tooltipEdit = 'Das Produkt enthält markierte Felder.',
 }
 
 export const UNIT_INFO_MESSAGE = `Alle verfügbaren Einheiten sind: ${Array.from(

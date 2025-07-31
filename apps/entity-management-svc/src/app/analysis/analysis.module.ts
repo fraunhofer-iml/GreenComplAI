@@ -36,6 +36,7 @@ import { WasteFlowAnalysisService } from './waste-flow-analysis.service';
     WasteFlowAnalysisService,
     InFlowAnalysisService,
     ProductAnalysisService,
+    ProductAnalysisService,
   ],
 })
 export class AnalysisModule {}

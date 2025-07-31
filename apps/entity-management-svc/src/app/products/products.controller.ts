@@ -17,6 +17,7 @@ import {
   PackagingDto,
   PaginatedData,
   ProductDto,
+  ProductOutlierDto,
   SearchProductsProps,
   UpdateFlagProductProps,
   UpdateProductDependenciesProps,
@@ -51,8 +52,13 @@ export class ProductController {
     return this.productService.findAll(payload);
   }
 
+  @MessagePattern(ProductMessagePatterns.OUTLIERS)
+  findOutliers(): Promise<ProductOutlierDto[]> {
+    return this.productService.findOutliers();
+  }
+
   @MessagePattern(ProductMessagePatterns.GET_FOR_OUTLIER_DETECTION)
-  getForOutlierDetection(): Promise<ProductDto[]> {
+  getForOutlierDetection(): Promise<Partial<ProductDto>[]> {
     return this.productService.getForOutlierDetection();
   }
 
@@ -97,7 +103,7 @@ export class ProductController {
   @MessagePattern(ProductMessagePatterns.UPDATE_WASTE)
   updateWaste(
     @Payload() payload: UpdateProductWasteProps
-  ): Promise<ProductDto> {
+  ): Promise<Partial<ProductDto>> {
     return this.productService.updateWaste(payload);
   }
 
@@ -128,5 +134,10 @@ export class ProductController {
   @MessagePattern(ProductMessagePatterns.UPDATE_FLAGS)
   updateFlags(@Payload() payload: UpdateFlagProductProps): Promise<ProductDto> {
     return this.productService.updateFlags(payload);
+  }
+
+  @MessagePattern(ProductMessagePatterns.OUTLIERS_VALIDATE)
+  validate(@Payload() payload: UpdateFlagProductProps): Promise<ProductDto> {
+    return this.productService.validateOutlier(payload);
   }
 }

@@ -22,7 +22,7 @@ stages:
       - .npm
   before_script:
     - npm install --cache .npm
-    - npx prisma generate
+    - npx prisma generate --generator jsclient
 
 danger:
   stage: danger
@@ -43,8 +43,10 @@ release:
   stage: release
   image: node:lts-bullseye-slim
   before_script:
-    - apt-get update && apt-get install -y --no-install-recommends git-core ca-certificates
-    - npm install -g semantic-release @semantic-release/gitlab @semantic-release/changelog @semantic-release/git
+    - apt-get update && apt-get install -y --no-install-recommends git-core
+      ca-certificates
+    - npm install -g semantic-release @semantic-release/gitlab
+      @semantic-release/changelog @semantic-release/git
   script:
     - semantic-release
   only:
@@ -59,9 +61,12 @@ all:deploy:
   before_script:
     - echo "Deploying images with tag $CI_COMMIT_TAG"
     - apk add --no-cache git curl bash coreutils
-    - curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+    - curl -s
+      "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"
+      | bash
     - mv kustomize /usr/local/bin/
-    - git clone https://pipeline-token:${GL_TOKEN}@gitlab.cc-asp.fraunhofer.de/skala/ap2/pipeline.git
+    - git clone
+      https://pipeline-token:${GL_TOKEN}@gitlab.cc-asp.fraunhofer.de/skala/ap2/pipeline.git
     - git config --global user.email "gitlab@oe260.iml.fhg.de"
     - git config --global user.name "GitLab CI/CD"
   script:

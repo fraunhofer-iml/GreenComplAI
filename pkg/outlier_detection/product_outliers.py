@@ -5,9 +5,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import pandas as pd
-import numpy as np
 from sklearn.ensemble import IsolationForest
-from typing import List, Tuple, Optional
+from typing import List, Tuple
 from rabbitmq_client import RabbitMQClient
 
 class ProductOutlierDetector:

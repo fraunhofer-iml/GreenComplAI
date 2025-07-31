@@ -55,7 +55,7 @@ export class BillOfMaterialComponent implements OnChanges {
     'totalPrice',
   ];
 
-  description = input<string>();
+  description = input<string>('');
 
   billOfMaterialForm: FormGroup<BillOfMaterialFormGroup>;
 

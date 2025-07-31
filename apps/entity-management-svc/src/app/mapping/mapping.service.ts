@@ -15,12 +15,12 @@ export class MappingService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async createMapping(dto: MappingDto): Promise<MappingDto> {
-    const existingMapping = await this.prismaService.mapping.findUnique({
+    const existingMapping = await this.prismaService.gCMapping.findUnique({
       where: { key: dto.key },
     });
 
     if (existingMapping) {
-      return this.prismaService.mapping.update({
+      return this.prismaService.gCMapping.update({
         where: { key: dto.key },
         data: {
           mappingElements: {
@@ -40,7 +40,7 @@ export class MappingService {
       });
     }
 
-    return this.prismaService.mapping.create({
+    return this.prismaService.gCMapping.create({
       data: {
         key: dto.key,
         mappingElements: {
@@ -60,7 +60,7 @@ export class MappingService {
   }
 
   async findOne(id: string): Promise<MappingDto> {
-    return this.prismaService.mapping.findFirst({
+    return this.prismaService.gCMapping.findFirst({
       where: {
         OR: [{ id: id }, { key: id }],
       },

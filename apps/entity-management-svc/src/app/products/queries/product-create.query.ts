@@ -11,7 +11,10 @@ import { Prisma } from '@prisma/client';
 import { createUtilizableAndNonUtilizableWaste } from '../../utils/waste-queries';
 import { upsertQuery } from './create-or-update.query';
 
-export const productCreateQuery = (dto: ProductCreateDto) =>
+export const productCreateQuery = (
+  dto: ProductCreateDto,
+  outlierDetectionResult: string[],
+) =>
   ({
     data: {
       ...upsertQuery(dto),
@@ -32,6 +35,8 @@ export const productCreateQuery = (dto: ProductCreateDto) =>
             },
           }
         : undefined,
+      outlier: outlierDetectionResult,
+      validated: outlierDetectionResult.length > 0,
       materials: dto.materials ? materialCreateQuery(dto.materials) : undefined,
       criticalRawMaterials: dto.criticalRawMaterials
         ? materialCreateQuery(dto.criticalRawMaterials)

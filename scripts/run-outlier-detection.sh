@@ -169,7 +169,7 @@ main() {
     echo ""
     
     # Run the Python script
-    python main.py
+    uv run main.py
 }
 
 # Handle script interruption

@@ -7,13 +7,13 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, input, Input } from '@angular/core';
 import { DataService } from '../../../core/services/data-service/data.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-flagable',
-  imports: [CommonModule],
-  providers: [],
+  imports: [CommonModule, MatTooltipModule],
   templateUrl: './flagable.component.html',
 })
 export class FlagableComponent<T> {
@@ -23,6 +23,8 @@ export class FlagableComponent<T> {
   @Input({ required: true }) id = '';
   flag: any = '';
   alt: any = 'Element is not flagged';
+
+  outlier = input<string[]>();
 
   constructor(private readonly dataService: DataService<T>) {}
 

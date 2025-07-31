@@ -8,6 +8,7 @@
 
 import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import {
   provideAngularQuery,
   QueryClient,
@@ -23,8 +24,9 @@ describe('WateflowAnalysisGraphComponent', () => {
     await TestBed.configureTestingModule({
       imports: [WasteflowAnalysisGraphComponent],
       providers: [
-        AnalysisService,
         provideHttpClient(),
+        provideRouter([]),
+        AnalysisService,
         provideAngularQuery(new QueryClient()),
       ],
     }).compileComponents();

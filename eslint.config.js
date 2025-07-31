@@ -6,7 +6,7 @@ module.exports = [
   ...nx.configs['flat/typescript'],
   ...nx.configs['flat/javascript'],
   {
-    ignores: ['**/dist', '**/third-party-licenses'],
+    ignores: ['**/dist', '**/third-party-licenses', '**/coverage'],
   },
   {
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],

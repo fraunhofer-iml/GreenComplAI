@@ -14,3 +14,4 @@ export * from './waste.pattern';
 export * from './product-group.pattern';
 export * from './report.pattern';
 export * from './mapping.pattern';
+export * from './outlier.pattern';

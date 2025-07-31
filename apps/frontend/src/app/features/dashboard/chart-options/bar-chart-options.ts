@@ -42,7 +42,7 @@ export const getDefaultSeries = (name: string): BarSeriesOption => {
     tooltip: {
       trigger: 'item',
       position: { right: 'center', top: 0 },
-      formatter: '{b} <br> {a}: {c}',
+      formatter: '{b} <br> {a}: {c} kg',
     },
     itemStyle: {
       borderRadius: 4,

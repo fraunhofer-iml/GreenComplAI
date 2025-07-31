@@ -54,6 +54,7 @@ export class ProductTableComponent {
   });
 
   displayedColumns = [
+    'flagged',
     'productGroup',
     'productId',
     'name',

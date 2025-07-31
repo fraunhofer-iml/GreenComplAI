@@ -1,34 +1,48 @@
 <div class="flex h-full w-full flex-col gap-4">
-  <div class="grid grid-cols-2 gap-2 !rounded-lg !bg-neutral-200 px-4 py-4">
-    <h2 class="text-l col-span-2" i18n>ESRS-Berichtsdaten</h2>
-    @if (analysisQuery.data()?.analysis; as data) {
-      <div class="flex justify-between">
-        <span class="font-medium">Gesamtabfluss</span>
-        <span>{{ data.totalWeight | number }} kg</span>
-      </div>
-      <div class="flex justify-between">
-        <span class="font-medium">Gesamtmenge nicht recycelbarer Abfälle</span>
-        <span>{{ data.totalWasteWeightNotRecyclable | number }} kg</span>
-      </div>
-      <div class="flex justify-between">
-        <span class="font-medium"
-          >Wertstoffkreislauf (nicht gefährlich Abfälle)</span
-        >
-        <span>{{ data.normalUtilizableWasteWeight | number }} kg</span>
-      </div>
-      <div class="flex justify-between">
-        <span class="font-medium">Beseitigung (nicht gefährlich Abfälle)</span>
-        <span>{{ data.hazardousNonUtilizableWasteWeight | number }} kg</span>
-      </div>
-      <div class="flex justify-between">
-        <span class="font-medium">Wertstoffkreislauf (gefährlich Abfälle)</span>
-        <span>{{ data.hazardousUtilizableWasteWeight | number }} kg</span>
-      </div>
-      <div class="flex justify-between">
-        <span class="font-medium">Beseitigung (gefährlich Abfälle)</span>
-        <span>{{ data.normalNonUtilizableWasteWeight | number }} kg</span>
-      </div>
-    }
+  <div class="grid w-full grid-cols-2 gap-4">
+    <app-outlier-detection-analysis
+      [productGroupId$]="productGroupId$()"
+      [productId$]="productId$()"
+    ></app-outlier-detection-analysis>
+    <div
+      class="flex flex-col gap-2 !rounded-lg !bg-neutral-200 px-4 py-4 text-sm"
+    >
+      <h2 class="text-l col-span-2" i18n>ESRS-Berichtsdaten</h2>
+      @if (analysisQuery.data()?.analysis; as data) {
+        <div class="flex justify-between">
+          <span class="font-medium">Gesamtabfluss</span>
+          <span>{{ data.totalWeight | number }} kg</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="font-medium"
+            >Gesamtmenge nicht recycelbarer Abfälle</span
+          >
+          <span>{{ data.totalWasteWeightNotRecyclable | number }} kg</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="font-medium"
+            >Wertstoffkreislauf (nicht gefährlich Abfälle)</span
+          >
+          <span>{{ data.normalUtilizableWasteWeight | number }} kg</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="font-medium"
+            >Beseitigung (nicht gefährlich Abfälle)</span
+          >
+          <span>{{ data.hazardousNonUtilizableWasteWeight | number }} kg</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="font-medium"
+            >Wertstoffkreislauf (gefährlich Abfälle)</span
+          >
+          <span>{{ data.hazardousUtilizableWasteWeight | number }} kg</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="font-medium">Beseitigung (gefährlich Abfälle)</span>
+          <span>{{ data.normalNonUtilizableWasteWeight | number }} kg</span>
+        </div>
+      }
+    </div>
   </div>
 
   <!-- CHART -->
@@ -47,6 +61,7 @@
               150 * (analysisQuery.data()?.analysis?.analysis?.length ?? 1) +
               'px',
           }"
+          (chartInit)="onChartInit($event)"
         ></div>
       </div>
       <div
@@ -57,6 +72,7 @@
         [style]="{
           height: '140px',
         }"
+        (chartInit)="onChartLegendInit($event)"
       ></div>
     } @else {
       <span class="text-sm">Keine Daten vorhanden</span>

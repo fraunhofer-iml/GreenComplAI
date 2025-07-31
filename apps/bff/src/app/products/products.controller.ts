@@ -15,6 +15,7 @@ import {
   PaginatedData,
   ProductCreateDto,
   ProductDto,
+  ProductOutlierDto,
   ProductUpdateDto,
   ProductUpdateHistoryDto,
   ProductUpdateMapDto,
@@ -118,6 +119,33 @@ export class ProductsController {
       size: pageSize,
       isSellable,
     });
+  }
+
+  @Get('outliers')
+  @Roles({
+    roles: [
+      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+      getRealmRole(AuthRoles.BUYER),
+    ],
+  })
+  @ApiBearerAuth()
+  @ApiOperation({
+    description: 'Get all products.',
+  })
+  @ApiQuery({
+    name: 'isSellable',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'sorting',
+    required: false,
+    examples: {
+      noSorting: { value: null },
+      name: { value: { name: 'asc' } },
+    },
+  })
+  findAllOutliers() {
+    return this.productsService.findOutliers();
   }
 
   @Get('search')
@@ -326,13 +354,10 @@ export class ProductsController {
     description: 'Successfull request: Return updated product with id',
     type: ProductDto,
   })
-  updateFlags(
-    @Param('id') id: string,
-    @Body() flags: string[]
-  ): Promise<ProductDto> {
+  updateFlags(@Param('id') id: string, @Body() data: { flags: string[] }) {
     return this.productsService.updateFlags({
       id,
-      dto: flags,
+      dto: { flags: data.flags },
     });
   }
 
@@ -362,6 +387,28 @@ export class ProductsController {
       id,
       dto: productUpdateDto,
     });
+  }
+
+  @Patch(':id/outlier')
+  @ApiBearerAuth()
+  @Roles({
+    roles: [
+      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+      getRealmRole(AuthRoles.BUYER),
+    ],
+  })
+  @ApiOperation({
+    description: 'validate outlier.',
+  })
+  @ApiOkResponse({
+    description: 'Successfull request: Return updated product with id',
+    type: ProductDto,
+  })
+  validateOutlier(
+    @Param('id') id: string,
+    @Body() data: { flags: string[] },
+  ): Promise<ProductOutlierDto> {
+    return this.productsService.validate({ id, dto: { flags: data.flags } });
   }
 
   @Delete(':id')

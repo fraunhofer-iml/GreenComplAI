@@ -1,8 +1,18 @@
-<h3 mat-dialog-title>Änderungen speichern</h3>
-<mat-dialog-content>
-  <p>Sollen die Änderungen wirklich übernommen werden?</p>
-</mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-button (click)="save(true)">Änderungen speichern</button>
-  <button mat-button (click)="save(false)">Abbrechen</button>
-</mat-dialog-actions>
+<div class="">
+  <h3 mat-dialog-title>Änderungen speichern</h3>
+  <mat-dialog-content class="!h-24">
+    <p>Sollen die Änderungen wirklich übernommen werden?</p>
+    <span> Folgende Felder sollen als Validiert gekennzeichnet werden:</span>
+    @for (item of data; track $index) {
+    <mat-checkbox
+      [checked]="validated.includes(item)"
+      (change)="toggleItem(item)"
+      >Anteil Recycelter Materialien</mat-checkbox
+    >
+    }
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button (click)="save(true)">Änderungen speichern</button>
+    <button mat-button (click)="save(false)">Abbrechen</button>
+  </mat-dialog-actions>
+</div>

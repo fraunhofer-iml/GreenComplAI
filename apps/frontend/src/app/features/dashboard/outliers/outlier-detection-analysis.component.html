@@ -1,0 +1,40 @@
+<div class="h-full !rounded-lg !bg-neutral-200 px-4 py-4">
+  <a class="text-l hover:underline" i18n [routerLink]="'products/outliers'"
+    >Ausreißer</a
+  >
+  @if (productId$()) {
+    <div class="flex w-full items-center justify-center p-4">
+      <div
+        [ngClass]="isOutlier ? 'bg-error-700/20' : 'bg-primary-700/20'"
+        class="flex w-full flex-col items-center gap-4 rounded-lg p-8 text-center text-sm"
+      >
+        <span
+          [ngClass]="
+            isOutlier
+              ? 'bg-error-800 text-neutral-250'
+              : 'bg-primary-800 text-neutral-250'
+          "
+          class="material-symbols-outlined min-w-10 rounded-full p-4 shadow-sm"
+        >
+          {{ isOutlier ? 'feedback' : 'beenhere' }}
+        </span>
+        <span>
+          {{
+            isOutlier
+              ? 'Das Produkt wurde als Ausreißer erkannt!'
+              : 'Das Produkt ist validiert.'
+          }}</span
+        >
+      </div>
+    </div>
+  } @else {
+    @if (analysisQuery.isSuccess() && analysisQuery.data()) {
+      <div
+        echarts
+        [options]="analysisQuery.data()"
+        class="echart max-h-[12rem]"
+        [theme]="theme"
+      ></div>
+    }
+  }
+</div>

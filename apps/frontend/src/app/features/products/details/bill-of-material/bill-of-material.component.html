@@ -1,6 +1,11 @@
 <div class="col-span-3 rounded-lg bg-neutral-200 p-4">
   <div class="flex w-full items-center justify-between">
-    <app-flagable [id]="id$()??''" [topic]="'Vorprodukte'" [data]="flags()" [element]="'billOfMaterial'">
+    <app-flagable
+      [id]="id$() ?? ''"
+      [topic]="'Vorprodukte'"
+      [data]="flags()"
+      [element]="'billOfMaterial'"
+    >
     </app-flagable>
     <button mat-button (click)="preliminarySheet.open()">
       <mat-icon>edit</mat-icon>
@@ -8,9 +13,17 @@
     </button>
   </div>
   <span class="text-sm">
-  <app-flagable [id]="id$()??''" [topic]=" description() ?? 'Keine  Beschreibung angegeben.'" [data]="flags()"
-                [element]="'billOfMaterialDescription'">
-  </app-flagable>
+    <app-flagable
+      [id]="id$() ?? ''"
+      [topic]="
+        description() && description() !== ''
+          ? description()
+          : 'Keine  Beschreibung angegeben.'
+      "
+      [data]="flags()"
+      [element]="'billOfMaterialDescription'"
+    >
+    </app-flagable>
   </span>
 
   <div class="mt-4 max-h-96 space-y-4 overflow-y-auto">
@@ -24,23 +37,28 @@
           <th mat-header-cell *matHeaderCellDef>Produktname</th>
           <td mat-cell *matCellDef="let element">
             <div class="flex gap-2">
-              <a [routerLink]="[Uris.products, element[0].id]" (mouseenter)="flagAble.flag='flagOutline.svg'"
-                 (mouseleave)="flagAble.flag=''">
+              <a
+                [routerLink]="[Uris.products, element[0].id]"
+                (mouseenter)="flagAble.flag = 'flagOutline.svg'"
+                (mouseleave)="flagAble.flag = ''"
+              >
                 {{ element[0].productId ?? element[0].id }}
               </a>
-              <app-flagable #flagAble [id]="element[0].id" [data]="element[0].flags"
-                            [element]="element[0].productId? 'productId':'id'"></app-flagable>
-
+              <app-flagable
+                #flagAble
+                [id]="element[0].id"
+                [data]="element[0].flags"
+                [element]="element[0].productId ? 'productId' : 'id'"
+              ></app-flagable>
             </div>
-
           </td>
         </ng-container>
         <ng-container matColumnDef="supplier">
           <th mat-header-cell *matHeaderCellDef>Lieferant</th>
           <td mat-cell *matCellDef="let element">
             <a [routerLink]="[Uris.companies, element[0].supplier.id]">{{
-                element[0].supplier.name
-              }}</a>
+              element[0].supplier.name
+            }}</a>
           </td>
         </ng-container>
         <ng-container matColumnDef="price">

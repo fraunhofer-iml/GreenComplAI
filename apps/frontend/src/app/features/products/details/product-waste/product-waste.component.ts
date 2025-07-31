@@ -31,6 +31,8 @@ export class ProductWasteComponent {
   id = input<string>('');
   waste = input<Partial<WasteDto>>();
   flags = input<string[]>([]);
+  outlier = input<string[]>([]);
+
   displayWasteMaterials(materials: WasteMaterialDto[]) {
     return materials
       .map(

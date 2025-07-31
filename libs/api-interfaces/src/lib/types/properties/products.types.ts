@@ -17,6 +17,7 @@ import {
 
 export type CreateProductProps = {
   dto: ProductCreateDto;
+  outlierDetectionResult: string[];
 };
 
 export type FindAllProductsProps = {

@@ -80,16 +80,21 @@ export class ProductWasteUpdateComponent {
 
   openDialog() {
     this.dialog
-      .open(ConfirmUpdateDialogComponent)
+      .open(ConfirmUpdateDialogComponent, {
+        data: this.productQuery.data()?.outlier,
+      })
       .afterClosed()
-      .subscribe((confirmed) => {
-        if (confirmed) this.save();
-      });
+      .subscribe(
+        (result: { confirmed: boolean; fieldsToValidate: string[] }) => {
+          if (result.confirmed) this.save(result.fieldsToValidate);
+        },
+      );
   }
 
-  save() {
+  save(fieldsToValidate: string[]) {
     const dto: WasteCreateDto = {
       ...this.form.value,
+      fieldsToValidate: fieldsToValidate,
       wasteMaterials:
         this.form.controls.wasteMaterials.value.materials
           ?.filter((m) => m.material && m.percentage)
