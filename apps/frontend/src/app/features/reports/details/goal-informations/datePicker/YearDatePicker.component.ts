@@ -7,18 +7,30 @@
  */
 
 import { Component, input } from '@angular/core';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+} from '@angular/material/core';
+import {
+  MatDatepicker,
+  MatDatepickerModule,
+} from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { ONLY_YEAR_FORMAT } from '../../../../../shared/constants/date-formats';
-import { MomentDateAdapter } from '@angular/material-moment-adapter';
 
 @Component({
   selector: 'app-datepicker',
   standalone: true,
-  imports: [MatDatepickerModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule],
+  imports: [
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+  ],
   providers: [
     {
       provide: DateAdapter,
@@ -28,10 +40,7 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
     { provide: MAT_DATE_FORMATS, useValue: ONLY_YEAR_FORMAT },
   ],
   template: `
-    <mat-form-field
-      appearance="outline"
-      class="m-2 w-full"
-    >
+    <mat-form-field appearance="outline" class="w-full">
       <ng-content></ng-content>
       <input
         [value]="form().value"
@@ -40,7 +49,7 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
         [formControl]="form()"
       />
       <mat-datepicker-toggle
-        [disabled]=disabled()
+        [disabled]="disabled()"
         matSuffix
         [for]="fromPicker"
       ></mat-datepicker-toggle>

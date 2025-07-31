@@ -134,7 +134,7 @@
       track goal;
       let pindex = $index
     ) {
-      <mat-expansion-panel class="w-full !bg-neutral-200">
+      <mat-expansion-panel class="w-full !bg-neutral-200" expanded="true">
         <mat-expansion-panel-header>
           <mat-panel-title>
             Ziel {{ goal.controls.title.value }}
@@ -152,7 +152,7 @@
         </mat-expansion-panel-header>
         <div class="grid grid-cols-2">
           <app-goals
-            class="col-span-2 m-4"
+            class="col-span-2"
             (refetchEvent)="updateGoal(pindex, $event)"
             [report]="report()"
           ></app-goals>
@@ -160,9 +160,9 @@
       </mat-expansion-panel>
     }
   </div>
-  @if (!report()?.isFinalReport) {
+  @if (!report().isFinalReport) {
     <div class="flex justify-between gap-2 pt-4">
-      @if (!report()?.isFinalReport) {
+      @if (!report().isFinalReport) {
         <button mat-flat-button (click)="addGoal()">
           <mat-icon>add</mat-icon>
           Ziel hinzufügen

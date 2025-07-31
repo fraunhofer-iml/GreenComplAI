@@ -8,20 +8,28 @@
 
 import { GoalReportDto, ReportDto } from '@ap2/api-interfaces';
 import { Component, input, output } from '@angular/core';
-import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormArray,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import { MatDatepickerModule, MatDateRangeInput } from '@angular/material/datepicker';
+import {
+  MatDatepickerModule,
+  MatDateRangeInput,
+} from '@angular/material/datepicker';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTabsModule } from '@angular/material/tabs';
 import { goalForm, newGoalForm } from './goal.forms';
 import { GoalsComponent } from './goals/goals.component';
-
 
 @Component({
   selector: 'app-goal-information',
@@ -38,6 +46,7 @@ import { GoalsComponent } from './goals/goals.component';
     MatDateRangeInput,
     MatDatepickerModule,
     MatCheckboxModule,
+    MatTabsModule,
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './goal-information.component.html',
@@ -78,6 +87,6 @@ export class GoalInformationComponent {
 
   save() {
     //@Todo DTO builden und definieren und dann speichern
-      const goals = new GoalReportDto()
+    const goals = new GoalReportDto();
   }
 }
