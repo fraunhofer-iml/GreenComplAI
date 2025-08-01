@@ -8,12 +8,7 @@
 
 import { ReportDto } from '@ap2/api-interfaces';
 import { Component, input, OnInit, output } from '@angular/core';
-import {
-  FormArray,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -25,7 +20,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { YearlyDatepickerComponent } from '../datePicker/YearDatePicker.component';
+import { DatePickerMonthYearComponent } from '../../../../../shared/components/date-picker/month-year/date-pickler-month-year.component';
+import { DatePickerYearOnlyComponent } from '../../../../../shared/components/date-picker/year-only/date-pickler-year-only.component';
 import { GoalForm, newGoalForm } from '../goal.forms';
 
 @Component({
@@ -42,8 +38,9 @@ import { GoalForm, newGoalForm } from '../goal.forms';
     MatListModule,
     MatCheckboxModule,
     MatDatepickerModule,
-    YearlyDatepickerComponent, // Custom datepicker component for selecting only the year, needed because of a dual datepicker format was needed
     MatRadioModule,
+    DatePickerYearOnlyComponent,
+    DatePickerMonthYearComponent,
   ],
   templateUrl: './goals.component.html',
 })

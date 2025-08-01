@@ -31,6 +31,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { injectMutation } from '@tanstack/angular-query-experimental';
 import { ReportsService } from '../../../../core/services/reports/reports.service';
+import { DatePickerMonthYearComponent } from '../../../../shared/components/date-picker/month-year/date-pickler-month-year.component';
 import { GoalForm, newGoalForm } from './goal.forms';
 import { GoalsComponent } from './goals/goals.component';
 
@@ -50,6 +51,7 @@ import { GoalsComponent } from './goals/goals.component';
     MatDatepickerModule,
     MatCheckboxModule,
     MatTabsModule,
+    DatePickerMonthYearComponent,
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './goal-information.component.html',
