@@ -509,36 +509,36 @@ model GoalPlanning {
 }
 
 model Goal {
-  id                                          String   @id @default(cuid())
-  title                                       String
-  obligation                                  String
-  target                                      String
-  isRelative                                  Boolean
-  scope                                       String
-  action                                      String
-  unit                                        String
-  geographicScope                             String
-  methodsAndAssumptions                       String
-  referenceValue                              String
-  referenceDate                               DateTime
-  isScientificReferenced                      Boolean
-  stakeholderInclusion                        Boolean
-  changeOfGoalsOrMethods                      String
-  effortsAndMonitoring                        String
-  impactOnExtensionOfCircularityProductDesign String
-  impactOnCircularityMaterialRate             String
-  impactOnMinimizingOfPrimaryMaterialUse      String
-  impactOnSustainableSourcing                 String
-  impactOnWasteManagement                     String
-  impactOnMiscellaneous                       String
-  wasteHLevel                                 String
-  stakeholderInclusionComment                 String
-  hasEcologicalImpact                         Boolean
-  ecologicalThresholdDescription              String
-  ecologicalThresholdDetermination            String
-  ecologicalThresholdResponsibilities         String
-  validityPeriodStart                         DateTime
-  validityPeriodEnd                           DateTime
+  id                                          String    @id @default(cuid())
+  title                                       String?
+  obligation                                  String?
+  target                                      String?
+  isRelative                                  Boolean?
+  scope                                       String?
+  action                                      String?
+  unit                                        String?
+  geographicScope                             String?
+  methodsAndAssumptions                       String?
+  referenceValue                              String?
+  referenceDate                               DateTime?
+  isScientificReferenced                      Boolean?
+  stakeholderInclusion                        Boolean?
+  changeOfGoalsOrMethods                      String?
+  effortsAndMonitoring                        String?
+  impactOnExtensionOfCircularityProductDesign String?
+  impactOnCircularityMaterialRate             String?
+  impactOnMinimizingOfPrimaryMaterialUse      String?
+  impactOnSustainableSourcing                 String?
+  impactOnWasteManagement                     String?
+  impactOnMiscellaneous                       String?
+  wasteHLevel                                 String?
+  stakeholderInclusionComment                 String?
+  hasEcologicalImpact                         Boolean?
+  ecologicalThresholdDescription              String?
+  ecologicalThresholdDetermination            String?
+  ecologicalThresholdResponsibilities         String?
+  validityPeriodStart                         DateTime?
+  validityPeriodEnd                           DateTime?
 
   strategies GoalStrategy[]
   Report     Report?        @relation(fields: [reportId], references: [id])

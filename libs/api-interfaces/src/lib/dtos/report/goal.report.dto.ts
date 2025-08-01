@@ -6,7 +6,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-// TODO Dto definieren und Goals über ReportDto zurück geben
+import { GoalCreateDto } from './goal-create.dto';
+import { GoalDto } from './goal.dto';
+
 export class GoalReportDto {
   id?: string;
   noGoalsExplanation?: string;
@@ -19,4 +21,21 @@ export class GoalReportDto {
   deadlineStart?: Date;
   deadlineEnd?: Date;
   goalsTracked?: boolean;
+
+  goals: GoalDto[] = [];
+}
+export class GoalPlanningtDto {
+  id?: string;
+  noGoalsExplanation?: string;
+  hasPlannedGoals?: boolean;
+  followUpProcedure?: string;
+  targets?: string;
+  progressEvaluation?: string;
+  referencePeriodForProgressStart?: Date;
+  referencePeriodForProgressEnd?: Date;
+  deadlineStart?: Date;
+  deadlineEnd?: Date;
+  goalsTracked?: boolean;
+
+  goals: GoalCreateDto[] = [];
 }

@@ -13,6 +13,8 @@ import {
   FinancialImpactCreateDto,
   FinancialImpactDto,
   FindAllReportsForCompanyProps,
+  GoalCreateDto,
+  GoalPlanningtDto,
   GoalReportDto,
   ImpactType,
   MeasureCreateDto,
@@ -260,6 +262,7 @@ export class ReportsService {
           orderBy: { title: 'asc' },
         },
         goalPlanning: true,
+        goals: { include: { strategies: { include: { strategy: true } } } },
       },
     });
 
@@ -279,7 +282,16 @@ export class ReportsService {
             : MeasureStatus.PLANNED,
         previousReport: m.previousReport?.evaluationYear,
       })),
-      goalPlanning: { ...res.goalPlanning },
+      goalPlanning: {
+        ...res.goalPlanning,
+        goals: res.goals.map((goal) => ({
+          ...goal,
+          strategies: goal.strategies.map((goalStrategy) => ({
+            strategy: goalStrategy.strategy,
+            connection: goalStrategy.connection,
+          })),
+        })),
+      },
     };
   }
 
@@ -416,9 +428,9 @@ export class ReportsService {
     return await Promise.all(updateCalls);
   }
 
-  async updateGoals(
+  async updateGoalPlanning(
     reportId: string,
-    goal: GoalReportDto
+    goal: GoalPlanningtDto
   ): Promise<GoalReportDto> {
     const report = await this.getReportById(reportId);
     if (report.isFinalReport) return;
@@ -450,6 +462,71 @@ export class ReportsService {
       },
     });
 
-    return res;
+    await this.createOrUpdateGoals(reportId, goal.goals);
+
+    return { ...res, goals: [] };
+  }
+
+  private async createOrUpdateGoals(reportId: string, goals: GoalCreateDto[]) {
+    const report = await this.getReportById(reportId);
+    if (report.isFinalReport) return;
+
+    if (goals.length === 0) {
+      await this.prisma.goal.deleteMany({ where: { reportId: reportId } });
+    }
+
+    const updateCalls = [];
+    goals.forEach((goal) => {
+      console.log(goal);
+
+      updateCalls.push(
+        this.prisma.goal.upsert({
+          where: { id: goal.id ?? '' },
+          create: {
+            ...goal,
+            validityPeriodEnd: goal.validityPeriodEnd,
+            validityPeriodStart: goal.validityPeriodStart,
+            strategies: {
+              create: goal.strategies.map((connectedStrategy) => ({
+                strategy: { connect: { id: connectedStrategy.id } },
+                connection: connectedStrategy.connection,
+              })),
+            },
+            reportId: reportId,
+          },
+          update: {
+            ...goal,
+            strategies: {
+              upsert: goal.strategies.map((connectedStrategy) => ({
+                where: {
+                  goalId_strategyId: {
+                    goalId: goal.id,
+                    strategyId: connectedStrategy.id,
+                  },
+                },
+                update: {},
+                create: {
+                  strategyId: connectedStrategy.id,
+                  connection: connectedStrategy.connection,
+                },
+              })),
+              deleteMany: {
+                AND: [
+                  {
+                    strategyId: {
+                      notIn: goal.strategies.map(
+                        (connectedStrategy) => connectedStrategy.id ?? ''
+                      ),
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        })
+      );
+    });
+
+    await Promise.all(updateCalls);
   }
 }

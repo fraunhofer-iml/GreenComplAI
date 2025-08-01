@@ -9,6 +9,7 @@
 import {
   CreateReportDto,
   FinancialImpactCreateDto,
+  GoalPlanningtDto,
   GoalReportDto,
   MeasureCreateDto,
   MeasureDto,
@@ -99,7 +100,8 @@ export class ReportsService extends DataService<PaginatedData<ReportDto>> {
     throw new Error('Method not implemented.');
   }
 
-  updateGoalPlanning(data: GoalReportDto, id: string) {
+  updateGoalPlanning(data: GoalPlanningtDto, id: string) {
+    console.log(data);
     return lastValueFrom(
       this.http.patch<GoalReportDto>(
         `${this.url}${ApiUris.reports}/${id}/goals`,

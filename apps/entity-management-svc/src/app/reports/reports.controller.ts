@@ -77,7 +77,7 @@ export class ReportsController {
   async updateGoals(
     @Payload() props: UpdateGoalsProps
   ): Promise<GoalReportDto> {
-    return this.reportsService.updateGoals(props.id, props.dto);
+    return this.reportsService.updateGoalPlanning(props.id, props.dto);
   }
 
   @MessagePattern(ReportMessagePatterns.GET_REPORT_BY_ID)

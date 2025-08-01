@@ -48,11 +48,10 @@ export class GoalsComponent implements OnInit {
   report = input<ReportDto>();
   refetchEvent = output<any>();
   removeEvent = output<void>();
-  form: GoalForm;
+  form = input<GoalForm>(newGoalForm());
 
   constructor() {
-    this.form = newGoalForm();
-    this.form.valueChanges.subscribe((value: any) => {
+    this.form().valueChanges.subscribe((value: any) => {
       this.refetchEvent.emit(value);
     });
   }
@@ -60,7 +59,7 @@ export class GoalsComponent implements OnInit {
   ngOnInit(): void {
     if (this.report()?.strategies) {
       this.report()?.strategies.forEach(() => {
-        this.form.controls.strategies.push(
+        this.form().controls.strategies.push(
           new FormGroup({
             strategy: new FormControl<string | null>(null),
             connection: new FormControl<string | null>(null),

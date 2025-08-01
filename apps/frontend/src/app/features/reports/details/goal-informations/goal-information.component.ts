@@ -6,9 +6,21 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { GoalReportDto, ReportDto } from '@ap2/api-interfaces';
+import {
+  GoalCreateDto,
+  GoalPlanningtDto,
+  GoalReportDto,
+  ReportDto,
+} from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
-import { Component, inject, input, OnInit, output } from '@angular/core';
+import {
+  Component,
+  inject,
+  input,
+  OnChanges,
+  OnInit,
+  output,
+} from '@angular/core';
 import {
   FormArray,
   FormControl,
@@ -47,7 +59,6 @@ import { GoalsComponent } from './goals/goals.component';
     MatRadioModule,
     ReactiveFormsModule,
     MatInput,
-    MatDateRangeInput,
     MatDatepickerModule,
     MatCheckboxModule,
     MatTabsModule,
@@ -56,7 +67,7 @@ import { GoalsComponent } from './goals/goals.component';
   providers: [provideNativeDateAdapter()],
   templateUrl: './goal-information.component.html',
 })
-export class GoalInformationComponent implements OnInit {
+export class GoalInformationComponent implements OnChanges {
   report = input.required<ReportDto>();
   refetchEvent = output<void>();
   goalsFormGroup = new FormGroup<{ goals: FormArray<GoalForm> }>({
@@ -84,7 +95,7 @@ export class GoalInformationComponent implements OnInit {
   selectedTabIndex = 0;
 
   goalPlanningMutation = injectMutation(() => ({
-    mutationFn: (props: { planning: GoalReportDto; id: string }) =>
+    mutationFn: (props: { planning: GoalPlanningtDto; id: string }) =>
       this.reportsService.updateGoalPlanning(props.planning, props.id),
     onSuccess: () => this.refetchEvent.emit(),
     onError: () => toast('Speichern fehlgeschlagen'),
@@ -102,7 +113,9 @@ export class GoalInformationComponent implements OnInit {
     this.goalsFormGroup.controls.goals.at(index).patchValue(event);
   }
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
+    console.log(this.report().goalPlanning?.goals);
+
     const goalPlanning = this.report().goalPlanning;
     this.form.patchValue({
       ...goalPlanning,
@@ -117,6 +130,22 @@ export class GoalInformationComponent implements OnInit {
       goalsPlanned: goalPlanning?.hasPlannedGoals,
       goalsTracked: goalPlanning?.goalsTracked,
       progression: goalPlanning?.progressEvaluation,
+    });
+
+    (this.report().goalPlanning?.goals ?? []).map((g) => {
+      const form = newGoalForm();
+      form.patchValue({
+        title: g.title,
+        strategies: g.strategies.map((s) => ({
+          strategy: s.strategy.id,
+          connection: s.connection,
+        })),
+      });
+
+      this.goalsFormGroup.controls.goals.push(form);
+
+      console.log(form.value);
+      return form;
     });
   }
 
@@ -133,7 +162,15 @@ export class GoalInformationComponent implements OnInit {
       hasPlannedGoals: this.form.value.goalsPlanned,
       goalsTracked: this.form.value.goalsTracked,
       progressEvaluation: this.form.value.progression,
-    } as GoalReportDto;
+      goals: this.goalsFormGroup.value.goals?.map((goal) => {
+        const { validityPeriod, ...data } = goal;
+        return {
+          ...data,
+          validityPeriodStart: validityPeriod?.from,
+          validityPeriodEnd: validityPeriod?.to,
+        };
+      }) as GoalCreateDto[],
+    } as GoalPlanningtDto;
 
     this.goalPlanningMutation.mutate({ planning: dto, id: this.report().id });
   }

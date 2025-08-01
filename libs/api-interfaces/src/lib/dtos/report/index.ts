@@ -16,5 +16,5 @@ export * from './strategy.dto';
 export * from './financial-impact.dto';
 export * from './financial-impact-create.dto';
 export * from './critical-assumption.dto';
-export * from './goal.report.dto'
-export * from './goal.report.create.dto';
+export * from './goal.report.dto';
+export * from './goal-create.dto';
