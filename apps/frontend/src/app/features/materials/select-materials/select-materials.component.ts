@@ -6,7 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { CommonModule } from '@angular/common';
+
 import {
   Component,
   computed,
@@ -35,15 +35,14 @@ import { MaterialsFormGroup } from './materials-form.model';
 @Component({
   selector: 'app-select-materials',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     FormsModule,
-    MatAutocompleteModule,
-  ],
+    MatAutocompleteModule
+],
   templateUrl: './select-materials.component.html',
 })
 export class SelectMaterialsComponent {

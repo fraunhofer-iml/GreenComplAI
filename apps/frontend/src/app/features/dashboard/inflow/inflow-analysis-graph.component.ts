@@ -15,7 +15,7 @@ import { EChartsOption, PieSeriesOption } from 'echarts';
 import * as moment from 'moment';
 import { Moment } from 'moment';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
-import { CommonModule } from '@angular/common';
+
 import { Component, input } from '@angular/core';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { SkalaTheme } from '../../../../styles/chart-theme';
@@ -27,7 +27,7 @@ import {
 
 @Component({
   selector: 'app-inflow-analysis-graph',
-  imports: [CommonModule, NgxEchartsDirective],
+  imports: [NgxEchartsDirective],
   providers: [provideEchartsCore({ echarts })],
   templateUrl: './inflow-analysis-graph.component.html',
 })

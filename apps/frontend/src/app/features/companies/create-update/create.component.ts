@@ -8,7 +8,7 @@
 
 import { CompanyCreateDto, CompanyDto } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
-import { CommonModule } from '@angular/common';
+
 import { Component, input } from '@angular/core';
 import {
   FormArray,
@@ -37,14 +37,13 @@ import { Uris } from '../../../shared/constants/uris';
   selector: 'app-company-create',
   imports: [
     RouterModule,
-    CommonModule,
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
     MatButtonModule,
     FormsModule,
-    UploadCSVComponent,
-  ],
+    UploadCSVComponent
+],
   providers: [
     {
       provide: DataService,

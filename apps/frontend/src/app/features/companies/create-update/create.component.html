@@ -1,100 +1,104 @@
 <div class="flex w-full flex-col gap-4 p-8">
   <div class="flex items-center gap-2 text-lg">
     <a routerLink="/companies" class="font-semibold hover:underline"
-    >Lieferanten</a
-    >
-    <span class="material-symbols-outlined text-lg"> chevron_right </span>
-    @if (id()) {
-      <h1 class="font-medium">{{ id() }}</h1>
-    } @else {
-      <h1 class="font-medium">{{!companyData?"hinzufügen":companyData.name}}</h1>
-    }
-  </div>
-
-  @if (!id()) {
-    <app-upload-csv
-      [contentType]="ContentType.COMPANIES"
-      (useImport)="usesImport = $event"
-    ></app-upload-csv>
-  }
-  @if (!usesImport) {
-    <form class="flex flex-col gap-4" [formGroup]="companyForm">
-      <div
-        class="grid w-full grid-cols-1 gap-2 rounded-lg bg-neutral-200 p-8 md:grid-cols-3"
+      >Lieferanten</a
       >
-        <span class="col-span-3" i18n>Kontaktdaten</span>
-        <mat-form-field appearance="outline">
-          <mat-label i18n>
+      <span class="material-symbols-outlined text-lg"> chevron_right </span>
+      @if (id()) {
+        <h1 class="font-medium">{{ id() }}</h1>
+      } @else {
+        <h1 class="font-medium">{{!companyData?"hinzufügen":companyData.name}}</h1>
+      }
+    </div>
+
+    @if (!id()) {
+      <app-upload-csv
+        [contentType]="ContentType.COMPANIES"
+        (useImport)="usesImport = $event"
+      ></app-upload-csv>
+    }
+    @if (!usesImport) {
+      <form class="flex flex-col gap-4" [formGroup]="companyForm">
+        <div
+          class="grid w-full grid-cols-1 gap-2 rounded-lg bg-neutral-200 p-8 md:grid-cols-3"
+          >
+          <span class="col-span-3" i18n>Kontaktdaten</span>
+          <mat-form-field appearance="outline">
+            <mat-label i18n>
             Name
           </mat-label>
-          <input matInput formControlName="name" />
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label i18n>
+            <input matInput formControlName="name" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label i18n>
             E-Mail
-            <span *ngIf="companyData?.flags?.includes('email')">🚩</span>
+            @if (companyData?.flags?.includes('email')) {
+<span>🚩</span>
+}
           </mat-label>
-          <input matInput formControlName="email"
-          /></mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label i18n>
+            <input matInput formControlName="email"
+            /></mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label i18n>
             Telefon
-            <span *ngIf="companyData?.flags?.includes('phone')">🚩</span>
+            @if (companyData?.flags?.includes('phone')) {
+<span>🚩</span>
+}
           </mat-label>
-          <input matInput formControlName="phone" />
-        </mat-form-field>
-      </div>
-      <div
-        class="w-full gap-2 rounded-lg bg-neutral-200 p-8"
-        formArrayName="addresses"
-      >
-        <span i18n>Adressen</span>
-
-        @for (address of companyForm.controls.addresses.controls;
-          track $index) {
-          <div
-            [formGroupName]="$index"
-            class="grid w-full grid-cols-1 gap-2 pt-2 md:grid-cols-3"
-          >
-            <span class="col-span-3">Adresse {{ $index + 1 }}</span>
-            <mat-form-field appearance="outline" class="col-span-3">
-              <mat-label i18n>Straße</mat-label>
-              <input matInput formControlName="street" />
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label i18n>Stadt</mat-label>
-              <input matInput formControlName="city"
-              /></mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label i18n>Postleitzahl</mat-label>
-              <input matInput formControlName="postalCode" />
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label i18n>Land</mat-label>
-              <input matInput formControlName="country" />
+              <input matInput formControlName="phone" />
             </mat-form-field>
           </div>
-        }
-        <div class="col-span-3 mt-2 flex justify-end gap-2">
-          <button mat-flat-button (click)="addAddress()" i18n>
+          <div
+            class="w-full gap-2 rounded-lg bg-neutral-200 p-8"
+            formArrayName="addresses"
+            >
+          <span i18n>Adressen</span>
+
+          @for (address of companyForm.controls.addresses.controls;
+            track $index) {
+            <div
+              [formGroupName]="$index"
+              class="grid w-full grid-cols-1 gap-2 pt-2 md:grid-cols-3"
+              >
+              <span class="col-span-3">Adresse {{ $index + 1 }}</span>
+              <mat-form-field appearance="outline" class="col-span-3">
+                <mat-label i18n>Straße</mat-label>
+                <input matInput formControlName="street" />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label i18n>Stadt</mat-label>
+                <input matInput formControlName="city"
+                /></mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label i18n>Postleitzahl</mat-label>
+                  <input matInput formControlName="postalCode" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label i18n>Land</mat-label>
+                  <input matInput formControlName="country" />
+                </mat-form-field>
+              </div>
+            }
+            <div class="col-span-3 mt-2 flex justify-end gap-2">
+              <button mat-flat-button (click)="addAddress()" i18n>
             Addresse hinzufügen
           </button>
-          <button mat-flat-button (click)="removeAddress()" i18n>
+              <button mat-flat-button (click)="removeAddress()" i18n>
             Addresse entfernen
           </button>
-        </div>
-      </div>
+            </div>
+          </div>
 
-      <div class="col-span-2 flex justify-end gap-2">
-        <button
-          mat-flat-button
-          (click)="save()"
-          i18n
-          [disabled]="companyForm.invalid"
-        >
+          <div class="col-span-2 flex justify-end gap-2">
+            <button
+              mat-flat-button
+              (click)="save()"
+              i18n
+              [disabled]="companyForm.invalid"
+              >
           Speichern
         </button>
-      </div>
-    </form>
-  }
-</div>
+          </div>
+        </form>
+      }
+    </div>

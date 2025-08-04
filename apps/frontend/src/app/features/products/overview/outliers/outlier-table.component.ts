@@ -6,7 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { CommonModule } from '@angular/common';
+
 import { Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
@@ -24,13 +24,12 @@ import { toast } from 'ngx-sonner';
 @Component({
   selector: 'app-outlier-table',
   imports: [
-    CommonModule,
     RouterModule,
     MatTableModule,
     MatIconModule,
     MatTooltipModule,
-    MatButtonModule,
-  ],
+    MatButtonModule
+],
   templateUrl: './outlier-table.component.html',
 })
 export class OutlierTableComponent {

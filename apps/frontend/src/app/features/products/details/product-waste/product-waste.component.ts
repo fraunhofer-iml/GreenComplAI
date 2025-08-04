@@ -7,7 +7,7 @@
  */
 
 import { WasteDto, WasteMaterialDto } from '@ap2/api-interfaces';
-import { CommonModule } from '@angular/common';
+
 import { Component, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
@@ -18,13 +18,12 @@ import { FlagableComponent } from '../../../../shared/components/flagable-elemen
 @Component({
   selector: 'app-product-waste',
   imports: [
-    CommonModule,
     MatDividerModule,
     MatIconModule,
     MatButtonModule,
     RouterModule,
-    FlagableComponent,
-  ],
+    FlagableComponent
+],
   templateUrl: './product-waste.component.html',
 })
 export class ProductWasteComponent {

@@ -7,7 +7,7 @@
  */
 
 import { ProductGroupDto } from '@ap2/api-interfaces';
-import { CommonModule } from '@angular/common';
+
 import { Component, inject, Input, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
@@ -25,7 +25,6 @@ import { ProductGroupCreateComponent } from '../create/product-group-create.comp
 @Component({
   selector: 'app-product-group-details',
   imports: [
-    CommonModule,
     RouterModule,
     MatTableModule,
     MatChipsModule,
@@ -33,8 +32,8 @@ import { ProductGroupCreateComponent } from '../create/product-group-create.comp
     BaseSheetComponent,
     ProductGroupCreateComponent,
     MatIconModule,
-    MatTooltipModule,
-  ],
+    MatTooltipModule
+],
   templateUrl: './product-group-details.component.html',
 })
 export class ProductGroupDetailsComponent {

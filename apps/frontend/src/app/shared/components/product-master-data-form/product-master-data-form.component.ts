@@ -14,7 +14,7 @@ import {
   ProductGroupDto,
   VariantDto,
 } from '@ap2/api-interfaces';
-import { CommonModule } from '@angular/common';
+
 import { Component, input, OnInit, signal } from '@angular/core';
 import {
   FormArray,
@@ -49,7 +49,6 @@ import { BaseSheetComponent } from '../sheet/base/sheet.component';
 @Component({
   selector: 'app-product-master-data-form',
   imports: [
-    CommonModule,
     MatIconModule,
     MatSelectModule,
     MatFormFieldModule,
@@ -62,8 +61,8 @@ import { BaseSheetComponent } from '../sheet/base/sheet.component';
     BaseSheetComponent,
     ProductGroupCreateComponent,
     SelectMaterialsComponent,
-    MatCheckboxModule,
-  ],
+    MatCheckboxModule
+],
   templateUrl: './product-master-data-form.component.html',
 })
 export class ProductMasterDataFormComponent implements OnInit {

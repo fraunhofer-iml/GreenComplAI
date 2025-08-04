@@ -6,7 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { CommonModule } from '@angular/common';
+
 import { Component, input, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -23,7 +23,6 @@ import { WasteFlowComponent } from './waste-flow/waste-flow.component';
 @Component({
   selector: 'app-product-group-overview',
   imports: [
-    CommonModule,
     OverviewComponent,
     MatButtonModule,
     RouterModule,
@@ -32,8 +31,8 @@ import { WasteFlowComponent } from './waste-flow/waste-flow.component';
     InflowComponent,
     WasteFlowComponent,
     MatExpansionModule,
-    RouterModule,
-  ],
+    RouterModule
+],
   providers: [{ provide: DataService, useClass: ProductGroupService }],
   templateUrl: './product-group-overview.component.html',
 })

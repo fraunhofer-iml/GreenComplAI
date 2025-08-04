@@ -7,7 +7,7 @@
  */
 
 import { AuthRoles } from '@ap2/api-interfaces';
-import { CommonModule } from '@angular/common';
+
 import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -22,7 +22,6 @@ import { TreeNode } from './tree-node.interface';
 @Component({
   selector: 'app-sidebar',
   imports: [
-    CommonModule,
     RouterModule,
     MatButtonModule,
     MatMenuModule,
@@ -30,8 +29,8 @@ import { TreeNode } from './tree-node.interface';
     MatButtonModule,
     MatIconModule,
     MatExpansionModule,
-    MatTreeModule,
-  ],
+    MatTreeModule
+],
   providers: [AuthenticationService],
   templateUrl: './sidebar.component.html',
 })

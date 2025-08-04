@@ -6,7 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { CommonModule } from '@angular/common';
+
 import { Component, input } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatChipsModule } from '@angular/material/chips';
@@ -23,15 +23,14 @@ import { SelectProducedPerYearComponent } from '../select-produced-per-year.shee
 @Component({
   selector: 'app-production-history',
   imports: [
-    CommonModule,
     MatChipsModule,
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     BaseSheetComponent,
     SelectProducedPerYearComponent,
-    MatIconModule,
-  ],
+    MatIconModule
+],
   templateUrl: './production-history.component.html',
 })
 export class ProductionHistoryComponent {

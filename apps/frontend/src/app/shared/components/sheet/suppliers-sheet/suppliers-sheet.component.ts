@@ -7,7 +7,7 @@
  */
 
 import { CompanyDto } from '@ap2/api-interfaces';
-import { CommonModule } from '@angular/common';
+
 import {
   Component,
   computed,
@@ -32,7 +32,6 @@ import { BaseSheetComponent } from '../base/sheet.component';
 @Component({
   selector: 'app-suppliers-sheet',
   imports: [
-    CommonModule,
     MatFormFieldModule,
     MatListModule,
     MatSelectModule,
@@ -40,8 +39,8 @@ import { BaseSheetComponent } from '../base/sheet.component';
     MatButton,
     MatInput,
     PaginationComponent,
-    BaseSheetComponent,
-  ],
+    BaseSheetComponent
+],
   providers: [],
   templateUrl: './suppliers-sheet.component.html',
 })

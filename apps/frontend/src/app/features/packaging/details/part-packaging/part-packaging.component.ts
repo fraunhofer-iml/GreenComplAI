@@ -8,7 +8,7 @@
 
 import { PackagingDto, ProductUpdateMapDto } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
-import { CommonModule } from '@angular/common';
+
 import { Component, inject, input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -28,13 +28,12 @@ import { ProductPackagingFormGroup } from '../../../products/create/model/produc
 @Component({
   selector: 'app-part-packaging',
   imports: [
-    CommonModule,
     PackagingSheetComponent,
     RouterModule,
     MatTableModule,
     MatIconModule,
-    MatButtonModule,
-  ],
+    MatButtonModule
+],
   templateUrl: './part-packaging.component.html',
 })
 export class PartPackagingComponent {

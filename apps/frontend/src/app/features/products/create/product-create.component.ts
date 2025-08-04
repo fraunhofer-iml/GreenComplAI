@@ -16,7 +16,7 @@ import {
   ProductGroupDto,
 } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
-import { CommonModule } from '@angular/common';
+
 import { Component, input, signal } from '@angular/core';
 import {
   FormArray,
@@ -72,7 +72,6 @@ import { ProductionHistoryComponent } from './production-history/production-hist
 @Component({
   selector: 'app-product-create',
   imports: [
-    CommonModule,
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
@@ -94,8 +93,8 @@ import { ProductionHistoryComponent } from './production-history/production-hist
     ProductMasterDataFormComponent,
     ProductionHistoryComponent,
     UploadCSVComponent,
-    RouterModule,
-  ],
+    RouterModule
+],
   providers: [
     {
       provide: DataService,

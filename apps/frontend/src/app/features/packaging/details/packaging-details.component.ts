@@ -12,7 +12,7 @@ import {
   PackagingUpdateDto,
 } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
-import { CommonModule } from '@angular/common';
+
 import { Component, inject, input, OnInit, signal } from '@angular/core';
 import {
   FormControl,
@@ -42,7 +42,6 @@ import { PartPackagingComponent } from './part-packaging/part-packaging.componen
 @Component({
   selector: 'app-packaging-details',
   imports: [
-    CommonModule,
     MatButtonModule,
     RouterModule,
     MatIconModule,
@@ -52,8 +51,8 @@ import { PartPackagingComponent } from './part-packaging/part-packaging.componen
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
-    MatAutocompleteModule,
-  ],
+    MatAutocompleteModule
+],
   providers: [
     QueryClient,
     { provide: DataService, useClass: PackagingService },

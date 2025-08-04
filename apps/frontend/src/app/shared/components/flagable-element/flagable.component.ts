@@ -6,14 +6,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { CommonModule } from '@angular/common';
+
 import { Component, input, Input } from '@angular/core';
 import { DataService } from '../../../core/services/data-service/data.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-flagable',
-  imports: [CommonModule, MatTooltipModule],
+  imports: [MatTooltipModule],
   templateUrl: './flagable.component.html',
 })
 export class FlagableComponent<T> {

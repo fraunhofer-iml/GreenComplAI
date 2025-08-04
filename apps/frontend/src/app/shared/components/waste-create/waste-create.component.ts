@@ -6,7 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { CommonModule } from '@angular/common';
+
 import { Component, computed, input, Input } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconButton } from '@angular/material/button';
@@ -28,7 +28,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 @Component({
   selector: 'app-waste-create',
   imports: [
-    CommonModule,
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
@@ -40,8 +39,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatIconButton,
     MatCheckboxModule,
     MatBadgeModule,
-    MatTooltipModule,
-  ],
+    MatTooltipModule
+],
   templateUrl: './waste-create.component.html',
 })
 export class WasteCreateComponent {

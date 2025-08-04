@@ -9,7 +9,7 @@
 import { ProductCreateDto, ProductDto } from '@ap2/api-interfaces';
 import { debounceTime } from 'rxjs';
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { CommonModule } from '@angular/common';
+
 import {
   Component,
   computed,
@@ -48,7 +48,6 @@ import { productFormControl } from './product.form-control';
 @Component({
   selector: 'app-products-sheet',
   imports: [
-    CommonModule,
     MatFormFieldModule,
     MatListModule,
     MatSelectModule,
@@ -64,8 +63,8 @@ import { productFormControl } from './product.form-control';
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,
-    MatDialogModule,
-  ],
+    MatDialogModule
+],
   providers: [],
   templateUrl: './products-sheet.component.html',
 })

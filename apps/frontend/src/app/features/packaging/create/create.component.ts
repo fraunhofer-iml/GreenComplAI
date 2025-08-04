@@ -15,7 +15,7 @@ import {
   WasteCreateDto,
   WasteMaterialCreateDto,
 } from '@ap2/api-interfaces';
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import {
   FormControl,
@@ -47,7 +47,6 @@ import { ProductPackagingFormGroup } from '../../products/create/model/product-f
   selector: 'app-company-create',
   imports: [
     RouterModule,
-    CommonModule,
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
@@ -59,8 +58,8 @@ import { ProductPackagingFormGroup } from '../../products/create/model/product-f
     MatChipsModule,
     WasteCreateComponent,
     PackagingSelectionComponent,
-    UploadCSVComponent,
-  ],
+    UploadCSVComponent
+],
   providers: [
     PackagingService,
     ProductsService,

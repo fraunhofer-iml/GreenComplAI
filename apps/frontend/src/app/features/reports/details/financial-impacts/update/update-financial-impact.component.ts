@@ -8,7 +8,7 @@
 
 import { ImpactType } from '@ap2/api-interfaces';
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { CommonModule } from '@angular/common';
+
 import { Component, input, OnChanges, output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,7 +26,6 @@ import {
 @Component({
   selector: 'app-update-financial-impact',
   imports: [
-    CommonModule,
     MatFormFieldModule,
     FormsModule,
     ReactiveFormsModule,
@@ -35,8 +34,8 @@ import {
     MatTabsModule,
     MatSelectModule,
     MatInputModule,
-    TextFieldModule,
-  ],
+    TextFieldModule
+],
   templateUrl: './update-financial-impact.component.html',
 })
 export class UpdateFinancialImpactComponent implements OnChanges {

@@ -8,7 +8,7 @@
 
 import { ReportDto, StrategyDto } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
-import { CommonModule } from '@angular/common';
+
 import { Component, inject, input, OnChanges, output } from '@angular/core';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -31,15 +31,14 @@ import { StrategyForm } from './strategy.form';
 @Component({
   selector: 'app-strategies',
   imports: [
-    CommonModule,
     MatFormFieldModule,
     ReactiveFormsModule,
     MatInputModule,
     MatIconModule,
     MatTooltipModule,
     MatButtonModule,
-    MatChipsModule,
-  ],
+    MatChipsModule
+],
   templateUrl: './strategies.component.html',
 })
 export class StrategiesComponent implements OnChanges {
