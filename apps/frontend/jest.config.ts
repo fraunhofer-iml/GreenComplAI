@@ -10,7 +10,6 @@ export default {
   displayName: 'frontend',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  cacheDirectory: '<rootDir>/.cache',
   coverageReporters: [
     ['lcov', { projectRoot: __dirname }],
     'text',
@@ -26,9 +25,7 @@ export default {
       },
     ],
   },
-  transformIgnorePatterns: [
-    'node_modules/(?!.*\\.mjs|keycloak-js|keycloak-angular)',
-  ],
+  transformIgnorePatterns: [`/node_modules/(?!.*\\.mjs$|keycloak-js)`],
   snapshotSerializers: [
     'jest-preset-angular/build/serializers/no-ng-attributes',
     'jest-preset-angular/build/serializers/ng-snapshot',
