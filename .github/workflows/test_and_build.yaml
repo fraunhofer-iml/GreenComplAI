@@ -25,7 +25,8 @@ jobs:
           node-version: '22'
           cache: 'npm'
       - name: Install dependencies
-        run: npm install && npx prisma generate --generator jsclient
+        run: npm ci && npx prisma generate --generator jsclient
+      - run: ls -R node_modules/keycloak-js || echo "keycloak-js missing"
       - uses: nrwl/nx-set-shas@v4
       - run: npx nx format:check
       - name: Lint affected apps
