@@ -14,7 +14,7 @@
     "dev-with-outlier": "concurrently \"npm run dev\" \"npm run start-outlier-detection\"",
     "start-outlier-detection": "./scripts/run-outlier-detection.sh",
     "test": "npx nx run-many --all --target test",
-    "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json}\"",
+    "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json,html}\"",
     "fix-lint": "./scripts/run-eslint-fix.sh",
     "license-checker": "npm run license-checker-all && npm run license-checker-unknown && npm run license-checker-summary",
     "license-checker-all": "npx license-checker --unknown --csv --out=./third-party-licenses/third-party-licenses.csv",

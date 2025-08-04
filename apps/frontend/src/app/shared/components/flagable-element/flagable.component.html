@@ -2,7 +2,7 @@
   class="flex items-center justify-between gap-2 hover:bg-neutral-300"
   (mouseenter)="flag = 'flagOutline.svg'"
   (mouseleave)="flag = ''"
-  >
+>
   <div class="inline-flex items-center gap-2 font-medium">
     {{ topic }}
     <div class="flex flex-row items-center">
@@ -16,7 +16,7 @@
                 (mouseleave)="flag = 'flagOutline.svg'"
                 [src]="flag"
                 [alt]="alt"
-                />
+              />
             } @else {
               <div class="min-h-2 min-w-3"></div>
             }
@@ -38,5 +38,3 @@
 
   <ng-content></ng-content>
 </div>
-
-

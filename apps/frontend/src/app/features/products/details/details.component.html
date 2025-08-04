@@ -223,20 +223,24 @@
       <div class="flex flex-col gap-4">
         <!-- Supplier -->
         <div class="rounded-lg bg-neutral-200 p-4">
-          <div class="flex flex-row justify-between items-center">
-          <app-flagable
-            [id]="id$() ?? ''"
-            [topic]="'Lieferantendaten'"
-            [data]="data.flags"
-            [element]="'supplier'"
-          >
-          </app-flagable>
+          <div class="flex flex-row items-center justify-between">
+            <app-flagable
+              [id]="id$() ?? ''"
+              [topic]="'Lieferantendaten'"
+              [data]="data.flags"
+              [element]="'supplier'"
+            >
+            </app-flagable>
 
-          <button mat-button [routerLink]="[Uris.companies, data.supplier?.id]" [queryParams]="{callback: Uris.products + '/' + data.id}">
-            <mat-icon>edit</mat-icon>
-            bearbeiten
-          </button>
-        </div>
+            <button
+              mat-button
+              [routerLink]="[Uris.companies, data.supplier?.id]"
+              [queryParams]="{ callback: Uris.products + '/' + data.id }"
+            >
+              <mat-icon>edit</mat-icon>
+              bearbeiten
+            </button>
+          </div>
           <div class="mt-4 space-y-2 text-sm">
             <app-flagable
               [id]="id$() ?? ''"
