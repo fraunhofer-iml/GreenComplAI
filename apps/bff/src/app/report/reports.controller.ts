@@ -51,9 +51,7 @@ export class ReportsController {
     type: ReportDto,
   })
   @ApiBearerAuth()
-  @Roles({
-    roles: [getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER)],
-  })
+  @Roles(getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER))
   @ApiOkResponse({
     description: 'Successfull request: Return created Reports',
     type: ReportDto,
@@ -64,9 +62,7 @@ export class ReportsController {
 
   @Get()
   @ApiBearerAuth()
-  @Roles({
-    roles: [getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER)],
-  })
+  @Roles(getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER))
   @ApiOperation({
     description: 'Get all Reports',
   })
@@ -90,9 +86,7 @@ export class ReportsController {
 
   @Patch(':id')
   @ApiBearerAuth()
-  @Roles({
-    roles: [getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER)],
-  })
+  @Roles(getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER))
   @ApiOperation({
     description: 'Update Report.',
   })
@@ -112,9 +106,7 @@ export class ReportsController {
 
   @Patch(':id/strategies')
   @ApiBearerAuth()
-  @Roles({
-    roles: [getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER)],
-  })
+  @Roles(getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER))
   @ApiOperation({
     description: 'Update Report.',
   })
@@ -134,9 +126,7 @@ export class ReportsController {
 
   @Patch(':id/measures')
   @ApiBearerAuth()
-  @Roles({
-    roles: [getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER)],
-  })
+  @Roles(getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER))
   @ApiOperation({
     description: 'Update Report.',
   })
@@ -156,9 +146,7 @@ export class ReportsController {
 
   @Patch(':id/financial-impacts')
   @ApiBearerAuth()
-  @Roles({
-    roles: [getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER)],
-  })
+  @Roles(getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER))
   @ApiOperation({
     description: 'Update Report.',
   })
@@ -178,9 +166,7 @@ export class ReportsController {
 
   @Get(':id')
   @ApiBearerAuth()
-  @Roles({
-    roles: [getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER)],
-  })
+  @Roles(getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER))
   @ApiOperation({
     description: 'Get Report by id',
   })

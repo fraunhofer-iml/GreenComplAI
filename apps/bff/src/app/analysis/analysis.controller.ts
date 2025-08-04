@@ -14,7 +14,7 @@ import {
   OutlierDetectionAnalysisDto,
   WasteFlowAnalysisDto,
 } from '@ap2/api-interfaces';
-import { Roles } from 'nest-keycloak-connect';
+import { Resource, Roles } from 'nest-keycloak-connect';
 import { Controller, Get, Query } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -31,12 +31,10 @@ export class AnalysisController {
   constructor(private readonly analysisService: AnalysisService) {}
 
   @Get('out')
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-      getRealmRole(AuthRoles.BUYER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
   @ApiBearerAuth()
   @ApiOperation({
     description:
@@ -54,12 +52,10 @@ export class AnalysisController {
   }
 
   @Get('in')
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-      getRealmRole(AuthRoles.BUYER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
   @ApiBearerAuth()
   @ApiOperation({
     description:
@@ -79,12 +75,10 @@ export class AnalysisController {
   }
 
   @Get('outlier-detection')
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-      getRealmRole(AuthRoles.BUYER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
   @ApiBearerAuth()
   @ApiOperation({
     description:
@@ -96,7 +90,7 @@ export class AnalysisController {
   @ApiQuery({ name: 'productGroupId', required: false })
   getOutlierDetectionAnalysis(
     @Query()
-    productGroupId?: string,
+    productGroupId?: string
   ): Promise<OutlierDetectionAnalysisDto> {
     return this.analysisService.getOutlierDetectionAnalysis(productGroupId);
   }
