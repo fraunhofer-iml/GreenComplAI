@@ -14,7 +14,7 @@ import {
   OutlierDetectionAnalysisDto,
   WasteFlowAnalysisDto,
 } from '@ap2/api-interfaces';
-import { Resource, Roles } from 'nest-keycloak-connect';
+import { Roles } from 'nest-keycloak-connect';
 import { Controller, Get, Query } from '@nestjs/common';
 import {
   ApiBearerAuth,
