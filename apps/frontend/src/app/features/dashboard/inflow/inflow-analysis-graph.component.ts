@@ -12,10 +12,9 @@ import {
 } from '@ap2/api-interfaces';
 import * as echarts from 'echarts';
 import { EChartsOption, PieSeriesOption } from 'echarts';
-import * as moment from 'moment';
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { SkalaTheme } from '../../../../styles/chart-theme';
 import { AnalysisService } from '../../../core/services/analysis/analysis.service';
@@ -31,12 +30,12 @@ import {
   templateUrl: './inflow-analysis-graph.component.html',
 })
 export class InflowAnalysisGraphComponent {
+  private readonly analysisService = inject(AnalysisService);
+
   from$ = input<Moment>(moment(new Date(2024, 0, 1)));
   to$ = input<Moment>(moment(new Date(2024, 0, 1)));
   productGroupId$ = input<string>('');
   productId$ = input<string>('');
-
-  constructor(private readonly analysisService: AnalysisService) {}
 
   theme = SkalaTheme;
 

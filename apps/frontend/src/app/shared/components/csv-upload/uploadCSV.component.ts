@@ -10,12 +10,11 @@ import { Papa, ParseResult } from 'ngx-papaparse';
 import { toast } from 'ngx-sonner';
 import {
   Component,
+  inject,
   Input,
   model,
   ModelSignal,
-  Output,
   output,
-  signal,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -29,15 +28,14 @@ import { CreateObjectsComponent } from './upload-mapping-dialog/create-objects.c
   providers: [MappingsService],
   templateUrl: './uploadCSV.component.html',
 })
-export class UploadCSVComponent<T> {
+export class UploadCSVComponent {
+  private readonly papa = inject(Papa);
   @Input() contentType!: ContentType;
   output: ModelSignal<any> = model(false);
   csvs: ParseResult | null = null;
   csvPreview: string[][] | null = null;
   useImport = output<boolean>();
   isDragging = false;
-
-  constructor(private papa: Papa) {}
 
   public async importDataFromCSV(event: any) {
     this.useImport.emit(true);

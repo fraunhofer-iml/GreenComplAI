@@ -8,7 +8,7 @@
 
 import { CompanyCreateDto, CompanyDto } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import {
   FormArray,
   FormControl,
@@ -52,6 +52,10 @@ import { Uris } from '../../../shared/constants/uris';
   templateUrl: './create.component.html',
 })
 export class CompanyCreateComponent {
+  private readonly companiesService = inject(CompaniesService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+
   id = input<string>();
   callback = input<string>();
   companyData: CompanyDto | undefined;
@@ -101,12 +105,6 @@ export class CompanyCreateComponent {
   protected readonly ContentType = ContentType;
 
   usesImport = false;
-
-  constructor(
-    private readonly companiesService: CompaniesService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router
-  ) {}
 
   addAddress(): void {
     (this.companyForm.get('addresses') as FormArray).push(

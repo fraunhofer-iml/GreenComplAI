@@ -6,7 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { MeasureStatus, StrategyDto } from '@ap2/api-interfaces';
+import { MeasureStatus } from '@ap2/api-interfaces';
 import { FormControl, FormGroup } from '@angular/forms';
 
 export type MeasureForm = FormGroup<{

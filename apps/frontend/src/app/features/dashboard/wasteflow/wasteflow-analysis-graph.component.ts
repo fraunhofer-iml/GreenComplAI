@@ -12,11 +12,10 @@ import {
 } from '@ap2/api-interfaces';
 import * as echarts from 'echarts';
 import { BarSeriesOption, EChartsOption, SeriesOption } from 'echarts';
-import * as moment from 'moment';
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
 import { CommonModule } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { SkalaTheme } from '../../../../styles/chart-theme';
 import { AnalysisService } from '../../../core/services/analysis/analysis.service';
@@ -41,6 +40,8 @@ import { OutlierDetectionAnalysisComponent } from '../outliers/outlier-detection
   templateUrl: './wasteflow-analysis-graph.component.html',
 })
 export class WasteflowAnalysisGraphComponent {
+  private readonly analysisService = inject(AnalysisService);
+
   theme = SkalaTheme;
   from$ = input<Moment>(moment(new Date(2024, 0, 1)));
   to$ = input<Moment>(moment(new Date(2024, 0, 1)));
@@ -66,8 +67,6 @@ export class WasteflowAnalysisGraphComponent {
   }));
   legendChart: any;
   private chart: echarts.ECharts | undefined;
-
-  constructor(private readonly analysisService: AnalysisService) {}
 
   toChartData(analysis: WasteFlowAnalysisDto): {
     legend: EChartsOption;

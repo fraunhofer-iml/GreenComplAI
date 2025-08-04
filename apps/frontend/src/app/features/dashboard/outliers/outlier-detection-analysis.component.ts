@@ -11,7 +11,7 @@ import { EChartsOption, PieSeriesOption } from 'echarts';
 import * as echarts from 'echarts';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
 import { CommonModule } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
@@ -29,13 +29,13 @@ import {
   templateUrl: './outlier-detection-analysis.component.html',
 })
 export class OutlierDetectionAnalysisComponent {
+  private readonly analysisService = inject(AnalysisService);
+
   productGroupId$ = input<string>('');
   productId$ = input<string>('');
 
   isOutlier = false;
   theme = SkalaTheme;
-
-  constructor(private readonly analysisService: AnalysisService) {}
 
   analysisQuery = injectQuery(() => ({
     queryKey: ['outlier-analysis', this.productGroupId$(), this.productId$()],

@@ -7,8 +7,7 @@
  */
 
 import { AuthRoles, MaterialDto, ProductDto } from '@ap2/api-interfaces';
-import * as moment from 'moment/moment';
-import { Moment } from 'moment/moment';
+import moment, { Moment } from 'moment/moment';
 import { Component, inject, Input, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';

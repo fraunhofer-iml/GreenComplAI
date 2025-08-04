@@ -12,7 +12,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import {
-  provideAngularQuery,
+  provideQueryClient,
   QueryClient,
 } from '@tanstack/angular-query-experimental';
 import { ProductGroupOverviewComponent } from './product-group-overview.component';
@@ -26,7 +26,7 @@ describe('ProductGroupOverviewComponent', () => {
       imports: [ProductGroupOverviewComponent, BrowserAnimationsModule],
       providers: [
         provideHttpClient(),
-        provideAngularQuery(new QueryClient()),
+        provideQueryClient(new QueryClient()),
         {
           provide: ActivatedRoute,
           useValue: {

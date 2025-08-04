@@ -11,7 +11,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
-  provideAngularQuery,
+  provideQueryClient,
   QueryClient,
 } from '@tanstack/angular-query-experimental';
 import { CompaniesService } from '../../../core/services/companies/companies.service';
@@ -29,7 +29,7 @@ describe('OverviewComponent', () => {
         CompaniesService,
         { provide: provideHttpClient(), useValue: provideHttpClientTesting() },
         { provide: DataService, useValue: {} },
-        provideAngularQuery(new QueryClient()),
+        provideQueryClient(new QueryClient()),
       ],
     }).compileComponents();
 

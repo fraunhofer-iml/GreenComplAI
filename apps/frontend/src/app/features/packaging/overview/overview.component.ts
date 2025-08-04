@@ -7,7 +7,7 @@
  */
 
 import { AuthRoles } from '@ap2/api-interfaces';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -39,11 +39,13 @@ import { ContentType } from '../../../shared/components/overview/table-content-t
   providers: [{ provide: DataService, useClass: PackagingService }],
 })
 export class PackagingOverviewComponent {
+  private readonly authService = inject(AuthenticationService);
+
   protected readonly ContentType = ContentType;
   AuthRoles = AuthRoles;
   role = '';
 
-  constructor(private readonly authService: AuthenticationService) {
+  constructor() {
     this.role = this.authService.getCurrentUserRole();
   }
 }

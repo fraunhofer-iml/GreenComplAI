@@ -11,8 +11,8 @@ import {
   ProductDto,
   ProductGroupDto,
 } from '@ap2/api-interfaces';
-import * as moment from 'moment';
-import { Component, input, signal } from '@angular/core';
+import moment from 'moment';
+import { Component, inject, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -57,6 +57,10 @@ import { WasteflowAnalysisGraphComponent } from '../wasteflow/wasteflow-analysis
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent {
+  private readonly groupService = inject(ProductGroupService);
+  private readonly router = inject(Router);
+  private readonly activatedRoute = inject(ActivatedRoute);
+
   productGroupId = input<string>();
   productId = input<string>();
 
@@ -90,12 +94,6 @@ export class DashboardComponent {
       return groups;
     },
   }));
-
-  constructor(
-    private readonly groupService: ProductGroupService,
-    private readonly router: Router,
-    private readonly activatedRoute: ActivatedRoute
-  ) {}
 
   displayFn(p: ProductGroupDto | ProductDto): string {
     return p ? p.name : '';

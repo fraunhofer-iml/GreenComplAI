@@ -13,7 +13,7 @@ import {
 } from '@ap2/api-interfaces';
 import { lastValueFrom } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { ApiUris } from '../../../shared/constants/uris';
 
@@ -21,9 +21,9 @@ import { ApiUris } from '../../../shared/constants/uris';
   providedIn: 'root',
 })
 export class AnalysisService {
-  url = environment.baseUrl;
+  http = inject(HttpClient);
 
-  constructor(private readonly http: HttpClient) {}
+  url = environment.baseUrl;
 
   getWasteFlowAnalysisOfProductGroups(
     fromYear: number,

@@ -16,16 +16,18 @@ import {
 } from '@ap2/api-interfaces';
 import { lastValueFrom } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { ApiUris } from '../../../shared/constants/uris';
 import { DataService } from '../data-service/data.service';
 
 @Injectable()
 export class PackagingService extends DataService<PaginatedData<PackagingDto>> {
+  private readonly http = inject(HttpClient);
+
   url = environment.baseUrl;
 
-  constructor(private readonly http: HttpClient) {
+  constructor() {
     super();
   }
 
