@@ -14,6 +14,7 @@ node_modules
 .project
 .classpath
 .c9/
+.cache
 *.launch
 .settings/
 *.sublime-workspace

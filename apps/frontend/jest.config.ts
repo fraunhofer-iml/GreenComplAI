@@ -6,20 +6,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import presets from 'jest-preset-angular/presets';
-
 export default {
-  ...presets.createCjsPreset({}),
-  globals: {
-    ngJest: {
-      // Process all files in node_modules with esbuild to always have CJS module
-      // Typescript is broken here and gives ESM module
-      processWithEsbuild: ['**/node_modules/**/*.js'],
-    },
-  },
   displayName: 'frontend',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
+  cacheDirectory: '<rootDir>/.cache',
   coverageReporters: [
     ['lcov', { projectRoot: __dirname }],
     'text',
@@ -36,7 +27,7 @@ export default {
     ],
   },
   transformIgnorePatterns: [
-    'node_modules/(?!.*\\.mjs$|keycloak-js|keycloak-angular)',
+    'node_modules/(?!.*\\.mjs|keycloak-js|keycloak-angular)',
   ],
   snapshotSerializers: [
     'jest-preset-angular/build/serializers/no-ng-attributes',
