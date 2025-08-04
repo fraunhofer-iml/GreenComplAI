@@ -5,6 +5,7 @@
  * For details on the licensing terms, see the LICENSE file.
  * SPDX-License-Identifier: Apache-2.0
  */
+
 import presets from 'jest-preset-angular/presets';
 
 export default {
