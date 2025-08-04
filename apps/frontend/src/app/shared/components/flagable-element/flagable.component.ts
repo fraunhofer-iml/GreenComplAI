@@ -6,10 +6,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-
 import { Component, input, Input } from '@angular/core';
-import { DataService } from '../../../core/services/data-service/data.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { DataService } from '../../../core/services/data-service/data.service';
 
 @Component({
   selector: 'app-flagable',

@@ -6,7 +6,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-
 import { Component, Input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -34,8 +33,8 @@ import { ContentType } from './table-content-type.enum';
     MatTableModule,
     MatPaginatorModule,
     MatSelectModule,
-    MatSortModule
-],
+    MatSortModule,
+  ],
   templateUrl: './overview.component.html',
 })
 export class OverviewComponent<T> implements OnInit {

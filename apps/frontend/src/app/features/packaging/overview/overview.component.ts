@@ -7,7 +7,6 @@
  */
 
 import { AuthRoles } from '@ap2/api-interfaces';
-
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -35,8 +34,8 @@ import { ContentType } from '../../../shared/components/overview/table-content-t
     MatTableModule,
     MatPaginatorModule,
     MatSelectModule,
-    OverviewComponent
-],
+    OverviewComponent,
+  ],
   providers: [{ provide: DataService, useClass: PackagingService }],
 })
 export class PackagingOverviewComponent {

@@ -7,7 +7,6 @@
  */
 
 import { PackagingDto } from '@ap2/api-interfaces';
-
 import { Component, input, Input, OnChanges } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -25,8 +24,8 @@ import { PackagingSheetComponent } from '../sheet/packaging-sheet/packaging-shee
     MatChipsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
-    MatButtonModule
-],
+    MatButtonModule,
+  ],
   templateUrl: './packaging-selection.component.html',
 })
 export class PackagingSelectionComponent implements OnChanges {

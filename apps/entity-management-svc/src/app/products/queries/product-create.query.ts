@@ -13,7 +13,7 @@ import { upsertQuery } from './create-or-update.query';
 
 export const productCreateQuery = (
   dto: ProductCreateDto,
-  outlierDetectionResult: string[],
+  outlierDetectionResult: string[]
 ) =>
   ({
     data: {

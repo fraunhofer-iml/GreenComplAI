@@ -12,7 +12,6 @@ import {
   ProductGroupDto,
 } from '@ap2/api-interfaces';
 import * as moment from 'moment';
-
 import { Component, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
@@ -45,8 +44,8 @@ import { WasteflowAnalysisGraphComponent } from '../wasteflow/wasteflow-analysis
     FormsModule,
     MatAutocompleteModule,
     RouterModule,
-    WasteflowAnalysisGraphComponent
-],
+    WasteflowAnalysisGraphComponent,
+  ],
   providers: [
     {
       provide: DateAdapter,

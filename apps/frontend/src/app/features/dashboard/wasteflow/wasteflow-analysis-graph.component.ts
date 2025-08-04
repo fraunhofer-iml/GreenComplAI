@@ -6,7 +6,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { GenericWasteFlowAnalysisDto, WasteFlowAnalysisDto } from '@ap2/api-interfaces';
+import {
+  GenericWasteFlowAnalysisDto,
+  WasteFlowAnalysisDto,
+} from '@ap2/api-interfaces';
 import * as echarts from 'echarts';
 import { BarSeriesOption, EChartsOption, SeriesOption } from 'echarts';
 import * as moment from 'moment';
@@ -21,7 +24,10 @@ import {
   getBarChartOptions,
   getDefaultSeries,
 } from '../chart-options/bar-chart-options';
-import { getDefaultOption, getDefaultPieSeries } from '../chart-options/pie-chart-options';
+import {
+  getDefaultOption,
+  getDefaultPieSeries,
+} from '../chart-options/pie-chart-options';
 import { OutlierDetectionAnalysisComponent } from '../outliers/outlier-detection-analysis.component';
 
 @Component({
@@ -312,13 +318,15 @@ export class WasteflowAnalysisGraphComponent {
 
   private removeLegendEntry(legendOptions: any, seriesName: string): number {
     let legendIndex = -1;
-    legendOptions.series = legendOptions.series.filter((el: {data: {name:string}[]}, i: number) => {
-      if (el.data[0].name === seriesName) {
-        legendIndex = i;
-        return false;
+    legendOptions.series = legendOptions.series.filter(
+      (el: { data: { name: string }[] }, i: number) => {
+        if (el.data[0].name === seriesName) {
+          legendIndex = i;
+          return false;
+        }
+        return true;
       }
-      return true;
-    });
+    );
     return legendIndex;
   }
 

@@ -6,7 +6,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-;
+import { EChartsOption, PieSeriesOption } from 'echarts';
+
 /*
  * Copyright Fraunhofer Institute for Material Flow and Logistics
  *
@@ -14,8 +15,6 @@
  * For details on the licensing terms, see the LICENSE file.
  * SPDX-License-Identifier: Apache-2.0
  */
-
-import { EChartsOption, PieSeriesOption } from 'echarts';
 
 //Chart colours get overridden by the SkalaTheme (see styles/chart-theme.ts)
 

@@ -9,7 +9,6 @@
 import { AuthRoles, MaterialDto, ProductDto } from '@ap2/api-interfaces';
 import * as moment from 'moment/moment';
 import { Moment } from 'moment/moment';
-
 import { Component, inject, Input, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
@@ -61,8 +60,8 @@ import { ProductWasteComponent } from './product-waste/product-waste.component';
     ProductPackagingComponent,
     MatDividerModule,
     ProductWasteComponent,
-    FlagableComponent
-],
+    FlagableComponent,
+  ],
   providers: [
     { provide: DataService, useClass: ProductsService },
     ProductsService,

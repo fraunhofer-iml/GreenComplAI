@@ -11,7 +11,6 @@ import {
   ProductGroupDto,
   VariantDto,
 } from '@ap2/api-interfaces';
-
 import {
   Component,
   EventEmitter,
@@ -45,8 +44,8 @@ import { ProductGroupService } from '../../../core/services/product-group/produc
     MatButtonModule,
     FormsModule,
     MatChipsModule,
-    MatIconModule
-],
+    MatIconModule,
+  ],
   templateUrl: './product-group-create.component.html',
 })
 export class ProductGroupCreateComponent implements OnChanges {

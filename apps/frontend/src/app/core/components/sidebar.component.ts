@@ -7,7 +7,6 @@
  */
 
 import { AuthRoles } from '@ap2/api-interfaces';
-
 import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -29,8 +28,8 @@ import { TreeNode } from './tree-node.interface';
     MatButtonModule,
     MatIconModule,
     MatExpansionModule,
-    MatTreeModule
-],
+    MatTreeModule,
+  ],
   providers: [AuthenticationService],
   templateUrl: './sidebar.component.html',
 })

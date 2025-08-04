@@ -8,7 +8,6 @@
 
 import { CompanyCreateDto, CompanyDto } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
-
 import { Component, input } from '@angular/core';
 import {
   FormArray,
@@ -42,8 +41,8 @@ import { Uris } from '../../../shared/constants/uris';
     ReactiveFormsModule,
     MatButtonModule,
     FormsModule,
-    UploadCSVComponent
-],
+    UploadCSVComponent,
+  ],
   providers: [
     {
       provide: DataService,
@@ -132,7 +131,7 @@ export class CompanyCreateComponent {
     if (this.id()) {
       this.updateMutation.mutate({ id: this.id() ?? '', dto: dto });
       this.navigateToCallbackIfSet();
-      return
+      return;
     }
 
     const isOwnCompany = this.route.snapshot.queryParamMap.get('own');

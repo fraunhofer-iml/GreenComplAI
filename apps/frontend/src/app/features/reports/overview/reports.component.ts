@@ -6,7 +6,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-
 import { Component } from '@angular/core';
 import { MatAnchor } from '@angular/material/button';
 import { RouterLink } from '@angular/router';

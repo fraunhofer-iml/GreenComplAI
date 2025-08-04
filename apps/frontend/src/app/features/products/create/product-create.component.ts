@@ -16,7 +16,6 @@ import {
   ProductGroupDto,
 } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
-
 import { Component, input, signal } from '@angular/core';
 import {
   FormArray,
@@ -93,8 +92,8 @@ import { ProductionHistoryComponent } from './production-history/production-hist
     ProductMasterDataFormComponent,
     ProductionHistoryComponent,
     UploadCSVComponent,
-    RouterModule
-],
+    RouterModule,
+  ],
   providers: [
     {
       provide: DataService,

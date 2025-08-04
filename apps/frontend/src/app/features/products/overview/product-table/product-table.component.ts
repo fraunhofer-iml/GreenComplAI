@@ -7,7 +7,6 @@
  */
 
 import { debounceTime } from 'rxjs';
-
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -37,8 +36,8 @@ import { TooltipMessages } from '../../../../shared/constants/messages';
     MatPaginatorModule,
     MatSelectModule,
     MatSortModule,
-    MatTooltipModule
-],
+    MatTooltipModule,
+  ],
   templateUrl: './product-table.component.html',
 })
 export class ProductTableComponent {

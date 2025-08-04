@@ -8,7 +8,6 @@
 
 import { ProductDto, ProductUpdateDto } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
-
 import { Component, inject, input } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -37,8 +36,8 @@ import { masterDataFormGroup } from '../../create/product.form-group';
     MatIconModule,
     ProductMasterDataFormComponent,
     MatButtonModule,
-    RouterModule
-],
+    RouterModule,
+  ],
   templateUrl: './product-update.component.html',
 })
 export class ProductUpdateComponent {

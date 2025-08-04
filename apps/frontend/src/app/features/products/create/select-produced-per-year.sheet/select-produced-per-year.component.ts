@@ -6,7 +6,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-
 import { Component, EventEmitter, input, Input, Output } from '@angular/core';
 import {
   FormArray,
@@ -45,8 +44,8 @@ import { ONLY_YEAR_FORMAT } from '../../../../shared/constants/date-formats';
     MatAutocompleteModule,
     MatDatepicker,
     MatDatepickerInput,
-    MatDatepickerToggle
-],
+    MatDatepickerToggle,
+  ],
   providers: [
     {
       provide: DateAdapter,

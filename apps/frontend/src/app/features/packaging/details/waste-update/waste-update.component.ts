@@ -8,7 +8,6 @@
 
 import { PackagingDto, WasteCreateDto, WasteDto } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
-
 import { Component, inject, input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';

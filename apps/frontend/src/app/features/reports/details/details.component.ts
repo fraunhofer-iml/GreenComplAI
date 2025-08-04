@@ -7,7 +7,6 @@
  */
 
 import { ReportDto } from '@ap2/api-interfaces';
-
 import { Component, inject, input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
@@ -55,8 +54,8 @@ import { StrategiesComponent } from './strategies/strategies.component';
     MeasuresComponent,
     MatTabsModule,
     ReportInformationComponent,
-    FinancialImpactComponent
-],
+    FinancialImpactComponent,
+  ],
   providers: [
     ReportsService,
     {

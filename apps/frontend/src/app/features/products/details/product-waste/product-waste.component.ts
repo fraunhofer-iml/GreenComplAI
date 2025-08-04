@@ -7,7 +7,6 @@
  */
 
 import { WasteDto, WasteMaterialDto } from '@ap2/api-interfaces';
-
 import { Component, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
@@ -22,8 +21,8 @@ import { FlagableComponent } from '../../../../shared/components/flagable-elemen
     MatIconModule,
     MatButtonModule,
     RouterModule,
-    FlagableComponent
-],
+    FlagableComponent,
+  ],
   templateUrl: './product-waste.component.html',
 })
 export class ProductWasteComponent {

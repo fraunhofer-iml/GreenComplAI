@@ -6,7 +6,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-
 import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -35,8 +34,8 @@ import { ProductTableComponent } from './product-table/product-table.component';
     MatSelectModule,
     ReactiveFormsModule,
     FormsModule,
-    ProductTableComponent
-],
+    ProductTableComponent,
+  ],
   providers: [{ provide: DataService, useClass: ProductsService }],
   templateUrl: './overview.component.html',
 })

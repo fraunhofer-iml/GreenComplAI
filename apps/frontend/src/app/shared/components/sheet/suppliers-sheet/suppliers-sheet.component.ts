@@ -7,7 +7,6 @@
  */
 
 import { CompanyDto } from '@ap2/api-interfaces';
-
 import {
   Component,
   computed,
@@ -39,8 +38,8 @@ import { BaseSheetComponent } from '../base/sheet.component';
     MatButton,
     MatInput,
     PaginationComponent,
-    BaseSheetComponent
-],
+    BaseSheetComponent,
+  ],
   providers: [],
   templateUrl: './suppliers-sheet.component.html',
 })

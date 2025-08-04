@@ -12,7 +12,6 @@ import {
   ReportDto,
 } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
-
 import { Component, inject, input, OnChanges, output } from '@angular/core';
 import {
   FormArray,
@@ -64,8 +63,8 @@ import {
     MatExpansionModule,
     MatListModule,
     MatButtonModule,
-    FormsModule
-],
+    FormsModule,
+  ],
   providers: [
     {
       provide: DateAdapter,

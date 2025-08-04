@@ -51,8 +51,8 @@ export class AnalysisService {
     return lastValueFrom(
       this.entityManagementService.send<OutlierDetectionAnalysisDto>(
         AnalysisMessagePatterns.GET_OUTLIER_ANALYSIS,
-        productGroupId,
-      ),
+        productGroupId
+      )
     );
   }
 }

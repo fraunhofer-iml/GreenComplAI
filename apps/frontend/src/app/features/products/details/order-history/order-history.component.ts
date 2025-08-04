@@ -7,7 +7,6 @@
  */
 
 import { ProductDto, ProductUpdateHistoryDto } from '@ap2/api-interfaces';
-
 import { Component, Input, input } from '@angular/core';
 import {
   FormControl,
@@ -66,8 +65,8 @@ import { SelectProducedPerYearComponent } from '../../create/select-produced-per
     MatFormFieldModule,
     BaseSheetComponent,
     SelectProducedPerYearComponent,
-    FlagableComponent
-],
+    FlagableComponent,
+  ],
   templateUrl: './order-history.component.html',
 })
 export class OrderHistoryComponent {

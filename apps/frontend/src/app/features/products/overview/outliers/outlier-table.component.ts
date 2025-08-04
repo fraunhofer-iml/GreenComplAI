@@ -6,8 +6,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-
+import { toast } from 'ngx-sonner';
 import { Component, inject } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -18,9 +19,6 @@ import {
 } from '@tanstack/angular-query-experimental';
 import { ProductsService } from '../../../../core/services/products/products.service';
 
-import { MatButtonModule } from '@angular/material/button';
-import { toast } from 'ngx-sonner';
-
 @Component({
   selector: 'app-outlier-table',
   imports: [
@@ -28,8 +26,8 @@ import { toast } from 'ngx-sonner';
     MatTableModule,
     MatIconModule,
     MatTooltipModule,
-    MatButtonModule
-],
+    MatButtonModule,
+  ],
   templateUrl: './outlier-table.component.html',
 })
 export class OutlierTableComponent {

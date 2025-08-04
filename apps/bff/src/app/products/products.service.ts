@@ -27,6 +27,8 @@ import {
   UpdateProductProps,
   UpdateProductWasteProps,
 } from '@ap2/api-interfaces';
+import axios from 'axios';
+import { firstValueFrom } from 'rxjs';
 import {
   HttpException,
   HttpStatus,
@@ -35,8 +37,6 @@ import {
   Logger,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import axios from 'axios';
-import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class ProductsService {
@@ -44,12 +44,13 @@ export class ProductsService {
 
   constructor(
     @Inject(AmqpClientEnum.QUEUE_ENTITY_MANAGEMENT)
-    private readonly entityManagementService: ClientProxy,
+    private readonly entityManagementService: ClientProxy
   ) {}
 
   async create({ dto }: Partial<CreateProductProps>): Promise<ProductDto> {
     try {
-      const outlierDetectionEnabled = process.env.OUTLIER_DETECTION_ENABLED === 'true';
+      const outlierDetectionEnabled =
+        process.env.OUTLIER_DETECTION_ENABLED === 'true';
       let outlierDetectionResult: string[] = [];
       if (outlierDetectionEnabled) {
         outlierDetectionResult = await this.runOutlierDetection(dto);
@@ -59,7 +60,7 @@ export class ProductsService {
         this.entityManagementService.send(ProductMessagePatterns.CREATE, {
           dto,
           outlierDetectionResult,
-        }),
+        })
       );
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
@@ -77,7 +78,7 @@ export class ProductsService {
 
   findOutliers(): Promise<ProductOutlierDto[]> {
     return firstValueFrom(
-      this.entityManagementService.send(ProductMessagePatterns.OUTLIERS, {}),
+      this.entityManagementService.send(ProductMessagePatterns.OUTLIERS, {})
     );
   }
 
@@ -154,8 +155,8 @@ export class ProductsService {
     await firstValueFrom(
       this.entityManagementService.send(
         ProductMessagePatterns.UPDATE_WASTE,
-        props,
-      ),
+        props
+      )
     );
 
     const validateProps: UpdateFlagProductProps = {
@@ -166,8 +167,8 @@ export class ProductsService {
     return firstValueFrom(
       this.entityManagementService.send(
         ProductMessagePatterns.OUTLIERS_VALIDATE,
-        validateProps,
-      ),
+        validateProps
+      )
     );
   }
 
@@ -211,8 +212,8 @@ export class ProductsService {
     return firstValueFrom(
       this.entityManagementService.send<ProductOutlierDto>(
         ProductMessagePatterns.OUTLIERS_VALIDATE,
-        props,
-      ),
+        props
+      )
     );
   }
 
@@ -221,7 +222,7 @@ export class ProductsService {
       `${process.env.OUTLIER_DETECTION_URL}/outliers`,
       {
         recycledWastePercentage: dto.waste?.recycledWastePercentage ?? 0,
-      },
+      }
     );
 
     if (res.status !== 200) {

@@ -6,7 +6,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-
 import {
   Component,
   computed,
@@ -41,8 +40,8 @@ import { MaterialsFormGroup } from './materials-form.model';
     MatInputModule,
     MatButtonModule,
     FormsModule,
-    MatAutocompleteModule
-],
+    MatAutocompleteModule,
+  ],
   templateUrl: './select-materials.component.html',
 })
 export class SelectMaterialsComponent {

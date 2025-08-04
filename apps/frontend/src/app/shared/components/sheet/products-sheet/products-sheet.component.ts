@@ -9,7 +9,6 @@
 import { ProductCreateDto, ProductDto } from '@ap2/api-interfaces';
 import { debounceTime } from 'rxjs';
 import { TextFieldModule } from '@angular/cdk/text-field';
-
 import {
   Component,
   computed,
@@ -63,8 +62,8 @@ import { productFormControl } from './product.form-control';
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,
-    MatDialogModule
-],
+    MatDialogModule,
+  ],
   providers: [],
   templateUrl: './products-sheet.component.html',
 })

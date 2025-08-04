@@ -8,7 +8,6 @@
 
 import { PackagingDto } from '@ap2/api-interfaces';
 import { debounceTime } from 'rxjs';
-
 import {
   Component,
   computed,
@@ -57,8 +56,8 @@ import { BaseSheetComponent } from '../base/sheet.component';
     PaginationComponent,
     MatButtonModule,
     MatDialogModule,
-    MatDividerModule
-],
+    MatDividerModule,
+  ],
   templateUrl: './packaging-sheet.component.html',
 })
 export class PackagingSheetComponent implements OnChanges {

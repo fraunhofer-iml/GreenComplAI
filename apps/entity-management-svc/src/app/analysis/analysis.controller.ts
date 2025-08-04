@@ -10,16 +10,16 @@ import { AnalysisMessagePatterns, AnalysisQuery } from '@ap2/amqp';
 import { InFlowAnalysisDto, WasteFlowAnalysisDto } from '@ap2/api-interfaces';
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
+import { ProductAnalysisService } from '../products/analysis.service';
 import { InFlowAnalysisService } from './in-flow-analysis.service';
 import { WasteFlowAnalysisService } from './waste-flow-analysis.service';
-import { ProductAnalysisService } from '../products/analysis.service';
 
 @Controller()
 export class AnalysisController {
   constructor(
     private readonly wasteFlowAnalysisService: WasteFlowAnalysisService,
     private readonly inFlowAnalysisService: InFlowAnalysisService,
-    private readonly productAnalysisService: ProductAnalysisService,
+    private readonly productAnalysisService: ProductAnalysisService
   ) {}
 
   @MessagePattern(AnalysisMessagePatterns.GET_WASTE_FLOW_ANALYSIS)
@@ -43,10 +43,10 @@ export class AnalysisController {
     @Payload()
     payload: {
       productGroupId?: string;
-    },
+    }
   ) {
     return this.productAnalysisService.getOutlierAnalysis(
-      payload.productGroupId,
+      payload.productGroupId
     );
   }
 }
