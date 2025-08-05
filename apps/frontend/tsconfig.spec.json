@@ -2,9 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
-    "types": ["jest", "node"],
-    "moduleResolution": "bundler",
-    "esModuleInterop": true
+    "types": ["jest", "node"]
   },
   "files": ["src/test-setup.ts"],
   "include": [

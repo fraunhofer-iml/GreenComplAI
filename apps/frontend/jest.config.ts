@@ -9,7 +9,6 @@
 export default {
   global: {
     'ts-jest': {
-      tsconfig: '<rootDir>/tsconfig.spec.json',
       useESM: true,
     },
   },
@@ -31,7 +30,11 @@ export default {
       },
     ],
   },
-  transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$|keycloak-js)'],
+  transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
+  moduleNameMapper: {
+    '^keycloak.*$':
+      'node_modules/keycloak-angular/fesm2022/keycloak-angular.mjs',
+  },
   snapshotSerializers: [
     'jest-preset-angular/build/serializers/no-ng-attributes',
     'jest-preset-angular/build/serializers/ng-snapshot',

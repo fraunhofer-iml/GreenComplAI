@@ -7,7 +7,7 @@
  */
 
 import { KeycloakEventTypeLegacy, KeycloakService } from 'keycloak-angular';
-import { KeycloakProfile } from 'keycloak-js';
+import Keycloak from 'keycloak-js';
 import { inject, Injectable } from '@angular/core';
 
 @Injectable()
@@ -45,7 +45,8 @@ export class AuthenticationService {
     firstName: string;
     lastName: string;
   }> {
-    const profile: KeycloakProfile = await this.keycloak.loadUserProfile();
+    const profile: Keycloak.KeycloakProfile =
+      await this.keycloak.loadUserProfile();
     return {
       firstName: profile.firstName ?? '',
       lastName: profile.lastName ?? '',
