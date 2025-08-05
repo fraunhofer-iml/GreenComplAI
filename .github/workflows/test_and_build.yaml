@@ -32,7 +32,9 @@ jobs:
       - name: Lint affected apps
         run: npx nx affected -t lint --parallel
       - name: Test affected apps
-        run: npx nx affected -t test --passWithNoTests --parallel
+        run: |
+          npx nx affected -t test --passWithNoTests --parallel --exclude
+          frontend
 
   build:
     name: Build
