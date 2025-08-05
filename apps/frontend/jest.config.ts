@@ -7,6 +7,12 @@
  */
 
 export default {
+  global: {
+    'ts-jest': {
+      tsconfig: '<rootDir>/tsconfig.spec.json',
+      useESM: true,
+    },
+  },
   displayName: 'frontend',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
