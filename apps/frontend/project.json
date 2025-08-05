@@ -4,6 +4,14 @@
   "projectType": "application",
   "prefix": "app",
   "sourceRoot": "apps/frontend/src",
+  "i18n": {
+    "sourceLocale": "de",
+    "locales": {
+      "en-US": {
+        "translation": "apps/frontend/src/locales/messages.en-US.xlf"
+      }
+    }
+  },
   "tags": [],
   "targets": {
     "build": {
@@ -74,7 +82,8 @@
           "buildTarget": "frontend:build:development"
         }
       },
-      "defaultConfiguration": "development"
+      "defaultConfiguration": "development",
+      "continuous": true
     },
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
@@ -113,14 +122,6 @@
         "tagPrefix": "v",
         "push": true,
         "additionalTags": ["latest"]
-      }
-    }
-  },
-  "i18n": {
-    "sourceLocale": "de",
-    "locales": {
-      "en-US": {
-        "translation": "apps/frontend/src/locales/messages.en-US.xlf"
       }
     }
   }

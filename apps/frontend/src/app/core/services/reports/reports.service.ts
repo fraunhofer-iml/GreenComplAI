@@ -24,8 +24,9 @@ import { DataService } from '../data-service/data.service';
 
 @Injectable()
 export class ReportsService extends DataService<PaginatedData<ReportDto>> {
-  url = environment.baseUrl;
   private readonly http = inject(HttpClient);
+
+  url = environment.baseUrl;
 
   fetchData(
     page: number,

@@ -43,9 +43,7 @@ export class PackagingController {
 
   @Post()
   @ApiBearerAuth()
-  @Roles({
-    roles: [getRealmRole(AuthRoles.BUYER)],
-  })
+  @Roles(getRealmRole(AuthRoles.BUYER))
   @ApiOperation({
     description: 'Creates a new packages.',
   })
@@ -67,12 +65,10 @@ export class PackagingController {
 
   @Get(':id')
   @ApiBearerAuth()
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.BUYER),
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.BUYER),
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER)
+  )
   @ApiOperation({
     description: 'Get one Packaging by id.',
   })
@@ -85,12 +81,10 @@ export class PackagingController {
 
   @Get(':id/preliminary')
   @ApiBearerAuth()
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.BUYER),
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.BUYER),
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER)
+  )
   @ApiOperation({
     description: 'Get one Packaging by id.',
   })
@@ -105,12 +99,10 @@ export class PackagingController {
 
   @Get()
   @ApiBearerAuth()
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.BUYER),
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.BUYER),
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER)
+  )
   @ApiOperation({
     description: 'Get all packaging.',
   })
@@ -141,9 +133,7 @@ export class PackagingController {
 
   @Patch(':id')
   @ApiBearerAuth()
-  @Roles({
-    roles: [getRealmRole(AuthRoles.BUYER)],
-  })
+  @Roles(getRealmRole(AuthRoles.BUYER))
   @ApiOperation({
     description: 'Update packaging.',
   })
@@ -159,9 +149,7 @@ export class PackagingController {
 
   @Patch(':id/preliminary')
   @ApiBearerAuth()
-  @Roles({
-    roles: [getRealmRole(AuthRoles.BUYER)],
-  })
+  @Roles(getRealmRole(AuthRoles.BUYER))
   @ApiOperation({
     description: 'Update packaging.',
   })
@@ -177,9 +165,7 @@ export class PackagingController {
 
   @Patch(':id/waste')
   @ApiBearerAuth()
-  @Roles({
-    roles: [getRealmRole(AuthRoles.BUYER)],
-  })
+  @Roles(getRealmRole(AuthRoles.BUYER))
   @ApiOperation({
     description: 'Update packaging.',
   })
@@ -195,9 +181,7 @@ export class PackagingController {
 
   @Delete(':id')
   @ApiBearerAuth()
-  @Roles({
-    roles: [getRealmRole(AuthRoles.BUYER)],
-  })
+  @Roles(getRealmRole(AuthRoles.BUYER))
   @ApiOperation({
     description: 'Update packaging.',
   })

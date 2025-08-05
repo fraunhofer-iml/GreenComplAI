@@ -6,17 +6,18 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { CommonModule } from '@angular/common';
-import { Component, input, Input } from '@angular/core';
-import { DataService } from '../../../core/services/data-service/data.service';
+import { Component, inject, input, Input } from '@angular/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { DataService } from '../../../core/services/data-service/data.service';
 
 @Component({
   selector: 'app-flagable',
-  imports: [CommonModule, MatTooltipModule],
+  imports: [MatTooltipModule],
   templateUrl: './flagable.component.html',
 })
 export class FlagableComponent<T> {
+  private readonly dataService = inject(DataService<T>);
+
   @Input() data: string[] = [];
   @Input() element = '';
   @Input() topic = '';
@@ -25,8 +26,6 @@ export class FlagableComponent<T> {
   alt: any = 'Element is not flagged';
 
   outlier = input<string[]>();
-
-  constructor(private readonly dataService: DataService<T>) {}
 
   async toggleFlag() {
     this.data = await this.dataService

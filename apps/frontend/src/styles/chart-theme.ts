@@ -27,7 +27,7 @@ export const SkalaTheme = {
 
     '#88a61b',
     '#419a48',
-    '#007474'
+    '#007474',
   ],
 
   title: {

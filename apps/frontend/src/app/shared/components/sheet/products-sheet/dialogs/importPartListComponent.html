@@ -1,5 +1,8 @@
 <h2 mat-dialog-title>Import Stückliste</h2>
 <mat-dialog-content>
-  <app-upload-csv class="w-full" [contentType]="ContentType.BILLOFMATERIALS" [(output)]="itemList"
+  <app-upload-csv
+    class="w-full"
+    [contentType]="ContentType.BILLOFMATERIALS"
+    [(output)]="itemList"
   ></app-upload-csv>
 </mat-dialog-content>

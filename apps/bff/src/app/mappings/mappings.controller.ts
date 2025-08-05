@@ -25,12 +25,10 @@ export class MappingsController {
   constructor(private readonly mappingService: MappingsService) {}
 
   @Post()
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-      getRealmRole(AuthRoles.BUYER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
   @ApiBearerAuth()
   @ApiOperation({
     description: 'Creates a new Mapping.',
@@ -51,12 +49,10 @@ export class MappingsController {
 
   @Get(':id')
   @ApiBearerAuth()
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.BUYER),
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.BUYER),
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER)
+  )
   @ApiOperation({
     description: 'Get one mapping by id.',
   })

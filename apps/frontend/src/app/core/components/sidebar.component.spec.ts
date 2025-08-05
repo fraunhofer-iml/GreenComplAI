@@ -30,6 +30,11 @@ describe('SidebarComponent', () => {
           useValue: {
             keycloakEvents$: of({ type: 'TEST_EVENT' }),
             getUserRoles: () => [],
+            loadUserProfile: () =>
+              Promise.resolve({
+                firstName: 'John',
+                lastName: 'Doe',
+              }),
           },
         },
         {

@@ -1,8 +1,8 @@
 <app-base-sheet #parentSheet>
   <form class="flex w-full flex-col gap-4" [formGroup]="billOfMaterialForm()">
     <span>Stückliste</span>
-    <button mat-flat-button
-            (click)="openImportItemListDialog()">Importieren der Stückliste per CSV
+    <button mat-flat-button (click)="openImportItemListDialog()">
+      Importieren der Stückliste per CSV
     </button>
     <mat-form-field appearance="outline" class="mb-4">
       <mat-label>Stücklistenbeschreibung</mat-label>

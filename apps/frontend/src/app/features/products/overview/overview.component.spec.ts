@@ -12,7 +12,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import {
-  provideAngularQuery,
+  provideQueryClient,
   QueryClient,
 } from '@tanstack/angular-query-experimental';
 import { CompaniesService } from '../../../core/services/companies/companies.service';
@@ -37,7 +37,7 @@ describe('ProductOverviewComponent', () => {
         CompaniesService,
         { provide: DataService, useValue: {} },
         provideHttpClient(),
-        provideAngularQuery(new QueryClient()),
+        provideQueryClient(new QueryClient()),
         {
           provide: ActivatedRoute,
           useValue: {

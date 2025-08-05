@@ -10,7 +10,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import {
-  provideAngularQuery,
+  provideQueryClient,
   QueryClient,
 } from '@tanstack/angular-query-experimental';
 import { OutlierDetectionAnalysisComponent } from './outlier-detection-analysis.component';
@@ -25,7 +25,7 @@ describe('OutlierDetectionAnalysisComponent', () => {
       providers: [
         provideHttpClient(),
         provideRouter([]),
-        provideAngularQuery(new QueryClient()),
+        provideQueryClient(new QueryClient()),
       ],
     }).compileComponents();
 

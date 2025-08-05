@@ -21,7 +21,7 @@ import {
   ProductUpdateMapDto,
   WasteCreateDto,
 } from '@ap2/api-interfaces';
-import { AuthenticatedUser, Roles } from 'nest-keycloak-connect';
+import { KeycloakUser, Roles } from 'nest-keycloak-connect';
 import {
   Body,
   Controller,
@@ -58,12 +58,10 @@ export class ProductsController {
     type: ProductCreateDto,
   })
   @ApiBearerAuth()
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-      getRealmRole(AuthRoles.BUYER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
   @ApiOkResponse({
     description: 'Successfull request: Return created product',
     type: ProductDto,
@@ -75,12 +73,10 @@ export class ProductsController {
   }
 
   @Get()
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-      getRealmRole(AuthRoles.BUYER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
   @ApiBearerAuth()
   @ApiOperation({
     description: 'Get all products.',
@@ -122,12 +118,10 @@ export class ProductsController {
   }
 
   @Get('outliers')
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-      getRealmRole(AuthRoles.BUYER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
   @ApiBearerAuth()
   @ApiOperation({
     description: 'Get all products.',
@@ -149,12 +143,10 @@ export class ProductsController {
   }
 
   @Get('search')
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-      getRealmRole(AuthRoles.BUYER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
   @ApiBearerAuth()
   @ApiOperation({
     description: 'Search all products for given value',
@@ -170,12 +162,10 @@ export class ProductsController {
 
   @Get(':id')
   @ApiBearerAuth()
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-      getRealmRole(AuthRoles.BUYER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
   @ApiOperation({
     description: 'Get one product by id.',
   })
@@ -189,12 +179,10 @@ export class ProductsController {
 
   @Get(':id/preliminary')
   @ApiBearerAuth()
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-      getRealmRole(AuthRoles.BUYER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
   @ApiOperation({
     description: 'Get preliminary products of product by id.',
   })
@@ -210,12 +198,10 @@ export class ProductsController {
 
   @Get(':id/packaging')
   @ApiBearerAuth()
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-      getRealmRole(AuthRoles.BUYER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
   @ApiOperation({
     description: 'Get packaging of product by id.',
   })
@@ -229,12 +215,10 @@ export class ProductsController {
 
   @Patch(':id')
   @ApiBearerAuth()
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-      getRealmRole(AuthRoles.BUYER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
   @ApiOperation({
     description: 'Update master data  of product.',
   })
@@ -257,12 +241,10 @@ export class ProductsController {
 
   @Patch(':id/packaging')
   @ApiBearerAuth()
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-      getRealmRole(AuthRoles.BUYER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
   @ApiOperation({
     description: 'Update packaging of product.',
   })
@@ -285,12 +267,10 @@ export class ProductsController {
 
   @Patch(':id/bill-of-material')
   @ApiBearerAuth()
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-      getRealmRole(AuthRoles.BUYER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
   @ApiOperation({
     description: 'Update BOM of product.',
   })
@@ -313,12 +293,10 @@ export class ProductsController {
 
   @Patch(':id/waste')
   @ApiBearerAuth()
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-      getRealmRole(AuthRoles.BUYER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
   @ApiOperation({
     description: 'Update waste of product.',
   })
@@ -341,12 +319,10 @@ export class ProductsController {
 
   @Patch(':id/flags')
   @ApiBearerAuth()
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-      getRealmRole(AuthRoles.BUYER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
   @ApiOperation({
     description: 'Update flags of product.',
   })
@@ -363,12 +339,10 @@ export class ProductsController {
 
   @Patch(':id/production-history')
   @ApiBearerAuth()
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-      getRealmRole(AuthRoles.BUYER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
   @ApiOperation({
     description: 'Update production history  of product.',
   })
@@ -391,12 +365,10 @@ export class ProductsController {
 
   @Patch(':id/outlier')
   @ApiBearerAuth()
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-      getRealmRole(AuthRoles.BUYER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
   @ApiOperation({
     description: 'validate outlier.',
   })
@@ -406,19 +378,17 @@ export class ProductsController {
   })
   validateOutlier(
     @Param('id') id: string,
-    @Body() data: { flags: string[] },
+    @Body() data: { flags: string[] }
   ): Promise<ProductOutlierDto> {
     return this.productsService.validate({ id, dto: { flags: data.flags } });
   }
 
   @Delete(':id')
   @ApiBearerAuth()
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-      getRealmRole(AuthRoles.BUYER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
   @ApiOperation({
     description: 'Delete one product.',
   })
@@ -431,9 +401,7 @@ export class ProductsController {
   }
 
   @Get(':id/analysis')
-  @Roles({
-    roles: [getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER)],
-  })
+  @Roles(getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER))
   @ApiBearerAuth()
   @ApiOperation({
     description:
@@ -445,7 +413,7 @@ export class ProductsController {
   getAnalysis(
     @Param('id') id: string,
     @Query('amount') amount: number,
-    @AuthenticatedUser() user: AuthenticatedKCUser
+    @KeycloakUser() user: AuthenticatedKCUser
   ): Promise<AnalysisDto> {
     return this.productsService.getAnalysis({
       productId: id,

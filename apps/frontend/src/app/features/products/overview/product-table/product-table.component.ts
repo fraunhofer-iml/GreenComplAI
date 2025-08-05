@@ -7,7 +7,6 @@
  */
 
 import { debounceTime } from 'rxjs';
-import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -27,7 +26,6 @@ import { TooltipMessages } from '../../../../shared/constants/messages';
 @Component({
   selector: 'app-product-table',
   imports: [
-    CommonModule,
     RouterModule,
     ReactiveFormsModule,
     MatFormFieldModule,

@@ -85,7 +85,7 @@ export class ProductDto {
     cascadePrinciple?: string,
     certificationSystem?: string,
     circularPrinciple?: boolean,
-    productionHistory?: { amount: number; year: number }[],
+    productionHistory?: { amount: number; year: number }[]
   ) {
     this.id = id;
     this.name = name;

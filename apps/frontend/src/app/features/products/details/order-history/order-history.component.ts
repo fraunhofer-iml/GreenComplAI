@@ -7,8 +7,7 @@
  */
 
 import { ProductDto, ProductUpdateHistoryDto } from '@ap2/api-interfaces';
-import { CommonModule } from '@angular/common';
-import { Component, Input, input } from '@angular/core';
+import { Component, inject, Input, input } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -46,7 +45,6 @@ import { SelectProducedPerYearComponent } from '../../create/select-produced-per
 @Component({
   selector: 'app-order-history',
   imports: [
-    CommonModule,
     RouterModule,
     MatFormFieldModule,
     MatInputModule,
@@ -72,8 +70,12 @@ import { SelectProducedPerYearComponent } from '../../create/select-produced-per
   templateUrl: './order-history.component.html',
 })
 export class OrderHistoryComponent {
-  @Input()
-  productId?: string | null;
+  private readonly productService = inject(ProductsService);
+  private readonly productConstructionService = inject(
+    ProductConstructionService
+  );
+
+  @Input() productId?: string | null;
   year = input(new FormControl());
 
   product = input.required<ProductDto>();
@@ -108,10 +110,7 @@ export class OrderHistoryComponent {
   addProducedItems = addProducedItems;
   removeProducedItemFormGroup = removeProducedItemFormGroup;
 
-  constructor(
-    private readonly productService: ProductsService,
-    private readonly productConstructionService: ProductConstructionService
-  ) {
+  constructor() {
     this.producedItemsForm = producedItemsFormGroup();
   }
 

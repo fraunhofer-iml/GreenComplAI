@@ -11,7 +11,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-  provideAngularQuery,
+  provideQueryClient,
   QueryClient,
 } from '@tanstack/angular-query-experimental';
 import { ProductsService } from '../../../../core/services/products/products.service';
@@ -27,7 +27,7 @@ describe('ProductTableComponent', () => {
       providers: [
         { provide: provideHttpClient(), useValue: provideHttpClientTesting() },
         { provide: ProductsService, useValue: {} },
-        provideAngularQuery(new QueryClient()),
+        provideQueryClient(new QueryClient()),
       ],
     }).compileComponents();
 

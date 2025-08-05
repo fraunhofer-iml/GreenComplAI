@@ -6,8 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -26,7 +25,6 @@ import { ContentType } from './table-content-type.enum';
 @Component({
   selector: 'app-overview',
   imports: [
-    CommonModule,
     RouterModule,
     MatFormFieldModule,
     MatInputModule,
@@ -40,6 +38,8 @@ import { ContentType } from './table-content-type.enum';
   templateUrl: './overview.component.html',
 })
 export class OverviewComponent<T> implements OnInit {
+  private readonly dataService = inject(DataService<T>);
+
   @Input() contentType!: ContentType;
   totalLength = 100;
   pageSize = 10;
@@ -51,8 +51,6 @@ export class OverviewComponent<T> implements OnInit {
     headers: [],
   };
   protected readonly encodeURIComponent = encodeURIComponent;
-
-  constructor(private readonly dataService: DataService<T>) {}
 
   _additionals: Map<string, string> = new Map();
 

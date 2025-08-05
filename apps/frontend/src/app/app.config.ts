@@ -22,7 +22,7 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import {
-  provideAngularQuery,
+  provideQueryClient,
   QueryClient,
 } from '@tanstack/angular-query-experimental';
 import { appRoutes } from './app.routes';
@@ -56,7 +56,7 @@ export const appConfig: ApplicationConfig = {
     AuthenticationService,
     provideAnimationsAsync(),
     provideHttpClient(withInterceptorsFromDi()),
-    provideAngularQuery(new QueryClient()),
+    provideQueryClient(new QueryClient()),
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: {
