@@ -12,7 +12,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import {
-  provideAngularQuery,
+  provideQueryClient,
   QueryClient,
 } from '@tanstack/angular-query-experimental';
 import { ReportsService } from '../../../../../core/services/reports/reports.service';
@@ -28,7 +28,7 @@ describe('FinancialImpactComponent', () => {
       providers: [
         ReportsService,
         provideHttpClient(),
-        provideAngularQuery(new QueryClient()),
+        provideQueryClient(new QueryClient()),
         {
           provide: ActivatedRoute,
           useValue: {

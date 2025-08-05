@@ -13,7 +13,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import {
-  provideAngularQuery,
+  provideQueryClient,
   QueryClient,
 } from '@tanstack/angular-query-experimental';
 import { AuthenticationService } from '../../../core/services/authentication/authentication.service';
@@ -43,7 +43,7 @@ describe('ProductDetailsComponent', () => {
           },
         },
         provideHttpClient(),
-        provideAngularQuery(new QueryClient()),
+        provideQueryClient(new QueryClient()),
         {
           provide: ActivatedRoute,
           useValue: {

@@ -6,7 +6,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -25,7 +24,6 @@ import { ProductTableComponent } from './product-table/product-table.component';
 @Component({
   selector: 'app-product-overview',
   imports: [
-    CommonModule,
     RouterModule,
     MatFormFieldModule,
     MatInputModule,

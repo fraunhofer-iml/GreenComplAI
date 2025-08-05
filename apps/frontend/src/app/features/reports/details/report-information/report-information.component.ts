@@ -8,7 +8,6 @@
 
 import { CreateReportDto, ErrorMessages, ReportDto } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
-import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, input, OnChanges, output } from '@angular/core';
 import {
@@ -46,8 +45,6 @@ import { ReportTooltip } from './tooltips';
 @Component({
   selector: 'app-report-information',
   imports: [
-    CommonModule,
-    CommonModule,
     RouterModule,
     MatFormFieldModule,
     MatInputModule,

@@ -1,7 +1,7 @@
 <div class="p-8">
   <div class="flex items-center gap-2 text-lg">
     <a routerLink="/product-groups" class="font-semibold hover:underline"
-    >Produktgruppen</a
+      >Produktgruppen</a
     >
     <span class="material-symbols-outlined text-lg"> chevron_right </span>
     @if (groupQuery.isSuccess()) {
@@ -13,7 +13,7 @@
 
   @if (groupQuery.isLoading()) {
     <span class="material-symbols-outlined mt-4 animate-spin text-lg"
-    >progress_activity</span
+      >progress_activity</span
     >
   }
 
@@ -33,11 +33,11 @@
           ><span class="col-span-3 flex">{{ data.name }}</span>
           <span class="col-span-1 flex font-medium">Beschreibung </span>
           <span class="col-span-3 flex">{{
-              data.description || 'Nicht angegeben'
-            }}</span
+            data.description || 'Nicht angegeben'
+          }}</span
           ><span class="col-span-1 flex font-medium"
-        >Relevante Abfallströme </span
-        ><span class="col-span-3 flex">{{ data.wasteFlow }}</span>
+            >Relevante Abfallströme </span
+          ><span class="col-span-3 flex">{{ data.wasteFlow }}</span>
         </div>
       </div>
       <div class="col-span-1 rounded-lg bg-neutral-200 p-4">
@@ -63,7 +63,7 @@
             mat-button
             [routerLink]="['/products/create']"
             [queryParams]="{ productGroupId: id$() }"
-          >Hinzufügen</a
+            >Hinzufügen</a
           >
         </div>
 
@@ -77,30 +77,36 @@
               <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef>Produktname</th>
                 <td mat-cell *matCellDef="let element">
-                  <a class="w-full flex gap-2" [routerLink]="[Uris.products, element.id]">
+                  <a
+                    class="flex w-full gap-2"
+                    [routerLink]="[Uris.products, element.id]"
+                  >
                     {{ element.name }}
                     @if (element.flags && element.flags.length > 0) {
-                      <img class="h-4" [src]="'flagSelected.svg'" [alt]="'Element is flagged'"
-                           [matTooltip]="TooltipMessages.tooltipEdit" />
-                    }</a
-                  >
-
+                      <img
+                        class="h-4"
+                        [src]="'flagSelected.svg'"
+                        [alt]="'Element is flagged'"
+                        [matTooltip]="TooltipMessages.tooltipEdit"
+                      />
+                    }
+                  </a>
                 </td>
               </ng-container>
               <ng-container matColumnDef="productId">
                 <th mat-header-cell *matHeaderCellDef>Produkt Id</th>
                 <td mat-cell *matCellDef="let element">
                   <a [routerLink]="[Uris.products, element.id]">{{
-                      element.productId
-                    }}</a>
+                    element.productId
+                  }}</a>
                 </td>
               </ng-container>
               <ng-container matColumnDef="supplier">
                 <th mat-header-cell *matHeaderCellDef>Lieferant</th>
                 <td mat-cell *matCellDef="let element">
                   <a [routerLink]="[Uris.companies, element.supplier.id]">{{
-                      element.supplier.name
-                    }}</a>
+                    element.supplier.name
+                  }}</a>
                 </td>
               </ng-container>
               <ng-container matColumnDef="price">

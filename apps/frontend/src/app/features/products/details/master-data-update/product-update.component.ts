@@ -8,7 +8,6 @@
 
 import { ProductDto, ProductUpdateDto } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
-import { CommonModule } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -33,7 +32,6 @@ import { masterDataFormGroup } from '../../create/product.form-group';
 @Component({
   selector: 'app-product-update',
   imports: [
-    CommonModule,
     RouterModule,
     MatIconModule,
     ProductMasterDataFormComponent,
@@ -45,12 +43,14 @@ import { masterDataFormGroup } from '../../create/product.form-group';
 export class ProductUpdateComponent {
   id = input<string | null>(null);
 
-  productService = inject(ProductsService);
+  private readonly productsService = inject(ProductsService);
+  private readonly constructionService = inject(ProductConstructionService);
+  private readonly router = inject(Router);
 
   productQuery = injectQuery(() => ({
     queryKey: ['products', this.id()],
     queryFn: async (): Promise<ProductDto> => {
-      const product = await this.productService.getById(this.id() ?? '');
+      const product = await this.productsService.getById(this.id() ?? '');
       this.setFormData(product);
       return product;
     },
@@ -92,11 +92,7 @@ export class ProductUpdateComponent {
     onError: () => toast.error('Speichern fehlgeschlagen'),
   }));
 
-  constructor(
-    public readonly productsService: ProductsService,
-    private readonly constructionService: ProductConstructionService,
-    private readonly router: Router
-  ) {
+  constructor() {
     this.form = masterDataFormGroup();
     this.materialsForm = materialFormArrayGroup();
     this.rareEarthsForm = materialFormArrayGroup();

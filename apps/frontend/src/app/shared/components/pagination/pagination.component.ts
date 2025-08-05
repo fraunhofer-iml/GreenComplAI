@@ -6,7 +6,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,7 +13,7 @@ import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-pagination',
-  imports: [CommonModule, MatFormFieldModule, MatButtonModule, MatSelectModule],
+  imports: [MatFormFieldModule, MatButtonModule, MatSelectModule],
   providers: [],
   templateUrl: './pagination.component.html',
 })

@@ -9,7 +9,7 @@
 import { AnalysisDto, ProductDto } from '@ap2/api-interfaces';
 import { debounceTime } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { Component, Input, signal } from '@angular/core';
+import { Component, inject, Input, OnInit, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -41,7 +41,9 @@ import { ProductsService } from '../../../core/services/products/products.servic
   ],
   templateUrl: './analysis.component.html',
 })
-export class AnalysisComponent {
+export class AnalysisComponent implements OnInit {
+  private readonly productsService = inject(ProductsService);
+
   amount$ = signal<number>(1);
   selectedId$ = signal<string>('');
 
@@ -88,7 +90,7 @@ export class AnalysisComponent {
     enabled: !!this.id$() && this.id$().length > 0,
   }));
 
-  constructor(private readonly productsService: ProductsService) {
+  ngOnInit() {
     this.form.valueChanges.pipe(debounceTime(500)).subscribe((val) => {
       this.amount$.set(val.amount ?? 0);
       this.selectedId$.set(val.product?.id ?? '');

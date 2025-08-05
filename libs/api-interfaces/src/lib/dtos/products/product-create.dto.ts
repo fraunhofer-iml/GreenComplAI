@@ -97,7 +97,7 @@ export class ProductCreateDto {
     cascadePrincipal?: string,
     certification?: string,
     circularPrinciple?: boolean,
-    outliers?: string[],
+    outliers?: string[]
   ) {
     this.name = name;
     this.isSellable = isSellable;

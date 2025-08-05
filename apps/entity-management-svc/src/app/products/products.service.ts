@@ -67,7 +67,7 @@ export class ProductService {
     );
 
     const product = await this.prismaService.product.create(
-      productCreateQuery(dto, outlierDetectionResult),
+      productCreateQuery(dto, outlierDetectionResult)
     );
 
     if (dto.billOfMaterial)
@@ -208,7 +208,7 @@ export class ProductService {
           ...o,
           productGroup: o.productGroup.name,
           recycledWastePercentage: o.waste?.recycledWastePercentage ?? 0,
-        }) as ProductOutlierDto,
+        }) as ProductOutlierDto
     );
   }
 
@@ -244,7 +244,7 @@ export class ProductService {
               (m) => [m.material, m.percentage] as const
             ),
             outlier: (p.preliminaryProduct.outlier as Prisma.JsonArray).map(
-              (o: { key: string; value: number }) => o.key,
+              (o: { key: string; value: number }) => o.key
             ),
           },
           p.amount,
@@ -312,7 +312,7 @@ export class ProductService {
     return {
       ...product,
       outlier: (product.outlier as Prisma.JsonArray).map(
-        (o: { key: string; value: number }) => o.key,
+        (o: { key: string; value: number }) => o.key
       ),
     };
   }
@@ -326,7 +326,7 @@ export class ProductService {
     return {
       ...p,
       outlier: (p.outlier as Prisma.JsonArray).map(
-        (o: { key: string; value: number }) => o.key,
+        (o: { key: string; value: number }) => o.key
       ),
     };
   }
@@ -361,7 +361,7 @@ export class ProductService {
         (m) => [m.material, m.percentage] as const
       ),
       outlier: ((p.outlier as Prisma.JsonArray) ?? []).map(
-        (o: { key: string; value: number }) => o.key,
+        (o: { key: string; value: number }) => o.key
       ),
     }));
   }
@@ -410,7 +410,7 @@ export class ProductService {
     });
 
     const filteredOutliers = (outlier ?? []).filter(
-      (key) => !dto.flags.includes(key),
+      (key) => !dto.flags.includes(key)
     );
 
     const validatedProduct = await this.prismaService.product.update({

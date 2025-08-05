@@ -7,14 +7,16 @@
  */
 
 import { KeycloakEventTypeLegacy, KeycloakService } from 'keycloak-angular';
-import { KeycloakProfile } from 'keycloak-js';
-import { Injectable } from '@angular/core';
+import Keycloak from 'keycloak-js';
+import { inject, Injectable } from '@angular/core';
 
 @Injectable()
 export class AuthenticationService {
-  constructor(private readonly keycloak: KeycloakService) {
+  private readonly keycloak = inject(KeycloakService);
+
+  constructor() {
     this.getRoleFromKeycloak();
-    keycloak.keycloakEvents$.subscribe({
+    this.keycloak.keycloakEvents$.subscribe({
       next: (event) => {
         if (event.type === KeycloakEventTypeLegacy.OnTokenExpired) {
           this.keycloak
@@ -43,7 +45,8 @@ export class AuthenticationService {
     firstName: string;
     lastName: string;
   }> {
-    const profile: KeycloakProfile = await this.keycloak.loadUserProfile();
+    const profile: Keycloak.KeycloakProfile =
+      await this.keycloak.loadUserProfile();
     return {
       firstName: profile.firstName ?? '',
       lastName: profile.lastName ?? '',

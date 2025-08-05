@@ -6,8 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import * as moment from 'moment';
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment';
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -66,6 +65,10 @@ import { ONLY_YEAR_FORMAT } from '../../../../shared/constants/date-formats';
   templateUrl: './waste-flow.component.html',
 })
 export class WasteFlowComponent {
+  private readonly analysisService = inject(AnalysisService);
+  private readonly router = inject(Router);
+  private readonly activatedRoute = inject(ActivatedRoute);
+
   fromYear$ = signal<Moment>(moment(new Date(2024, 0, 1)));
   toYear$ = signal<Moment>(moment(new Date(2025, 0, 1)));
   filter = signal<string>('');
@@ -85,9 +88,6 @@ export class WasteFlowComponent {
   ];
 
   productGroupId = input<string>();
-
-  private readonly router = inject(Router);
-  private readonly activatedRoute = inject(ActivatedRoute);
 
   filteredAndSortedAnalysis = computed(() => {
     const response = this.analysisQuery
@@ -120,8 +120,6 @@ export class WasteFlowComponent {
       );
     },
   }));
-
-  constructor(private readonly analysisService: AnalysisService) {}
 
   onFilterChange(value: string) {
     this.filter.set(value);

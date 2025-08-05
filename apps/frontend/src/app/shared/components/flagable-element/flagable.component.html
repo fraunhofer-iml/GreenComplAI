@@ -7,16 +7,23 @@
     {{ topic }}
     <div class="flex flex-row items-center">
       <div class="cursor-pointer px-1" role="none" (click)="toggleFlag()">
-        <div *ngIf="!data.includes(element); else SelectedFlag">
-          <img
-            class="min-h-2 min-w-3"
-            *ngIf="flag !== ''; else None"
-            (mouseenter)="flag = 'flagSelected.svg'"
-            (mouseleave)="flag = 'flagOutline.svg'"
-            [src]="flag"
-            [alt]="alt"
-          />
-        </div>
+        @if (!data.includes(element)) {
+          <div>
+            @if (flag !== '') {
+              <img
+                class="min-h-2 min-w-3"
+                (mouseenter)="flag = 'flagSelected.svg'"
+                (mouseleave)="flag = 'flagOutline.svg'"
+                [src]="flag"
+                [alt]="alt"
+              />
+            } @else {
+              <div class="min-h-2 min-w-3"></div>
+            }
+          </div>
+        } @else {
+          <img class="min-h-2 min-w-3" [src]="'flagSelected.svg'" [alt]="alt" />
+        }
       </div>
       @if (outlier()?.includes(element.split('.')[1])) {
         <span
@@ -31,11 +38,3 @@
 
   <ng-content></ng-content>
 </div>
-
-<ng-template #SelectedFlag>
-  <img class="min-h-2 min-w-3" [src]="'flagSelected.svg'" [alt]="alt" />
-</ng-template>
-
-<ng-template #None>
-  <div class="min-h-2 min-w-3"></div>
-</ng-template>

@@ -6,22 +6,21 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Component, input } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { AnalysisService } from '../../../core/services/analysis/analysis.service';
-import { injectQuery } from '@tanstack/angular-query-experimental';
+import { OutlierDetectionAnalysisDto } from '@ap2/api-interfaces';
 import { EChartsOption, PieSeriesOption } from 'echarts';
 import * as echarts from 'echarts';
-
+import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
+import { CommonModule } from '@angular/common';
+import { Component, inject, input } from '@angular/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterModule } from '@angular/router';
+import { injectQuery } from '@tanstack/angular-query-experimental';
+import { SkalaTheme } from '../../../../styles/chart-theme';
+import { AnalysisService } from '../../../core/services/analysis/analysis.service';
 import {
   getDefaultOption,
   getDefaultPieSeries,
 } from '../chart-options/pie-chart-options';
-import { OutlierDetectionAnalysisDto } from '@ap2/api-interfaces';
-import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
-import { SkalaTheme } from '../../../../styles/chart-theme';
-import { RouterModule } from '@angular/router';
-import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-outlier-detection-analysis',
@@ -30,19 +29,19 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   templateUrl: './outlier-detection-analysis.component.html',
 })
 export class OutlierDetectionAnalysisComponent {
+  private readonly analysisService = inject(AnalysisService);
+
   productGroupId$ = input<string>('');
   productId$ = input<string>('');
 
   isOutlier = false;
   theme = SkalaTheme;
 
-  constructor(private readonly analysisService: AnalysisService) {}
-
   analysisQuery = injectQuery(() => ({
     queryKey: ['outlier-analysis', this.productGroupId$(), this.productId$()],
     queryFn: async () => {
       const analysis = await this.analysisService.getOutlierAnalysis(
-        this.productGroupId$(),
+        this.productGroupId$()
       );
       return this.toChartData(analysis);
     },
@@ -51,7 +50,7 @@ export class OutlierDetectionAnalysisComponent {
   toChartData(analysis: OutlierDetectionAnalysisDto): EChartsOption {
     if (this.productId$()) {
       const outlier = analysis.outliesByItem.find(
-        (item) => item.id === this.productId$(),
+        (item) => item.id === this.productId$()
       )?.numberOfOutliers;
       this.isOutlier = !!outlier;
     }
@@ -67,7 +66,7 @@ export class OutlierDetectionAnalysisComponent {
 
   private createChartOption(
     title: string,
-    data: [string, number][],
+    data: [string, number][]
   ): EChartsOption {
     const chartOption: EChartsOption = getDefaultOption(true);
     chartOption.title = { text: title };

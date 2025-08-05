@@ -15,7 +15,7 @@ import {
   getRealmRole,
   PaginatedData,
 } from '@ap2/api-interfaces';
-import { AuthenticatedUser, Roles } from 'nest-keycloak-connect';
+import { KeycloakUser, Roles } from 'nest-keycloak-connect';
 import {
   Body,
   Controller,
@@ -47,12 +47,10 @@ export class CompaniesController {
   constructor(private readonly companyService: CompaniesService) {}
 
   @Post()
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-      getRealmRole(AuthRoles.BUYER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
   @ApiBearerAuth()
   @ApiOperation({
     description: 'Create new Company for the current cuser.',
@@ -66,7 +64,7 @@ export class CompaniesController {
     type: CompanyDto,
   })
   async createCompany(
-    @AuthenticatedUser() user: AuthenticatedKCUser,
+    @KeycloakUser() user: AuthenticatedKCUser,
     @Body() createCompanyDto: CompanyCreateDto
   ): Promise<CompanyDto> {
     return await this.companyService.createCompany({
@@ -77,14 +75,14 @@ export class CompaniesController {
 
   @Post('associate')
   @ApiBearerAuth()
-  @Roles({ roles: [getRealmRole(AuthRoles.BUYER)] })
+  @Roles(getRealmRole(AuthRoles.BUYER))
   @ApiOperation({
     description: 'Create new associated Company.',
   })
   @ApiExtraModels(AddressCreateDto)
   @ApiCreatedResponse({ description: 'Successfully created', type: CompanyDto })
   async createAssociateCompany(
-    @AuthenticatedUser() user: AuthenticatedKCUser,
+    @KeycloakUser() user: AuthenticatedKCUser,
     @Body() createCompanyDto: CompanyCreateDto
   ): Promise<CompanyDto> {
     return await this.companyService.createAssociatedCompany({
@@ -95,12 +93,10 @@ export class CompaniesController {
 
   @Get()
   @ApiBearerAuth()
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.BUYER),
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.BUYER),
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER)
+  )
   @ApiOperation({
     description:
       'Get all companies associated to the currently authenticated users company.',
@@ -127,7 +123,7 @@ export class CompaniesController {
     type: PaginatedData<CompanyDto[]>,
   })
   async findAll(
-    @AuthenticatedUser() user: AuthenticatedKCUser,
+    @KeycloakUser() user: AuthenticatedKCUser,
     @Query('filters') filters: string,
     @Query('sorting') sorting: string,
     @Query('page') page: number,
@@ -144,12 +140,10 @@ export class CompaniesController {
 
   @Get(':id')
   @ApiBearerAuth()
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.BUYER),
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.BUYER),
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER)
+  )
   @ApiOperation({
     description: 'Get one company by id.',
   })
@@ -163,7 +157,7 @@ export class CompaniesController {
 
   @Patch(':id')
   @ApiBearerAuth()
-  @Roles({ roles: [getRealmRole(AuthRoles.BUYER)] })
+  @Roles(getRealmRole(AuthRoles.BUYER))
   @ApiOperation({
     description: 'Update company.',
   })
@@ -180,7 +174,7 @@ export class CompaniesController {
 
   @Delete(':id')
   @ApiBearerAuth()
-  @Roles({ roles: [getRealmRole(AuthRoles.BUYER)] })
+  @Roles(getRealmRole(AuthRoles.BUYER))
   @ApiOperation({
     description: 'Delete one company.',
   })
@@ -193,12 +187,10 @@ export class CompaniesController {
 
   @Get('user/own')
   @ApiBearerAuth()
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.BUYER),
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.BUYER),
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER)
+  )
   @ApiOperation({
     description: 'Get one company by user id.',
   })
@@ -207,7 +199,7 @@ export class CompaniesController {
     type: CompanyDto,
   })
   findOneByUserId(
-    @AuthenticatedUser() user: AuthenticatedKCUser
+    @KeycloakUser() user: AuthenticatedKCUser
   ): Promise<CompanyDto> {
     return this.companyService.findOneByUserId({ id: user.sub });
   }

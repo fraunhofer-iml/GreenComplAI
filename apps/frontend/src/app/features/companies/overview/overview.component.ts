@@ -7,8 +7,7 @@
  */
 
 import { AuthRoles } from '@ap2/api-interfaces';
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -26,7 +25,6 @@ import { ContentType } from '../../../shared/components/overview/table-content-t
 @Component({
   selector: 'app-company-overview',
   imports: [
-    CommonModule,
     RouterModule,
     MatFormFieldModule,
     MatInputModule,
@@ -41,11 +39,13 @@ import { ContentType } from '../../../shared/components/overview/table-content-t
   templateUrl: './overview.component.html',
 })
 export class CompanyOverviewComponent {
+  private readonly authService = inject(AuthenticationService);
+
   ContentType = ContentType;
   AuthRoles = AuthRoles;
   role = '';
 
-  constructor(private readonly authService: AuthenticationService) {
+  constructor() {
     this.role = this.authService.getCurrentUserRole();
   }
 }

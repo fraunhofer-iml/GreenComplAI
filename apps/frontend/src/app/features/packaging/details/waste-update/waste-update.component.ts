@@ -8,7 +8,6 @@
 
 import { PackagingDto, WasteCreateDto, WasteDto } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
-import { CommonModule } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -27,7 +26,7 @@ import { materialFormGroup } from '../../../products/create/material.form-group'
 
 @Component({
   selector: 'app-waste-update',
-  imports: [CommonModule, WasteCreateComponent, RouterModule, MatButtonModule],
+  imports: [WasteCreateComponent, RouterModule, MatButtonModule],
   templateUrl: './waste-update.component.html',
 })
 export class WasteUpdateComponent {
