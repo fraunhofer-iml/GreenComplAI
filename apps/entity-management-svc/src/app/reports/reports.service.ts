@@ -479,53 +479,58 @@ export class ReportsService {
     const updateCalls = [];
     goals.forEach((goal) => {
       console.log(goal.strategies);
+      console.log(goal.id);
 
       const { id, ...data } = goal;
+      console.log(id);
       updateCalls.push(
-        this.prisma.goal.upsert({
-          where: { id: id ?? '' },
-          create: {
-            ...data,
-            validityPeriodEnd: goal.validityPeriodEnd,
-            validityPeriodStart: goal.validityPeriodStart,
-            strategies: {
-              create: goal.strategies.map((connectedStrategy) => ({
-                strategy: { connect: { id: connectedStrategy.id } },
-                connection: connectedStrategy.connection,
-              })),
-            },
-            reportId: reportId,
-          },
-          update: {
-            ...data,
-            strategies: {
-              upsert: goal.strategies.map((connectedStrategy) => ({
-                where: {
-                  goalId_strategyId: {
-                    goalId: id,
-                    strategyId: connectedStrategy.id,
-                  },
-                },
-                update: {},
-                create: {
-                  strategyId: connectedStrategy.id,
-                  connection: connectedStrategy.connection,
-                },
-              })),
-              deleteMany: {
-                AND: [
-                  {
-                    strategyId: {
-                      notIn: goal.strategies.map(
-                        (connectedStrategy) => connectedStrategy.id ?? ''
-                      ),
+        id
+          ? this.prisma.goal.update({
+              where: { id: id },
+              data: {
+                ...data,
+                strategies: {
+                  upsert: goal.strategies.map((connectedStrategy) => ({
+                    where: {
+                      goalId_strategyId: {
+                        goalId: goal.id,
+                        strategyId: connectedStrategy.id,
+                      },
                     },
+                    update: {},
+                    create: {
+                      strategyId: connectedStrategy.id,
+                      connection: connectedStrategy.connection,
+                    },
+                  })),
+                  deleteMany: {
+                    AND: [
+                      {
+                        strategyId: {
+                          notIn: goal.strategies.map(
+                            (connectedStrategy) => connectedStrategy.id ?? ''
+                          ),
+                        },
+                      },
+                    ],
                   },
-                ],
+                },
               },
-            },
-          },
-        })
+            })
+          : this.prisma.goal.create({
+              data: {
+                ...data,
+                validityPeriodEnd: goal.validityPeriodEnd,
+                validityPeriodStart: goal.validityPeriodStart,
+                strategies: {
+                  create: goal.strategies.map((connectedStrategy) => ({
+                    strategy: { connect: { id: connectedStrategy.id } },
+                    connection: connectedStrategy.connection,
+                  })),
+                },
+                reportId: reportId,
+              },
+            })
       );
     });
 
