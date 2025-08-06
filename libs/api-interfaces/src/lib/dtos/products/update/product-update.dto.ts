@@ -10,7 +10,7 @@ import { CriticalRawMaterials, RareEarths } from '../../../types';
 import { ProductMasterDataDto } from '../product-master-data.dto';
 
 export class ProductUpdateDto {
-  masterData: ProductMasterDataDto;
+  masterData: Partial<ProductMasterDataDto>;
   materials: { material: string; percentage: number }[];
   rareEarths: { material: RareEarths; percentage: number }[];
   criticalRawMaterials: {

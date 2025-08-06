@@ -30,6 +30,7 @@ import { AuthenticationService } from './core/services/authentication/authentica
 import { CompaniesService } from './core/services/companies/companies.service';
 import { PackagingService } from './core/services/packaging/packaging.service';
 import { ProductsService } from './core/services/products/products.service';
+import { SupplierService } from './core/services/suppliers/suppliers.service';
 import { ProductConstructionService } from './features/products/create/form-construction/product-construction.service';
 import { initializeKeycloak } from './init/keycloak-initializer';
 
@@ -51,6 +52,7 @@ export const appConfig: ApplicationConfig = {
     ProductConstructionService,
     CompaniesService,
     ProductsService,
+    SupplierService,
     PackagingService,
     KeycloakService,
     AuthenticationService,

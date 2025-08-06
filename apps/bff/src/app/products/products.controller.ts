@@ -75,8 +75,7 @@ export class ProductsController {
   @Get()
   @Roles(
     getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-    getRealmRole(AuthRoles.BUYER),
-    getRealmRole(AuthRoles.SUPPLIER)
+    getRealmRole(AuthRoles.BUYER)
   )
   @ApiBearerAuth()
   @ApiOperation({

@@ -24,11 +24,7 @@ export const RoleGuard: CanActivateFn = (route) => {
   if (!currentRole) return false;
 
   const isValid = route.data['roles'].includes(currentRole);
-  console.log(
-    `Current role: ${currentRole}, Valid roles: ${route.data['roles']}, Is valid: ${isValid}`
-  );
   if (!isValid && currentRole === AuthRoles.SUPPLIER) {
-    console.log('Redirecting supplier to products page');
     router.navigate(['/products'], { replaceUrl: true });
     return false;
   }

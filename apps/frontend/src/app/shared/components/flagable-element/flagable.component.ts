@@ -8,6 +8,7 @@
 
 import { Component, inject, input, Input } from '@angular/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { AuthenticationService } from '../../../core/services/authentication/authentication.service';
 import { DataService } from '../../../core/services/data-service/data.service';
 
 @Component({
@@ -17,8 +18,9 @@ import { DataService } from '../../../core/services/data-service/data.service';
 })
 export class FlagableComponent<T> {
   private readonly dataService = inject(DataService<T>);
+  readonly authService = inject(AuthenticationService);
 
-  @Input() data: string[] = [];
+  @Input() data: string[] | undefined = [];
   @Input() element = '';
   @Input() topic = '';
   @Input({ required: true }) id = '';

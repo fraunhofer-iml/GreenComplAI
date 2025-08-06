@@ -6,6 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { AuthRoles } from '@ap2/api-interfaces';
 import { KeycloakEventTypeLegacy, KeycloakService } from 'keycloak-angular';
 import Keycloak from 'keycloak-js';
 import { inject, Injectable } from '@angular/core';
@@ -39,6 +40,13 @@ export class AuthenticationService {
       role = this.getRoleFromKeycloak();
     }
     return role ?? '';
+  }
+
+  public isSupplier(): boolean {
+    if (!this.keycloak.isLoggedIn()) {
+      return false;
+    }
+    return this.getCurrentUserRole() === AuthRoles.SUPPLIER;
   }
 
   async getCurrentUserName(): Promise<{

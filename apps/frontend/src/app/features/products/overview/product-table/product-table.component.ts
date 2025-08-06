@@ -20,7 +20,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
+import { AuthenticationService } from '../../../../core/services/authentication/authentication.service';
 import { ProductsService } from '../../../../core/services/products/products.service';
+import { SupplierService } from '../../../../core/services/suppliers/suppliers.service';
 import { TooltipMessages } from '../../../../shared/constants/messages';
 
 @Component({
@@ -64,11 +66,31 @@ export class ProductTableComponent {
     'circularPrinciple',
   ];
 
+  supplierDisplayedColumns = [
+    'name',
+    'description',
+    'percentageOfBiologicalMaterials',
+    'wasteFlow',
+    'circularPrinciple',
+  ];
+
   productService = inject(ProductsService);
+  supplierService = inject(SupplierService);
+  authService = inject(AuthenticationService);
 
   query = injectQuery(() => ({
     queryKey: ['products'],
     queryFn: async () => {
+      if (this.authService.isSupplier()) {
+        return await this.supplierService.fetchData(
+          this.pageIndex + 1,
+          this.pageSize,
+          this.filter,
+          JSON.stringify(this.sorting),
+          this.additionals
+        );
+      }
+
       return await this.productService.fetchData(
         this.pageIndex + 1,
         this.pageSize,

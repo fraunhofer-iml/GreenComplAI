@@ -10,7 +10,6 @@ import { AmqpClientEnum, ProductMessagePatterns } from '@ap2/amqp';
 import {
   AnalysisDto,
   AuthenticatedKCUser,
-  AuthRoles,
   CreateProductProps,
   DeleteProductProps,
   FindAllProductsProps,
@@ -40,7 +39,6 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { CompaniesService } from '../companies/companies.service';
 
 @Injectable()
 export class ProductsService {
@@ -48,8 +46,7 @@ export class ProductsService {
 
   constructor(
     @Inject(AmqpClientEnum.QUEUE_ENTITY_MANAGEMENT)
-    private readonly entityManagementService: ClientProxy,
-    private readonly companiesService: CompaniesService
+    private readonly entityManagementService: ClientProxy
   ) {}
 
   async create({ dto }: Partial<CreateProductProps>): Promise<ProductDto> {
@@ -80,45 +77,10 @@ export class ProductsService {
       throw new UnauthorizedException('User roles are not defined');
     }
 
-    this.logger.debug(user.realm_access.roles);
-
-    if (
-      !user.realm_access.roles.includes(AuthRoles.SUSTAINABILITY_MANAGER) &&
-      !user.realm_access.roles.includes(AuthRoles.BUYER)
-    ) {
-      // We know that the user is a supplier, so we need to filter products by supplierCompanyId
-      return this.findAllForSupplier(props, user);
-    }
-
     return firstValueFrom(
       this.entityManagementService.send<PaginatedData<ProductDto>>(
         ProductMessagePatterns.READ_ALL,
         props
-      )
-    );
-  }
-
-  async findAllForSupplier(
-    props: FindAllProductsProps,
-    user: AuthenticatedKCUser
-  ): Promise<PaginatedData<ProductDto>> {
-    const supplierCompanyId = await this.companiesService.findOneByUserId({
-      id: user.sub,
-    });
-
-    if (!supplierCompanyId) {
-      throw new UnauthorizedException(
-        'Supplier company not found for the user'
-      );
-    }
-
-    return firstValueFrom(
-      this.entityManagementService.send<PaginatedData<ProductDto>>(
-        ProductMessagePatterns.READ_ALL,
-        {
-          ...props,
-          supplierCompanyId: supplierCompanyId.id,
-        }
       )
     );
   }

@@ -8,12 +8,11 @@
 
 import { Broker } from '@ap2/amqp';
 import { Module } from '@nestjs/common';
-import { CompaniesModule } from '../companies/companies.module';
 import { ProductsController } from './products.controller';
 import { ProductsService } from './products.service';
 
 @Module({
-  imports: [new Broker().getEntityManagerBroker(), CompaniesModule],
+  imports: [new Broker().getEntityManagerBroker()],
   controllers: [ProductsController],
   providers: [ProductsService],
 })

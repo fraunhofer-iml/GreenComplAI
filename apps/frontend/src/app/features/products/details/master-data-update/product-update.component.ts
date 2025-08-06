@@ -7,6 +7,8 @@
  */
 
 import { ProductDto, ProductUpdateDto } from '@ap2/api-interfaces';
+import { AuthenticationService } from 'apps/frontend/src/app/core/services/authentication/authentication.service';
+import { SupplierService } from 'apps/frontend/src/app/core/services/suppliers/suppliers.service';
 import { toast } from 'ngx-sonner';
 import { Component, inject, input } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
@@ -44,13 +46,20 @@ export class ProductUpdateComponent {
   id = input<string | null>(null);
 
   private readonly productsService = inject(ProductsService);
+  private readonly supplierService = inject(SupplierService);
   private readonly constructionService = inject(ProductConstructionService);
   private readonly router = inject(Router);
+  authService = inject(AuthenticationService);
 
   productQuery = injectQuery(() => ({
     queryKey: ['products', this.id()],
-    queryFn: async (): Promise<ProductDto> => {
-      const product = await this.productsService.getById(this.id() ?? '');
+    queryFn: async (): Promise<Partial<ProductDto>> => {
+      let product = undefined;
+      if (this.authService.isSupplier()) {
+        product = await this.supplierService.getById(this.id() ?? '');
+      } else {
+        product = await this.productsService.getById(this.id() ?? '');
+      }
       this.setFormData(product);
       return product;
     },
@@ -86,8 +95,13 @@ export class ProductUpdateComponent {
   readonly dialog = inject(MatDialog);
 
   updateMutation = injectMutation(() => ({
-    mutationFn: (dto: ProductUpdateDto) =>
-      this.productsService.update(dto, this.id() ?? ''),
+    mutationFn: (dto: ProductUpdateDto) => {
+      if (this.authService.isSupplier()) {
+        return this.supplierService.update(dto, this.id() ?? '');
+      }
+
+      return this.productsService.update(dto, this.id() ?? '');
+    },
     onSuccess: () => this.router.navigate(['/products', this.id()]),
     onError: () => toast.error('Speichern fehlgeschlagen'),
   }));
@@ -99,7 +113,7 @@ export class ProductUpdateComponent {
     this.criticalRawMaterialsForm = materialFormArrayGroup();
   }
 
-  setFormData(dto: ProductDto) {
+  setFormData(dto: Partial<ProductDto>) {
     this.form.patchValue({
       ...dto,
       variant: undefined,
