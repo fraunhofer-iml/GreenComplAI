@@ -129,20 +129,6 @@ export class GoalInformationComponent implements OnChanges {
     });
 
     this.report().goalPlanning?.goals.forEach((g) => {
-      // const strategiesForms: FormArray<FormGroup<ConnectedStrategiesForm>> =
-      //   new FormArray<FormGroup<ConnectedStrategiesForm>>([]);
-      // this.report()?.strategies.forEach((s) => {
-      //   strategiesForms.controls.push(
-      //     new FormGroup<ConnectedStrategiesForm>({
-      //       strategy: new FormControl(s),
-      //       selected: new FormControl(false),
-      //       connection: new FormControl<string | null>(null),
-      //     })
-      //   );
-      // });
-
-      // const f = newGoalForm();
-      // f.controls.strategies = strategiesForms;
       const newForm = this.getDefaultStrategiesForm();
 
       g.strategies.forEach((s) => {
@@ -156,9 +142,13 @@ export class GoalInformationComponent implements OnChanges {
         });
       });
 
-      newForm.patchValue({ ...g });
-      console.log(g.strategies);
-      console.log(newForm);
+      newForm.patchValue({
+        ...g,
+        validityPeriod: {
+          from: g.validityPeriodStart,
+          to: g.validityPeriodEnd,
+        },
+      });
       this.goalsFormGroup.controls.goals.push(newForm);
     });
   }

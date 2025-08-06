@@ -496,6 +496,7 @@ model GoalPlanning {
 
   hasPlannedGoals                 Boolean?
   goalsTracked                    Boolean?
+  noGoalsExplanation              String?
   followUpProcedure               String?
   targets                         String?
   progressEvaluation              String?

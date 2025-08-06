@@ -448,6 +448,7 @@ export class ReportsService {
         targets: goal.targets,
         reportId: reportId,
         goalsTracked: goal.goalsTracked,
+        noGoalsExplanation: goal.noGoalsExplanation,
       },
       update: {
         hasPlannedGoals: goal.hasPlannedGoals,
