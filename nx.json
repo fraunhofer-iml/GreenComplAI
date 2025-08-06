@@ -58,6 +58,11 @@
     },
     "e2e-ci--**/*": {
       "dependsOn": ["^build"]
+    },
+    "@nx/js:tsc": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     }
   },
   "generators": {
@@ -125,7 +130,7 @@
   },
   "useLegacyCache": true,
   "release": {
-    "projects": ["apps/*", "!apps/**-e2e"],
+    "projects": ["apps/*", "!apps/**-e2e", "user-management"],
     "projectsRelationship": "independent",
     "releaseTagPattern": "{projectName}/v{version}",
     "changelog": {
@@ -138,6 +143,7 @@
       }
     },
     "version": {
+      "preVersionCommand": "npx nx run-many -t build",
       "conventionalCommits": true
     }
   }

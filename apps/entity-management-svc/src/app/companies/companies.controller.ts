@@ -8,6 +8,7 @@
 
 import { AmqpException, CompanyMessagePatterns } from '@ap2/amqp';
 import {
+  CompanyCreateResponse,
   CompanyDto,
   CreateCompanyProps,
   DeleteCompanyProps,
@@ -30,7 +31,7 @@ export class CompaniesController {
   @MessagePattern(CompanyMessagePatterns.CREATE_ASSOCIATE_COMPANY)
   async createAssociatedCompany(
     @Payload() payload: CreateCompanyProps
-  ): Promise<CompanyDto> {
+  ): Promise<CompanyCreateResponse> {
     return await this.companyService.createAssociatedCompany(
       payload.dto,
       payload.userId

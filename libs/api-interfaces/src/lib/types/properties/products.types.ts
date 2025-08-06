@@ -26,6 +26,7 @@ export type FindAllProductsProps = {
   page: number;
   size: number;
   isSellable?: boolean;
+  supplierCompanyId?: string;
 };
 
 export type FindProductByIdProps = {

@@ -19,7 +19,8 @@
       "@ap2/api-interfaces": ["libs/api-interfaces/src/index.ts"],
       "@ap2/configuration": ["libs/configuration/src/index.ts"],
       "@ap2/database": ["libs/database/src/index.ts"],
-      "@ap2/util": ["libs/util/src/index.ts"]
+      "@ap2/util": ["libs/util/src/index.ts"],
+      "@greencomplai/user-management": ["libs/user-management/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

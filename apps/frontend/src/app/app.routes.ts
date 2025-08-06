@@ -26,7 +26,13 @@ export const appRoutes: Route[] = [
     loadChildren: () =>
       import('./features/products/product.routes').then((m) => m.productRoutes),
     canActivateChild: [AuthenticationGuard, RoleGuard],
-    data: { roles: [AuthRoles.SUSTAINABILITY_MANAGER, AuthRoles.BUYER] },
+    data: {
+      roles: [
+        AuthRoles.SUSTAINABILITY_MANAGER,
+        AuthRoles.BUYER,
+        AuthRoles.SUPPLIER,
+      ],
+    },
   },
   {
     path: 'packaging',
@@ -60,5 +66,7 @@ export const appRoutes: Route[] = [
       import('./features/dashboard/overview/dashboard.component').then(
         (m) => m.DashboardComponent
       ),
+    canActivate: [AuthenticationGuard, RoleGuard],
+    data: { roles: [AuthRoles.SUSTAINABILITY_MANAGER, AuthRoles.BUYER] },
   },
 ];

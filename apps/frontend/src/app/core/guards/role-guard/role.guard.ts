@@ -6,14 +6,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { AuthRoles } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
 import { inject } from '@angular/core';
-import { CanActivateFn } from '@angular/router';
+import { CanActivateFn, Router } from '@angular/router';
 import { Messages } from '../../../shared/constants/messages';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
 
 export const RoleGuard: CanActivateFn = (route) => {
   const authService: AuthenticationService = inject(AuthenticationService);
+  const router = inject(Router);
 
   const ownCompanyParam = route.queryParamMap.get('own');
   if (ownCompanyParam === 'true') return true;
@@ -22,6 +24,14 @@ export const RoleGuard: CanActivateFn = (route) => {
   if (!currentRole) return false;
 
   const isValid = route.data['roles'].includes(currentRole);
+  console.log(
+    `Current role: ${currentRole}, Valid roles: ${route.data['roles']}, Is valid: ${isValid}`
+  );
+  if (!isValid && currentRole === AuthRoles.SUPPLIER) {
+    console.log('Redirecting supplier to products page');
+    router.navigate(['/products'], { replaceUrl: true });
+    return false;
+  }
   if (!isValid) {
     toast(Messages.errorForbidden);
     return false;

@@ -38,6 +38,7 @@
     "@angular/platform-browser-dynamic": "20.1.4",
     "@angular/router": "20.1.4",
     "@ianvs/prettier-plugin-sort-imports": "^4.5.1",
+    "@keycloak/keycloak-admin-client": "^26.3.2",
     "@nestjs/axios": "^4.0.1",
     "@nestjs/common": "^11.1.5",
     "@nestjs/config": "^4.0.2",
@@ -116,6 +117,8 @@
     "jest-environment-jsdom": "^29.7.0",
     "jest-environment-node": "^29.7.0",
     "jest-preset-angular": "14.6.1",
+    "jest-util": "^30.0.2",
+    "jsonc-eslint-parser": "^2.1.0",
     "nx": "21.3.11",
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
@@ -129,6 +132,10 @@
     "tsx": "^4.20.3",
     "typescript": "5.8.3",
     "typescript-eslint": "^8.38.0",
+    "verdaccio": "^6.0.5",
     "webpack-cli": "^5.1.4"
+  },
+  "nx": {
+    "includedScripts": []
   }
 }

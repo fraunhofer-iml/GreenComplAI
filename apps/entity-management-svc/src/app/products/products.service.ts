@@ -117,10 +117,11 @@ export class ProductService {
     size,
     sorting,
     isSellable,
+    supplierCompanyId,
   }: FindAllProductsProps): Promise<PaginatedData<ProductDto>> {
     const skip: number = (page - 1) * size;
 
-    const f = this.getWhereCondition(filters, isSellable);
+    const f = this.getWhereCondition(filters, isSellable, supplierCompanyId);
 
     const products = await this.prismaService.product.findMany(
       productFindManyQuery({
@@ -511,7 +512,8 @@ export class ProductService {
 
   private getWhereCondition(
     filter: string | undefined,
-    isSellable?: boolean
+    isSellable?: boolean,
+    supplierCompanyId?: string
   ): Prisma.ProductWhereInput {
     const filterAsNumber = Number(filter);
 
@@ -520,6 +522,11 @@ export class ProductService {
     // Add isSellable condition if defined
     if (isSellable !== undefined) {
       conditions.push({ isSellable });
+    }
+
+    // Add supplierCompanyId condition if defined
+    if (supplierCompanyId) {
+      conditions.push({ supplierId: supplierCompanyId });
     }
 
     // Add filter conditions only if filter is provided

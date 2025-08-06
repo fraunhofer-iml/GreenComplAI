@@ -11,6 +11,7 @@ import {
   AuthenticatedKCUser,
   AuthRoles,
   CompanyCreateDto,
+  CompanyCreateResponse,
   CompanyDto,
   getRealmRole,
   PaginatedData,
@@ -84,7 +85,10 @@ export class CompaniesController {
   async createAssociateCompany(
     @KeycloakUser() user: AuthenticatedKCUser,
     @Body() createCompanyDto: CompanyCreateDto
-  ): Promise<CompanyDto> {
+  ): Promise<CompanyCreateResponse> {
+    this.logger.log(
+      `Creating associated company for user: ${user.sub} with data: ${JSON.stringify(createCompanyDto)}`
+    );
     return await this.companyService.createAssociatedCompany({
       dto: createCompanyDto,
       userId: user.sub,
@@ -95,7 +99,8 @@ export class CompaniesController {
   @ApiBearerAuth()
   @Roles(
     getRealmRole(AuthRoles.BUYER),
-    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER)
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.SUPPLIER)
   )
   @ApiOperation({
     description:
@@ -189,7 +194,8 @@ export class CompaniesController {
   @ApiBearerAuth()
   @Roles(
     getRealmRole(AuthRoles.BUYER),
-    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER)
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.SUPPLIER)
   )
   @ApiOperation({
     description: 'Get one company by user id.',
