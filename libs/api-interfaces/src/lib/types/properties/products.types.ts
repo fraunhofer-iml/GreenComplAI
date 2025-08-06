@@ -28,13 +28,25 @@ export type FindAllProductsProps = {
   isSellable?: boolean;
 };
 
+export type FindAllProductsOfSupplierProps = FindAllProductsProps & {
+  supplierCompanyId: string;
+};
+
 export type FindProductByIdProps = {
   id: string;
+};
+
+export type FindProductOfSupplierByIdProps = FindProductByIdProps & {
+  supplierCompanyId: string;
 };
 
 export type UpdateProductProps = {
   id: string;
   dto: ProductUpdateDto;
+};
+
+export type UpdateProductOfSupplierProps = UpdateProductProps & {
+  supplierCompanyId: string;
 };
 
 export type UpdateFlagProductProps = {

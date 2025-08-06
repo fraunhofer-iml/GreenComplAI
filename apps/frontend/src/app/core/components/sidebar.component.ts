@@ -50,7 +50,11 @@ export class SidebarComponent implements OnInit {
     },
     {
       name: 'Produkte',
-      roles: [AuthRoles.SUSTAINABILITY_MANAGER, AuthRoles.BUYER],
+      roles: [
+        AuthRoles.SUSTAINABILITY_MANAGER,
+        AuthRoles.BUYER,
+        AuthRoles.SUPPLIER,
+      ],
       icon: 'inventory',
       routerLink: '/products',
     },

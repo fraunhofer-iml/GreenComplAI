@@ -16,7 +16,7 @@
       <mat-tree-node
         *matTreeNodeDef="let node"
         matTreeNodePadding
-        class="bg-zinc-800"
+        class="bg-zinc-800 {{ node.roles.includes(role) ? '' : '!hidden' }}"
       >
         @if (node.roles.includes(role)) {
           <a

@@ -9,6 +9,7 @@
 import { AmqpClientEnum, ProductMessagePatterns } from '@ap2/amqp';
 import {
   AnalysisDto,
+  AuthenticatedKCUser,
   CreateProductProps,
   DeleteProductProps,
   FindAllProductsProps,
@@ -35,6 +36,7 @@ import {
   Inject,
   Injectable,
   Logger,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 

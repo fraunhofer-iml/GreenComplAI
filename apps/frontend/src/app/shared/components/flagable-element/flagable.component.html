@@ -1,40 +1,45 @@
 <div
-  class="flex items-center justify-between gap-2 hover:bg-neutral-300"
+  class="flex items-center justify-between gap-2 rounded p-2 hover:bg-neutral-300"
   (mouseenter)="flag = 'flagOutline.svg'"
   (mouseleave)="flag = ''"
 >
   <div class="inline-flex items-center gap-2 font-medium">
     {{ topic }}
-    <div class="flex flex-row items-center">
-      <div class="cursor-pointer px-1" role="none" (click)="toggleFlag()">
-        @if (!data.includes(element)) {
-          <div>
-            @if (flag !== '') {
-              <img
-                class="min-h-2 min-w-3"
-                (mouseenter)="flag = 'flagSelected.svg'"
-                (mouseleave)="flag = 'flagOutline.svg'"
-                [src]="flag"
-                [alt]="alt"
-              />
-            } @else {
-              <div class="min-h-2 min-w-3"></div>
-            }
-          </div>
-        } @else {
-          <img class="min-h-2 min-w-3" [src]="'flagSelected.svg'" [alt]="alt" />
+    @if (!authService.isSupplier()) {
+      <div class="flex flex-row items-center">
+        <div class="cursor-pointer px-1" role="none" (click)="toggleFlag()">
+          @if (!data || !data.includes(element)) {
+            <div>
+              @if (flag !== '') {
+                <img
+                  class="min-h-2 min-w-3"
+                  (mouseenter)="flag = 'flagSelected.svg'"
+                  (mouseleave)="flag = 'flagOutline.svg'"
+                  [src]="flag"
+                  [alt]="alt"
+                />
+              } @else {
+                <div class="min-h-2 min-w-3"></div>
+              }
+            </div>
+          } @else {
+            <img
+              class="min-h-2 min-w-3"
+              [src]="'flagSelected.svg'"
+              [alt]="alt"
+            />
+          }
+        </div>
+        @if (outlier()?.includes(element.split('.')[1])) {
+          <span
+            class="material-symbols-outlined text-error-700 cursor-pointer"
+            matTooltip="als Ausreißer erkannt"
+            matTooltipPosition="above"
+            >smart_toy
+          </span>
         }
       </div>
-      @if (outlier()?.includes(element.split('.')[1])) {
-        <span
-          class="material-symbols-outlined text-error-700 cursor-pointer"
-          matTooltip="als Ausreißer erkannt"
-          matTooltipPosition="above"
-          >smart_toy
-        </span>
-      }
-    </div>
+    }
   </div>
-
   <ng-content></ng-content>
 </div>

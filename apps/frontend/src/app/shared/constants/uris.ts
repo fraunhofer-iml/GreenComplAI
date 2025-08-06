@@ -16,6 +16,7 @@ export enum Uris {
 
 export enum ApiUris {
   products = '/products',
+  supplierProducts = '/suppliers/products',
   searchProducts = '/products/search',
   companies = '/companies',
   associateCompanies = '/companies/associate',

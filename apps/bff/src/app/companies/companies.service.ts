@@ -8,6 +8,7 @@
 
 import { AmqpClientEnum, CompanyMessagePatterns } from '@ap2/amqp';
 import {
+  CompanyCreateResponse,
   CompanyDto,
   CreateCompanyProps,
   DeleteCompanyProps,
@@ -38,9 +39,11 @@ export class CompaniesService {
     );
   }
 
-  createAssociatedCompany(props: CreateCompanyProps): Promise<CompanyDto> {
+  createAssociatedCompany(
+    props: CreateCompanyProps
+  ): Promise<CompanyCreateResponse> {
     return firstValueFrom(
-      this.entityManagementService.send<CompanyDto>(
+      this.entityManagementService.send<CompanyCreateResponse>(
         CompanyMessagePatterns.CREATE_ASSOCIATE_COMPANY,
         props
       )

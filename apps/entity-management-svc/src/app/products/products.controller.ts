@@ -11,6 +11,7 @@ import {
   AnalysisDto,
   CreateProductProps,
   DeleteProductProps,
+  FindAllProductsOfSupplierProps,
   FindAllProductsProps,
   FindProductByIdProps,
   GenerateAnalysisProp,
@@ -52,6 +53,14 @@ export class ProductController {
     return this.productService.findAll(payload);
   }
 
+  @MessagePattern(ProductMessagePatterns.READ_ALL_OF_SUPPLIER)
+  findAllOfSupplier(
+    @Payload()
+    payload: FindAllProductsOfSupplierProps
+  ): Promise<PaginatedData<Partial<ProductDto>>> {
+    return this.productService.findAllOfSupplier(payload);
+  }
+
   @MessagePattern(ProductMessagePatterns.OUTLIERS)
   findOutliers(): Promise<ProductOutlierDto[]> {
     return this.productService.findOutliers();
@@ -65,6 +74,13 @@ export class ProductController {
   @MessagePattern(ProductMessagePatterns.READ_BY_ID)
   findOne(@Payload() payload: FindProductByIdProps): Promise<ProductDto> {
     return this.productService.findOne(payload);
+  }
+
+  @MessagePattern(ProductMessagePatterns.READ_OF_SUPPLIER_BY_ID)
+  findOneOfSupplier(
+    @Payload() payload: FindProductByIdProps & { supplierCompanyId: string }
+  ): Promise<Partial<ProductDto>> {
+    return this.productService.findOneOfSupplier(payload);
   }
 
   @MessagePattern(ProductMessagePatterns.PRELIMINARY)
@@ -84,6 +100,13 @@ export class ProductController {
   @MessagePattern(ProductMessagePatterns.UPDATE)
   update(@Payload() payload: UpdateProductProps): Promise<ProductDto> {
     return this.productService.update(payload);
+  }
+
+  @MessagePattern(ProductMessagePatterns.UPDATE_OF_SUPPLIER)
+  updateSupplier(
+    @Payload() payload: UpdateProductProps & { supplierCompanyId: string }
+  ): Promise<ProductDto> {
+    return this.productService.updateSupplier(payload);
   }
 
   @MessagePattern(ProductMessagePatterns.UPDATE_BOM)

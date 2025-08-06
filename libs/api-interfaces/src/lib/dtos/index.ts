@@ -7,6 +7,7 @@
  */
 
 export * from './address';
+export * from './auth';
 export * from './material';
 export * from './products';
 export * from './waste';

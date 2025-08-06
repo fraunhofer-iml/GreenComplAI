@@ -8,7 +8,7 @@
 
 import { ProductCreateDto } from '@ap2/api-interfaces';
 
-export const upsertQuery = (dto: ProductCreateDto) => ({
+export const upsertQuery = (dto: Partial<ProductCreateDto>) => ({
   id: dto.id ? dto.id.toString() : undefined,
   name: dto.name ?? 'N/A',
   isSellable: dto.isSellable ?? false,

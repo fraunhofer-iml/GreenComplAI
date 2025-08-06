@@ -67,7 +67,7 @@ import { BaseSheetComponent } from '../sheet/base/sheet.component';
 export class ProductMasterDataFormComponent implements OnInit {
   private readonly companiesService = inject(CompaniesService);
   private readonly groupService = inject(ProductGroupService);
-  private readonly authService = inject(AuthenticationService);
+  readonly authService = inject(AuthenticationService);
 
   productGroupId = input<string>();
   form = input.required<FormGroup<MasterDataFormGroup>>();
@@ -131,6 +131,7 @@ export class ProductMasterDataFormComponent implements OnInit {
         '{}'
       );
     },
+    enabled: !this.authService.isSupplier(),
   }));
 
   groupsQuery = injectQuery(() => ({
@@ -148,6 +149,7 @@ export class ProductMasterDataFormComponent implements OnInit {
       if (selectedGroup) this.setProductGroup(selectedGroup);
       return groups;
     },
+    enabled: !this.authService.isSupplier(),
   }));
 
   ownCompanyQuery = injectQuery(() => ({

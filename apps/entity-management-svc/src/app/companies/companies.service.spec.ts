@@ -8,6 +8,7 @@
 
 import { ConfigurationModule } from '@ap2/configuration';
 import { DatabaseModule, PrismaService } from '@ap2/database';
+import { UserManagementModule } from '@greencomplai/user-management';
 import { Test, TestingModule } from '@nestjs/testing';
 import { FlagsModule } from '../flags/flags.module';
 import { CompaniesService } from './companies.service';
@@ -17,7 +18,12 @@ describe('CompanyService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ConfigurationModule, DatabaseModule, FlagsModule],
+      imports: [
+        ConfigurationModule,
+        DatabaseModule,
+        FlagsModule,
+        UserManagementModule,
+      ],
       providers: [CompaniesService, { provide: PrismaService, useValue: {} }],
     }).compile();
 

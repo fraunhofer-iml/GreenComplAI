@@ -28,7 +28,7 @@ import { FlagableComponent } from '../../../../shared/components/flagable-elemen
 export class ProductWasteComponent {
   id = input<string>('');
   waste = input<Partial<WasteDto>>();
-  flags = input<string[]>([]);
+  flags = input<string[] | undefined>([]);
   outlier = input<string[]>([]);
 
   displayWasteMaterials(materials: WasteMaterialDto[]) {

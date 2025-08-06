@@ -9,8 +9,11 @@
 export enum ProductMessagePatterns {
   CREATE = '/products/create',
   READ_BY_ID = '/products/read-by-id',
+  READ_OF_SUPPLIER_BY_ID = '/products/read-by-id-of-supplier',
   READ_ALL = '/products/read-all',
+  READ_ALL_OF_SUPPLIER = '/products/read-all-of-supplier',
   UPDATE = '/products/update',
+  UPDATE_OF_SUPPLIER = '/products/update/supplier',
   UPDATE_BOM = '/products/update/bill-of-material',
   UPDATE_PACKAGING = '/products/update/packaging',
   UPDATE_WASTE = '/products/update/waste',
