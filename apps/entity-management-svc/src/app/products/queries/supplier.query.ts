@@ -6,7 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { ProductCreateDto, ProductUpdateDto } from '@ap2/api-interfaces';
+import { ProductUpdateDto } from '@ap2/api-interfaces';
 import { Prisma } from '@prisma/client';
 import { materialUpdateQuery } from './product-update.query';
 

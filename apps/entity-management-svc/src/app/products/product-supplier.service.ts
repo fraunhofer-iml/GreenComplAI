@@ -1,14 +1,20 @@
+/*
+ * Copyright Fraunhofer Institute for Material Flow and Logistics
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License").
+ * For details on the licensing terms, see the LICENSE file.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import {
   FindAllProductsOfSupplierProps,
   FindProductOfSupplierByIdProps,
   PaginatedData,
   ProductDto,
   UpdateProductOfSupplierProps,
-  UpdateProductProps,
 } from '@ap2/api-interfaces';
 import { PrismaService } from '@ap2/database';
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 import { getWhereCondition } from './product-utils';
 import {
   productFindManyOfSupplierQuery,

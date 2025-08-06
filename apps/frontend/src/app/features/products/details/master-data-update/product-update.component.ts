@@ -7,8 +7,6 @@
  */
 
 import { ProductDto, ProductUpdateDto } from '@ap2/api-interfaces';
-import { AuthenticationService } from 'apps/frontend/src/app/core/services/authentication/authentication.service';
-import { SupplierService } from 'apps/frontend/src/app/core/services/suppliers/suppliers.service';
 import { toast } from 'ngx-sonner';
 import { Component, inject, input } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
@@ -20,7 +18,9 @@ import {
   injectMutation,
   injectQuery,
 } from '@tanstack/angular-query-experimental';
+import { AuthenticationService } from '../../../../core/services/authentication/authentication.service';
 import { ProductsService } from '../../../../core/services/products/products.service';
+import { SupplierService } from '../../../../core/services/suppliers/suppliers.service';
 import { ConfirmUpdateDialogComponent } from '../../../../shared/components/confirm-update-dialog/confirm-update.dialog';
 import { ProductMasterDataFormComponent } from '../../../../shared/components/product-master-data-form/product-master-data-form.component';
 import { ProductConstructionService } from '../../create/form-construction/product-construction.service';

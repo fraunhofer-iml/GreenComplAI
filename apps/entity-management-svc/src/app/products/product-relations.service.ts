@@ -20,7 +20,6 @@ import { PrismaService } from '@ap2/database';
 import { Injectable, Logger } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { FlagsService } from '../flags/flags.service';
-import { ProductCrudService } from './product-crud.service';
 import { productCreateQuery } from './queries/product-create.query';
 import {
   historyUpdateQuery,
