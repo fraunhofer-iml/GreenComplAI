@@ -18,6 +18,9 @@ export default {
   transform: {
     '^.+\\.[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
   },
+  transformIgnorePatterns: [
+    'node_modules/(?!@keycloak/keycloak-admin-client|url-join|url-template|camelize-ts)',
+  ],
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: './coverage',
 };
