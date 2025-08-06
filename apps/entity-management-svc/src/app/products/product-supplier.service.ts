@@ -51,7 +51,10 @@ export class ProductSupplierService {
     );
 
     const totalCount = await this.prismaService.product.count({
-      where: f,
+      where: {
+        ...(f || {}),
+        supplierId: supplierCompanyId,
+      },
     });
 
     return {
