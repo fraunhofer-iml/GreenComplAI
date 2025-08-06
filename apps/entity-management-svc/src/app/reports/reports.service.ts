@@ -477,13 +477,14 @@ export class ReportsService {
 
     const updateCalls = [];
     goals.forEach((goal) => {
-      console.log(goal);
+      console.log(goal.strategies);
 
+      const { id, ...data } = goal;
       updateCalls.push(
         this.prisma.goal.upsert({
-          where: { id: goal.id ?? '' },
+          where: { id: id ?? '' },
           create: {
-            ...goal,
+            ...data,
             validityPeriodEnd: goal.validityPeriodEnd,
             validityPeriodStart: goal.validityPeriodStart,
             strategies: {
@@ -495,12 +496,12 @@ export class ReportsService {
             reportId: reportId,
           },
           update: {
-            ...goal,
+            ...data,
             strategies: {
               upsert: goal.strategies.map((connectedStrategy) => ({
                 where: {
                   goalId_strategyId: {
-                    goalId: goal.id,
+                    goalId: id,
                     strategyId: connectedStrategy.id,
                   },
                 },

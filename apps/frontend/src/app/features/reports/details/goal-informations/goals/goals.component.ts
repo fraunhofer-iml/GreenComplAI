@@ -7,8 +7,19 @@
  */
 
 import { ReportDto } from '@ap2/api-interfaces';
-import { Component, input, OnInit, output } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  AfterViewInit,
+  Component,
+  input,
+  OnChanges,
+  output,
+} from '@angular/core';
+import {
+  FormArray,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -22,7 +33,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { DatePickerMonthYearComponent } from '../../../../../shared/components/date-picker/month-year/date-pickler-month-year.component';
 import { DatePickerYearOnlyComponent } from '../../../../../shared/components/date-picker/year-only/date-pickler-year-only.component';
-import { GoalForm, newGoalForm } from '../goal.forms';
+import { StrategyForm } from '../../strategies/strategy.form';
+import { ConnectedStrategiesForm, GoalForm } from '../goal.forms';
 
 @Component({
   selector: 'app-goals',
@@ -44,28 +56,18 @@ import { GoalForm, newGoalForm } from '../goal.forms';
   ],
   templateUrl: './goals.component.html',
 })
-export class GoalsComponent implements OnInit {
+export class GoalsComponent {
   report = input<ReportDto>();
   refetchEvent = output<any>();
   removeEvent = output<void>();
-  form = input<GoalForm>(newGoalForm());
+  form = input.required<GoalForm>();
 
-  constructor() {
-    this.form().valueChanges.subscribe((value: any) => {
-      this.refetchEvent.emit(value);
-    });
+  get strategies(): FormArray<FormGroup<ConnectedStrategiesForm>> {
+    return this.form().get('strategies') as FormArray;
   }
 
-  ngOnInit(): void {
-    if (this.report()?.strategies) {
-      this.report()?.strategies.forEach(() => {
-        this.form().controls.strategies.push(
-          new FormGroup({
-            strategy: new FormControl<string | null>(null),
-            connection: new FormControl<string | null>(null),
-          })
-        );
-      });
-    }
+  updateValue() {
+    this.strategies.updateValueAndValidity();
+    this.form().updateValueAndValidity();
   }
 }

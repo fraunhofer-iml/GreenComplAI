@@ -9,16 +9,15 @@
 import {
   GoalCreateDto,
   GoalPlanningtDto,
-  GoalReportDto,
   ReportDto,
 } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
 import {
   Component,
+  computed,
   inject,
   input,
   OnChanges,
-  OnInit,
   output,
 } from '@angular/core';
 import {
@@ -30,10 +29,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import {
-  MatDatepickerModule,
-  MatDateRangeInput,
-} from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -44,7 +40,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { injectMutation } from '@tanstack/angular-query-experimental';
 import { ReportsService } from '../../../../core/services/reports/reports.service';
 import { DatePickerMonthYearComponent } from '../../../../shared/components/date-picker/month-year/date-pickler-month-year.component';
-import { GoalForm, newGoalForm } from './goal.forms';
+import { ConnectedStrategiesForm, GoalForm, newGoalForm } from './goal.forms';
 import { GoalsComponent } from './goals/goals.component';
 
 @Component({
@@ -102,7 +98,7 @@ export class GoalInformationComponent implements OnChanges {
   }));
 
   addGoal(): void {
-    this.goalsFormGroup.controls.goals.push(newGoalForm());
+    this.goalsFormGroup.controls.goals.push(this.getDefaultStrategiesForm());
   }
 
   removeGoal(index: number): void {
@@ -115,7 +111,7 @@ export class GoalInformationComponent implements OnChanges {
 
   ngOnChanges(): void {
     console.log(this.report().goalPlanning?.goals);
-
+    this.goalsFormGroup.controls.goals.clear();
     const goalPlanning = this.report().goalPlanning;
     this.form.patchValue({
       ...goalPlanning,
@@ -132,21 +128,56 @@ export class GoalInformationComponent implements OnChanges {
       progression: goalPlanning?.progressEvaluation,
     });
 
-    (this.report().goalPlanning?.goals ?? []).map((g) => {
-      const form = newGoalForm();
-      form.patchValue({
-        title: g.title,
-        strategies: g.strategies.map((s) => ({
-          strategy: s.strategy.id,
-          connection: s.connection,
-        })),
+    this.report().goalPlanning?.goals.forEach((g) => {
+      // const strategiesForms: FormArray<FormGroup<ConnectedStrategiesForm>> =
+      //   new FormArray<FormGroup<ConnectedStrategiesForm>>([]);
+      // this.report()?.strategies.forEach((s) => {
+      //   strategiesForms.controls.push(
+      //     new FormGroup<ConnectedStrategiesForm>({
+      //       strategy: new FormControl(s),
+      //       selected: new FormControl(false),
+      //       connection: new FormControl<string | null>(null),
+      //     })
+      //   );
+      // });
+
+      // const f = newGoalForm();
+      // f.controls.strategies = strategiesForms;
+      const newForm = this.getDefaultStrategiesForm();
+
+      g.strategies.forEach((s) => {
+        newForm.controls.strategies.controls.forEach((item) => {
+          if (item.value.strategy?.id === s.strategy.id)
+            item.patchValue({
+              strategy: s.strategy,
+              selected: true,
+              connection: s.connection,
+            });
+        });
       });
 
-      this.goalsFormGroup.controls.goals.push(form);
-
-      console.log(form.value);
-      return form;
+      newForm.patchValue({ ...g });
+      console.log(g.strategies);
+      console.log(newForm);
+      this.goalsFormGroup.controls.goals.push(newForm);
     });
+  }
+
+  private getDefaultStrategiesForm() {
+    const newForm = newGoalForm();
+    const strategiesForms: FormArray<FormGroup<ConnectedStrategiesForm>> =
+      new FormArray<FormGroup<ConnectedStrategiesForm>>([]);
+    this.report()?.strategies.forEach((s) => {
+      strategiesForms.controls.push(
+        new FormGroup<ConnectedStrategiesForm>({
+          strategy: new FormControl(s),
+          selected: new FormControl(false),
+          connection: new FormControl<string | null>(null),
+        })
+      );
+    });
+    newForm.controls.strategies = strategiesForms;
+    return newForm;
   }
 
   save() {
@@ -163,11 +194,23 @@ export class GoalInformationComponent implements OnChanges {
       goalsTracked: this.form.value.goalsTracked,
       progressEvaluation: this.form.value.progression,
       goals: this.goalsFormGroup.value.goals?.map((goal) => {
+        console.log(goal.strategies);
+
         const { validityPeriod, ...data } = goal;
+        const strategies: { id: string; connection: string }[] = [];
+        goal.strategies?.forEach((s) => {
+          if (s.selected && s.strategy?.id)
+            strategies.push({
+              id: s.strategy?.id,
+              connection: s.connection ?? '',
+            });
+        });
         return {
+          id: data.id,
           ...data,
           validityPeriodStart: validityPeriod?.from,
           validityPeriodEnd: validityPeriod?.to,
+          strategies: strategies,
         };
       }) as GoalCreateDto[],
     } as GoalPlanningtDto;

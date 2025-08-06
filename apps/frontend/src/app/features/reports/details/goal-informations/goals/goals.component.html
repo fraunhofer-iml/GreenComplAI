@@ -130,12 +130,14 @@
           <mat-checkbox
             formControlName="isScientificReferenced"
             class="col-span-4"
-            >Aufgrund wissenschaftlichen Erkentnissen?
+            >Die Umweltziele beruhen auf schlüssigen wissenschaftlichen
+            Erkenntnissen
           </mat-checkbox>
           <mat-checkbox
             formControlName="stakeholderInclusion"
             class="col-span-4"
-            >Einbeziehen der Stakeholder notwendig?</mat-checkbox
+            >Es wurden Stakeholder in die Festlegung der Ziele
+            einbezogen</mat-checkbox
           >
           @if (form().controls.stakeholderInclusion.value) {
             <mat-form-field appearance="outline" class="col-span-4">
@@ -335,8 +337,8 @@
         @if (!report()?.isFinalReport) {
           <div formArrayName="strategies">
             @for (
-              strategy of report()?.strategies;
-              track strategy.id;
+              strategy of strategies.controls;
+              track strategy;
               let index = $index
             ) {
               <div
@@ -344,23 +346,21 @@
                 class="flex w-full flex-row items-center gap-2 py-2"
               >
                 <mat-checkbox
-                  formControlName="strategy"
+                  (change)="updateValue()"
+                  formControlName="selected"
                   [disabled]="report()?.isFinalReport ?? false"
-                  [value]="strategy.id"
                 >
                 </mat-checkbox>
                 <div class="flex w-full flex-col">
-                  <h3>{{ strategy.name }}</h3>
+                  <h3>{{ strategy.value.strategy?.name }}</h3>
                   <span class="overflow-ellipsis text-sm">{{
-                    strategy.conceptInformationResources
+                    strategy.value.strategy?.conceptInformationResources
                   }}</span>
-                  @if (
-                    this.form().controls.strategies.controls[index].controls
-                      .strategy.value
-                  ) {
+                  @if (strategy.controls.selected.value) {
                     <mat-form-field appearance="outline" class="mt-2">
                       <mat-label i18n>Verbindung zum Ziel</mat-label>
                       <textarea
+                        (change)="updateValue()"
                         matInput
                         [readonly]="report()?.isFinalReport"
                         formControlName="connection"
