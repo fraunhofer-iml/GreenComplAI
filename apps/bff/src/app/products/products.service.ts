@@ -69,14 +69,7 @@ export class ProductsService {
     }
   }
 
-  findAll(
-    props: FindAllProductsProps,
-    user: AuthenticatedKCUser
-  ): Promise<PaginatedData<ProductDto>> {
-    if (!user || !user.realm_access || !user.realm_access.roles) {
-      throw new UnauthorizedException('User roles are not defined');
-    }
-
+  findAll(props: FindAllProductsProps): Promise<PaginatedData<ProductDto>> {
     return firstValueFrom(
       this.entityManagementService.send<PaginatedData<ProductDto>>(
         ProductMessagePatterns.READ_ALL,

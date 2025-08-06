@@ -86,9 +86,6 @@ export class CompaniesController {
     @KeycloakUser() user: AuthenticatedKCUser,
     @Body() createCompanyDto: CompanyCreateDto
   ): Promise<CompanyCreateResponse> {
-    this.logger.log(
-      `Creating associated company for user: ${user.sub} with data: ${JSON.stringify(createCompanyDto)}`
-    );
     return await this.companyService.createAssociatedCompany({
       dto: createCompanyDto,
       userId: user.sub,

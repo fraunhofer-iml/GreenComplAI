@@ -102,23 +102,19 @@ export class ProductsController {
     type: PaginatedData<ProductDto>,
   })
   findAll(
-    @KeycloakUser() user: AuthenticatedKCUser,
     @Query('page') page: number,
     @Query('pageSize') pageSize: number,
     @Query('filters') filters?: string,
     @Query('sorting') sorting?: string,
     @Query('isSellable') isSellable?: boolean
   ): Promise<PaginatedData<ProductDto>> {
-    return this.productsService.findAll(
-      {
-        filters,
-        sorting,
-        page,
-        size: pageSize,
-        isSellable,
-      },
-      user
-    );
+    return this.productsService.findAll({
+      filters,
+      sorting,
+      page,
+      size: pageSize,
+      isSellable,
+    });
   }
 
   @Get('outliers')
