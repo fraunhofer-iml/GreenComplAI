@@ -28,7 +28,7 @@ export const upsertQuery = (dto: Partial<ProductCreateDto>) => ({
   reparability: Number(dto.reparability) || 0,
   circularPrinciple: dto.circularPrinciple ?? false,
   circularPrincipleJustification: dto.circularPrincipleJustification ?? 'N/A',
-  ciruclarPrincipleMeasureable: dto.ciruclarPrincipleMeasureable ?? false,
+  circularPrincipleMeasureable: dto.circularPrincipleMeasureable ?? false,
   circularPrincipleAssumption: dto.circularPrincipleAssumption ?? 'N/A',
   supplier: {
     connectOrCreate: {
