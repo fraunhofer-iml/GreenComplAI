@@ -240,26 +240,30 @@
             <app-flagable
               [id]="id$() ?? ''"
               [data]="data.flags"
-              [topic]="'Begründung für Kreislauforientierung'"
-              [element]="'circularPrinciple'"
-              ><span>{{ data.circularPrincipleJustification }}</span>
+              [topic]="'Wie wurden die Daten erhoben?'"
+              [element]="'ciruclarPrincipleMeasureable'"
+              ><span>{{
+                data.ciruclarPrincipleMeasureable ? 'gemessen' : 'geschätzt'
+              }}</span>
             </app-flagable>
 
             <app-flagable
               [id]="id$() ?? ''"
               [data]="data.flags"
-              [topic]="'Kreislauforientierung messbar'"
-              [element]="'ciruclarPrincipleMeasureable'"
-              ><span>{{
-                data.ciruclarPrincipleMeasureable ? 'ja' : 'nein'
-              }}</span>
+              [topic]="
+                'Begründung der Einordnung als kreislauforientiert konzipiertes Produkt'
+              "
+              [element]="'circularPrinciple'"
+              ><span>{{ data.circularPrincipleJustification }}</span>
             </app-flagable>
 
             @if (!data.ciruclarPrincipleMeasureable) {
               <app-flagable
                 [id]="id$() ?? ''"
                 [data]="data.flags"
-                [topic]="'Annahmen zur Schätzung der Kreislauforientierung'"
+                [topic]="
+                  'Erläuterung der zugrundeliegenden Annahmen der Schätzung'
+                "
                 [element]="'circularPrincipleAssumption'"
                 ><span>{{ data.circularPrincipleAssumption }}</span>
               </app-flagable>

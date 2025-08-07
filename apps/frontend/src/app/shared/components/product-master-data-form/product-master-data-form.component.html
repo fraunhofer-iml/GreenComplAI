@@ -213,13 +213,18 @@
         </mat-checkbox>
       </section>
       @if (form().controls.circularPrinciple.value) {
-        <section>
-          <mat-checkbox formControlName="ciruclarPrincipleMeasureable"
-            >Kreislauforientierung messbar?
-          </mat-checkbox>
+        <section class="mb-2 space-x-2">
+          <mat-label class="text-sm">Wie wurden die Daten erhoben?</mat-label>
+          <mat-radio-group formControlName="ciruclarPrincipleMeasureable">
+            <mat-radio-button [value]="true">gemessen</mat-radio-button>
+            <mat-radio-button [value]="false">geschätzt</mat-radio-button>
+          </mat-radio-group>
         </section>
         <mat-form-field appearance="outline">
-          <mat-label>Begründung für Kreislauforientierung</mat-label>
+          <mat-label
+            >Begründung der Einordnung als kreislauforientiert konzipiertes
+            Produkt</mat-label
+          >
           <textarea
             cdkTextareaAutosize
             #autosize="cdkTextareaAutosize"
@@ -230,7 +235,10 @@
         </mat-form-field>
         @if (!form().controls.ciruclarPrincipleMeasureable.value) {
           <mat-form-field appearance="outline">
-            <mat-label>Zugrunde liegende Annahmen für Schätzung</mat-label>
+            <mat-label
+              >Erläuterung der zugrundeliegenden Annahmen der
+              Schätzung</mat-label
+            >
             <textarea
               cdkTextareaAutosize
               #autosize="cdkTextareaAutosize"
