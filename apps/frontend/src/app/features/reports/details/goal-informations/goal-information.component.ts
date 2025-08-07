@@ -10,6 +10,7 @@ import {
   GoalCreateDto,
   GoalPlanningtDto,
   ReportDto,
+  StrategyDto,
 } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
 import {
@@ -99,10 +100,12 @@ export class GoalInformationComponent implements OnChanges {
 
   addGoal(): void {
     this.goalsFormGroup.controls.goals.push(this.getDefaultStrategiesForm());
+    this.moveToLatestTab();
   }
 
   removeGoal(index: number): void {
     this.goalsFormGroup.controls.goals.removeAt(index);
+    this.moveToLatestTab();
   }
 
   updateGoal(index: number, event: any): void {
@@ -130,17 +133,7 @@ export class GoalInformationComponent implements OnChanges {
 
     this.report().goalPlanning?.goals.forEach((g) => {
       const newForm = this.getDefaultStrategiesForm();
-
-      g.strategies.forEach((s) => {
-        newForm.controls.strategies.controls.forEach((item) => {
-          if (item.value.strategy?.id === s.strategy.id)
-            item.patchValue({
-              strategy: s.strategy,
-              selected: true,
-              connection: s.connection,
-            });
-        });
-      });
+      //   newForm.controls.strategies.updateValueAndValidity();
 
       newForm.patchValue({
         ...g,
@@ -148,7 +141,21 @@ export class GoalInformationComponent implements OnChanges {
           from: g.validityPeriodStart,
           to: g.validityPeriodEnd,
         },
+        strategies: this.report()?.strategies.map((s) => {
+          const item = g.strategies.find(
+            (item: { strategy: StrategyDto; connection: string }) =>
+              item.strategy.id === s.id
+          );
+          return {
+            strategy: s,
+            selected: !!item,
+            connection: item?.connection ?? '',
+          };
+        }),
       });
+      //   newForm.controls.strategies.updateValueAndValidity();
+      console.log(newForm.controls.strategies.value);
+
       this.goalsFormGroup.controls.goals.push(newForm);
     });
   }
@@ -158,6 +165,7 @@ export class GoalInformationComponent implements OnChanges {
     const strategiesForms: FormArray<FormGroup<ConnectedStrategiesForm>> =
       new FormArray<FormGroup<ConnectedStrategiesForm>>([]);
     this.report()?.strategies.forEach((s) => {
+      console.log(s.id);
       strategiesForms.controls.push(
         new FormGroup<ConnectedStrategiesForm>({
           strategy: new FormControl(s),
@@ -206,5 +214,9 @@ export class GoalInformationComponent implements OnChanges {
     } as GoalPlanningtDto;
 
     this.goalPlanningMutation.mutate({ planning: dto, id: this.report().id });
+  }
+
+  private moveToLatestTab() {
+    this.selectedTabIndex = this.goalsFormGroup.controls.goals.length - 1;
   }
 }

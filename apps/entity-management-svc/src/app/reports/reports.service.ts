@@ -262,7 +262,10 @@ export class ReportsService {
           orderBy: { title: 'asc' },
         },
         goalPlanning: true,
-        goals: { include: { strategies: { include: { strategy: true } } } },
+        goals: {
+          include: { strategies: { include: { strategy: true } } },
+          orderBy: { title: 'asc' },
+        },
       },
     });
 
@@ -476,13 +479,11 @@ export class ReportsService {
       await this.prisma.goal.deleteMany({ where: { reportId: reportId } });
     }
 
+    // TODO fix update connection description
+
     const updateCalls = [];
     goals.forEach((goal) => {
-      console.log(goal.strategies);
-      console.log(goal.id);
-
       const { id, ...data } = goal;
-      console.log(id);
       updateCalls.push(
         id
           ? this.prisma.goal.update({
@@ -497,7 +498,7 @@ export class ReportsService {
                         strategyId: connectedStrategy.id,
                       },
                     },
-                    update: {},
+                    update: { connection: connectedStrategy.connection },
                     create: {
                       strategyId: connectedStrategy.id,
                       connection: connectedStrategy.connection,
@@ -512,6 +513,7 @@ export class ReportsService {
                           ),
                         },
                       },
+                      { goalId: id },
                     ],
                   },
                 },
