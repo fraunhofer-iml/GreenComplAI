@@ -47,7 +47,7 @@ import { ConnectedStrategiesForm, GoalForm } from '../goal.forms';
   templateUrl: './goals.component.html',
 })
 export class GoalsComponent {
-  report = input<ReportDto>();
+  isFinal = input<boolean>(false);
   removeEvent = output<void>();
   form = input.required<GoalForm>();
 

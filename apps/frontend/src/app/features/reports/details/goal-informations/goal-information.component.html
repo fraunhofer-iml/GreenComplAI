@@ -135,7 +135,7 @@
               <app-goals
                 class="col-span-2"
                 (removeEvent)="removeGoal(pindex)"
-                [report]="report()"
+                [isFinal]="report().isFinalReport"
                 [form]="goal"
               ></app-goals>
             </div>

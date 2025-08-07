@@ -6,11 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {
-  GoalCreateDto,
-  GoalPlanningtDto,
-  ReportDto,
-} from '@ap2/api-interfaces';
+import { GoalCreateDto, GoalReportDto, ReportDto } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { Component, inject, input, OnChanges, output } from '@angular/core';
@@ -86,9 +82,12 @@ export class GoalInformationComponent implements OnChanges {
   selectedTabIndex = 0;
 
   goalPlanningMutation = injectMutation(() => ({
-    mutationFn: (props: { planning: GoalPlanningtDto; id: string }) =>
+    mutationFn: (props: { planning: GoalReportDto; id: string }) =>
       this.reportsService.updateGoalPlanning(props.planning, props.id),
-    onSuccess: () => this.refetchEvent.emit(),
+    onSuccess: () => {
+      this.refetchEvent.emit();
+      toast.success('Änderungen erfolgreich gespeichert.');
+    },
     onError: () => toast('Speichern fehlgeschlagen'),
   }));
 
@@ -195,7 +194,7 @@ export class GoalInformationComponent implements OnChanges {
           referenceYear: data.referenceYear?.getFullYear(),
         };
       }) as GoalCreateDto[],
-    } as GoalPlanningtDto;
+    } as GoalReportDto;
 
     this.goalPlanningMutation.mutate({ planning: dto, id: this.report().id });
   }
