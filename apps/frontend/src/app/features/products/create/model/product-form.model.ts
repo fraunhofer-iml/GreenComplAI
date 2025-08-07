@@ -47,7 +47,7 @@ export interface MasterDataFormGroup {
   reparability: FormControl<number | null>;
   circularPrinciple: FormControl<boolean | null>;
   circularPrincipleJustification: FormControl<string | null>;
-  ciruclarPrincipleMeasureable: FormControl<boolean | null>;
+  circularPrincipleMeasureable: FormControl<boolean | null>;
   circularPrincipleAssumption: FormControl<string | null>;
 }
 

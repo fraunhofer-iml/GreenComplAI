@@ -215,7 +215,7 @@
       @if (form().controls.circularPrinciple.value) {
         <section class="mb-2 space-x-2">
           <mat-label class="text-sm">Wie wurden die Daten erhoben?</mat-label>
-          <mat-radio-group formControlName="ciruclarPrincipleMeasureable">
+          <mat-radio-group formControlName="circularPrincipleMeasureable">
             <mat-radio-button [value]="true">gemessen</mat-radio-button>
             <mat-radio-button [value]="false">geschätzt</mat-radio-button>
           </mat-radio-group>
@@ -233,7 +233,7 @@
             formControlName="circularPrincipleJustification"
           ></textarea>
         </mat-form-field>
-        @if (!form().controls.ciruclarPrincipleMeasureable.value) {
+        @if (!form().controls.circularPrincipleMeasureable.value) {
           <mat-form-field appearance="outline">
             <mat-label
               >Erläuterung der zugrundeliegenden Annahmen der

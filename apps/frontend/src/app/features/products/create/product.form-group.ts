@@ -65,6 +65,6 @@ export const masterDataFormGroup = () =>
     ]),
     circularPrinciple: new FormControl<boolean | null>(false),
     circularPrincipleJustification: new FormControl<string | null>(null),
-    ciruclarPrincipleMeasureable: new FormControl<boolean | null>(false),
+    circularPrincipleMeasureable: new FormControl<boolean | null>(false),
     circularPrincipleAssumption: new FormControl<string | null>(null),
   });

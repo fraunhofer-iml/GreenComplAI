@@ -210,7 +210,7 @@ export class ProductMasterDataFormComponent implements OnInit {
         this.form().controls.circularPrincipleJustification.addValidators(
           Validators.required
         );
-        this.form().controls.ciruclarPrincipleMeasureable.addValidators(
+        this.form().controls.circularPrincipleMeasureable.addValidators(
           Validators.required
         );
         this.form().controls.circularPrincipleAssumption.addValidators(
@@ -220,7 +220,7 @@ export class ProductMasterDataFormComponent implements OnInit {
         this.form().controls.circularPrincipleJustification.removeValidators(
           Validators.required
         );
-        this.form().controls.ciruclarPrincipleMeasureable.removeValidators(
+        this.form().controls.circularPrincipleMeasureable.removeValidators(
           Validators.required
         );
         this.form().controls.circularPrincipleAssumption.removeValidators(
@@ -229,7 +229,7 @@ export class ProductMasterDataFormComponent implements OnInit {
       }
     });
 
-    this.form().controls.ciruclarPrincipleMeasureable.valueChanges.subscribe(
+    this.form().controls.circularPrincipleMeasureable.valueChanges.subscribe(
       (value) => {
         if (!value) {
           this.form().controls.circularPrincipleAssumption.addValidators(

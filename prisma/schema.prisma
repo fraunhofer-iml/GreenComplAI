@@ -153,7 +153,7 @@ model Product {
 
   circularPrinciple              Boolean @default(false)
   circularPrincipleJustification String?
-  ciruclarPrincipleMeasureable   Boolean @default(false)
+  circularPrincipleMeasureable   Boolean @default(false)
   circularPrincipleAssumption    String?
 
   durability           Float?

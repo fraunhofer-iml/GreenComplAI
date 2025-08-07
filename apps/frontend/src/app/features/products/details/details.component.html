@@ -243,7 +243,7 @@
               [topic]="'Wie wurden die Daten erhoben?'"
               [element]="'ciruclarPrincipleMeasureable'"
               ><span>{{
-                data.ciruclarPrincipleMeasureable ? 'gemessen' : 'geschätzt'
+                data.circularPrincipleMeasureable ? 'gemessen' : 'geschätzt'
               }}</span>
             </app-flagable>
 
@@ -257,7 +257,7 @@
               ><span>{{ data.circularPrincipleJustification }}</span>
             </app-flagable>
 
-            @if (!data.ciruclarPrincipleMeasureable) {
+            @if (!data.circularPrincipleMeasureable) {
               <app-flagable
                 [id]="id$() ?? ''"
                 [data]="data.flags"

@@ -58,7 +58,7 @@ export class ProductCreateDto {
 
   circularPrinciple?: boolean;
   circularPrincipleJustification?: string;
-  ciruclarPrincipleMeasureable?: boolean;
+  circularPrincipleMeasureable?: boolean;
   circularPrincipleAssumption?: string;
 
   productionHistory?: { amount: number; year: number }[];
