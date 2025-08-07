@@ -227,6 +227,10 @@ export class ProductMasterDataFormComponent implements OnInit {
           Validators.required
         );
       }
+
+      this.form().controls.circularPrincipleJustification.updateValueAndValidity();
+      this.form().controls.circularPrincipleMeasureable.updateValueAndValidity();
+      this.form().controls.circularPrincipleAssumption.updateValueAndValidity();
     });
 
     this.form().controls.circularPrincipleMeasureable.valueChanges.subscribe(
@@ -240,6 +244,8 @@ export class ProductMasterDataFormComponent implements OnInit {
             Validators.required
           );
         }
+
+        this.form().controls.circularPrincipleAssumption.updateValueAndValidity();
       }
     );
   }

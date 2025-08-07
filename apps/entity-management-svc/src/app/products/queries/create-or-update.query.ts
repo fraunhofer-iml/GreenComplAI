@@ -27,9 +27,9 @@ export const upsertQuery = (dto: Partial<ProductCreateDto>) => ({
   durabilityDifference: Number(dto.durabilityDifference) || 0,
   reparability: Number(dto.reparability) || 0,
   circularPrinciple: dto.circularPrinciple ?? false,
-  circularPrincipleJustification: dto.circularPrincipleJustification ?? 'N/A',
+  circularPrincipleJustification: dto.circularPrincipleJustification ?? null,
   circularPrincipleMeasureable: dto.circularPrincipleMeasureable ?? false,
-  circularPrincipleAssumption: dto.circularPrincipleAssumption ?? 'N/A',
+  circularPrincipleAssumption: dto.circularPrincipleAssumption ?? null,
   supplier: {
     connectOrCreate: {
       where: { id: dto.supplier ?? 'N/A' },
