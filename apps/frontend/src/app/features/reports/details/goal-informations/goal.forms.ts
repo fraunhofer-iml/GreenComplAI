@@ -7,7 +7,7 @@
  */
 
 import { StrategyDto } from '@ap2/api-interfaces';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 
 export type GoalForm = FormGroup<{
   id: FormControl<string | null>;
@@ -48,7 +48,7 @@ export type GoalForm = FormGroup<{
 export const newGoalForm = (): GoalForm =>
   new FormGroup({
     id: new FormControl<string | null>(null),
-    title: new FormControl<string | null>(null),
+    title: new FormControl<string | null>(null, Validators.required),
     ecologicalThresholdResponsibilities: new FormControl<string | null>(null),
     ecologicalThresholdDescription: new FormControl<string | null>(null),
     ecologicalThresholdDetermination: new FormControl<string | null>(null),

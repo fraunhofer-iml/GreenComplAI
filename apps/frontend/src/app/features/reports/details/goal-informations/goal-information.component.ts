@@ -13,14 +13,7 @@ import {
   StrategyDto,
 } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
-import {
-  Component,
-  computed,
-  inject,
-  input,
-  OnChanges,
-  output,
-} from '@angular/core';
+import { Component, inject, input, OnChanges, output } from '@angular/core';
 import {
   FormArray,
   FormControl,
@@ -133,7 +126,6 @@ export class GoalInformationComponent implements OnChanges {
 
     this.report().goalPlanning?.goals.forEach((g) => {
       const newForm = this.getDefaultStrategiesForm();
-      //   newForm.controls.strategies.updateValueAndValidity();
 
       newForm.patchValue({
         ...g,
@@ -153,8 +145,6 @@ export class GoalInformationComponent implements OnChanges {
           };
         }),
       });
-      //   newForm.controls.strategies.updateValueAndValidity();
-      console.log(newForm.controls.strategies.value);
 
       this.goalsFormGroup.controls.goals.push(newForm);
     });
@@ -163,17 +153,16 @@ export class GoalInformationComponent implements OnChanges {
   private getDefaultStrategiesForm() {
     const newForm = newGoalForm();
     const strategiesForms: FormArray<FormGroup<ConnectedStrategiesForm>> =
-      new FormArray<FormGroup<ConnectedStrategiesForm>>([]);
-    this.report()?.strategies.forEach((s) => {
-      console.log(s.id);
-      strategiesForms.controls.push(
-        new FormGroup<ConnectedStrategiesForm>({
-          strategy: new FormControl(s),
-          selected: new FormControl(false),
-          connection: new FormControl<string | null>(null),
-        })
+      new FormArray<FormGroup<ConnectedStrategiesForm>>(
+        this.report()?.strategies.map(
+          () =>
+            new FormGroup<ConnectedStrategiesForm>({
+              strategy: new FormControl(),
+              selected: new FormControl(false),
+              connection: new FormControl<string | null>(null),
+            })
+        )
       );
-    });
     newForm.controls.strategies = strategiesForms;
     return newForm;
   }
@@ -192,8 +181,6 @@ export class GoalInformationComponent implements OnChanges {
       goalsTracked: this.form.value.goalsTracked,
       progressEvaluation: this.form.value.progression,
       goals: this.goalsFormGroup.value.goals?.map((goal) => {
-        console.log(goal.strategies);
-
         const { validityPeriod, ...data } = goal;
         const strategies: { id: string; connection: string }[] = [];
         goal.strategies?.forEach((s) => {
