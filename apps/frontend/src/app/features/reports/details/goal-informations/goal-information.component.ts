@@ -10,9 +10,9 @@ import {
   GoalCreateDto,
   GoalPlanningtDto,
   ReportDto,
-  StrategyDto,
 } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
+import { TextFieldModule } from '@angular/cdk/text-field';
 import { Component, inject, input, OnChanges, output } from '@angular/core';
 import {
   FormArray,
@@ -33,7 +33,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { injectMutation } from '@tanstack/angular-query-experimental';
 import { ReportsService } from '../../../../core/services/reports/reports.service';
-import { DatePickerMonthYearComponent } from '../../../../shared/components/date-picker/month-year/date-pickler-month-year.component';
+import { DatePickerMonthYearComponent } from '../../../../shared/components/date-picker/month-year/date-picker-month-year.component';
 import { ConnectedStrategiesForm, GoalForm, newGoalForm } from './goal.forms';
 import { GoalsComponent } from './goals/goals.component';
 
@@ -53,6 +53,7 @@ import { GoalsComponent } from './goals/goals.component';
     MatCheckboxModule,
     MatTabsModule,
     DatePickerMonthYearComponent,
+    TextFieldModule,
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './goal-information.component.html',
@@ -101,12 +102,7 @@ export class GoalInformationComponent implements OnChanges {
     this.moveToLatestTab();
   }
 
-  updateGoal(index: number, event: any): void {
-    this.goalsFormGroup.controls.goals.at(index).patchValue(event);
-  }
-
   ngOnChanges(): void {
-    console.log(this.report().goalPlanning?.goals);
     this.goalsFormGroup.controls.goals.clear();
     const goalPlanning = this.report().goalPlanning;
     this.form.patchValue({
@@ -129,14 +125,14 @@ export class GoalInformationComponent implements OnChanges {
 
       newForm.patchValue({
         ...g,
+        referenceYear: new Date(g.referenceYear, 1, 1),
         validityPeriod: {
           from: g.validityPeriodStart,
           to: g.validityPeriodEnd,
         },
         strategies: this.report()?.strategies.map((s) => {
           const item = g.strategies.find(
-            (item: { strategy: StrategyDto; connection: string }) =>
-              item.strategy.id === s.id
+            (item: { id: string; connection: string }) => item.id === s.id
           );
           return {
             strategy: s,
@@ -155,9 +151,9 @@ export class GoalInformationComponent implements OnChanges {
     const strategiesForms: FormArray<FormGroup<ConnectedStrategiesForm>> =
       new FormArray<FormGroup<ConnectedStrategiesForm>>(
         this.report()?.strategies.map(
-          () =>
+          (s) =>
             new FormGroup<ConnectedStrategiesForm>({
-              strategy: new FormControl(),
+              strategy: new FormControl(s),
               selected: new FormControl(false),
               connection: new FormControl<string | null>(null),
             })
@@ -196,6 +192,7 @@ export class GoalInformationComponent implements OnChanges {
           validityPeriodStart: validityPeriod?.from,
           validityPeriodEnd: validityPeriod?.to,
           strategies: strategies,
+          referenceYear: data.referenceYear?.getFullYear(),
         };
       }) as GoalCreateDto[],
     } as GoalPlanningtDto;

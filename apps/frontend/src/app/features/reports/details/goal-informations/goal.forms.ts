@@ -21,7 +21,7 @@ export type GoalForm = FormGroup<{
   geographicScope: FormControl<string | null>;
   methodsAndAssumptions: FormControl<string | null>;
   referenceValue: FormControl<string | null>;
-  referenceDate: FormControl<Date | null>;
+  referenceYear: FormControl<Date | null>;
   isScientificReferenced: FormControl<boolean | null>;
   stakeholderInclusion: FormControl<boolean | null>;
   changeOfGoalsOrMethods: FormControl<string | null>;
@@ -73,7 +73,7 @@ export const newGoalForm = (): GoalForm =>
     unit: new FormControl<string | null>(null),
     methodsAndAssumptions: new FormControl<string | null>(null),
     referenceValue: new FormControl<string | null>(null),
-    referenceDate: new FormControl<Date | null>(null),
+    referenceYear: new FormControl<Date | null>(null),
     isScientificReferenced: new FormControl<boolean | null>(false),
     stakeholderInclusion: new FormControl<boolean | null>(false),
     changeOfGoalsOrMethods: new FormControl<string | null>(null),

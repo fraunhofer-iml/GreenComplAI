@@ -290,7 +290,7 @@ export class ReportsService {
         goals: res.goals.map((goal) => ({
           ...goal,
           strategies: goal.strategies.map((goalStrategy) => ({
-            strategy: goalStrategy.strategy,
+            id: goalStrategy.strategy.id,
             connection: goalStrategy.connection,
           })),
         })),
@@ -479,7 +479,14 @@ export class ReportsService {
       await this.prisma.goal.deleteMany({ where: { reportId: reportId } });
     }
 
-    // TODO fix update connection description
+    await this.prisma.goal.deleteMany({
+      where: {
+        AND: [
+          { id: { notIn: goals.map((i) => i.id ?? '') } },
+          { reportId: reportId },
+        ],
+      },
+    });
 
     const updateCalls = [];
     goals.forEach((goal) => {

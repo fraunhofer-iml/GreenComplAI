@@ -7,19 +7,9 @@
  */
 
 import { ReportDto } from '@ap2/api-interfaces';
-import {
-  AfterViewInit,
-  Component,
-  input,
-  OnChanges,
-  output,
-} from '@angular/core';
-import {
-  FormArray,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { TextFieldModule } from '@angular/cdk/text-field';
+import { Component, input, output } from '@angular/core';
+import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -31,9 +21,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { DatePickerMonthYearComponent } from '../../../../../shared/components/date-picker/month-year/date-pickler-month-year.component';
+import { DatePickerMonthYearComponent } from '../../../../../shared/components/date-picker/month-year/date-picker-month-year.component';
 import { DatePickerYearOnlyComponent } from '../../../../../shared/components/date-picker/year-only/date-pickler-year-only.component';
-import { StrategyForm } from '../../strategies/strategy.form';
 import { ConnectedStrategiesForm, GoalForm } from '../goal.forms';
 
 @Component({
@@ -53,12 +42,12 @@ import { ConnectedStrategiesForm, GoalForm } from '../goal.forms';
     MatRadioModule,
     DatePickerYearOnlyComponent,
     DatePickerMonthYearComponent,
+    TextFieldModule,
   ],
   templateUrl: './goals.component.html',
 })
 export class GoalsComponent {
   report = input<ReportDto>();
-  refetchEvent = output<any>();
   removeEvent = output<void>();
   form = input.required<GoalForm>();
 

@@ -7,7 +7,6 @@
  */
 
 import { GoalCreateDto } from './goal-create.dto';
-import { GoalDto } from './goal.dto';
 
 export class GoalReportDto {
   id?: string;
@@ -22,7 +21,7 @@ export class GoalReportDto {
   deadlineEnd?: Date;
   goalsTracked?: boolean;
 
-  goals: GoalDto[] = [];
+  goals: GoalCreateDto[] = [];
 }
 export class GoalPlanningtDto {
   id?: string;

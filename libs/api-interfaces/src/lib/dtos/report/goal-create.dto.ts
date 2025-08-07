@@ -18,7 +18,7 @@ export class GoalCreateDto {
   geographicScope: string;
   methodsAndAssumptions: string;
   referenceValue: string;
-  referenceDate: Date;
+  referenceYear: number;
   isScientificReferenced: boolean;
   stakeholderInclusion: boolean;
   changeOfGoalsOrMethods: string;
@@ -51,7 +51,7 @@ export class GoalCreateDto {
     geographicScope: string,
     methodsAndAssumptions: string,
     referenceValue: string,
-    referenceDate: Date,
+    referenceYear: number,
     isScientificReferenced: boolean,
     stakeholderInclusion: boolean,
     changeOfGoalsOrMethods: string,
@@ -82,7 +82,7 @@ export class GoalCreateDto {
     this.geographicScope = geographicScope;
     this.methodsAndAssumptions = methodsAndAssumptions;
     this.referenceValue = referenceValue;
-    this.referenceDate = referenceDate;
+    this.referenceYear = referenceYear;
     this.isScientificReferenced = isScientificReferenced;
     this.stakeholderInclusion = stakeholderInclusion;
     this.changeOfGoalsOrMethods = changeOfGoalsOrMethods;

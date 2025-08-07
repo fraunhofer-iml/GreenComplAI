@@ -74,6 +74,9 @@
             <mat-label i18n>Umfang des Ziels</mat-label>
             <textarea
               matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
               [readonly]="report()?.isFinalReport"
               formControlName="scope"
               placeholder="Umfang des Ziels"
@@ -87,6 +90,9 @@
             >
             <textarea
               matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
               [readonly]="report()?.isFinalReport"
               formControlName="action"
               placeholder="Unternehmensaktivitäten der vor- und/oder nachgelagerten Wertschöpfungskette"
@@ -97,6 +103,9 @@
             <mat-label i18n>Geographische Grenzen</mat-label>
             <textarea
               matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
               [readonly]="report()?.isFinalReport"
               formControlName="geographicScope"
               placeholder="Geographische Grenzen"
@@ -107,13 +116,16 @@
             <mat-label i18n>Bezugswert</mat-label>
             <textarea
               matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
               [readonly]="report()?.isFinalReport"
               formControlName="referenceValue"
               placeholder="Bezugswert"
             ></textarea>
           </mat-form-field>
 
-          <app-date-picker-year-only [form]="form().controls.referenceDate">
+          <app-date-picker-year-only [form]="form().controls.referenceYear">
             <mat-label>Bezugsjahr</mat-label></app-date-picker-year-only
           >
 
@@ -121,6 +133,9 @@
             <mat-label i18n>Methoden und Annahmen</mat-label>
             <textarea
               matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
               [readonly]="report()?.isFinalReport"
               formControlName="methodsAndAssumptions"
               placeholder="Methoden und Annahmen"
@@ -146,6 +161,9 @@
               >
               <textarea
                 matInput
+                cdkTextareaAutosize
+                #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="1"
                 [readonly]="report()?.isFinalReport"
                 formControlName="stakeholderInclusionComment"
                 placeholder="Beschreibung des Stakeholder Involvements"
@@ -160,6 +178,9 @@
             </mat-label>
             <textarea
               matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
               [readonly]="report()?.isFinalReport"
               formControlName="changeOfGoalsOrMethods"
               placeholder="Änderungen der Ziele, der entsprechenden Parameter oder der zugrunde liegenden Methoden"
@@ -172,6 +193,9 @@
             </mat-label>
             <textarea
               matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
               [readonly]="report()?.isFinalReport"
               formControlName="effortsAndMonitoring"
               placeholder="Leistung im Vergleich zu den angegebenen Zielen, einschließlich Informationen darüber, wie ein Ziel überwacht wird"
@@ -220,6 +244,9 @@
               >
               <textarea
                 matInput
+                cdkTextareaAutosize
+                #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="1"
                 [readonly]="report()?.isFinalReport"
                 formControlName="ecologicalThresholdDescription"
                 placeholder="Ökologischen Schwellenwerte und die Methode zur Ermittlung dieser Schwellenwerte"
@@ -233,6 +260,9 @@
               >
               <textarea
                 matInput
+                cdkTextareaAutosize
+                #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="1"
                 [readonly]="report()?.isFinalReport"
                 formControlName="ecologicalThresholdDetermination"
                 placeholder="Sind die Ökologischen Schwellenwerte unternehmensspezifisch? Wie wurden diese Festgelegt?"
@@ -245,6 +275,9 @@
               >
               <textarea
                 matInput
+                cdkTextareaAutosize
+                #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="1"
                 [readonly]="report()?.isFinalReport"
                 formControlName="ecologicalTresholdResponsibilities"
                 placeholder="Wie werden Verantwortung für die Einhaltung der festgelegten ökologischen Schwellenwerte innerhalb des Unternehmens aufgeteilt?"
@@ -258,6 +291,9 @@
             >
             <textarea
               matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
               [readonly]="report()?.isFinalReport"
               formControlName="impactOnExtensionOfCircularityProductDesign"
               placeholder="(z. B. für Haltbarkeit, Demontage, Reparierbarkeit, Recyclingfähigkeit usw.)"
@@ -271,6 +307,9 @@
             >
             <textarea
               matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
               [readonly]="report()?.isFinalReport"
               formControlName="impactOnCircularityMaterialRate"
               placeholder="Einfluss auf die Erhöhung der kreislauforientierten Materialnutzungsrate"
@@ -283,6 +322,9 @@
             >
             <textarea
               matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
               [readonly]="report()?.isFinalReport"
               formControlName="impactOnMinimizingOfPrimaryMaterialUse"
               placeholder="Einfluss auf die Minimierung von Primärrohstoffen"
@@ -296,6 +338,9 @@
             </mat-label>
             <textarea
               matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
               [readonly]="report()?.isFinalReport"
               formControlName="impactOnSustainableSourcing"
               placeholder="Einfluss auf die nachhaltige Beschaffung und Nutzung erneuerbarer Ressourcen (im Einklang mit dem Kaskadenprinzip)"
@@ -309,6 +354,9 @@
             </mat-label>
             <textarea
               matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
               [readonly]="report()?.isFinalReport"
               formControlName="impactOnWasteManagement"
               placeholder="Einfluss auf die Abfallbewirtschaftung, einschließlich der Vorbereitung auf eine ordnungsgemäße Behandlung"
@@ -322,6 +370,9 @@
             </mat-label>
             <textarea
               matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
               [readonly]="report()?.isFinalReport"
               formControlName="impactOnMiscellaneous"
               placeholder="Einfluss auf sonstige Aspekte im Zusammenhang mit der Ressourcennutzung oder der Kreislaufwirtschaft"
@@ -361,10 +412,13 @@
                       <mat-label i18n>Verbindung zum Ziel</mat-label>
                       <textarea
                         (change)="updateValue()"
+                        cdkTextareaAutosize
+                        #autosize="cdkTextareaAutosize"
+                        cdkAutosizeMinRows="1"
                         matInput
                         [readonly]="report()?.isFinalReport"
                         formControlName="connection"
-                        placeholder="Verbindung zum Ziel"
+                        placeholder="Durch den Einsatz von..."
                       ></textarea>
                     </mat-form-field>
                   }

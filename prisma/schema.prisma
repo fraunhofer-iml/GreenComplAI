@@ -521,7 +521,7 @@ model Goal {
   geographicScope                             String?
   methodsAndAssumptions                       String?
   referenceValue                              String?
-  referenceDate                               DateTime?
+  referenceYear                               Int?
   isScientificReferenced                      Boolean?
   stakeholderInclusion                        Boolean?
   changeOfGoalsOrMethods                      String?
