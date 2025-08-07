@@ -46,6 +46,9 @@ export interface MasterDataFormGroup {
   durabilityDifference: FormControl<number | null>;
   reparability: FormControl<number | null>;
   circularPrinciple: FormControl<boolean | null>;
+  circularPrincipleJustification: FormControl<string | null>;
+  ciruclarPrincipleMeasureable: FormControl<boolean | null>;
+  circularPrincipleAssumption: FormControl<string | null>;
 }
 
 export interface ProducedItemsFormGroup {

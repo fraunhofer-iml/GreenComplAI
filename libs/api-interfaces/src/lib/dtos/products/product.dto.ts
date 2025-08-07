@@ -45,7 +45,12 @@ export class ProductDto {
   isSellable?: boolean;
   cascadePrinciple?: string;
   certificationSystem?: string;
+
   circularPrinciple?: boolean;
+  circularPrincipleJustification?: string;
+  ciruclarPrincipleMeasureable?: boolean;
+  circularPrincipleAssumption?: string;
+
   productionHistory?: { amount: number; year: number }[];
   flags: string[];
   outlier?: string[];

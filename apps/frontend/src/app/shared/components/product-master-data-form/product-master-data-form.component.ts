@@ -21,6 +21,7 @@ import {
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -202,6 +203,44 @@ export class ProductMasterDataFormComponent implements OnInit {
         this.selectedGroup.set(value);
       }
     });
+
+    this.form().controls.circularPrinciple.valueChanges.subscribe((value) => {
+      if (value) {
+        this.form().controls.circularPrincipleJustification.addValidators(
+          Validators.required
+        );
+        this.form().controls.ciruclarPrincipleMeasureable.addValidators(
+          Validators.required
+        );
+        this.form().controls.circularPrincipleAssumption.addValidators(
+          Validators.required
+        );
+      } else {
+        this.form().controls.circularPrincipleJustification.removeValidators(
+          Validators.required
+        );
+        this.form().controls.ciruclarPrincipleMeasureable.removeValidators(
+          Validators.required
+        );
+        this.form().controls.circularPrincipleAssumption.removeValidators(
+          Validators.required
+        );
+      }
+    });
+
+    this.form().controls.ciruclarPrincipleMeasureable.valueChanges.subscribe(
+      (value) => {
+        if (!value) {
+          this.form().controls.circularPrincipleAssumption.addValidators(
+            Validators.required
+          );
+        } else {
+          this.form().controls.circularPrincipleAssumption.removeValidators(
+            Validators.required
+          );
+        }
+      }
+    );
   }
 
   private mergeAddresses(addresses: AddressDto[]) {

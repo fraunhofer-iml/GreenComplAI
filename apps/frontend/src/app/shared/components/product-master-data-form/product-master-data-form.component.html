@@ -11,11 +11,6 @@
           </mat-checkbox>
         </section>
       }
-      <section>
-        <mat-checkbox formControlName="circularPrinciple"
-          >Kreislauforientierten Grundsätzen beachtet
-        </mat-checkbox>
-      </section>
     </div>
 
     <mat-form-field appearance="outline">
@@ -208,6 +203,45 @@
         placeholder="Kaskadenprinzip"
       ></textarea>
     </mat-form-field>
+
+    <div class="col-span-3 my-2 h-[1px] bg-neutral-300"></div>
+
+    <div class="col-span-3 grid grid-cols-2 gap-2">
+      <section>
+        <mat-checkbox formControlName="circularPrinciple"
+          >Kreislauforientierte Grundsätze beachtet
+        </mat-checkbox>
+      </section>
+      @if (form().controls.circularPrinciple.value) {
+        <section>
+          <mat-checkbox formControlName="ciruclarPrincipleMeasureable"
+            >Kreislauforientierung messbar?
+          </mat-checkbox>
+        </section>
+        <mat-form-field appearance="outline">
+          <mat-label>Begründung für Kreislauforientierung</mat-label>
+          <textarea
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="1"
+            matInput
+            formControlName="circularPrincipleJustification"
+          ></textarea>
+        </mat-form-field>
+        @if (!form().controls.ciruclarPrincipleMeasureable.value) {
+          <mat-form-field appearance="outline">
+            <mat-label>Zugrunde liegende Annahmen für Schätzung</mat-label>
+            <textarea
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
+              matInput
+              formControlName="circularPrincipleAssumption"
+            ></textarea>
+          </mat-form-field>
+        }
+      }
+    </div>
   </div>
 
   <!-- Materialien -->
