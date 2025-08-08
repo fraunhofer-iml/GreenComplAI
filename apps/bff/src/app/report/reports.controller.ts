@@ -168,9 +168,7 @@ export class ReportsController {
 
   @Patch(':id/goals')
   @ApiBearerAuth()
-  @Roles({
-    roles: [getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER)],
-  })
+  @Roles(getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER))
   @ApiBody({
     type: ReportDto,
   })
@@ -187,9 +185,7 @@ export class ReportsController {
 
   @Patch(':id/goal-planning')
   @ApiBearerAuth()
-  @Roles({
-    roles: [getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER)],
-  })
+  @Roles(getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER))
   @ApiBody({
     type: ReportDto,
   })
