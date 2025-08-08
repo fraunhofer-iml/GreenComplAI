@@ -9,7 +9,7 @@
 import {
   CreateReportDto,
   FinancialImpactCreateDto,
-  GoalPlanningtDto,
+  GoalReportDto,
   MeasureCreateDto,
   ReportDto,
   StrategyDto,
@@ -48,5 +48,5 @@ export type UpdateFinancialImpactsProps = {
 
 export type UpdateGoalsProps = {
   id: string;
-  dto: GoalPlanningtDto;
+  dto: GoalReportDto;
 };

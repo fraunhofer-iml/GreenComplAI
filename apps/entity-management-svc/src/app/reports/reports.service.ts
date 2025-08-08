@@ -14,7 +14,6 @@ import {
   FinancialImpactDto,
   FindAllReportsForCompanyProps,
   GoalCreateDto,
-  GoalPlanningtDto,
   GoalReportDto,
   ImpactType,
   MeasureCreateDto,
@@ -105,8 +104,9 @@ export class ReportsService {
         consultationsConducted: true,
         assetsBusinessActivitiesEvaluated: true,
         isFinalReport: true,
+        measures: true,
+        _count: { select: { measures: true, strategies: true, goals: true } },
       },
-
       orderBy: JSON.parse(
         sorting === '{}' ? '{"evaluationYear": "desc"}' : sorting
       ),
@@ -117,7 +117,12 @@ export class ReportsService {
     });
 
     return {
-      data: reports,
+      data: reports.map((result) => ({
+        ...result,
+        numberOfGoals: result._count.goals,
+        numberOfMeasures: result._count.strategies,
+        numberOfStrategies: result._count.measures,
+      })),
       meta: { page: page, totalCount: totalCount, pageSize: size },
     };
   }
@@ -433,7 +438,7 @@ export class ReportsService {
 
   async updateGoalPlanning(
     reportId: string,
-    goal: GoalPlanningtDto
+    goal: GoalReportDto
   ): Promise<GoalReportDto> {
     const report = await this.getReportById(reportId);
     if (report.isFinalReport) return;
