@@ -122,7 +122,8 @@ export class ReportsService {
         ...result,
         numberOfGoals: result._count.goals,
         numberOfMeasures: result._count.strategies,
-        numberOfStrategies: result._count.measures,
+        numberOfMeasures: result._count.measures,
+        numberOfStrategies: result._count.strategies,
       })),
       meta: { page: page, totalCount: totalCount, pageSize: size },
     };
