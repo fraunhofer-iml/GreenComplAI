@@ -59,7 +59,6 @@ export class OutlierDetectionAnalysisComponent {
     }
 
     return this.createChartOption(
-      '',
       [
         [ChartLegends.OUTLIERS, analysis.totalNumberOfOutliers],
         [
@@ -84,12 +83,11 @@ export class OutlierDetectionAnalysisComponent {
   }
 
   private createChartOption(
-    title: string,
     dataTotal: [string, number][],
     dataByItems: [string, number][]
   ): EChartsOption {
     const chartOption: EChartsOption = getDefaultOption(true);
-    chartOption.title = { text: title };
+    chartOption.title = { text: '' };
     chartOption.legend = {
       orient: 'vertical',
       right: 0,
