@@ -150,7 +150,11 @@ model Product {
   isSellable                      Boolean @default(false)
   certificationSystem             String?
   cascadePrinciple                String?
-  circularPrinciple               Boolean @default(false)
+
+  circularPrinciple              Boolean @default(false)
+  circularPrincipleJustification String?
+  circularPrincipleMeasureable   Boolean @default(false)
+  circularPrincipleAssumption    String?
 
   durability           Float?
   durabilityDifference Float?

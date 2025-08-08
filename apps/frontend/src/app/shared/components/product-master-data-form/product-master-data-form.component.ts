@@ -21,6 +21,7 @@ import {
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -28,12 +29,12 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { AuthenticationService } from '../../../core/services/authentication/authentication.service';
 import { CompaniesService } from '../../../core/services/companies/companies.service';
 import { ProductGroupService } from '../../../core/services/product-group/product-group.service';
-import { ProductsService } from '../../../core/services/products/products.service';
 import { SelectMaterialsComponent } from '../../../features/materials/select-materials/select-materials.component';
 import { ProductGroupCreateComponent } from '../../../features/product-group/create/product-group-create.component';
 import {
@@ -61,6 +62,7 @@ import { BaseSheetComponent } from '../sheet/base/sheet.component';
     ProductGroupCreateComponent,
     SelectMaterialsComponent,
     MatCheckboxModule,
+    MatRadioModule,
   ],
   templateUrl: './product-master-data-form.component.html',
 })
@@ -202,6 +204,50 @@ export class ProductMasterDataFormComponent implements OnInit {
         this.selectedGroup.set(value);
       }
     });
+
+    this.form().controls.circularPrinciple.valueChanges.subscribe((value) => {
+      if (value) {
+        this.form().controls.circularPrincipleJustification.addValidators(
+          Validators.required
+        );
+        this.form().controls.circularPrincipleMeasureable.addValidators(
+          Validators.required
+        );
+        this.form().controls.circularPrincipleAssumption.addValidators(
+          Validators.required
+        );
+      } else {
+        this.form().controls.circularPrincipleJustification.removeValidators(
+          Validators.required
+        );
+        this.form().controls.circularPrincipleMeasureable.removeValidators(
+          Validators.required
+        );
+        this.form().controls.circularPrincipleAssumption.removeValidators(
+          Validators.required
+        );
+      }
+
+      this.form().controls.circularPrincipleJustification.updateValueAndValidity();
+      this.form().controls.circularPrincipleMeasureable.updateValueAndValidity();
+      this.form().controls.circularPrincipleAssumption.updateValueAndValidity();
+    });
+
+    this.form().controls.circularPrincipleMeasureable.valueChanges.subscribe(
+      (value) => {
+        if (!value) {
+          this.form().controls.circularPrincipleAssumption.addValidators(
+            Validators.required
+          );
+        } else {
+          this.form().controls.circularPrincipleAssumption.removeValidators(
+            Validators.required
+          );
+        }
+
+        this.form().controls.circularPrincipleAssumption.updateValueAndValidity();
+      }
+    );
   }
 
   private mergeAddresses(addresses: AddressDto[]) {

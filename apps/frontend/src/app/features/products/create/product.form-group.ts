@@ -64,4 +64,7 @@ export const masterDataFormGroup = () =>
       Validators.max(10),
     ]),
     circularPrinciple: new FormControl<boolean | null>(false),
+    circularPrincipleJustification: new FormControl<string | null>(null),
+    circularPrincipleMeasureable: new FormControl<boolean | null>(false),
+    circularPrincipleAssumption: new FormControl<string | null>(null),
   });

@@ -56,13 +56,6 @@
               ><span>{{ data.isSellable ? 'ja' : 'nein' }}</span>
             </app-flagable>
           }
-          <app-flagable
-            [id]="id$() ?? ''"
-            [data]="data.flags"
-            [topic]="'Konzipiert nach kreislauforientierten Grundsätzen'"
-            [element]="'circularPrinciple'"
-            ><span>{{ data.circularPrinciple ? 'ja' : 'nein' }}</span>
-          </app-flagable>
 
           <app-flagable
             [id]="id$() ?? ''"
@@ -223,6 +216,7 @@
               ><span>{{ data.cascadePrinciple }}</span></app-flagable
             >
           }
+
           @if (data.certificationSystem) {
             <app-flagable
               [id]="id$() ?? ''"
@@ -231,6 +225,49 @@
               [element]="'certificationSystem'"
               ><span>{{ data.certificationSystem }}</span></app-flagable
             >
+          }
+
+          <div class="col-span-2 my-2 h-[1px] bg-neutral-300"></div>
+
+          <app-flagable
+            [id]="id$() ?? ''"
+            [data]="data.flags"
+            [topic]="'Konzipiert nach kreislauforientierten Grundsätzen'"
+            [element]="'circularPrinciple'"
+            ><span>{{ data.circularPrinciple ? 'ja' : 'nein' }}</span>
+          </app-flagable>
+          @if (data.circularPrinciple) {
+            <app-flagable
+              [id]="id$() ?? ''"
+              [data]="data.flags"
+              [topic]="'Wie wurden die Daten erhoben?'"
+              [element]="'circularPrincipleMeasureable'"
+              ><span>{{
+                data.circularPrincipleMeasureable ? 'gemessen' : 'geschätzt'
+              }}</span>
+            </app-flagable>
+
+            <app-flagable
+              [id]="id$() ?? ''"
+              [data]="data.flags"
+              [topic]="
+                'Begründung der Einordnung als kreislauforientiert konzipiertes Produkt'
+              "
+              [element]="'circularPrincipleJustification'"
+              ><span>{{ data.circularPrincipleJustification }}</span>
+            </app-flagable>
+
+            @if (!data.circularPrincipleMeasureable) {
+              <app-flagable
+                [id]="id$() ?? ''"
+                [data]="data.flags"
+                [topic]="
+                  'Erläuterung der zugrundeliegenden Annahmen der Schätzung'
+                "
+                [element]="'circularPrincipleAssumption'"
+                ><span>{{ data.circularPrincipleAssumption }}</span>
+              </app-flagable>
+            }
           }
         </div>
       </div>

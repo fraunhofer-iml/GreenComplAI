@@ -11,11 +11,6 @@
           </mat-checkbox>
         </section>
       }
-      <section>
-        <mat-checkbox formControlName="circularPrinciple"
-          >Kreislauforientierten Grundsätzen beachtet
-        </mat-checkbox>
-      </section>
     </div>
 
     <mat-form-field appearance="outline">
@@ -208,6 +203,53 @@
         placeholder="Kaskadenprinzip"
       ></textarea>
     </mat-form-field>
+
+    <div class="col-span-3 my-2 h-[1px] bg-neutral-300"></div>
+
+    <div class="col-span-3 grid grid-cols-2 gap-2">
+      <section>
+        <mat-checkbox formControlName="circularPrinciple"
+          >Kreislauforientierte Grundsätze beachtet
+        </mat-checkbox>
+      </section>
+      @if (form().controls.circularPrinciple.value) {
+        <section class="mb-2 space-x-2">
+          <mat-label class="text-sm">Wie wurden die Daten erhoben?</mat-label>
+          <mat-radio-group formControlName="circularPrincipleMeasureable">
+            <mat-radio-button [value]="true">gemessen</mat-radio-button>
+            <mat-radio-button [value]="false">geschätzt</mat-radio-button>
+          </mat-radio-group>
+        </section>
+        <mat-form-field appearance="outline">
+          <mat-label
+            >Begründung der Einordnung als kreislauforientiert konzipiertes
+            Produkt</mat-label
+          >
+          <textarea
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="1"
+            matInput
+            formControlName="circularPrincipleJustification"
+          ></textarea>
+        </mat-form-field>
+        @if (!form().controls.circularPrincipleMeasureable.value) {
+          <mat-form-field appearance="outline">
+            <mat-label
+              >Erläuterung der zugrundeliegenden Annahmen der
+              Schätzung</mat-label
+            >
+            <textarea
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
+              matInput
+              formControlName="circularPrincipleAssumption"
+            ></textarea>
+          </mat-form-field>
+        }
+      }
+    </div>
   </div>
 
   <!-- Materialien -->
