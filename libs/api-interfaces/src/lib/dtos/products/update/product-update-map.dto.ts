@@ -6,9 +6,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { ProductCreateDto } from '../product-create.dto';
-import { ProductDto } from '../product.dto';
-
 export class ProductUpdateMapDto {
   description?: string;
   map: [string, number][];

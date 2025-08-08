@@ -58,8 +58,8 @@ export class ProductsService extends DataService<PaginatedData<ProductDto>> {
   fetchOutliers(): Promise<ProductOutlierDto[]> {
     return lastValueFrom(
       this.http.get<ProductOutlierDto[]>(
-        `${this.url}${ApiUris.products}/outliers`,
-      ),
+        `${this.url}${ApiUris.products}/outliers`
+      )
     );
   }
 
@@ -165,7 +165,7 @@ export class ProductsService extends DataService<PaginatedData<ProductDto>> {
     return lastValueFrom(
       this.http.patch(`${this.url}${ApiUris.products}/${id}/flags`, {
         flags: data,
-      }),
+      })
     );
   }
 
@@ -173,7 +173,7 @@ export class ProductsService extends DataService<PaginatedData<ProductDto>> {
     return lastValueFrom(
       this.http.patch(`${this.url}${ApiUris.products}/${id}/outlier`, {
         flags: keys,
-      }),
+      })
     );
   }
 }

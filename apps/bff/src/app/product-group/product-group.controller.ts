@@ -47,12 +47,10 @@ export class ProductGroupController {
     type: ProductGroupCreateDto,
   })
   @ApiBearerAuth()
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-      getRealmRole(AuthRoles.BUYER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
   @ApiOkResponse({
     description: 'Successfull request: Return created product group',
     type: ProductGroupDto,
@@ -66,12 +64,10 @@ export class ProductGroupController {
   }
 
   @Get()
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-      getRealmRole(AuthRoles.BUYER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
   @ApiBearerAuth()
   @ApiOperation({
     description: 'Get all product groups.',
@@ -108,12 +104,10 @@ export class ProductGroupController {
 
   @Get(':id')
   @ApiBearerAuth()
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-      getRealmRole(AuthRoles.BUYER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
   @ApiOperation({
     description: 'Get one product by id.',
   })
@@ -127,12 +121,10 @@ export class ProductGroupController {
 
   @Patch(':id')
   @ApiBearerAuth()
-  @Roles({
-    roles: [
-      getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-      getRealmRole(AuthRoles.BUYER),
-    ],
-  })
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
   update(
     @Param('id') id: string,
     @Body() dto: ProductGroupCreateDto

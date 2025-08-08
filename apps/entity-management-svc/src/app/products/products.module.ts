@@ -12,13 +12,24 @@ import { Module } from '@nestjs/common';
 import { FlagsModule } from '../flags/flags.module';
 import { WasteModule } from '../waste/waste.module';
 import { ProductAnalysisService } from './analysis.service';
+import { ProductCrudService } from './product-crud.service';
+import { ProductOutlierService } from './product-outlier.service';
+import { ProductRelationsService } from './product-relations.service';
+import { ProductSupplierService } from './product-supplier.service';
 import { ProductController } from './products.controller';
 import { ProductService } from './products.service';
 
 @Module({
   imports: [ConfigurationModule, DatabaseModule, WasteModule, FlagsModule],
   controllers: [ProductController],
-  providers: [ProductService, ProductAnalysisService],
+  providers: [
+    ProductCrudService,
+    ProductAnalysisService,
+    ProductRelationsService,
+    ProductOutlierService,
+    ProductSupplierService,
+    ProductService,
+  ],
   exports: [ProductService],
 })
 export class ProductsModule {}

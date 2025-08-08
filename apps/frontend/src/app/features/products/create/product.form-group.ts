@@ -9,8 +9,6 @@
 import {
   AddressDto,
   CompanyDto,
-  CriticalRawMaterials,
-  ProductCreateDto,
   ProductGroupDto,
   VariantDto,
 } from '@ap2/api-interfaces';

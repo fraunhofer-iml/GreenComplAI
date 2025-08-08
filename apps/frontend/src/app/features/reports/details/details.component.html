@@ -5,9 +5,11 @@
         >Berichte</a
       >
       <span class="material-symbols-outlined text-lg"> chevron_right </span>
-      <h1 class="font-medium" *ngIf="reportsQuery.isSuccess()">
-        {{ reportsQuery.data().evaluationYear }}
-      </h1>
+      @if (reportsQuery.isSuccess()) {
+        <h1 class="font-medium">
+          {{ reportsQuery.data().evaluationYear }}
+        </h1>
+      }
     </div>
     @if (reportsQuery.data()?.isFinalReport) {
       <mat-chip>

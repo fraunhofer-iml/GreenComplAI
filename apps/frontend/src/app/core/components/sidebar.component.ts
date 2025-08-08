@@ -7,8 +7,7 @@
  */
 
 import { AuthRoles } from '@ap2/api-interfaces';
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,7 +21,6 @@ import { TreeNode } from './tree-node.interface';
 @Component({
   selector: 'app-sidebar',
   imports: [
-    CommonModule,
     RouterModule,
     MatButtonModule,
     MatMenuModule,
@@ -36,6 +34,8 @@ import { TreeNode } from './tree-node.interface';
   templateUrl: './sidebar.component.html',
 })
 export class SidebarComponent implements OnInit {
+  authService = inject(AuthenticationService);
+
   firstName?: string;
   lastName?: string;
   role?: string;
@@ -50,7 +50,11 @@ export class SidebarComponent implements OnInit {
     },
     {
       name: 'Produkte',
-      roles: [AuthRoles.SUSTAINABILITY_MANAGER, AuthRoles.BUYER],
+      roles: [
+        AuthRoles.SUSTAINABILITY_MANAGER,
+        AuthRoles.BUYER,
+        AuthRoles.SUPPLIER,
+      ],
       icon: 'inventory',
       routerLink: '/products',
     },
@@ -84,8 +88,6 @@ export class SidebarComponent implements OnInit {
 
   hasChild = (_: number, node: TreeNode) =>
     !!node.children && node.children.length > 0;
-
-  constructor(private readonly authService: AuthenticationService) {}
 
   async ngOnInit() {
     const { firstName, lastName } = await this.authService.getCurrentUserName();

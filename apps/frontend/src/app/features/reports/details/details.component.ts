@@ -7,7 +7,6 @@
  */
 
 import { ReportDto } from '@ap2/api-interfaces';
-import { CommonModule } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
@@ -39,7 +38,6 @@ import { StrategiesComponent } from './strategies/strategies.component';
 @Component({
   selector: 'app-reports-overview',
   imports: [
-    CommonModule,
     RouterModule,
     MatFormFieldModule,
     MatInputModule,

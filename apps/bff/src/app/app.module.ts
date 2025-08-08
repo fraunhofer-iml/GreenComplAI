@@ -25,6 +25,7 @@ import { PackagingModule } from './packaging/packaging.module';
 import { ProductGroupModule } from './product-group/product-group.module';
 import { ProductsModule } from './products/products.module';
 import { ReportsModule } from './report/reports.module';
+import { SuppliersModule } from './suppliers/suppliers.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { ReportsModule } from './report/reports.module';
     ProductGroupModule,
     ReportsModule,
     MappingModule,
+    SuppliersModule,
   ],
   controllers: [],
   providers: [

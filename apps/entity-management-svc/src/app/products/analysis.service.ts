@@ -15,13 +15,13 @@ import {
 } from '@ap2/api-interfaces';
 import { PrismaService } from '@ap2/database';
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import {
   getTotalWeightOfHazardousWaste,
   getTotalWeightOfWaste,
 } from '../utils/weight.utils';
 import { ProductService } from './products.service';
 import { productionHistoryAggregationQuery } from './queries/production-history-aggregation.query';
-import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class ProductAnalysisService {
@@ -197,7 +197,7 @@ export class ProductAnalysisService {
   }
 
   async getOutlierAnalysis(
-    productGroupId: string,
+    productGroupId: string
   ): Promise<OutlierDetectionAnalysisDto> {
     const where: Prisma.ProductWhereInput = {
       AND: [
@@ -242,7 +242,7 @@ export class ProductAnalysisService {
     outliers.forEach((outlier) => {
       dto.totalNumberOfOutliers += outlier._count;
       const index = dto.outliesByItem.findIndex(
-        (i) => i.id === (productGroupId ? outlier.id : outlier.productGroupId),
+        (i) => i.id === (productGroupId ? outlier.id : outlier.productGroupId)
       );
 
       if (index > -1) {

@@ -1,54 +1,60 @@
-<div class="w-full ">
-@if (!csvs) {
-  <div class="flex flex-col items-center">
-    <form class="w-full">
-      <div
-        class="hover:border-primary-500 flex w-full cursor-pointer flex-col items-center justify-center gap-4 rounded-lg border-2 border-dashed p-8 transition-colors duration-200"
-        [class.border-gray-300]="!isDragging"
-        [class.border-primary-500]="isDragging"
-        [class.bg-primary-50]="isDragging"
-        (dragover)="$event.preventDefault(); isDragging = true"
-        (dragleave)="$event.preventDefault(); isDragging = false"
-        (drop)="
-          $event.preventDefault(); isDragging = false; importDataFromCSV($event)
-        "
-        (click)="fileInput.click()"
-        (keyup.enter)="fileInput.click()"
-        (keyup.space)="fileInput.click()"
-        tabindex="0"
-        role="button"
-        aria-label="CSV-Datei hochladen"
-      >
-        <input
-          #fileInput
-          class="hidden"
-          type="file"
-          accept=".csv"
-          (change)="importDataFromCSV($event)"
-        />
-        <span
-          [class.text-primary-500]="isDragging"
-          class="material-symbols-outlined text-4xl transition-colors duration-200"
-          [class.text-gray-400]="!isDragging"
+<div class="w-full">
+  @if (!csvs) {
+    <div class="flex flex-col items-center">
+      <form class="w-full">
+        <div
+          class="hover:border-primary-500 flex w-full cursor-pointer flex-col items-center justify-center gap-4 rounded-lg border-2 border-dashed p-8 transition-colors duration-200"
+          [class.border-gray-300]="!isDragging"
+          [class.border-primary-500]="isDragging"
+          [class.bg-primary-50]="isDragging"
+          (dragover)="$event.preventDefault(); isDragging = true"
+          (dragleave)="$event.preventDefault(); isDragging = false"
+          (drop)="
+            $event.preventDefault();
+            isDragging = false;
+            importDataFromCSV($event)
+          "
+          (click)="fileInput.click()"
+          (keyup.enter)="fileInput.click()"
+          (keyup.space)="fileInput.click()"
+          tabindex="0"
+          role="button"
+          aria-label="CSV-Datei hochladen"
         >
-          cloud_upload
-        </span>
-
-        <div class="text-center">
-          <p
-            class="text-lg font-medium transition-colors duration-200"
+          <input
+            #fileInput
+            class="hidden"
+            type="file"
+            accept=".csv"
+            (change)="importDataFromCSV($event)"
+          />
+          <span
             [class.text-primary-500]="isDragging"
+            class="material-symbols-outlined text-4xl transition-colors duration-200"
+            [class.text-gray-400]="!isDragging"
           >
-            CSV-Datei hier per Drag & Drop ablegen
-          </p>
-          <p class="text-sm text-gray-500">oder zum Durchsuchen klicken</p>
-        </div>
-      </div>
-    </form>
-  </div>
-}
+            cloud_upload
+          </span>
 
-@if (csvs) {
-  <app-create-objects-component [csvs]="csvs" [(output)]="output" [contentType]="contentType" />
-}
+          <div class="text-center">
+            <p
+              class="text-lg font-medium transition-colors duration-200"
+              [class.text-primary-500]="isDragging"
+            >
+              CSV-Datei hier per Drag & Drop ablegen
+            </p>
+            <p class="text-sm text-gray-500">oder zum Durchsuchen klicken</p>
+          </div>
+        </div>
+      </form>
+    </div>
+  }
+
+  @if (csvs) {
+    <app-create-objects-component
+      [csvs]="csvs"
+      [(output)]="output"
+      [contentType]="contentType"
+    />
+  }
 </div>

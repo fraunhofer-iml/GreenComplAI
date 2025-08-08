@@ -10,19 +10,26 @@ import { AmqpException } from '@ap2/amqp';
 import {
   AddressDto,
   CompanyCreateDto,
+  CompanyCreateResponse,
   CompanyDto,
   ErrorMessages,
   PaginatedData,
 } from '@ap2/api-interfaces';
 import { PrismaService } from '@ap2/database';
-import { HttpStatus, Injectable } from '@nestjs/common';
+import {
+  IUserManagementService,
+  USER_MANAGEMENT_SERVICE_TOKEN,
+} from '@greencomplai/user-management';
+import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { FlagsService } from '../flags/flags.service';
 
 @Injectable()
 export class CompaniesService {
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly flagsService: FlagsService
+    private readonly flagsService: FlagsService,
+    @Inject(USER_MANAGEMENT_SERVICE_TOKEN)
+    private readonly userManagementService: IUserManagementService
   ) {}
 
   async createCompanyOfEmployee(
@@ -75,7 +82,7 @@ export class CompaniesService {
   async createAssociatedCompany(
     dto: CompanyCreateDto,
     employeeId: string
-  ): Promise<CompanyDto> {
+  ): Promise<CompanyCreateResponse> {
     const parentCompany = await this.getCompanyForEmployee(employeeId);
 
     if (!parentCompany)
@@ -83,6 +90,15 @@ export class CompaniesService {
         ErrorMessages.userHasNoCompany,
         HttpStatus.NOT_FOUND
       );
+
+    const userCreationResult = await this.userManagementService.createUser({
+      username: dto.name.toLocaleLowerCase().replace(/\s+/g, '_'),
+      email: dto.email,
+      firstName: dto.name,
+      lastName: '',
+      initialPassword: dto.name.trim().toLocaleLowerCase(),
+      groups: ['AP2/Lieferant'],
+    });
 
     const company = await this.prismaService.company.create({
       data: {
@@ -103,7 +119,28 @@ export class CompaniesService {
       include: { addresses: true, parentCompanies: true },
     });
 
-    return company;
+    await this.prismaService.user.create({
+      data: {
+        id: userCreationResult.id,
+        company: {
+          connect: {
+            id: company.id,
+          },
+        },
+      },
+    });
+
+    return {
+      company: new CompanyDto(
+        company.id,
+        company.name,
+        company.email,
+        company.phone,
+        company.addresses,
+        []
+      ),
+      username: userCreationResult.username,
+    };
   }
 
   async findAssociatedCompanies(

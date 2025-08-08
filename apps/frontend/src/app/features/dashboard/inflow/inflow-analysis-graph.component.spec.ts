@@ -9,7 +9,7 @@
 import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
-  provideAngularQuery,
+  provideQueryClient,
   QueryClient,
 } from '@tanstack/angular-query-experimental';
 import { AnalysisService } from '../../../core/services/analysis/analysis.service';
@@ -25,7 +25,7 @@ describe('InflowAnalysisGraphComponent', () => {
       providers: [
         AnalysisService,
         provideHttpClient(),
-        provideAngularQuery(new QueryClient()),
+        provideQueryClient(new QueryClient()),
       ],
     }).compileComponents();
 

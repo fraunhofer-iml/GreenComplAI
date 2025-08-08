@@ -1,7 +1,11 @@
 <div class="flex flex-col gap-4">
   <div class="flex flex-row items-center justify-between gap-2">
-    <app-flagable [id]="analysisQuery.data()?.id??''" [topic]="'Auswertung Auftragserfassung'" [data]="analysisQuery.data()?.flags ?? []"
-                  [element]="'productionhistory'">
+    <app-flagable
+      [id]="analysisQuery.data()?.id ?? ''"
+      [topic]="'Auswertung Auftragserfassung'"
+      [data]="analysisQuery.data()?.flags ?? []"
+      [element]="'productionhistory'"
+    >
     </app-flagable>
     <button mat-button (click)="yearSheet.open()">
       <mat-icon>edit</mat-icon> bearbeiten

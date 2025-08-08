@@ -17,7 +17,7 @@ import {
 import { ParseResult } from 'ngx-papaparse';
 import { toast } from 'ngx-sonner';
 import { from, retry } from 'rxjs';
-import { Component, input, model, OnInit } from '@angular/core';
+import { Component, inject, input, model, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -53,6 +53,10 @@ import { ContentType } from '../../overview/table-content-type.enum';
   templateUrl: 'create-objects.component.html',
 })
 export class CreateObjectsComponent<T> implements OnInit {
+  private readonly mappingService = inject(MappingsService);
+  private readonly dataService = inject(DataService<T>);
+  private readonly router = inject(Router);
+
   csvs = input<ParseResult>();
   contentType = input<ContentType>();
   output = model<unknown[]>();
@@ -60,12 +64,6 @@ export class CreateObjectsComponent<T> implements OnInit {
   data: MappingElementDto[] = [];
 
   UNIT_INFO_MESSAGE = UNIT_INFO_MESSAGE;
-
-  constructor(
-    private readonly mappingService: MappingsService,
-    private readonly dataService: DataService<T>,
-    private readonly router: Router
-  ) {}
 
   async ngOnInit(): Promise<void> {
     const csvs = this.csvs();

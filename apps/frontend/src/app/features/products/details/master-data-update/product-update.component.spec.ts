@@ -12,7 +12,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import {
-  provideAngularQuery,
+  provideQueryClient,
   QueryClient,
 } from '@tanstack/angular-query-experimental';
 import { AuthenticationService } from '../../../../core/services/authentication/authentication.service';
@@ -31,7 +31,7 @@ describe('ProductUpdateComponent', () => {
       providers: [
         ProductsService,
         provideHttpClient(),
-        provideAngularQuery(new QueryClient()),
+        provideQueryClient(new QueryClient()),
         ProductConstructionService,
         CompaniesService,
         {

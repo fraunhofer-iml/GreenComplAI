@@ -1,0 +1,8 @@
+{
+  "name": "user-management",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/user-management/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {}
+}

@@ -14,7 +14,7 @@ export class OutlierDetectionAnalysisDto {
   constructor(
     totalNumberOfProducts: number,
     totalNumberOfOutliers: number,
-    outliesByItem: OutliersByItem[],
+    outliesByItem: OutliersByItem[]
   ) {
     this.totalNumberOfProducts = totalNumberOfProducts;
     this.totalNumberOfOutliers = totalNumberOfOutliers;

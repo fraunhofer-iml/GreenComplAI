@@ -34,6 +34,17 @@
           "ci": true
         }
       }
+    },
+    "container": {
+      "executor": "@mschoenbo/nx-build-tools:tag-and-build",
+      "options": {
+        "appName": "bff",
+        "dockerRepository": "ghcr.io/fraunhofer-iml/greencomplai",
+        "dockerfile": "apps/bff/Dockerfile",
+        "tagPrefix": "v",
+        "push": true,
+        "additionalTags": ["latest"]
+      }
     }
   }
 }

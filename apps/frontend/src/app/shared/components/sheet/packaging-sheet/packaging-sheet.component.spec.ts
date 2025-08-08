@@ -12,7 +12,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-  provideAngularQuery,
+  provideQueryClient,
   QueryClient,
 } from '@tanstack/angular-query-experimental';
 import { PackagingService } from '../../../../core/services/packaging/packaging.service';
@@ -29,7 +29,7 @@ describe('PackagingSheetComponent', () => {
       providers: [
         PackagingService,
         provideHttpClient(),
-        provideAngularQuery(new QueryClient()),
+        provideQueryClient(new QueryClient()),
       ],
     }).compileComponents();
 

@@ -6,8 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -17,6 +16,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
+import { AuthenticationService } from '../../../core/services/authentication/authentication.service';
 import { DataService } from '../../../core/services/data-service/data.service';
 import { ProductsService } from '../../../core/services/products/products.service';
 import { ContentType } from '../../../shared/components/overview/table-content-type.enum';
@@ -25,7 +25,6 @@ import { ProductTableComponent } from './product-table/product-table.component';
 @Component({
   selector: 'app-product-overview',
   imports: [
-    CommonModule,
     RouterModule,
     MatFormFieldModule,
     MatInputModule,
@@ -42,5 +41,6 @@ import { ProductTableComponent } from './product-table/product-table.component';
   templateUrl: './overview.component.html',
 })
 export class ProductOverviewComponent {
+  readonly authService = inject(AuthenticationService);
   protected readonly ContentType = ContentType;
 }

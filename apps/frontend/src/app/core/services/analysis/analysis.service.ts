@@ -6,14 +6,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 import {
   InFlowAnalysisDto,
   OutlierDetectionAnalysisDto,
   WasteFlowAnalysisDto,
 } from '@ap2/api-interfaces';
 import { lastValueFrom } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { ApiUris } from '../../../shared/constants/uris';
 
@@ -21,9 +21,9 @@ import { ApiUris } from '../../../shared/constants/uris';
   providedIn: 'root',
 })
 export class AnalysisService {
-  url = environment.baseUrl;
+  http = inject(HttpClient);
 
-  constructor(private readonly http: HttpClient) {}
+  url = environment.baseUrl;
 
   getWasteFlowAnalysisOfProductGroups(
     fromYear: number,
@@ -71,8 +71,8 @@ export class AnalysisService {
         `${this.url}${ApiUris.outlierAnalysis}`,
         {
           params,
-        },
-      ),
+        }
+      )
     );
   }
 }

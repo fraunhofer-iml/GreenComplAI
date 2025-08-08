@@ -9,15 +9,15 @@
 import { MappingDto } from '@ap2/api-interfaces';
 import { lastValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { ApiUris } from '../../../shared/constants/uris';
 
 @Injectable()
 export class MappingsService {
-  url = environment.baseUrl;
+  private readonly http = inject(HttpClient);
 
-  constructor(private readonly http: HttpClient) {}
+  url = environment.baseUrl;
 
   getMappings(id: string) {
     return lastValueFrom(

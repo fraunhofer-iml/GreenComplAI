@@ -15,8 +15,7 @@ import {
   WasteCreateDto,
   WasteMaterialCreateDto,
 } from '@ap2/api-interfaces';
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -31,7 +30,6 @@ import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListOption } from '@angular/material/list';
 import { RouterModule } from '@angular/router';
-import { CompaniesService } from '../../../core/services/companies/companies.service';
 import { DataService } from '../../../core/services/data-service/data.service';
 import { PackagingService } from '../../../core/services/packaging/packaging.service';
 import { ProductsService } from '../../../core/services/products/products.service';
@@ -47,7 +45,6 @@ import { ProductPackagingFormGroup } from '../../products/create/model/product-f
   selector: 'app-company-create',
   imports: [
     RouterModule,
-    CommonModule,
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
@@ -63,7 +60,6 @@ import { ProductPackagingFormGroup } from '../../products/create/model/product-f
   ],
   providers: [
     PackagingService,
-    ProductsService,
     {
       provide: DataService,
       useClass: PackagingService,
@@ -72,6 +68,8 @@ import { ProductPackagingFormGroup } from '../../products/create/model/product-f
   templateUrl: './create.component.html',
 })
 export class PackagingCreateComponent {
+  private readonly packagingService = inject(PackagingService);
+
   packagingForm = new FormGroup({
     weight: new FormControl<number | null>(null, Validators.required),
     name: new FormControl<string | null>('', Validators.required),
@@ -101,12 +99,6 @@ export class PackagingCreateComponent {
   usesImport = false;
 
   protected readonly ContentType = ContentType;
-
-  constructor(
-    public readonly packagingService: PackagingService,
-    public readonly productsService: ProductsService,
-    public readonly companiesService: CompaniesService
-  ) {}
 
   save() {
     const partPackagingsMap: [string, number][] =

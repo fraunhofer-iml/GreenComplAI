@@ -12,7 +12,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import {
-  provideAngularQuery,
   provideQueryClient,
   QueryClient,
 } from '@tanstack/angular-query-experimental';
@@ -35,7 +34,7 @@ describe('ProductPackagingComponent', () => {
         provideHttpClient(),
         ProductConstructionService,
         { provide: DataService, useValue: {} },
-        provideAngularQuery(new QueryClient()),
+        provideQueryClient(new QueryClient()),
         {
           provide: ActivatedRoute,
           useValue: {

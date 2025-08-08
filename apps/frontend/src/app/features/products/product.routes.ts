@@ -19,7 +19,13 @@ export const productRoutes: Route[] = [
         (m) => m.ProductOverviewComponent
       ),
     canActivate: [AuthenticationGuard, RoleGuard],
-    data: { roles: [AuthRoles.SUSTAINABILITY_MANAGER, AuthRoles.BUYER] },
+    data: {
+      roles: [
+        AuthRoles.SUSTAINABILITY_MANAGER,
+        AuthRoles.BUYER,
+        AuthRoles.SUPPLIER,
+      ],
+    },
   },
   {
     path: 'create',
@@ -46,7 +52,13 @@ export const productRoutes: Route[] = [
         (m) => m.ProductDetailsComponent
       ),
     canActivate: [AuthenticationGuard, RoleGuard],
-    data: { roles: [AuthRoles.SUSTAINABILITY_MANAGER, AuthRoles.BUYER] },
+    data: {
+      roles: [
+        AuthRoles.SUSTAINABILITY_MANAGER,
+        AuthRoles.BUYER,
+        AuthRoles.SUPPLIER,
+      ],
+    },
   },
   {
     path: ':id/edit',
@@ -55,7 +67,13 @@ export const productRoutes: Route[] = [
         (m) => m.ProductUpdateComponent
       ),
     canActivate: [AuthenticationGuard, RoleGuard],
-    data: { roles: [AuthRoles.SUSTAINABILITY_MANAGER, AuthRoles.BUYER] },
+    data: {
+      roles: [
+        AuthRoles.SUSTAINABILITY_MANAGER,
+        AuthRoles.BUYER,
+        AuthRoles.SUPPLIER,
+      ],
+    },
   },
   {
     path: ':id/waste',

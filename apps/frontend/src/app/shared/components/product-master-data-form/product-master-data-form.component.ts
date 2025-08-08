@@ -14,8 +14,7 @@ import {
   ProductGroupDto,
   VariantDto,
 } from '@ap2/api-interfaces';
-import { CommonModule } from '@angular/common';
-import { Component, input, OnInit, signal } from '@angular/core';
+import { Component, inject, input, OnInit, signal } from '@angular/core';
 import {
   FormArray,
   FormControl,
@@ -49,7 +48,6 @@ import { BaseSheetComponent } from '../sheet/base/sheet.component';
 @Component({
   selector: 'app-product-master-data-form',
   imports: [
-    CommonModule,
     MatIconModule,
     MatSelectModule,
     MatFormFieldModule,
@@ -67,6 +65,10 @@ import { BaseSheetComponent } from '../sheet/base/sheet.component';
   templateUrl: './product-master-data-form.component.html',
 })
 export class ProductMasterDataFormComponent implements OnInit {
+  private readonly companiesService = inject(CompaniesService);
+  private readonly groupService = inject(ProductGroupService);
+  readonly authService = inject(AuthenticationService);
+
   productGroupId = input<string>();
   form = input.required<FormGroup<MasterDataFormGroup>>();
 
@@ -129,6 +131,7 @@ export class ProductMasterDataFormComponent implements OnInit {
         '{}'
       );
     },
+    enabled: !this.authService.isSupplier(),
   }));
 
   groupsQuery = injectQuery(() => ({
@@ -146,6 +149,7 @@ export class ProductMasterDataFormComponent implements OnInit {
       if (selectedGroup) this.setProductGroup(selectedGroup);
       return groups;
     },
+    enabled: !this.authService.isSupplier(),
   }));
 
   ownCompanyQuery = injectQuery(() => ({
@@ -164,12 +168,7 @@ export class ProductMasterDataFormComponent implements OnInit {
   protected readonly FormGroup = FormGroup;
   UNITS = UNITS;
 
-  constructor(
-    public readonly productsService: ProductsService,
-    private readonly companiesService: CompaniesService,
-    private readonly authService: AuthenticationService,
-    private readonly groupService: ProductGroupService
-  ) {
+  constructor() {
     this.currentRole = this.authService.getCurrentUserRole();
   }
 

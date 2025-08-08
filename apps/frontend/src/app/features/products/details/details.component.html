@@ -35,24 +35,27 @@
             ><span class="text-right">{{ data.name }} test</span>
           </app-flagable>
 
-          <app-flagable
-            [id]="id$() ?? ''"
-            [data]="data.flags"
-            [topic]="'Produkt ID'"
-            [element]="'productId'"
-            ><span class="text-right">{{
-              data.productId || 'Nicht angegeben'
-            }}</span>
-          </app-flagable>
+          @if (!authService.isSupplier()) {
+            <app-flagable
+              [id]="id$() ?? ''"
+              [data]="data.flags"
+              [topic]="'Produkt ID'"
+              [element]="'productId'"
+              ><span class="text-right">{{
+                data.productId || 'Nicht angegeben'
+              }}</span>
+            </app-flagable>
+          }
 
-          <app-flagable
-            [id]="id$() ?? ''"
-            [data]="data.flags"
-            [topic]="'Verkaufsprodukt'"
-            [element]="'isSellable'"
-            ><span>{{ data.isSellable ? 'ja' : 'nein' }}</span>
-          </app-flagable>
-
+          @if (!authService.isSupplier()) {
+            <app-flagable
+              [id]="id$() ?? ''"
+              [data]="data.flags"
+              [topic]="'Verkaufsprodukt'"
+              [element]="'isSellable'"
+              ><span>{{ data.isSellable ? 'ja' : 'nein' }}</span>
+            </app-flagable>
+          }
           <app-flagable
             [id]="id$() ?? ''"
             [data]="data.flags"
@@ -69,29 +72,35 @@
             ><span class="text-right">{{ data.description }} </span>
           </app-flagable>
 
-          <app-flagable
-            [id]="id$() ?? ''"
-            [data]="data.flags"
-            [topic]="'Kategorie'"
-            [element]="'category'"
-            ><span>{{ data.category }} </span>
-          </app-flagable>
+          @if (!authService.isSupplier()) {
+            <app-flagable
+              [id]="id$() ?? ''"
+              [data]="data.flags"
+              [topic]="'Kategorie'"
+              [element]="'category'"
+              ><span>{{ data.category }} </span>
+            </app-flagable>
+          }
 
-          <app-flagable
-            [id]="id$() ?? ''"
-            [data]="data.flags"
-            [topic]="'Produktgruppe'"
-            [element]="'productGroup'"
-            ><span>{{ data.productGroup?.name }} </span>
-          </app-flagable>
+          @if (!authService.isSupplier()) {
+            <app-flagable
+              [id]="id$() ?? ''"
+              [data]="data.flags"
+              [topic]="'Produktgruppe'"
+              [element]="'productGroup'"
+              ><span>{{ data.productGroup?.name }} </span>
+            </app-flagable>
+          }
 
-          <app-flagable
-            [id]="id$() ?? ''"
-            [data]="data.flags"
-            [topic]="'Variante'"
-            [element]="'variant'"
-            ><span>{{ data.variant ?? 'keine Angabe' }} </span>
-          </app-flagable>
+          @if (!authService.isSupplier()) {
+            <app-flagable
+              [id]="id$() ?? ''"
+              [data]="data.flags"
+              [topic]="'Variante'"
+              [element]="'variant'"
+              ><span>{{ data.variant ?? 'keine Angabe' }} </span>
+            </app-flagable>
+          }
 
           <app-flagable
             [id]="id$() ?? ''"
@@ -117,13 +126,15 @@
             ><span>{{ data.unit }}</span>
           </app-flagable>
 
-          <app-flagable
-            [id]="id$() ?? ''"
-            [data]="data.flags"
-            [topic]="'Preis'"
-            [element]="'price'"
-            ><span>{{ (data.price / 100).toFixed(2) }}</span>
-          </app-flagable>
+          @if (!authService.isSupplier()) {
+            <app-flagable
+              [id]="id$() ?? ''"
+              [data]="data.flags"
+              [topic]="'Preis'"
+              [element]="'price'"
+              ><span>{{ ((data.price ?? 0) / 100).toFixed(2) }}</span>
+            </app-flagable>
+          }
 
           <app-flagable
             [id]="id$() ?? ''"
@@ -133,44 +144,48 @@
             ><span>{{ data.dimensions }}</span></app-flagable
           >
 
-          <app-flagable
-            [id]="id$() ?? ''"
-            [data]="data.flags"
-            [topic]="'Produktionsstandort'"
-            [element]="'productionLocation'"
-          >
-            <span class="text-right">
-              @if (data.productionLocation) {
-                <span
-                  >{{ data.productionLocation.street }},
-                  {{ data.productionLocation.postalCode }}
-                  {{ data.productionLocation.city }},
-                  {{ data.productionLocation.country }}
-                </span>
-              } @else {
-                <span>Keine Angabe</span>
-              }
-            </span>
-          </app-flagable>
+          @if (!authService.isSupplier()) {
+            <app-flagable
+              [id]="id$() ?? ''"
+              [data]="data.flags"
+              [topic]="'Produktionsstandort'"
+              [element]="'productionLocation'"
+            >
+              <span class="text-right">
+                @if (data.productionLocation) {
+                  <span
+                    >{{ data.productionLocation.street }},
+                    {{ data.productionLocation.postalCode }}
+                    {{ data.productionLocation.city }},
+                    {{ data.productionLocation.country }}
+                  </span>
+                } @else {
+                  <span>Keine Angabe</span>
+                }
+              </span>
+            </app-flagable>
+          }
 
-          <app-flagable
-            [id]="id$() ?? ''"
-            [data]="data.flags"
-            [topic]="'Lagerstandort'"
-            [element]="'warehouseLocation'"
-            ><span class="text-right">
-              @if (data.warehouseLocation) {
-                <span
-                  >{{ data.warehouseLocation.street }},
-                  {{ data.warehouseLocation.postalCode }}
-                  {{ data.warehouseLocation.city }},
-                  {{ data.warehouseLocation.country }}
-                </span>
-              } @else {
-                <span>Keine Angabe</span>
-              }
-            </span>
-          </app-flagable>
+          @if (!authService.isSupplier()) {
+            <app-flagable
+              [id]="id$() ?? ''"
+              [data]="data.flags"
+              [topic]="'Lagerstandort'"
+              [element]="'warehouseLocation'"
+              ><span class="text-right">
+                @if (data.warehouseLocation) {
+                  <span
+                    >{{ data.warehouseLocation.street }},
+                    {{ data.warehouseLocation.postalCode }}
+                    {{ data.warehouseLocation.city }},
+                    {{ data.warehouseLocation.country }}
+                  </span>
+                } @else {
+                  <span>Keine Angabe</span>
+                }
+              </span>
+            </app-flagable>
+          }
 
           <app-flagable
             [id]="id$() ?? ''"
@@ -221,71 +236,78 @@
       </div>
 
       <div class="flex flex-col gap-4">
-        <!-- Supplier -->
-        <div class="rounded-lg bg-neutral-200 p-4">
-          <div class="flex flex-row justify-between items-center">
-          <app-flagable
-            [id]="id$() ?? ''"
-            [topic]="'Lieferantendaten'"
-            [data]="data.flags"
-            [element]="'supplier'"
-          >
-          </app-flagable>
-
-          <button mat-button [routerLink]="[Uris.companies, data.supplier?.id]" [queryParams]="{callback: Uris.products + '/' + data.id}">
-            <mat-icon>edit</mat-icon>
-            bearbeiten
-          </button>
-        </div>
-          <div class="mt-4 space-y-2 text-sm">
-            <app-flagable
-              [id]="id$() ?? ''"
-              [topic]="'Name'"
-              [data]="data.flags"
-              [element]="'supplier.name'"
-            >
-              <a [routerLink]="[Uris.companies, data.supplier?.id]">
-                {{ data.supplier?.name }}</a
-              >
-            </app-flagable>
-
-            <app-flagable
-              [id]="id$() ?? ''"
-              [topic]="'Email'"
-              [data]="data.flags"
-              [element]="'supplier.email'"
-            >
-              <span>{{ data.supplier?.email }}</span>
-            </app-flagable>
-
-            <app-flagable
-              [id]="id$() ?? ''"
-              [topic]="'Telefon'"
-              [data]="data.flags"
-              [element]="'supplier.phone'"
-            >
-              <span>{{ data.supplier?.phone }}</span>
-            </app-flagable>
-
-            @if (
-              data.supplier?.addresses && (data.supplier?.addresses)!.length > 0
-            ) {
+        @if (!authService.isSupplier()) {
+          <!-- Supplier -->
+          <div class="rounded-lg bg-neutral-200 p-4">
+            <div class="flex flex-row items-center justify-between">
               <app-flagable
                 [id]="id$() ?? ''"
-                [topic]="'Adresse'"
+                [topic]="'Lieferantendaten'"
                 [data]="data.flags"
-                [element]="'supplier.addresses'"
+                [element]="'supplier'"
               >
-                <span class="flex justify-between text-right">
-                  {{ data.supplier!.addresses[0].street }},
-                  {{ data.supplier!.addresses[0].postalCode }}
-                  {{ data.supplier!.addresses[0].city }},
-                  {{ data.supplier!.addresses[0].country }}
-                </span>
               </app-flagable>
-            }
+
+              <button
+                mat-button
+                [routerLink]="[Uris.companies, data.supplier?.id]"
+                [queryParams]="{ callback: Uris.products + '/' + data.id }"
+              >
+                <mat-icon>edit</mat-icon>
+                bearbeiten
+              </button>
+            </div>
+            <div class="mt-4 space-y-2 text-sm">
+              <app-flagable
+                [id]="id$() ?? ''"
+                [topic]="'Name'"
+                [data]="data.flags"
+                [element]="'supplier.name'"
+              >
+                <a [routerLink]="[Uris.companies, data.supplier?.id]">
+                  {{ data.supplier?.name }}</a
+                >
+              </app-flagable>
+
+              <app-flagable
+                [id]="id$() ?? ''"
+                [topic]="'Email'"
+                [data]="data.flags"
+                [element]="'supplier.email'"
+              >
+                <span>{{ data.supplier?.email }}</span>
+              </app-flagable>
+
+              <app-flagable
+                [id]="id$() ?? ''"
+                [topic]="'Telefon'"
+                [data]="data.flags"
+                [element]="'supplier.phone'"
+              >
+                <span>{{ data.supplier?.phone }}</span>
+              </app-flagable>
+
+              @if (
+                data.supplier?.addresses &&
+                (data.supplier?.addresses)!.length > 0
+              ) {
+                <app-flagable
+                  [id]="id$() ?? ''"
+                  [topic]="'Adresse'"
+                  [data]="data.flags"
+                  [element]="'supplier.addresses'"
+                >
+                  <span class="flex justify-between text-right">
+                    {{ data.supplier!.addresses[0].street }},
+                    {{ data.supplier!.addresses[0].postalCode }}
+                    {{ data.supplier!.addresses[0].city }},
+                    {{ data.supplier!.addresses[0].country }}
+                  </span>
+                </app-flagable>
+              }
+            </div>
           </div>
-        </div>
+        }
 
         <!-- Ressourcenzuflüsse -->
         <div class="rounded-lg bg-neutral-200 p-4">
@@ -338,40 +360,42 @@
         </div>
       </div>
 
+      @if (!authService.isSupplier()) {
+        <app-bill-of-material
+          class="col-span-3"
+          [id$]="id$() ?? ''"
+          [description]="productQuery.data()?.billOfMaterialDescription ?? ''"
+          [flags]="productQuery.data()?.flags ?? []"
+        ></app-bill-of-material>
+
+        <!-- PACKAGING -->
+        <app-product-packaging
+          class="col-span-3"
+          [id$]="id$() ?? ''"
+          [flags]="productQuery.data()?.flags ?? []"
+        ></app-product-packaging>
+
+        <!-- WASTE -->
+        <app-product-waste
+          [id]="id$() ?? ''"
+          [waste]="data.waste"
+          [flags]="data.flags"
+          [outlier]="data.outlier ?? []"
+          class="col-span-3"
+        >
+        </app-product-waste>
+
+        <!-- PRODUCTION HISTORY -->
+
+        <div class="col-span-3 rounded-lg bg-neutral-200 p-4">
+          <app-order-history
+            [product]="data"
+            [productId]="id$()"
+            [year]="date.value?.year()"
+          ></app-order-history>
+        </div>
+      }
       <!-- BOM -->
-      <app-bill-of-material
-        class="col-span-3"
-        [id$]="id$() ?? ''"
-        [description]="productQuery.data()?.billOfMaterialDescription ?? ''"
-        [flags]="productQuery.data()?.flags ?? []"
-      ></app-bill-of-material>
-
-      <!-- PACKAGING -->
-      <app-product-packaging
-        class="col-span-3"
-        [id$]="id$() ?? ''"
-        [flags]="productQuery.data()?.flags ?? []"
-      ></app-product-packaging>
-
-      <!-- WASTE -->
-      <app-product-waste
-        [id]="id$() ?? ''"
-        [waste]="data.waste"
-        [flags]="data.flags"
-        [outlier]="data.outlier ?? []"
-        class="col-span-3"
-      >
-      </app-product-waste>
-
-      <!-- PRODUCTION HISTORY -->
-
-      <div class="col-span-3 rounded-lg bg-neutral-200 p-4">
-        <app-order-history
-          [product]="data"
-          [productId]="id$()"
-          [year]="date.value?.year()"
-        ></app-order-history>
-      </div>
     </div>
     @if (role === AuthRoles.SUSTAINABILITY_MANAGER) {
       <div class="mt-4 flex justify-end">

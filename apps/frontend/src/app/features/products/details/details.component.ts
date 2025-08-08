@@ -7,9 +7,7 @@
  */
 
 import { AuthRoles, MaterialDto, ProductDto } from '@ap2/api-interfaces';
-import * as moment from 'moment/moment';
-import { Moment } from 'moment/moment';
-import { CommonModule } from '@angular/common';
+import moment, { Moment } from 'moment/moment';
 import { Component, inject, Input, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
@@ -33,6 +31,7 @@ import { injectQuery } from '@tanstack/angular-query-experimental';
 import { AuthenticationService } from '../../../core/services/authentication/authentication.service';
 import { DataService } from '../../../core/services/data-service/data.service';
 import { ProductsService } from '../../../core/services/products/products.service';
+import { SupplierService } from '../../../core/services/suppliers/suppliers.service';
 import { FlagableComponent } from '../../../shared/components/flagable-element/flagable.component';
 import { ContentType } from '../../../shared/components/overview/table-content-type.enum';
 import { ONLY_YEAR_FORMAT } from '../../../shared/constants/date-formats';
@@ -45,7 +44,6 @@ import { ProductWasteComponent } from './product-waste/product-waste.component';
 @Component({
   selector: 'app-product-overview',
   imports: [
-    CommonModule,
     RouterModule,
     MatFormFieldModule,
     MatInputModule,
@@ -77,6 +75,10 @@ import { ProductWasteComponent } from './product-waste/product-waste.component';
   templateUrl: './details.component.html',
 })
 export class ProductDetailsComponent {
+  private productService = inject(ProductsService);
+  private supplierService = inject(SupplierService);
+  authService = inject(AuthenticationService);
+
   Uris = Uris;
 
   wasteColumns: string[] = ['material', 'percentage', 'kgPerWaste'];
@@ -85,17 +87,17 @@ export class ProductDetailsComponent {
   ContentType = ContentType;
   AuthRoles = AuthRoles;
 
-  private productService = inject(ProductsService);
-
   productQuery = injectQuery(() => ({
     queryKey: ['products', this.id$()],
-    queryFn: async (): Promise<ProductDto> => {
+    queryFn: async (): Promise<Partial<ProductDto>> => {
+      if (this.authService.isSupplier()) {
+        return this.supplierService.getById(this.id$() ?? '');
+      }
       return this.productService.getById(this.id$() ?? '');
     },
     enabled: !!this.id$(),
   }));
 
-  private authService = inject(AuthenticationService);
   role = this.authService.getCurrentUserRole();
 
   @Input() set id(id: string) {

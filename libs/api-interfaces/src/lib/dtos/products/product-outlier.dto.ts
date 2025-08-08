@@ -18,7 +18,7 @@ export class ProductOutlierDto {
     name: string,
     productId: string,
     productGroup: string,
-    recycledWastePercentage: number,
+    recycledWastePercentage: number
   ) {
     this.id = id;
     this.name = name;

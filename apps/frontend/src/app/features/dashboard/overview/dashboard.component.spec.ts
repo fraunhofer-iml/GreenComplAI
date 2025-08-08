@@ -17,7 +17,7 @@ import {
   RouterModule,
 } from '@angular/router';
 import {
-  provideAngularQuery,
+  provideQueryClient,
   QueryClient,
 } from '@tanstack/angular-query-experimental';
 import { ProductGroupService } from '../../../core/services/product-group/product-group.service';
@@ -39,7 +39,7 @@ describe('DashboardComponent', () => {
       providers: [
         ProductGroupService,
         provideHttpClient(),
-        provideAngularQuery(new QueryClient()),
+        provideQueryClient(new QueryClient()),
         {
           provide: DateAdapter,
           useClass: MomentDateAdapter,

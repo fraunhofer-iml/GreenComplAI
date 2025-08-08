@@ -1,0 +1,57 @@
+name: Test and Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          filter: tree:0
+      - name: Install node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci && npx prisma generate --generator jsclient
+      - run: ls -R node_modules/keycloak-js || echo "keycloak-js missing"
+      - uses: nrwl/nx-set-shas@v4
+      - run: npx nx format:check
+      - name: Lint affected apps
+        run: npx nx affected -t lint --parallel
+      - name: Test affected apps
+        run: >
+          npx nx affected -t test --passWithNoTests --parallel
+          --exclude=frontend
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          filter: tree:0
+      - name: Install node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci && npx prisma generate --generator jsclient
+      - uses: nrwl/nx-set-shas@v4
+      - run: npx nx format:check
+      - name: Build all Nx Apps
+        run: npx nx affected -t build --parallel
