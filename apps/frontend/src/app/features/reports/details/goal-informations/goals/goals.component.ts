@@ -6,7 +6,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { ReportDto } from '@ap2/api-interfaces';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { Component, input, output } from '@angular/core';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -21,8 +20,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { DatePickerMonthYearComponent } from '../../../../../shared/components/date-picker/month-year/date-picker-month-year.component';
-import { DatePickerYearOnlyComponent } from '../../../../../shared/components/date-picker/year-only/date-pickler-year-only.component';
+import { DatePickerMonthYearComponent } from '../../../../../shared/components/date-picker/date-picker-month-year.component';
+import { DatePickerYearOnlyComponent } from '../../../../../shared/components/date-picker/date-picker-year-only.component';
 import { ConnectedStrategiesForm, GoalForm } from '../goal.forms';
 
 @Component({

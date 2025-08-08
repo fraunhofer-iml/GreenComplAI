@@ -6,9 +6,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { CommonModule } from '@angular/common';
 import { Component, input } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { MatButtonModule } from '@angular/material/button';
 import {
   DateAdapter,
   MAT_DATE_FORMATS,
@@ -20,14 +22,17 @@ import {
 } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { ONLY_YEAR_FORMAT } from '../../../../../shared/constants/date-formats';
+import { MatSelectModule } from '@angular/material/select';
+import { ONLY_YEAR_FORMAT } from '../../constants/date-formats';
 
 @Component({
-  selector: 'app-datepicker',
-  standalone: true,
+  selector: 'app-date-picker-year-only',
   imports: [
-    MatDatepickerModule,
+    CommonModule,
     MatFormFieldModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatDatepickerModule,
     MatInputModule,
     ReactiveFormsModule,
   ],
@@ -39,34 +44,23 @@ import { ONLY_YEAR_FORMAT } from '../../../../../shared/constants/date-formats';
     },
     { provide: MAT_DATE_FORMATS, useValue: ONLY_YEAR_FORMAT },
   ],
-  template: `
-    <mat-form-field appearance="outline" class="w-full">
-      <ng-content></ng-content>
-      <input
-        [value]="form().value"
-        matInput
-        [matDatepicker]="fromPicker"
-        [formControl]="form()"
-      />
-      <mat-datepicker-toggle
-        [disabled]="disabled()"
-        matSuffix
-        [for]="fromPicker"
-      ></mat-datepicker-toggle>
-      <mat-datepicker
-        #fromPicker
-        startView="multi-year"
-        (yearSelected)="yearHandler($event, fromPicker)"
-      >
-      </mat-datepicker>
-    </mat-form-field>
-  `,
+  template: `<mat-form-field appearance="outline" class="h-full w-full">
+    <mat-label> <ng-content></ng-content> </mat-label>
+    <input matInput [matDatepicker]="fromPicker" [formControl]="form()" />
+    <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+    <mat-datepicker
+      #fromPicker
+      startView="multi-year"
+      (yearSelected)="yearHandler($event, fromPicker)"
+    >
+    </mat-datepicker>
+  </mat-form-field>`,
 })
-export class YearlyDatepickerComponent {
+export class DatePickerYearOnlyComponent {
   form = input.required<FormControl<Date | null>>();
-  disabled = input<boolean>(false);
+
   yearHandler(event: Date, picker: MatDatepicker<Date>) {
-    this.form().setValue(new Date(event));
+    this.form().patchValue(event);
     picker.close();
   }
 }

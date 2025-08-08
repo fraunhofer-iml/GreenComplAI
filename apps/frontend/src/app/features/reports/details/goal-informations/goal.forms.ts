@@ -6,7 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { StrategyDto } from '@ap2/api-interfaces';
+import { ReportDto, StrategyDto } from '@ap2/api-interfaces';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 
 export type GoalForm = FormGroup<{
@@ -45,8 +45,8 @@ export type GoalForm = FormGroup<{
   strategies: FormArray<FormGroup<ConnectedStrategiesForm>>;
 }>;
 
-export const newGoalForm = (): GoalForm =>
-  new FormGroup({
+export const newGoalForm = (report: ReportDto): GoalForm => {
+  const newForm = new FormGroup({
     id: new FormControl<string | null>(null),
     title: new FormControl<string | null>(null, Validators.required),
     ecologicalThresholdResponsibilities: new FormControl<string | null>(null),
@@ -85,6 +85,21 @@ export const newGoalForm = (): GoalForm =>
     }),
     strategies: new FormArray<FormGroup<ConnectedStrategiesForm>>([]),
   });
+
+  const strategiesForms: FormArray<FormGroup<ConnectedStrategiesForm>> =
+    new FormArray<FormGroup<ConnectedStrategiesForm>>(
+      report?.strategies.map(
+        (s) =>
+          new FormGroup<ConnectedStrategiesForm>({
+            strategy: new FormControl(s),
+            selected: new FormControl(false),
+            connection: new FormControl<string | null>(null),
+          })
+      )
+    );
+  newForm.controls.strategies = strategiesForms;
+  return newForm;
+};
 
 export type ConnectedStrategiesForm = {
   strategy: FormControl<StrategyDto | null>;

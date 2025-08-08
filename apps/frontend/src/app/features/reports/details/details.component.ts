@@ -31,11 +31,10 @@ import { injectQuery } from '@tanstack/angular-query-experimental';
 import { ReportsService } from '../../../core/services/reports/reports.service';
 import { ONLY_YEAR_FORMAT } from '../../../shared/constants/date-formats';
 import { FinancialImpactComponent } from './financial-impacts/overview/financial-impact.component';
+import { GoalInformationComponent } from './goal-informations/goal-information.component';
 import { MeasuresComponent } from './measures/measures.component';
 import { ReportInformationComponent } from './report-information/report-information.component';
 import { StrategiesComponent } from './strategies/strategies.component';
-import { GoalInformationComponent } from './goal-informations/goal-information.component';
-
 
 @Component({
   selector: 'app-reports-overview',
@@ -59,7 +58,7 @@ import { GoalInformationComponent } from './goal-informations/goal-information.c
     MatTabsModule,
     ReportInformationComponent,
     FinancialImpactComponent,
-    GoalInformationComponent
+    GoalInformationComponent,
   ],
   providers: [
     ReportsService,

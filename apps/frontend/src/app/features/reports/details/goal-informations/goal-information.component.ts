@@ -6,16 +6,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { GoalCreateDto, GoalReportDto, ReportDto } from '@ap2/api-interfaces';
+import { GoalDto, GoalPlanningDto, ReportDto } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { Component, inject, input, OnChanges, output } from '@angular/core';
-import {
-  FormArray,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -29,8 +24,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { injectMutation } from '@tanstack/angular-query-experimental';
 import { ReportsService } from '../../../../core/services/reports/reports.service';
-import { DatePickerMonthYearComponent } from '../../../../shared/components/date-picker/month-year/date-picker-month-year.component';
-import { ConnectedStrategiesForm, GoalForm, newGoalForm } from './goal.forms';
+import { DatePickerMonthYearComponent } from '../../../../shared/components/date-picker/date-picker-month-year.component';
+import {
+  GoalPlanningFormGroup,
+  newGoalPlanningFormGroup,
+} from './goal-planning.form';
+import { GoalForm, newGoalForm } from './goal.forms';
 import { GoalsComponent } from './goals/goals.component';
 
 @Component({
@@ -60,39 +59,27 @@ export class GoalInformationComponent implements OnChanges {
   goalsFormGroup = new FormGroup<{ goals: FormArray<GoalForm> }>({
     goals: new FormArray<GoalForm>([]),
   });
-
-  form = new FormGroup({
-    followUpProcedure: new FormControl<string | null>(null),
-    targets: new FormControl<string | null>(null),
-    progression: new FormControl<string | null>(null),
-    referencePeriodForProgression: new FormGroup({
-      from: new FormControl<Date | null>(null),
-      to: new FormControl<Date | null>(null),
-    }),
-    deadline: new FormGroup({
-      from: new FormControl<Date | null>(null),
-      to: new FormControl<Date | null>(null),
-    }),
-    goalsPlanned: new FormControl<boolean | null>(null),
-    goalsTracked: new FormControl<boolean | null>(null),
-    noGoalsExplanation: new FormControl<string | null>(null),
-  });
+  form: FormGroup<GoalPlanningFormGroup> = newGoalPlanningFormGroup();
   reportsService = inject(ReportsService);
 
   selectedTabIndex = 0;
 
   goalPlanningMutation = injectMutation(() => ({
-    mutationFn: (props: { planning: GoalReportDto; id: string }) =>
+    mutationFn: (props: { planning: GoalPlanningDto; id: string }) =>
       this.reportsService.updateGoalPlanning(props.planning, props.id),
-    onSuccess: () => {
-      this.refetchEvent.emit();
-      toast.success('Änderungen erfolgreich gespeichert.');
-    },
+    onSuccess: () => this.onSuccess(),
+    onError: () => toast('Speichern fehlgeschlagen'),
+  }));
+
+  goalMutation = injectMutation(() => ({
+    mutationFn: (props: { goals: GoalDto[]; id: string }) =>
+      this.reportsService.updateGoals(props.goals, props.id),
+    onSuccess: () => this.onSuccess(),
     onError: () => toast('Speichern fehlgeschlagen'),
   }));
 
   addGoal(): void {
-    this.goalsFormGroup.controls.goals.push(this.getDefaultStrategiesForm());
+    this.goalsFormGroup.controls.goals.push(newGoalForm(this.report()));
     this.moveToLatestTab();
   }
 
@@ -119,8 +106,16 @@ export class GoalInformationComponent implements OnChanges {
       progression: goalPlanning?.progressEvaluation,
     });
 
-    this.report().goalPlanning?.goals.forEach((g) => {
-      const newForm = this.getDefaultStrategiesForm();
+    this.report().goals.forEach((g) => {
+      const newForm = newGoalForm(this.report());
+      const strategiesWithConnections = this.report()?.strategies.map((s) => {
+        const item = g.strategies.find((item) => item.id === s.id);
+        return {
+          strategy: s,
+          selected: !!item,
+          connection: item?.connection,
+        };
+      });
 
       newForm.patchValue({
         ...g,
@@ -129,40 +124,20 @@ export class GoalInformationComponent implements OnChanges {
           from: g.validityPeriodStart,
           to: g.validityPeriodEnd,
         },
-        strategies: this.report()?.strategies.map((s) => {
-          const item = g.strategies.find(
-            (item: { id: string; connection: string }) => item.id === s.id
-          );
-          return {
-            strategy: s,
-            selected: !!item,
-            connection: item?.connection ?? '',
-          };
-        }),
+        strategies: strategiesWithConnections,
       });
 
       this.goalsFormGroup.controls.goals.push(newForm);
     });
   }
 
-  private getDefaultStrategiesForm() {
-    const newForm = newGoalForm();
-    const strategiesForms: FormArray<FormGroup<ConnectedStrategiesForm>> =
-      new FormArray<FormGroup<ConnectedStrategiesForm>>(
-        this.report()?.strategies.map(
-          (s) =>
-            new FormGroup<ConnectedStrategiesForm>({
-              strategy: new FormControl(s),
-              selected: new FormControl(false),
-              connection: new FormControl<string | null>(null),
-            })
-        )
-      );
-    newForm.controls.strategies = strategiesForms;
-    return newForm;
+  save() {
+    if (this.goalsFormGroup.controls.goals.length === 0)
+      this.updateGoalPlanning();
+    else this.updateGoals();
   }
 
-  save() {
+  private updateGoalPlanning() {
     const dto = {
       ...this.form.value,
       id: this.report().goalPlanning?.id,
@@ -175,31 +150,41 @@ export class GoalInformationComponent implements OnChanges {
       hasPlannedGoals: this.form.value.goalsPlanned,
       goalsTracked: this.form.value.goalsTracked,
       progressEvaluation: this.form.value.progression,
-      goals: this.goalsFormGroup.value.goals?.map((goal) => {
-        const { validityPeriod, ...data } = goal;
-        const strategies: { id: string; connection: string }[] = [];
-        goal.strategies?.forEach((s) => {
-          if (s.selected && s.strategy?.id)
-            strategies.push({
-              id: s.strategy?.id,
-              connection: s.connection ?? '',
-            });
-        });
-        return {
-          id: data.id,
-          ...data,
-          validityPeriodStart: validityPeriod?.from,
-          validityPeriodEnd: validityPeriod?.to,
-          strategies: strategies,
-          referenceYear: data.referenceYear?.getFullYear(),
-        };
-      }) as GoalCreateDto[],
-    } as GoalReportDto;
+    } as GoalPlanningDto;
 
     this.goalPlanningMutation.mutate({ planning: dto, id: this.report().id });
   }
 
+  private updateGoals() {
+    const dto = this.goalsFormGroup.value.goals?.map((goal) => {
+      const { validityPeriod, ...data } = goal;
+      const strategies: { id: string; connection: string }[] = [];
+      goal.strategies?.forEach((s) => {
+        if (s.selected && s.strategy?.id)
+          strategies.push({
+            id: s.strategy.id,
+            connection: s.connection ?? '',
+          });
+      });
+
+      return {
+        ...data,
+        validityPeriodStart: validityPeriod?.from,
+        validityPeriodEnd: validityPeriod?.to,
+        strategies: strategies,
+        referenceYear: data.referenceYear?.getFullYear(),
+      };
+    }) as GoalDto[];
+
+    this.goalMutation.mutate({ goals: dto, id: this.report().id });
+  }
+
   private moveToLatestTab() {
     this.selectedTabIndex = this.goalsFormGroup.controls.goals.length - 1;
+  }
+
+  private onSuccess() {
+    this.refetchEvent.emit();
+    toast.success('Änderungen erfolgreich gespeichert.');
   }
 }

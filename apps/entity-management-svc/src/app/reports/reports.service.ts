@@ -13,8 +13,8 @@ import {
   FinancialImpactCreateDto,
   FinancialImpactDto,
   FindAllReportsForCompanyProps,
-  GoalCreateDto,
-  GoalReportDto,
+  GoalDto,
+  GoalPlanningDto,
   ImpactType,
   MeasureCreateDto,
   MeasureDto,
@@ -72,6 +72,7 @@ export class ReportsService {
           type:
             f.type === ImpactType.CHANCE ? ImpactType.CHANCE : ImpactType.RISK,
         })),
+        goals: [],
       };
     } catch (error) {
       if (error.code === 'P2002') {
@@ -169,6 +170,7 @@ export class ReportsService {
           type:
             f.type === ImpactType.CHANCE ? ImpactType.CHANCE : ImpactType.RISK,
         })),
+        goals: [],
       };
     } catch (error) {
       if (error.code === 'P2002') {
@@ -292,14 +294,14 @@ export class ReportsService {
       })),
       goalPlanning: {
         ...res.goalPlanning,
-        goals: res.goals.map((goal) => ({
-          ...goal,
-          strategies: goal.strategies.map((goalStrategy) => ({
-            id: goalStrategy.strategy.id,
-            connection: goalStrategy.connection,
-          })),
-        })),
       },
+      goals: res.goals.map((goal) => ({
+        ...goal,
+        strategies: goal.strategies.map((goalStrategy) => ({
+          id: goalStrategy.strategy.id,
+          connection: goalStrategy.connection,
+        })),
+      })),
     };
   }
 
@@ -438,51 +440,59 @@ export class ReportsService {
 
   async updateGoalPlanning(
     reportId: string,
-    goal: GoalReportDto
-  ): Promise<GoalReportDto> {
+    planning: GoalPlanningDto
+  ): Promise<GoalPlanningDto> {
     const report = await this.getReportById(reportId);
     if (report.isFinalReport) return;
 
-    const res = await this.prisma.goalPlanning.upsert({
-      where: { id: goal.id ?? '' },
+    const result = await this.prisma.goalPlanning.upsert({
+      where: { id: planning.id ?? '' },
       create: {
-        hasPlannedGoals: goal.hasPlannedGoals,
-        deadlineEnd: goal.deadlineEnd,
-        deadlineStart: goal.deadlineStart,
-        followUpProcedure: goal.followUpProcedure,
-        progressEvaluation: goal.progressEvaluation,
-        referencePeriodForProgressEnd: goal.referencePeriodForProgressEnd,
-        referencePeriodForProgressStart: goal.referencePeriodForProgressStart,
-        targets: goal.targets,
+        hasPlannedGoals: planning.hasPlannedGoals,
+        deadlineEnd: planning.deadlineEnd,
+        deadlineStart: planning.deadlineStart,
+        followUpProcedure: planning.followUpProcedure,
+        progressEvaluation: planning.progressEvaluation,
+        referencePeriodForProgressEnd: planning.referencePeriodForProgressEnd,
+        referencePeriodForProgressStart:
+          planning.referencePeriodForProgressStart,
+        targets: planning.targets,
         reportId: reportId,
-        goalsTracked: goal.goalsTracked,
-        noGoalsExplanation: goal.noGoalsExplanation,
+        goalsTracked: planning.goalsTracked,
+        noGoalsExplanation: planning.noGoalsExplanation,
       },
       update: {
-        hasPlannedGoals: goal.hasPlannedGoals,
-        deadlineEnd: goal.deadlineEnd,
-        deadlineStart: goal.deadlineStart,
-        followUpProcedure: goal.followUpProcedure,
-        progressEvaluation: goal.progressEvaluation,
-        referencePeriodForProgressEnd: goal.referencePeriodForProgressEnd,
-        referencePeriodForProgressStart: goal.referencePeriodForProgressStart,
-        targets: goal.targets,
-        goalsTracked: goal.goalsTracked,
+        hasPlannedGoals: planning.hasPlannedGoals,
+        deadlineEnd: planning.hasPlannedGoals ? planning.deadlineEnd : null,
+        deadlineStart: planning.hasPlannedGoals ? planning.deadlineStart : null,
+        followUpProcedure: planning.goalsTracked
+          ? planning.followUpProcedure
+          : null,
+        progressEvaluation: planning.goalsTracked
+          ? planning.progressEvaluation
+          : null,
+        referencePeriodForProgressEnd: planning.goalsTracked
+          ? planning.referencePeriodForProgressEnd
+          : null,
+        referencePeriodForProgressStart: planning.goalsTracked
+          ? planning.referencePeriodForProgressStart
+          : null,
+        targets: planning.goalsTracked ? planning.targets : null,
+        goalsTracked: planning.goalsTracked,
+        noGoalsExplanation: !planning.hasPlannedGoals
+          ? planning.noGoalsExplanation
+          : null,
       },
     });
 
-    await this.createOrUpdateGoals(reportId, goal.goals);
+    await this.prisma.goal.deleteMany({ where: { reportId: reportId } });
 
-    return { ...res, goals: [] };
+    return { ...result };
   }
 
-  private async createOrUpdateGoals(reportId: string, goals: GoalCreateDto[]) {
+  async createOrUpdateGoals(reportId: string, goals: GoalDto[]) {
     const report = await this.getReportById(reportId);
     if (report.isFinalReport) return;
-
-    if (goals.length === 0) {
-      await this.prisma.goal.deleteMany({ where: { reportId: reportId } });
-    }
 
     await this.prisma.goal.deleteMany({
       where: {
@@ -549,5 +559,7 @@ export class ReportsService {
     });
 
     await Promise.all(updateCalls);
+
+    return { ...report, goals: [] };
   }
 }

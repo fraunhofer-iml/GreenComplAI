@@ -6,9 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { GoalCreateDto } from './goal-create.dto';
-
-export class GoalReportDto {
+export class GoalPlanningDto {
   id?: string;
   noGoalsExplanation?: string;
   hasPlannedGoals?: boolean;
@@ -20,6 +18,4 @@ export class GoalReportDto {
   deadlineStart?: Date;
   deadlineEnd?: Date;
   goalsTracked?: boolean;
-
-  goals: GoalCreateDto[] = [];
 }
