@@ -121,7 +121,6 @@ export class ReportsService {
       data: reports.map((result) => ({
         ...result,
         numberOfGoals: result._count.goals,
-        numberOfMeasures: result._count.strategies,
         numberOfMeasures: result._count.measures,
         numberOfStrategies: result._count.strategies,
       })),
