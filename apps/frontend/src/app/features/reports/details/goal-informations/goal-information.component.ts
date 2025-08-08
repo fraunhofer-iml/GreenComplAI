@@ -28,8 +28,8 @@ import { DatePickerMonthYearComponent } from '../../../../shared/components/date
 import {
   GoalPlanningFormGroup,
   newGoalPlanningFormGroup,
-} from './goal-planning.form';
-import { GoalForm, newGoalForm } from './goal.forms';
+} from './forms/goal-planning.form';
+import { GoalForm, newGoalForm } from './forms/goal.forms';
 import { GoalsComponent } from './goals/goals.component';
 
 @Component({
@@ -56,10 +56,11 @@ import { GoalsComponent } from './goals/goals.component';
 export class GoalInformationComponent implements OnChanges {
   report = input.required<ReportDto>();
   refetchEvent = output<void>();
-  goalsFormGroup = new FormGroup<{ goals: FormArray<GoalForm> }>({
+  goalsForm = new FormGroup<{ goals: FormArray<GoalForm> }>({
     goals: new FormArray<GoalForm>([]),
   });
-  form: FormGroup<GoalPlanningFormGroup> = newGoalPlanningFormGroup();
+  goalPlanningForm: FormGroup<GoalPlanningFormGroup> =
+    newGoalPlanningFormGroup();
   reportsService = inject(ReportsService);
 
   selectedTabIndex = 0;
@@ -78,34 +79,28 @@ export class GoalInformationComponent implements OnChanges {
     onError: () => toast('Speichern fehlgeschlagen'),
   }));
 
+  ngOnChanges(): void {
+    this.setGoalPlanningFormValue();
+    this.setGoalsFormValue();
+  }
+
   addGoal(): void {
-    this.goalsFormGroup.controls.goals.push(newGoalForm(this.report()));
+    this.goalsForm.controls.goals.push(newGoalForm(this.report()));
     this.moveToLatestTab();
   }
 
   removeGoal(index: number): void {
-    this.goalsFormGroup.controls.goals.removeAt(index);
+    this.goalsForm.controls.goals.removeAt(index);
     this.moveToLatestTab();
   }
 
-  ngOnChanges(): void {
-    this.goalsFormGroup.controls.goals.clear();
-    const goalPlanning = this.report().goalPlanning;
-    this.form.patchValue({
-      ...goalPlanning,
-      deadline: {
-        from: goalPlanning?.deadlineStart,
-        to: goalPlanning?.deadlineEnd,
-      },
-      referencePeriodForProgression: {
-        from: goalPlanning?.referencePeriodForProgressStart,
-        to: goalPlanning?.referencePeriodForProgressEnd,
-      },
-      goalsPlanned: goalPlanning?.hasPlannedGoals,
-      goalsTracked: goalPlanning?.goalsTracked,
-      progression: goalPlanning?.progressEvaluation,
-    });
+  save() {
+    if (this.goalsForm.controls.goals.length === 0) this.updateGoalPlanning();
+    else this.updateGoals();
+  }
 
+  private setGoalsFormValue() {
+    this.goalsForm.controls.goals.clear();
     this.report().goals.forEach((g) => {
       const newForm = newGoalForm(this.report());
       const strategiesWithConnections = this.report()?.strategies.map((s) => {
@@ -127,36 +122,47 @@ export class GoalInformationComponent implements OnChanges {
         strategies: strategiesWithConnections,
       });
 
-      this.goalsFormGroup.controls.goals.push(newForm);
+      this.goalsForm.controls.goals.push(newForm);
     });
   }
 
-  save() {
-    if (this.goalsFormGroup.controls.goals.length === 0)
-      this.updateGoalPlanning();
-    else this.updateGoals();
+  private setGoalPlanningFormValue() {
+    const goalPlanning = this.report().goalPlanning;
+    this.goalPlanningForm.patchValue({
+      ...goalPlanning,
+      deadline: {
+        from: goalPlanning?.deadlineStart,
+        to: goalPlanning?.deadlineEnd,
+      },
+      referencePeriodForProgression: {
+        from: goalPlanning?.referencePeriodForProgressStart,
+        to: goalPlanning?.referencePeriodForProgressEnd,
+      },
+      goalsPlanned: goalPlanning?.hasPlannedGoals,
+      progression: goalPlanning?.progressEvaluation,
+    });
   }
 
   private updateGoalPlanning() {
     const dto = {
-      ...this.form.value,
+      ...this.goalPlanningForm.value,
       id: this.report().goalPlanning?.id,
-      deadlineEnd: this.form.value.deadline?.to,
-      deadlineStart: this.form.value.deadline?.from,
+      deadlineEnd: this.goalPlanningForm.value.deadline?.to,
+      deadlineStart: this.goalPlanningForm.value.deadline?.from,
       referencePeriodForProgressStart:
-        this.form.value.referencePeriodForProgression?.from,
+        this.goalPlanningForm.value.referencePeriodForProgression?.from,
       referencePeriodForProgressEnd:
-        this.form.value.referencePeriodForProgression?.to,
-      hasPlannedGoals: this.form.value.goalsPlanned,
-      goalsTracked: this.form.value.goalsTracked,
-      progressEvaluation: this.form.value.progression,
+        this.goalPlanningForm.value.referencePeriodForProgression?.to,
+      hasPlannedGoals: this.goalPlanningForm.value.goalsPlanned,
+      goalsTracked: this.goalPlanningForm.value.goalsTracked,
+      progressEvaluation: this.goalPlanningForm.value.progression,
     } as GoalPlanningDto;
 
     this.goalPlanningMutation.mutate({ planning: dto, id: this.report().id });
   }
 
   private updateGoals() {
-    const dto = this.goalsFormGroup.value.goals?.map((goal) => {
+    const dto = this.goalsForm.value.goals?.map((goal) => {
       const { validityPeriod, ...data } = goal;
       const strategies: { id: string; connection: string }[] = [];
       goal.strategies?.forEach((s) => {
@@ -180,7 +186,7 @@ export class GoalInformationComponent implements OnChanges {
   }
 
   private moveToLatestTab() {
-    this.selectedTabIndex = this.goalsFormGroup.controls.goals.length - 1;
+    this.selectedTabIndex = this.goalsForm.controls.goals.length - 1;
   }
 
   private onSuccess() {

@@ -22,7 +22,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { DatePickerMonthYearComponent } from '../../../../../shared/components/date-picker/date-picker-month-year.component';
 import { DatePickerYearOnlyComponent } from '../../../../../shared/components/date-picker/date-picker-year-only.component';
-import { ConnectedStrategiesForm, GoalForm } from '../goal.forms';
+import { ConnectedStrategiesForm, GoalForm } from '../forms/goal.forms';
 
 @Component({
   selector: 'app-goals',
