@@ -27,6 +27,9 @@ import {
 import { PrismaService } from '@ap2/database';
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { createUpdateGoalsPlanningQuery } from './queries/create-update-goals-planning.query';
+import { createGoalQuery } from './queries/goal-create.query';
+import { updateGoalQuery } from './queries/goal-update.query';
 import { upsertFinancialImpact } from './queries/impact-upsert.query';
 import { upsertMeasures } from './queries/measure-upsert.query';
 
@@ -448,40 +451,11 @@ export class ReportsService {
     const result = await this.prisma.goalPlanning.upsert({
       where: { id: planning.id ?? '' },
       create: {
-        hasPlannedGoals: planning.hasPlannedGoals,
-        deadlineEnd: planning.deadlineEnd,
-        deadlineStart: planning.deadlineStart,
-        followUpProcedure: planning.followUpProcedure,
-        progressEvaluation: planning.progressEvaluation,
-        referencePeriodForProgressEnd: planning.referencePeriodForProgressEnd,
-        referencePeriodForProgressStart:
-          planning.referencePeriodForProgressStart,
-        targets: planning.targets,
+        ...createUpdateGoalsPlanningQuery(planning),
         reportId: reportId,
-        goalsTracked: planning.goalsTracked,
-        noGoalsExplanation: planning.noGoalsExplanation,
       },
       update: {
-        hasPlannedGoals: planning.hasPlannedGoals,
-        deadlineEnd: planning.hasPlannedGoals ? planning.deadlineEnd : null,
-        deadlineStart: planning.hasPlannedGoals ? planning.deadlineStart : null,
-        followUpProcedure: planning.goalsTracked
-          ? planning.followUpProcedure
-          : null,
-        progressEvaluation: planning.goalsTracked
-          ? planning.progressEvaluation
-          : null,
-        referencePeriodForProgressEnd: planning.goalsTracked
-          ? planning.referencePeriodForProgressEnd
-          : null,
-        referencePeriodForProgressStart: planning.goalsTracked
-          ? planning.referencePeriodForProgressStart
-          : null,
-        targets: planning.goalsTracked ? planning.targets : null,
-        goalsTracked: planning.goalsTracked,
-        noGoalsExplanation: !planning.hasPlannedGoals
-          ? planning.noGoalsExplanation
-          : null,
+        ...createUpdateGoalsPlanningQuery(planning),
       },
     });
 
@@ -508,53 +482,8 @@ export class ReportsService {
       const { id, ...data } = goal;
       updateCalls.push(
         id
-          ? this.prisma.goal.update({
-              where: { id: id },
-              data: {
-                ...data,
-                strategies: {
-                  upsert: goal.strategies.map((connectedStrategy) => ({
-                    where: {
-                      goalId_strategyId: {
-                        goalId: goal.id,
-                        strategyId: connectedStrategy.id,
-                      },
-                    },
-                    update: { connection: connectedStrategy.connection },
-                    create: {
-                      strategyId: connectedStrategy.id,
-                      connection: connectedStrategy.connection,
-                    },
-                  })),
-                  deleteMany: {
-                    AND: [
-                      {
-                        strategyId: {
-                          notIn: goal.strategies.map(
-                            (connectedStrategy) => connectedStrategy.id ?? ''
-                          ),
-                        },
-                      },
-                      { goalId: id },
-                    ],
-                  },
-                },
-              },
-            })
-          : this.prisma.goal.create({
-              data: {
-                ...data,
-                validityPeriodEnd: goal.validityPeriodEnd,
-                validityPeriodStart: goal.validityPeriodStart,
-                strategies: {
-                  create: goal.strategies.map((connectedStrategy) => ({
-                    strategy: { connect: { id: connectedStrategy.id } },
-                    connection: connectedStrategy.connection,
-                  })),
-                },
-                reportId: reportId,
-              },
-            })
+          ? this.prisma.goal.update(updateGoalQuery(goal))
+          : this.prisma.goal.create(createGoalQuery(data, reportId))
       );
     });
 
