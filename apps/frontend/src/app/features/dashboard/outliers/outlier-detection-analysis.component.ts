@@ -49,8 +49,6 @@ export class OutlierDetectionAnalysisComponent {
   }));
 
   toChartData(analysis: OutlierDetectionAnalysisDto): EChartsOption {
-    console.log(analysis);
-
     if (this.productId$()) {
       const outlier = analysis.outliesByItem.find(
         (item) => item.id === this.productId$()
