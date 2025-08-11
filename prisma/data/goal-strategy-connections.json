@@ -1,0 +1,13 @@
+[
+  {
+    "goalId": "goal-1",
+    "strategyId": "strategy-4",
+    "connection": "Inhaltliche Nähe von Strategie und Ziel, dadurch Umsetzung durch die gleiche Arbeitsgruppe."
+  },
+  { "goalId": "goal-1", "strategyId": "strategy-9", "connection": "" },
+  {
+    "goalId": "goal-2",
+    "strategyId": "strategy-9",
+    "connection": "Die Reduktion der Kunststoffverpackungen geht mit dem Einsatz recyclingfähiger Verpackungen einher, die beispielsweise aus Papier und Pappe bestehen und auch für alle Bürogegenstände genutzt werden.  "
+  }
+]

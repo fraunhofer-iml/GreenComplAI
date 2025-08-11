@@ -102,7 +102,6 @@ export class MeasuresComponent implements OnChanges {
 
   dateHandler(event: Date, picker: MatDatepicker<Date>, index: number) {
     picker.close();
-
     this.measures.controls[index].get('plannedCompletion')?.patchValue(event);
   }
 

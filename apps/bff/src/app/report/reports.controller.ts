@@ -12,6 +12,8 @@ import {
   FinancialImpactCreateDto,
   FinancialImpactDto,
   getRealmRole,
+  GoalDto,
+  GoalPlanningDto,
   MeasureDto,
   PaginatedData,
   ProductDto,
@@ -155,13 +157,47 @@ export class ReportsController {
   })
   @ApiOkResponse({
     description: 'Successfull request: Return updated report with id',
-    type: ProductDto,
+    type: FinancialImpactDto,
   })
   updateFinancialImpacts(
     @Param('id') id: string,
     @Body() measures: FinancialImpactCreateDto[]
   ): Promise<FinancialImpactDto[]> {
     return this.reportsService.updateFinancialImpacts(id, measures);
+  }
+
+  @Patch(':id/goals')
+  @ApiBearerAuth()
+  @Roles(getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER))
+  @ApiBody({
+    type: ReportDto,
+  })
+  @ApiOkResponse({
+    description: 'Successfull request: Return updated report with id',
+    type: GoalPlanningDto,
+  })
+  updateGoals(
+    @Param('id') id: string,
+    @Body() goals: GoalDto[]
+  ): Promise<ReportDto> {
+    return this.reportsService.updateGoals(id, goals);
+  }
+
+  @Patch(':id/goal-planning')
+  @ApiBearerAuth()
+  @Roles(getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER))
+  @ApiBody({
+    type: ReportDto,
+  })
+  @ApiOkResponse({
+    description: 'Successfull request: Return updated report with id',
+    type: GoalPlanningDto,
+  })
+  updateGoalPlanning(
+    @Param('id') id: string,
+    @Body() goalPlanning: GoalPlanningDto
+  ): Promise<ReportDto> {
+    return this.reportsService.updateGoalPlanning(id, goalPlanning);
   }
 
   @Get(':id')

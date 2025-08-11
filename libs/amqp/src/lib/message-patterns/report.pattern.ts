@@ -14,6 +14,8 @@ export enum ReportMessagePatterns {
   UPDATE_STRATEGIES = '/reports/update/strategies',
   UPDATE_MEASURES = '/reports/update/measures',
   UPDATE_FINANCIAL_IMPACTS = '/reports/update/financial-impact',
+  UPDATE_GOALS = '/reports/update/goals',
+  UPDATE_GOAL_PLANNING = '/reports/update/goals/planning',
 
   DELETE = '/reports/delete',
   GET_REPORT_BY_ID = '/reports/get-by-id',
