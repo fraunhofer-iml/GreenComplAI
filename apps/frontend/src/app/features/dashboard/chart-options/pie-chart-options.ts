@@ -41,10 +41,12 @@ export const getDefaultOption = (
   };
 };
 
-export const getDefaultPieSeries = (): PieSeriesOption => {
+export const getDefaultPieSeries = (
+  radius?: [string | number, string]
+): PieSeriesOption => {
   return {
     type: 'pie',
-    radius: ['40%', '90%'],
+    radius: radius ? radius : ['40%', '90%'],
     avoidLabelOverlap: false,
     itemStyle: {
       borderRadius: 4,
