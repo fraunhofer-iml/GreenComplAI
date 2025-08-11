@@ -48,7 +48,7 @@ export type GoalForm = FormGroup<{
 export const newGoalForm = (report: ReportDto): GoalForm => {
   const newForm = new FormGroup({
     id: new FormControl<string | null>(null),
-    title: new FormControl<string | null>(null, Validators.required),
+    title: new FormControl<string | null>(null),
     ecologicalThresholdResponsibilities: new FormControl<string | null>(null),
     ecologicalThresholdDescription: new FormControl<string | null>(null),
     ecologicalThresholdDetermination: new FormControl<string | null>(null),

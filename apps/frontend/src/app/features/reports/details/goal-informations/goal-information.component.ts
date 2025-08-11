@@ -30,6 +30,11 @@ import {
   newGoalPlanningFormGroup,
 } from './forms/goal-planning.form';
 import { GoalForm, newGoalForm } from './forms/goal.forms';
+import {
+  addValidatorsToFormGroup,
+  removeOptionalGoalValidators,
+  removeValidatorsFromOptionalFields,
+} from './goal-form.util';
 import { GoalsComponent } from './goals/goals.component';
 
 @Component({
@@ -56,6 +61,8 @@ import { GoalsComponent } from './goals/goals.component';
 export class GoalInformationComponent implements OnChanges {
   report = input.required<ReportDto>();
   refetchEvent = output<void>();
+  goalsValid = output<boolean>();
+  validationRequired = input<boolean>(false);
   goalsForm = new FormGroup<{ goals: FormArray<GoalForm> }>({
     goals: new FormArray<GoalForm>([]),
   });
@@ -82,6 +89,7 @@ export class GoalInformationComponent implements OnChanges {
   ngOnChanges(): void {
     this.setGoalPlanningFormValue();
     this.setGoalsFormValue();
+    if (this.validationRequired()) this.addAllValidators();
   }
 
   addGoal(): void {
@@ -192,5 +200,15 @@ export class GoalInformationComponent implements OnChanges {
   private onSuccess() {
     this.refetchEvent.emit();
     toast.success('Änderungen erfolgreich gespeichert.');
+  }
+
+  addAllValidators() {
+    addValidatorsToFormGroup(this.goalPlanningForm);
+    removeValidatorsFromOptionalFields(this.goalPlanningForm);
+
+    this.goalsForm.controls.goals.controls.forEach((goalForm) => {
+      addValidatorsToFormGroup(goalForm);
+      removeOptionalGoalValidators(goalForm);
+    });
   }
 }

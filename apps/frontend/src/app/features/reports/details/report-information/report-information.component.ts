@@ -70,7 +70,9 @@ import { ReportTooltip } from './tooltips';
 export class ReportInformationComponent implements OnChanges {
   report = input<ReportDto>();
   refetchEvent = output<void>();
+  validateEvent = output<void>();
   reportForm: FormGroup<ReportForm>;
+  isValid = input<boolean>(false);
 
   private readonly dialog = inject(MatDialog);
   private reportsService = inject(ReportsService);
@@ -143,6 +145,7 @@ export class ReportInformationComponent implements OnChanges {
   }
 
   openDialog() {
+    this.validateEvent.emit();
     this.dialog
       .open(FinalizeDialogComponent)
       .afterClosed()

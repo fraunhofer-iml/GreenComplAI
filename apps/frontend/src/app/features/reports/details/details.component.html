@@ -28,6 +28,7 @@
       <app-report-information
         class="m-4"
         (refetchEvent)="reportsQuery.refetch()"
+        (validateEvent)="validationRequired = true"
         [report]="reportsQuery.data()"
       ></app-report-information>
     </mat-tab>
@@ -71,6 +72,7 @@
           class="m-4"
           (refetchEvent)="reportsQuery.refetch()"
           [report]="reportsQuery.data()"
+          [validationRequired]="validationRequired"
         ></app-goal-information>
       </mat-tab>
     }

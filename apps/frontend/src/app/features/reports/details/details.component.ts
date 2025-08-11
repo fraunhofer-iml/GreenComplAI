@@ -74,6 +74,8 @@ export class ReportsDetailsComponent {
 
   private reportsService = inject(ReportsService);
 
+  validationRequired = false;
+
   reportsQuery = injectQuery(() => ({
     queryKey: ['reports', this.id()],
     queryFn: async (): Promise<ReportDto> =>
