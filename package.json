@@ -78,6 +78,7 @@
     "@angular/language-service": "20.1.4",
     "@angular/localize": "20.1.4",
     "@eslint/js": "^9.32.0",
+    "@mschoenbo/nx-build-tools": "^0.1.5",
     "@nestjs/schematics": "11.0.7",
     "@nestjs/testing": "^11.1.5",
     "@nx-tools/nx-container": "^6.8.2",
