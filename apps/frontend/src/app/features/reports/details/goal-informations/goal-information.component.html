@@ -17,6 +17,11 @@
         <div class="flex w-full flex-col gap-2">
           <section class="">
             <mat-radio-group
+              [required]="
+                goalPlanningForm.controls.goalsPlanned.hasValidator(
+                  Validators.required
+                )
+              "
               formControlName="goalsPlanned"
               class="flex flex-row items-center gap-4"
             >
@@ -24,6 +29,9 @@
               <mat-radio-button [value]="true" i18n>Ja</mat-radio-button>
               <mat-radio-button [value]="false" i18n>Nein</mat-radio-button>
             </mat-radio-group>
+            @if (goalPlanningForm.controls.goalsPlanned.hasError('required')) {
+              <mat-error class="text-sm">Angabe erforderlich. </mat-error>
+            }
           </section>
           @if (goalPlanningForm.controls.goalsPlanned.value === true) {
             <app-date-picker-month-year

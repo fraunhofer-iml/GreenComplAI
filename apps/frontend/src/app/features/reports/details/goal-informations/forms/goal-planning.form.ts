@@ -39,7 +39,7 @@ export const newGoalPlanningFormGroup = () => {
       to: new FormControl<Date | null>(null),
     }),
     goalsPlanned: new FormControl<boolean | null>(null),
-    goalsTracked: new FormControl<boolean | null>(null),
+    goalsTracked: new FormControl<boolean | null>(false),
     noGoalsExplanation: new FormControl<string | null>(null),
   });
 };

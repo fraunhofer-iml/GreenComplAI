@@ -10,7 +10,12 @@ import { GoalDto, GoalPlanningDto, ReportDto } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { Component, inject, input, OnChanges, output } from '@angular/core';
-import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormArray,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -73,6 +78,7 @@ export class GoalInformationComponent implements OnChanges {
   reportsService = inject(ReportsService);
 
   selectedTabIndex = 0;
+  Validators = Validators;
 
   goalPlanningMutation = injectMutation(() => ({
     mutationFn: (props: { planning: GoalPlanningDto; id: string }) =>

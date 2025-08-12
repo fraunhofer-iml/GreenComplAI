@@ -7,7 +7,7 @@
  */
 
 import { ReportDto, StrategyDto } from '@ap2/api-interfaces';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 
 export type GoalForm = FormGroup<{
   id: FormControl<string | null>;
