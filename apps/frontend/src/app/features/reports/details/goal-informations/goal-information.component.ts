@@ -11,6 +11,7 @@ import { toast } from 'ngx-sonner';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { Component, inject, input, OnChanges, output } from '@angular/core';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -26,15 +27,15 @@ import { injectMutation } from '@tanstack/angular-query-experimental';
 import { ReportsService } from '../../../../core/services/reports/reports.service';
 import { DatePickerMonthYearComponent } from '../../../../shared/components/date-picker/date-picker-month-year.component';
 import {
+  addValidatorsToFormGroup,
+  removeOptionalGoalValidators,
+  removeValidatorsFromOptionalFields,
+} from './forms/goal-form.util';
+import {
   GoalPlanningFormGroup,
   newGoalPlanningFormGroup,
 } from './forms/goal-planning.form';
 import { GoalForm, newGoalForm } from './forms/goal.forms';
-import {
-  addValidatorsToFormGroup,
-  removeOptionalGoalValidators,
-  removeValidatorsFromOptionalFields,
-} from './goal-form.util';
 import { GoalsComponent } from './goals/goals.component';
 
 @Component({
@@ -54,6 +55,7 @@ import { GoalsComponent } from './goals/goals.component';
     MatTabsModule,
     DatePickerMonthYearComponent,
     TextFieldModule,
+    MatBadgeModule,
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './goal-information.component.html',
@@ -210,5 +212,9 @@ export class GoalInformationComponent implements OnChanges {
       addValidatorsToFormGroup(goalForm);
       removeOptionalGoalValidators(goalForm);
     });
+
+    if (this.goalsForm.controls.goals.length === 0)
+      this.goalsValid.emit(this.goalPlanningForm.valid);
+    else this.goalsValid.emit(this.goalsForm.valid);
   }
 }

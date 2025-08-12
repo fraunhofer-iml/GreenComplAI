@@ -144,14 +144,35 @@ export class ReportInformationComponent implements OnChanges {
     }
   }
 
-  openDialog() {
+  async openDialog() {
     this.validateEvent.emit();
-    this.dialog
-      .open(FinalizeDialogComponent)
-      .afterClosed()
-      .subscribe((isFinal: boolean) => {
-        if (isFinal) this.save(true);
-      });
+
+    const promise = () =>
+      new Promise((resolve, reject) =>
+        setTimeout(() => {
+          if (this.isValid()) {
+            resolve({ valid: true });
+          } else {
+            reject(new Error('Validation failed'));
+          }
+        }, 1000)
+      );
+    toast.promise(promise, {
+      loading: 'Eingaben werden geprüft...',
+      success: () => 'Alle Felder wurden korrekt ausgefüllt',
+      error: () =>
+        'Es wurden nicht alle erforderlichen Felder im Bereich Ziele ausgefüllt.',
+    });
+
+    await promise();
+
+    if (this.isValid())
+      this.dialog
+        .open(FinalizeDialogComponent, { data: { isValid: this.isValid() } })
+        .afterClosed()
+        .subscribe((isFinal: boolean) => {
+          if (isFinal) this.save(true);
+        });
   }
 
   private handleError(e: HttpErrorResponse) {

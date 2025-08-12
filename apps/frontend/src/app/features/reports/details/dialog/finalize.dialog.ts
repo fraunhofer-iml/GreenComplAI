@@ -34,6 +34,7 @@ import { MatInputModule } from '@angular/material/input';
 })
 export class FinalizeDialogComponent {
   readonly dialogRef = inject(MatDialogRef<FinalizeDialogComponent>);
+  readonly data = inject(MAT_DIALOG_DATA);
 
   finalize(isFinal: boolean): void {
     this.dialogRef.close(isFinal);

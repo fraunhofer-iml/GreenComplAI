@@ -30,6 +30,7 @@
         (refetchEvent)="reportsQuery.refetch()"
         (validateEvent)="validationRequired = true"
         [report]="reportsQuery.data()"
+        [isValid]="isValid"
       ></app-report-information>
     </mat-tab>
     @if (id() && reportsQuery.data() && reportsQuery.isSuccess()) {
@@ -73,6 +74,7 @@
           (refetchEvent)="reportsQuery.refetch()"
           [report]="reportsQuery.data()"
           [validationRequired]="validationRequired"
+          (goalsValid)="isValid = $event"
         ></app-goal-information>
       </mat-tab>
     }

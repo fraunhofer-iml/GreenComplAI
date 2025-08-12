@@ -126,7 +126,15 @@
         ) {
           <mat-tab [formGroupName]="pindex" label="Ziel">
             <ng-template mat-tab-label>
-              {{ goalsForm.controls.goals.value[pindex].title ?? 'Neues Ziel' }}
+              <span
+                matBadge="!"
+                matBadgeSize="small"
+                [matBadgeHidden]="goal.valid"
+                matBadgeOverlap="false"
+                >{{
+                  goalsForm.controls.goals.value[pindex].title ?? 'Neues Ziel'
+                }}</span
+              >
             </ng-template>
             <div class="grid grid-cols-2">
               <app-goals
@@ -153,7 +161,11 @@
         mat-flat-button
         (click)="save()"
         i18n
-        [disabled]="goalPlanningForm.invalid"
+        [disabled]="
+          goalsForm.controls.goals.length === 0
+            ? goalPlanningForm.invalid
+            : goalsForm.invalid
+        "
       >
         <mat-icon>save</mat-icon>
         Speichern

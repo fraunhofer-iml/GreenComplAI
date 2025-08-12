@@ -13,19 +13,14 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { GoalPlanningFormGroup } from './forms/goal-planning.form';
-import { GoalForm } from './forms/goal.forms';
+import { GoalPlanningFormGroup } from './goal-planning.form';
+import { GoalForm } from './goal.forms';
 
 export const addValidatorsToFormGroup = (formGroup: FormGroup) => {
-  Object.keys(formGroup.controls).forEach((controlName) => {
-    const control = formGroup.get(controlName);
-    if (control) {
-      addValidatorRecursively(control);
-    }
-  });
+  Object.values(formGroup.controls).forEach(addValidatorRecursively);
 };
 
-export const addValidatorRecursively = (control: AbstractControl) => {
+const addValidatorRecursively = (control: AbstractControl) => {
   if (control instanceof FormControl) {
     control.setValidators(Validators.required);
     control.updateValueAndValidity();
@@ -73,18 +68,24 @@ export const removeOptionalGoalValidators = (goalForm: GoalForm) => {
 
   if (!goalForm.value.hasEcologicalImpact) {
     controls.push(
-      ...[
-        goalForm.controls.ecologicalThresholdDescription,
-        goalForm.controls.ecologicalThresholdDetermination,
-        goalForm.controls.ecologicalThresholdResponsibilities,
-      ]
+      goalForm.controls.ecologicalThresholdDescription,
+      goalForm.controls.ecologicalThresholdDetermination,
+      goalForm.controls.ecologicalThresholdResponsibilities
     );
   }
+
+  goalForm.controls.strategies.controls.forEach((form) =>
+    controls.push(
+      form.controls.connection,
+      form.controls.selected,
+      form.controls.strategy
+    )
+  );
 
   removeValidator(controls);
 };
 
-export const removeValidator = (controls: FormControl[]) => {
+const removeValidator = (controls: FormControl[]) => {
   controls.forEach((control) => {
     control.removeValidators(Validators.required);
     control.updateValueAndValidity();
