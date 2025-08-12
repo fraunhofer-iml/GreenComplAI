@@ -29,6 +29,11 @@ jobs:
       - name: Install dependencies
         run: npm ci && npx prisma generate --generator jsclient
 
+      - name: Setup Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "gh-actions@noreply.com"
+
       - name: Run Nx release
         run: |
           if [ -n "${{ github.event.inputs.project }}" ]; then
