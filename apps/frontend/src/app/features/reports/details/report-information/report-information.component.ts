@@ -38,6 +38,7 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
 import { injectMutation } from '@tanstack/angular-query-experimental';
 import { ReportsService } from '../../../../core/services/reports/reports.service';
+import { ErrorToastComponent } from '../../../../shared/components/error-toast.component';
 import { FinalizeDialogComponent } from '../dialog/finalize.dialog';
 import { ReportForm } from './report.form';
 import { ReportTooltip } from './tooltips';
@@ -144,40 +145,44 @@ export class ReportInformationComponent implements OnChanges {
     }
   }
 
-  async openDialog() {
+  async onCloseReport() {
     this.validateEvent.emit();
 
     const promise = () =>
-      new Promise((resolve, reject) =>
+      new Promise<boolean>((resolve) =>
         setTimeout(() => {
-          if (this.isValid()) {
-            resolve({ valid: true });
-          } else {
-            reject(new Error('Validation failed'));
-          }
+          resolve(this.isValid());
         }, 1000)
       );
-    toast.promise(promise, {
-      loading: 'Eingaben werden geprüft...',
-      success: () => 'Alle Felder wurden korrekt ausgefüllt',
-      error: () =>
-        'Es wurden nicht alle erforderlichen Felder im Bereich Ziele ausgefüllt.',
-    });
 
-    await promise();
+    toast.loading('Eingaben werden geprüft...', { duration: 1000 });
 
-    if (this.isValid())
-      this.dialog
-        .open(FinalizeDialogComponent, { data: { isValid: this.isValid() } })
-        .afterClosed()
-        .subscribe((isFinal: boolean) => {
-          if (isFinal) this.save(true);
+    await promise().then((res: boolean) => {
+      if (res) {
+        toast.success('Alle Felder wurden korrekt ausgefüllt', {
+          duration: 1000,
         });
+        this.openDialog();
+      } else
+        toast.error(ErrorToastComponent, {
+          closeButton: true,
+          duration: Infinity,
+        });
+    });
   }
 
   private handleError(e: HttpErrorResponse) {
     return e.error.message === ErrorMessages.reportYearIsNotUnique
       ? toast.error('Für dieses Jahr gibt es bereits einen Bericht')
       : toast.error('Speichern fehlgeschlagen');
+  }
+
+  private openDialog() {
+    this.dialog
+      .open(FinalizeDialogComponent, { data: { isValid: this.isValid() } })
+      .afterClosed()
+      .subscribe((isFinal: boolean) => {
+        if (isFinal) this.save(true);
+      });
   }
 }

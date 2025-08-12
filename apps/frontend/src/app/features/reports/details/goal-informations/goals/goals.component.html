@@ -230,6 +230,9 @@
               >5. Stufe Beseitigung</mat-radio-button
             >
           </mat-radio-group>
+          @if (form().controls.wasteHLevel.hasError('required')) {
+            <mat-error class="text-sm">Angabe erforderlich. </mat-error>
+          }
           <section class="col-span-2">
             <mat-checkbox formControlName="hasEcologicalImpact"
               >ökologische Schwellenwerte wurden beachtet</mat-checkbox
