@@ -33,13 +33,13 @@ jobs:
         run: |
           if [ -n "${{ github.event.inputs.project }}" ]; then
             if [ -n "${{ github.event.inputs.version }}" ]; then
-              npx nx release ${{ github.event.inputs.project }} --version=${{ github.event.inputs.version }} --yes
+              npx nx release ${{ github.event.inputs.version }} --projects=${{ github.event.inputs.project }} --yes
             else
-              npx nx release ${{ github.event.inputs.project }} --yes
+              npx nx release --projects=${{ github.event.inputs.project }} --yes
             fi
           else
             if [ -n "${{ github.event.inputs.version }}" ]; then
-              npx nx release --version=${{ github.event.inputs.version }} --yes
+              npx nx release ${{ github.event.inputs.version }} --yes
             else
               npx nx release --yes
             fi
