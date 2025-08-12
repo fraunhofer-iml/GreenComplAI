@@ -1,2 +1,3 @@
 .github/workflows/archive.yaml @mschoenbo @dom74512 @evamstetter 
 .github/workflows/test_and_build.yaml @mschoenbo @dom74512 @evamstetter 
+.github/workflows/release.yaml @mschoenbo @dom74512 @evamstetter 
