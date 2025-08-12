@@ -27,7 +27,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci && npx prisma generate --generator jsclient
 
       - name: Run Nx release
         run: |
