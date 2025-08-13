@@ -11,17 +11,17 @@ import {
   UserCreationData,
 } from '@ap2/api-interfaces';
 import { ConfigurationService } from '@ap2/configuration';
-import KcAdminClient from '@keycloak/keycloak-admin-client';
+import { KeycloakAdminClient } from '@s3pweb/keycloak-admin-client-cjs';
 import { Injectable, Logger } from '@nestjs/common';
 import { IUserManagementService } from '../user-management.interface';
 
 @Injectable()
 export class KeycloakUserManagementAdapter implements IUserManagementService {
   private readonly logger = new Logger(KeycloakUserManagementAdapter.name);
-  private kcAdminClient: KcAdminClient;
+  private kcAdminClient: KeycloakAdminClient;
 
   constructor(private readonly configService: ConfigurationService) {
-    this.kcAdminClient = new KcAdminClient({
+    this.kcAdminClient = new KeycloakAdminClient({
       baseUrl: this.configService.getKeycloakConfig().url,
       realmName: this.configService.getKeycloakConfig().realm,
     });
