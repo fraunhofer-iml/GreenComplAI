@@ -105,8 +105,7 @@ export class GoalInformationComponent implements OnChanges, OnInit {
   ngOnInit(): void {
     this.goalPlanningForm.controls.goalsPlanned.valueChanges.subscribe(
       (change) => {
-        console.log(change);
-        if (!this.validationRequired() || change === undefined) return;
+        if (!this.validationRequired()) return;
         if (change) {
           this.goalPlanningForm.controls.deadline.controls.to.addValidators(
             Validators.required
@@ -130,7 +129,6 @@ export class GoalInformationComponent implements OnChanges, OnInit {
         }
         this.goalPlanningForm.controls.noGoalsExplanation.updateValueAndValidity();
         this.goalPlanningForm.controls.deadline.updateValueAndValidity();
-        console.log(this.goalPlanningForm);
       }
     );
   }
