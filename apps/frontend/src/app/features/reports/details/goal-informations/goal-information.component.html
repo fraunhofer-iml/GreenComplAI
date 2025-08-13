@@ -124,7 +124,7 @@
       >
         @for (
           goal of goalsForm.controls.goals.controls;
-          track goal;
+          track $index;
           let pindex = $index
         ) {
           <mat-tab [formGroupName]="pindex" label="Ziel">

@@ -17,12 +17,14 @@ import { GoalPlanningFormGroup } from './goal-planning.form';
 import { GoalForm } from './goal.forms';
 
 export const addValidatorsToFormGroup = (formGroup: FormGroup) => {
-  Object.values(formGroup.controls).forEach(addValidatorRecursively);
+  Object.values(formGroup.controls).forEach((control) =>
+    addValidatorRecursively(control)
+  );
 };
 
 const addValidatorRecursively = (control: AbstractControl) => {
   if (control instanceof FormControl) {
-    control.setValidators(Validators.required);
+    control.addValidators(Validators.required);
     control.updateValueAndValidity();
     control.markAsTouched();
   } else if (control instanceof FormGroup || control instanceof FormArray) {

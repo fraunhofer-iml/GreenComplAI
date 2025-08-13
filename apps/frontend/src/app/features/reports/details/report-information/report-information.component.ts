@@ -155,12 +155,12 @@ export class ReportInformationComponent implements OnChanges {
         }, 1000)
       );
 
-    toast.loading('Eingaben werden geprüft...', { duration: 1000 });
+    toast.loading('Eingaben werden geprüft...', { duration: 1500 });
 
     await promise().then((res: boolean) => {
       if (res) {
         toast.success('Alle Felder wurden korrekt ausgefüllt', {
-          duration: 1000,
+          duration: 1500,
         });
         this.openDialog();
       } else

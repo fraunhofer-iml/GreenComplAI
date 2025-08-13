@@ -25,7 +25,7 @@ export type GoalPlanningFormGroup = {
   noGoalsExplanation: FormControl<string | null>;
 };
 
-export const newGoalPlanningFormGroup = () => {
+export const newGoalPlanningFormGroup = (isFinal: boolean) => {
   return new FormGroup<GoalPlanningFormGroup>({
     followUpProcedure: new FormControl<string | null>(null),
     targets: new FormControl<string | null>(null),
@@ -38,8 +38,17 @@ export const newGoalPlanningFormGroup = () => {
       from: new FormControl<Date | null>(null),
       to: new FormControl<Date | null>(null),
     }),
-    goalsPlanned: new FormControl<boolean | null>(null),
-    goalsTracked: new FormControl<boolean | null>(false),
-    noGoalsExplanation: new FormControl<string | null>(null),
+    goalsPlanned: new FormControl<boolean | null>({
+      value: null,
+      disabled: isFinal,
+    }),
+    goalsTracked: new FormControl<boolean | null>({
+      value: false,
+      disabled: isFinal,
+    }),
+    noGoalsExplanation: new FormControl<string | null>({
+      value: null,
+      disabled: isFinal,
+    }),
   });
 };

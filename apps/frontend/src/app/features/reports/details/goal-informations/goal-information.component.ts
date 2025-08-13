@@ -9,7 +9,14 @@
 import { GoalDto, GoalPlanningDto, ReportDto } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { Component, inject, input, OnChanges, output } from '@angular/core';
+import {
+  Component,
+  inject,
+  input,
+  OnChanges,
+  output,
+  SimpleChanges,
+} from '@angular/core';
 import {
   FormArray,
   FormGroup,
@@ -74,7 +81,7 @@ export class GoalInformationComponent implements OnChanges {
     goals: new FormArray<GoalForm>([]),
   });
   goalPlanningForm: FormGroup<GoalPlanningFormGroup> =
-    newGoalPlanningFormGroup();
+    newGoalPlanningFormGroup(false);
   reportsService = inject(ReportsService);
 
   selectedTabIndex = 0;
@@ -94,9 +101,17 @@ export class GoalInformationComponent implements OnChanges {
     onError: () => toast('Speichern fehlgeschlagen'),
   }));
 
-  ngOnChanges(): void {
-    this.setGoalPlanningFormValue();
-    this.setGoalsFormValue();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['report']) {
+      console.log(this.report().goals.map((goal) => goal.strategies));
+
+      if (this.report().isFinalReport) this.disableControls();
+      this.setGoalPlanningFormValue();
+      this.setGoalsFormValue();
+    }
+
+    console.log(this.validationRequired());
+
     if (this.validationRequired()) this.addAllValidators();
   }
 
@@ -222,5 +237,10 @@ export class GoalInformationComponent implements OnChanges {
     if (this.goalsForm.controls.goals.length === 0)
       this.goalsValid.emit(this.goalPlanningForm.valid);
     else this.goalsValid.emit(this.goalsForm.valid);
+  }
+
+  private disableControls() {
+    this.goalPlanningForm.controls.goalsPlanned.disable();
+    this.goalPlanningForm.controls.goalsTracked.disable();
   }
 }

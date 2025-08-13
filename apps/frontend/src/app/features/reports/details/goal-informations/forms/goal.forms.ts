@@ -52,7 +52,10 @@ export const newGoalForm = (report: ReportDto): GoalForm => {
     ecologicalThresholdResponsibilities: new FormControl<string | null>(null),
     ecologicalThresholdDescription: new FormControl<string | null>(null),
     ecologicalThresholdDetermination: new FormControl<string | null>(null),
-    hasEcologicalImpact: new FormControl<boolean | null>(false),
+    hasEcologicalImpact: new FormControl<boolean | null>({
+      value: false,
+      disabled: false,
+    }),
     wasteHLevel: new FormControl<string | null>('avoidance'),
     impactOnExtensionOfCircularityProductDesign: new FormControl<string | null>(
       null
@@ -66,7 +69,10 @@ export const newGoalForm = (report: ReportDto): GoalForm => {
     impactOnWasteManagement: new FormControl<string | null>(null),
     obligation: new FormControl<string | null>(null),
     target: new FormControl<string | null>(null),
-    isRelative: new FormControl<boolean | null>(false),
+    isRelative: new FormControl<boolean | null>({
+      value: false,
+      disabled: false,
+    }),
     scope: new FormControl<string | null>(null),
     action: new FormControl<string | null>(null),
     geographicScope: new FormControl<string | null>(null),
@@ -74,8 +80,14 @@ export const newGoalForm = (report: ReportDto): GoalForm => {
     methodsAndAssumptions: new FormControl<string | null>(null),
     referenceValue: new FormControl<string | null>(null),
     referenceYear: new FormControl<Date | null>(null),
-    isScientificReferenced: new FormControl<boolean | null>(false),
-    stakeholderInclusion: new FormControl<boolean | null>(false),
+    isScientificReferenced: new FormControl<boolean | null>({
+      value: false,
+      disabled: false,
+    }),
+    stakeholderInclusion: new FormControl<boolean | null>({
+      value: false,
+      disabled: false,
+    }),
     changeOfGoalsOrMethods: new FormControl<string | null>(null),
     effortsAndMonitoring: new FormControl<string | null>(null),
     stakeholderInclusionComment: new FormControl<string | null>(null),

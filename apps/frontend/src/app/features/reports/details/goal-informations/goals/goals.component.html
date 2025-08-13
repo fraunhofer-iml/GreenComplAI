@@ -394,7 +394,7 @@
           <div formArrayName="strategies">
             @for (
               strategy of strategies.controls;
-              track strategy;
+              track $index;
               let index = $index
             ) {
               <div
@@ -404,7 +404,6 @@
                 <mat-checkbox
                   (change)="updateValue()"
                   formControlName="selected"
-                  [disabled]="isFinal()"
                 >
                 </mat-checkbox>
                 <div class="flex w-full flex-col">
@@ -431,6 +430,25 @@
               </div>
             }
           </div>
+        } @else {
+          @for (
+            strategy of getSelectedStrategies(strategies.controls);
+            track $index;
+            let index = $index
+          ) {
+            <div class="flex w-full flex-col">
+              <div class="flex flex-col py-2">
+                <span class="font-semibold"> {{ strategy.strategy }} </span>
+                <span class="text-sm">
+                  Verbindung zum Ziel:
+                  {{ strategy.connection || 'Keine Angabe' }}
+                </span>
+              </div>
+            </div>
+          }
+          @if (getSelectedStrategies(strategies.controls).length === 0) {
+            Keine Strategien angegeben.
+          }
         }
       </mat-expansion-panel>
     </form>
