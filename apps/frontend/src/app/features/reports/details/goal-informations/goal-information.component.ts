@@ -103,14 +103,10 @@ export class GoalInformationComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['report']) {
-      console.log(this.report().goals.map((goal) => goal.strategies));
-
       if (this.report().isFinalReport) this.disableControls();
       this.setGoalPlanningFormValue();
       this.setGoalsFormValue();
     }
-
-    console.log(this.validationRequired());
 
     if (this.validationRequired()) this.addAllValidators();
   }

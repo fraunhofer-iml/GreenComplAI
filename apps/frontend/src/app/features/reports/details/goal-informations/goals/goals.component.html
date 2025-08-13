@@ -26,6 +26,7 @@
 
           <app-date-picker-month-year
             [form]="form().controls.validityPeriod"
+            [disabled]="isFinal()"
             class="col-span-2"
           >
             <mat-label>Gültigkeit</mat-label></app-date-picker-month-year
@@ -125,7 +126,10 @@
             ></textarea>
           </mat-form-field>
 
-          <app-date-picker-year-only [form]="form().controls.referenceYear">
+          <app-date-picker-year-only
+            [form]="form().controls.referenceYear"
+            [disabled]="isFinal()"
+          >
             <mat-label>Bezugsjahr</mat-label></app-date-picker-year-only
           >
 

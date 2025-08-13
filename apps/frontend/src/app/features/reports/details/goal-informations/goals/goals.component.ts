@@ -14,7 +14,12 @@ import {
   output,
   SimpleChanges,
 } from '@angular/core';
-import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormArray,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -55,6 +60,7 @@ export class GoalsComponent implements OnChanges {
   isFinal = input<boolean>(false);
   removeEvent = output<void>();
   form = input.required<GoalForm>();
+  Validators = Validators;
 
   get strategies(): FormArray<FormGroup<ConnectedStrategiesForm>> {
     return this.form().get('strategies') as FormArray;

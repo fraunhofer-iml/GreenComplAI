@@ -47,7 +47,11 @@ import { ONLY_YEAR_FORMAT } from '../../constants/date-formats';
   template: `<mat-form-field appearance="outline" class="h-full w-full">
     <mat-label> <ng-content></ng-content> </mat-label>
     <input matInput [matDatepicker]="fromPicker" [formControl]="form()" />
-    <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+    <mat-datepicker-toggle
+      matSuffix
+      [for]="fromPicker"
+      [disabled]="disabled()"
+    ></mat-datepicker-toggle>
     <mat-datepicker
       #fromPicker
       startView="multi-year"
@@ -58,6 +62,7 @@ import { ONLY_YEAR_FORMAT } from '../../constants/date-formats';
 })
 export class DatePickerYearOnlyComponent {
   form = input.required<FormControl<Date | null>>();
+  disabled = input<boolean>(false);
 
   yearHandler(event: Date, picker: MatDatepicker<Date>) {
     this.form().patchValue(event);

@@ -9,7 +9,14 @@
 import { CreateReportDto, ErrorMessages, ReportDto } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject, input, OnChanges, output } from '@angular/core';
+import {
+  Component,
+  inject,
+  input,
+  OnChanges,
+  output,
+  SimpleChanges,
+} from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -95,8 +102,8 @@ export class ReportInformationComponent implements OnChanges {
     });
   }
 
-  ngOnChanges(): void {
-    this.setFormData(this.report());
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['report']) this.setFormData(this.report());
   }
 
   save(isFinal: boolean) {
@@ -152,15 +159,15 @@ export class ReportInformationComponent implements OnChanges {
       new Promise<boolean>((resolve) =>
         setTimeout(() => {
           resolve(this.isValid());
-        }, 1000)
+        }, 3000)
       );
 
-    toast.loading('Eingaben werden geprüft...', { duration: 1500 });
+    toast.loading('Eingaben werden geprüft...', { duration: 3000 });
 
     await promise().then((res: boolean) => {
       if (res) {
         toast.success('Alle Felder wurden korrekt ausgefüllt', {
-          duration: 1500,
+          duration: 3000,
         });
         this.openDialog();
       } else
