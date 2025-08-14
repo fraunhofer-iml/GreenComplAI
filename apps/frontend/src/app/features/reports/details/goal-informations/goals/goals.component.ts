@@ -86,7 +86,6 @@ export class GoalsComponent implements OnChanges {
 
   private disableControls() {
     this.form().controls.hasEcologicalImpact.disable();
-    this.form().controls.hasEcologicalImpact.disable();
     this.form().controls.isScientificReferenced.disable();
     this.form().controls.isRelative.disable();
     this.form().controls.stakeholderInclusion.disable();
