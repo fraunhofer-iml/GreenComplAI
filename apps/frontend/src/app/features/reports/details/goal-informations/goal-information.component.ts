@@ -16,15 +16,9 @@ import {
   OnChanges,
   OnInit,
   output,
-  Signal,
   SimpleChanges,
 } from '@angular/core';
-import {
-  FormArray,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -41,16 +35,8 @@ import { injectMutation } from '@tanstack/angular-query-experimental';
 import { ReportsService } from '../../../../core/services/reports/reports.service';
 import { DatePickerMonthYearComponent } from '../../../../shared/components/date-picker/date-picker-month-year.component';
 import { ReportsFormsService } from '../services/goals.services';
-import {
-  addValidatorsToFormGroup,
-  removeOptionalGoalValidators,
-  removeValidatorsFromOptionalFields,
-} from './forms/goal-form.util';
-import {
-  GoalPlanningFormGroup,
-  newGoalPlanningFormGroup,
-} from './forms/goal-planning.form';
-import { GoalForm, newGoalForm } from './forms/goal.forms';
+import { GoalPlanningFormGroup } from './forms/goal-planning.form';
+import { newGoalForm } from './forms/goal.forms';
 import { GoalsComponent } from './goals/goals.component';
 
 @Component({
