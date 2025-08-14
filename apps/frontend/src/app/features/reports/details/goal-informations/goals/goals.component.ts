@@ -7,8 +7,19 @@
  */
 
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { Component, input, output } from '@angular/core';
-import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  Component,
+  input,
+  OnChanges,
+  output,
+  SimpleChanges,
+} from '@angular/core';
+import {
+  FormArray,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -45,17 +56,39 @@ import { ConnectedStrategiesForm, GoalForm } from '../forms/goal.forms';
   ],
   templateUrl: './goals.component.html',
 })
-export class GoalsComponent {
+export class GoalsComponent implements OnChanges {
   isFinal = input<boolean>(false);
   removeEvent = output<void>();
   form = input.required<GoalForm>();
+  Validators = Validators;
 
   get strategies(): FormArray<FormGroup<ConnectedStrategiesForm>> {
     return this.form().get('strategies') as FormArray;
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['isFinal'] && this.isFinal()) this.disableControls();
+  }
+
   updateValue() {
     this.strategies.updateValueAndValidity();
     this.form().updateValueAndValidity();
+  }
+
+  getSelectedStrategies(forms: FormGroup<ConnectedStrategiesForm>[]) {
+    return forms
+      .filter((f) => f.controls.selected.value)
+      .map((f) => ({
+        strategy: f.value.strategy?.name,
+        connection: f.value?.connection ?? 'Keine Angabe',
+      }));
+  }
+
+  private disableControls() {
+    this.form().controls.hasEcologicalImpact.disable();
+    this.form().controls.isScientificReferenced.disable();
+    this.form().controls.isRelative.disable();
+    this.form().controls.stakeholderInclusion.disable();
+    this.form().controls.wasteHLevel.disable();
   }
 }

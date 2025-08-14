@@ -26,6 +26,7 @@
 
           <app-date-picker-month-year
             [form]="form().controls.validityPeriod"
+            [disabled]="isFinal()"
             class="col-span-2"
           >
             <mat-label>Gültigkeit</mat-label></app-date-picker-month-year
@@ -125,7 +126,10 @@
             ></textarea>
           </mat-form-field>
 
-          <app-date-picker-year-only [form]="form().controls.referenceYear">
+          <app-date-picker-year-only
+            [form]="form().controls.referenceYear"
+            [disabled]="isFinal()"
+          >
             <mat-label>Bezugsjahr</mat-label></app-date-picker-year-only
           >
 
@@ -230,6 +234,9 @@
               >5. Stufe Beseitigung</mat-radio-button
             >
           </mat-radio-group>
+          @if (form().controls.wasteHLevel.hasError('required')) {
+            <mat-error class="text-sm">Angabe erforderlich. </mat-error>
+          }
           <section class="col-span-2">
             <mat-checkbox formControlName="hasEcologicalImpact"
               >ökologische Schwellenwerte wurden beachtet</mat-checkbox
@@ -391,7 +398,7 @@
           <div formArrayName="strategies">
             @for (
               strategy of strategies.controls;
-              track strategy;
+              track $index;
               let index = $index
             ) {
               <div
@@ -401,7 +408,6 @@
                 <mat-checkbox
                   (change)="updateValue()"
                   formControlName="selected"
-                  [disabled]="isFinal()"
                 >
                 </mat-checkbox>
                 <div class="flex w-full flex-col">
@@ -428,6 +434,25 @@
               </div>
             }
           </div>
+        } @else {
+          @for (
+            strategy of getSelectedStrategies(strategies.controls);
+            track $index;
+            let index = $index
+          ) {
+            <div class="flex w-full flex-col">
+              <div class="flex flex-col py-2">
+                <span class="font-semibold"> {{ strategy.strategy }} </span>
+                <span class="text-sm">
+                  Verbindung zum Ziel:
+                  {{ strategy.connection || 'Keine Angabe' }}
+                </span>
+              </div>
+            </div>
+          }
+          @if (getSelectedStrategies(strategies.controls).length === 0) {
+            Keine Strategien angegeben.
+          }
         }
       </mat-expansion-panel>
     </form>

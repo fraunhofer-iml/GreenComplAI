@@ -9,8 +9,17 @@
 import { GoalDto, GoalPlanningDto, ReportDto } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { Component, inject, input, OnChanges, output } from '@angular/core';
-import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  Component,
+  inject,
+  input,
+  OnChanges,
+  OnInit,
+  output,
+  SimpleChanges,
+} from '@angular/core';
+import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -25,11 +34,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { injectMutation } from '@tanstack/angular-query-experimental';
 import { ReportsService } from '../../../../core/services/reports/reports.service';
 import { DatePickerMonthYearComponent } from '../../../../shared/components/date-picker/date-picker-month-year.component';
-import {
-  GoalPlanningFormGroup,
-  newGoalPlanningFormGroup,
-} from './forms/goal-planning.form';
-import { GoalForm, newGoalForm } from './forms/goal.forms';
+import { ReportsFormsService } from '../services/goals.services';
+import { GoalPlanningFormGroup } from './forms/goal-planning.form';
+import { newGoalForm } from './forms/goal.forms';
 import { GoalsComponent } from './goals/goals.component';
 
 @Component({
@@ -49,21 +56,23 @@ import { GoalsComponent } from './goals/goals.component';
     MatTabsModule,
     DatePickerMonthYearComponent,
     TextFieldModule,
+    MatBadgeModule,
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './goal-information.component.html',
 })
-export class GoalInformationComponent implements OnChanges {
-  report = input.required<ReportDto>();
-  refetchEvent = output<void>();
-  goalsForm = new FormGroup<{ goals: FormArray<GoalForm> }>({
-    goals: new FormArray<GoalForm>([]),
-  });
-  goalPlanningForm: FormGroup<GoalPlanningFormGroup> =
-    newGoalPlanningFormGroup();
+export class GoalInformationComponent implements OnChanges, OnInit {
+  private readonly formsService = inject(ReportsFormsService);
   reportsService = inject(ReportsService);
 
+  report = input.required<ReportDto>();
+  refetchEvent = output<void>();
+  goalsForm = this.formsService.getGoalsForm()();
+  goalPlanningForm: FormGroup<GoalPlanningFormGroup> =
+    this.formsService.getGoalPlanningForm()();
+
   selectedTabIndex = 0;
+  Validators = Validators;
 
   goalPlanningMutation = injectMutation(() => ({
     mutationFn: (props: { planning: GoalPlanningDto; id: string }) =>
@@ -79,9 +88,42 @@ export class GoalInformationComponent implements OnChanges {
     onError: () => toast('Speichern fehlgeschlagen'),
   }));
 
-  ngOnChanges(): void {
-    this.setGoalPlanningFormValue();
-    this.setGoalsFormValue();
+  ngOnInit(): void {
+    this.goalPlanningForm.controls.goalsPlanned.valueChanges.subscribe(
+      (change) => {
+        if (change) {
+          this.goalPlanningForm.controls.deadline.controls.to.addValidators(
+            Validators.required
+          );
+          this.goalPlanningForm.controls.deadline.controls.from.addValidators(
+            Validators.required
+          );
+          this.goalPlanningForm.controls.noGoalsExplanation.removeValidators(
+            Validators.required
+          );
+        } else if (!change) {
+          this.goalPlanningForm.controls.deadline.controls.to.removeValidators(
+            Validators.required
+          );
+          this.goalPlanningForm.controls.deadline.controls.from.removeValidators(
+            Validators.required
+          );
+          this.goalPlanningForm.controls.noGoalsExplanation.addValidators(
+            Validators.required
+          );
+        }
+        this.goalPlanningForm.controls.noGoalsExplanation.updateValueAndValidity();
+        this.goalPlanningForm.controls.deadline.updateValueAndValidity();
+      }
+    );
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['report']) {
+      if (this.report().isFinalReport) this.disableControls();
+      this.setGoalPlanningFormValue();
+      this.setGoalsFormValue();
+    }
   }
 
   addGoal(): void {
@@ -100,89 +142,26 @@ export class GoalInformationComponent implements OnChanges {
   }
 
   private setGoalsFormValue() {
-    this.goalsForm.controls.goals.clear();
-    this.report().goals.forEach((g) => {
-      const newForm = newGoalForm(this.report());
-      const strategiesWithConnections = this.report()?.strategies.map((s) => {
-        const item = g.strategies.find((item) => item.id === s.id);
-        return {
-          strategy: s,
-          selected: !!item,
-          connection: item?.connection,
-        };
-      });
-
-      newForm.patchValue({
-        ...g,
-        referenceYear: new Date(g.referenceYear, 1, 1),
-        validityPeriod: {
-          from: g.validityPeriodStart,
-          to: g.validityPeriodEnd,
-        },
-        strategies: strategiesWithConnections,
-      });
-
-      this.goalsForm.controls.goals.push(newForm);
-    });
+    this.formsService.updateGoalsForm(this.report());
   }
 
   private setGoalPlanningFormValue() {
     const goalPlanning = this.report().goalPlanning;
-    this.goalPlanningForm.patchValue({
-      ...goalPlanning,
-      deadline: {
-        from: goalPlanning?.deadlineStart,
-        to: goalPlanning?.deadlineEnd,
-      },
-      referencePeriodForProgression: {
-        from: goalPlanning?.referencePeriodForProgressStart,
-        to: goalPlanning?.referencePeriodForProgressEnd,
-      },
-      goalsPlanned: goalPlanning?.hasPlannedGoals,
-      progression: goalPlanning?.progressEvaluation,
-    });
+    if (!goalPlanning) {
+      return;
+    }
+    this.formsService.updateGoalPlanningForm(goalPlanning);
   }
 
   private updateGoalPlanning() {
-    const dto = {
-      ...this.goalPlanningForm.value,
-      id: this.report().goalPlanning?.id,
-      deadlineEnd: this.goalPlanningForm.value.deadline?.to,
-      deadlineStart: this.goalPlanningForm.value.deadline?.from,
-      referencePeriodForProgressStart:
-        this.goalPlanningForm.value.referencePeriodForProgression?.from,
-      referencePeriodForProgressEnd:
-        this.goalPlanningForm.value.referencePeriodForProgression?.to,
-      hasPlannedGoals: this.goalPlanningForm.value.goalsPlanned,
-      goalsTracked: this.goalPlanningForm.value.goalsTracked,
-      progressEvaluation: this.goalPlanningForm.value.progression,
-    } as GoalPlanningDto;
-
-    this.goalPlanningMutation.mutate({ planning: dto, id: this.report().id });
+    this.formsService.saveGoalPlanning(
+      this.goalPlanningMutation,
+      this.report()
+    );
   }
 
   private updateGoals() {
-    const dto = this.goalsForm.value.goals?.map((goal) => {
-      const { validityPeriod, ...data } = goal;
-      const strategies: { id: string; connection: string }[] = [];
-      goal.strategies?.forEach((s) => {
-        if (s.selected && s.strategy?.id)
-          strategies.push({
-            id: s.strategy.id,
-            connection: s.connection ?? '',
-          });
-      });
-
-      return {
-        ...data,
-        validityPeriodStart: validityPeriod?.from,
-        validityPeriodEnd: validityPeriod?.to,
-        strategies: strategies,
-        referenceYear: data.referenceYear?.getFullYear(),
-      };
-    }) as GoalDto[];
-
-    this.goalMutation.mutate({ goals: dto, id: this.report().id });
+    this.formsService.saveGoal(this.goalMutation, this.report());
   }
 
   private moveToLatestTab() {
@@ -192,5 +171,10 @@ export class GoalInformationComponent implements OnChanges {
   private onSuccess() {
     this.refetchEvent.emit();
     toast.success('Änderungen erfolgreich gespeichert.');
+  }
+
+  private disableControls() {
+    this.goalPlanningForm.controls.goalsPlanned.disable();
+    this.goalPlanningForm.controls.goalsTracked.disable();
   }
 }

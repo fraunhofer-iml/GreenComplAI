@@ -28,7 +28,9 @@
       <app-report-information
         class="m-4"
         (refetchEvent)="reportsQuery.refetch()"
+        (validateEvent)="validationRequired = true"
         [report]="reportsQuery.data()"
+        [isValid]="isValid"
       ></app-report-information>
     </mat-tab>
     @if (id() && reportsQuery.data() && reportsQuery.isSuccess()) {
