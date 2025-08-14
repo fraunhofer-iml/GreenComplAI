@@ -14,6 +14,7 @@ import {
   inject,
   input,
   OnChanges,
+  OnInit,
   output,
   Signal,
   SimpleChanges,
@@ -74,14 +75,15 @@ import { GoalsComponent } from './goals/goals.component';
   providers: [provideNativeDateAdapter()],
   templateUrl: './goal-information.component.html',
 })
-export class GoalInformationComponent implements OnChanges {
+export class GoalInformationComponent implements OnChanges, OnInit {
   private readonly formsService = inject(ReportsFormsService);
+  reportsService = inject(ReportsService);
+
   report = input.required<ReportDto>();
   refetchEvent = output<void>();
   goalsForm = this.formsService.getGoalsForm()();
   goalPlanningForm: FormGroup<GoalPlanningFormGroup> =
     this.formsService.getGoalPlanningForm()();
-  reportsService = inject(ReportsService);
 
   selectedTabIndex = 0;
   Validators = Validators;
@@ -99,6 +101,36 @@ export class GoalInformationComponent implements OnChanges {
     onSuccess: () => this.onSuccess(),
     onError: () => toast('Speichern fehlgeschlagen'),
   }));
+
+  ngOnInit(): void {
+    this.goalPlanningForm.controls.goalsPlanned.valueChanges.subscribe(
+      (change) => {
+        if (change) {
+          this.goalPlanningForm.controls.deadline.controls.to.addValidators(
+            Validators.required
+          );
+          this.goalPlanningForm.controls.deadline.controls.from.addValidators(
+            Validators.required
+          );
+          this.goalPlanningForm.controls.noGoalsExplanation.removeValidators(
+            Validators.required
+          );
+        } else if (!change) {
+          this.goalPlanningForm.controls.deadline.controls.to.removeValidators(
+            Validators.required
+          );
+          this.goalPlanningForm.controls.deadline.controls.from.removeValidators(
+            Validators.required
+          );
+          this.goalPlanningForm.controls.noGoalsExplanation.addValidators(
+            Validators.required
+          );
+        }
+        this.goalPlanningForm.controls.noGoalsExplanation.updateValueAndValidity();
+        this.goalPlanningForm.controls.deadline.updateValueAndValidity();
+      }
+    );
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['report']) {

@@ -130,7 +130,7 @@
   },
   "useLegacyCache": true,
   "release": {
-    "projects": ["apps/*", "!apps/**-e2e", "user-management"],
+    "projects": ["apps/*", "!apps/**-e2e"],
     "projectsRelationship": "independent",
     "releaseTagPattern": "{projectName}/v{version}",
     "changelog": {
