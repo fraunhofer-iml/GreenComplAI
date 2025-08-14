@@ -15,6 +15,7 @@ import {
   input,
   OnChanges,
   output,
+  Signal,
   SimpleChanges,
 } from '@angular/core';
 import {
@@ -38,6 +39,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { injectMutation } from '@tanstack/angular-query-experimental';
 import { ReportsService } from '../../../../core/services/reports/reports.service';
 import { DatePickerMonthYearComponent } from '../../../../shared/components/date-picker/date-picker-month-year.component';
+import { ReportsFormsService } from '../services/goals.services';
 import {
   addValidatorsToFormGroup,
   removeOptionalGoalValidators,
@@ -73,15 +75,12 @@ import { GoalsComponent } from './goals/goals.component';
   templateUrl: './goal-information.component.html',
 })
 export class GoalInformationComponent implements OnChanges {
+  private readonly formsService = inject(ReportsFormsService);
   report = input.required<ReportDto>();
   refetchEvent = output<void>();
-  goalsValid = output<boolean>();
-  validationRequired = input<boolean>(false);
-  goalsForm = new FormGroup<{ goals: FormArray<GoalForm> }>({
-    goals: new FormArray<GoalForm>([]),
-  });
+  goalsForm = this.formsService.getGoalsForm()();
   goalPlanningForm: FormGroup<GoalPlanningFormGroup> =
-    newGoalPlanningFormGroup(false);
+    this.formsService.getGoalPlanningForm()();
   reportsService = inject(ReportsService);
 
   selectedTabIndex = 0;
@@ -107,8 +106,6 @@ export class GoalInformationComponent implements OnChanges {
       this.setGoalPlanningFormValue();
       this.setGoalsFormValue();
     }
-
-    if (this.validationRequired()) this.addAllValidators();
   }
 
   addGoal(): void {
@@ -127,89 +124,26 @@ export class GoalInformationComponent implements OnChanges {
   }
 
   private setGoalsFormValue() {
-    this.goalsForm.controls.goals.clear();
-    this.report().goals.forEach((g) => {
-      const newForm = newGoalForm(this.report());
-      const strategiesWithConnections = this.report()?.strategies.map((s) => {
-        const item = g.strategies.find((item) => item.id === s.id);
-        return {
-          strategy: s,
-          selected: !!item,
-          connection: item?.connection,
-        };
-      });
-
-      newForm.patchValue({
-        ...g,
-        referenceYear: new Date(g.referenceYear, 1, 1),
-        validityPeriod: {
-          from: g.validityPeriodStart,
-          to: g.validityPeriodEnd,
-        },
-        strategies: strategiesWithConnections,
-      });
-
-      this.goalsForm.controls.goals.push(newForm);
-    });
+    this.formsService.updateGoalsForm(this.report());
   }
 
   private setGoalPlanningFormValue() {
     const goalPlanning = this.report().goalPlanning;
-    this.goalPlanningForm.patchValue({
-      ...goalPlanning,
-      deadline: {
-        from: goalPlanning?.deadlineStart,
-        to: goalPlanning?.deadlineEnd,
-      },
-      referencePeriodForProgression: {
-        from: goalPlanning?.referencePeriodForProgressStart,
-        to: goalPlanning?.referencePeriodForProgressEnd,
-      },
-      goalsPlanned: goalPlanning?.hasPlannedGoals,
-      progression: goalPlanning?.progressEvaluation,
-    });
+    if (!goalPlanning) {
+      return;
+    }
+    this.formsService.updateGoalPlanningForm(goalPlanning);
   }
 
   private updateGoalPlanning() {
-    const dto = {
-      ...this.goalPlanningForm.value,
-      id: this.report().goalPlanning?.id,
-      deadlineEnd: this.goalPlanningForm.value.deadline?.to,
-      deadlineStart: this.goalPlanningForm.value.deadline?.from,
-      referencePeriodForProgressStart:
-        this.goalPlanningForm.value.referencePeriodForProgression?.from,
-      referencePeriodForProgressEnd:
-        this.goalPlanningForm.value.referencePeriodForProgression?.to,
-      hasPlannedGoals: this.goalPlanningForm.value.goalsPlanned,
-      goalsTracked: this.goalPlanningForm.value.goalsTracked,
-      progressEvaluation: this.goalPlanningForm.value.progression,
-    } as GoalPlanningDto;
-
-    this.goalPlanningMutation.mutate({ planning: dto, id: this.report().id });
+    this.formsService.saveGoalPlanning(
+      this.goalPlanningMutation,
+      this.report()
+    );
   }
 
   private updateGoals() {
-    const dto = this.goalsForm.value.goals?.map((goal) => {
-      const { validityPeriod, ...data } = goal;
-      const strategies: { id: string; connection: string }[] = [];
-      goal.strategies?.forEach((s) => {
-        if (s.selected && s.strategy?.id)
-          strategies.push({
-            id: s.strategy.id,
-            connection: s.connection ?? '',
-          });
-      });
-
-      return {
-        ...data,
-        validityPeriodStart: validityPeriod?.from,
-        validityPeriodEnd: validityPeriod?.to,
-        strategies: strategies,
-        referenceYear: data.referenceYear?.getFullYear(),
-      };
-    }) as GoalDto[];
-
-    this.goalMutation.mutate({ goals: dto, id: this.report().id });
+    this.formsService.saveGoal(this.goalMutation, this.report());
   }
 
   private moveToLatestTab() {
@@ -219,20 +153,6 @@ export class GoalInformationComponent implements OnChanges {
   private onSuccess() {
     this.refetchEvent.emit();
     toast.success('Änderungen erfolgreich gespeichert.');
-  }
-
-  addAllValidators() {
-    addValidatorsToFormGroup(this.goalPlanningForm);
-    removeValidatorsFromOptionalFields(this.goalPlanningForm);
-
-    this.goalsForm.controls.goals.controls.forEach((goalForm) => {
-      addValidatorsToFormGroup(goalForm);
-      removeOptionalGoalValidators(goalForm);
-    });
-
-    if (this.goalsForm.controls.goals.length === 0)
-      this.goalsValid.emit(this.goalPlanningForm.valid);
-    else this.goalsValid.emit(this.goalsForm.valid);
   }
 
   private disableControls() {

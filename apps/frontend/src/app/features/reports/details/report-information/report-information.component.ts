@@ -47,6 +47,7 @@ import { injectMutation } from '@tanstack/angular-query-experimental';
 import { ReportsService } from '../../../../core/services/reports/reports.service';
 import { ErrorToastComponent } from '../../../../shared/components/error-toast.component';
 import { FinalizeDialogComponent } from '../dialog/finalize.dialog';
+import { ReportsFormsService } from '../services/goals.services';
 import { ReportForm } from './report.form';
 import { ReportTooltip } from './tooltips';
 
@@ -85,6 +86,7 @@ export class ReportInformationComponent implements OnChanges {
   private readonly dialog = inject(MatDialog);
   private reportsService = inject(ReportsService);
   private router = inject(Router);
+  private readonly formsService = inject(ReportsFormsService);
 
   ReportTooltip = ReportTooltip;
 
@@ -153,29 +155,15 @@ export class ReportInformationComponent implements OnChanges {
   }
 
   async onCloseReport() {
-    this.validateEvent.emit();
-
-    const promise = () =>
-      new Promise<boolean>((resolve) =>
-        setTimeout(() => {
-          resolve(this.isValid());
-        }, 3000)
-      );
-
-    toast.loading('Eingaben werden geprüft...', { duration: 3000 });
-
-    await promise().then((res: boolean) => {
-      if (res) {
-        toast.success('Alle Felder wurden korrekt ausgefüllt', {
-          duration: 3000,
-        });
-        this.openDialog();
-      } else
-        toast.error(ErrorToastComponent, {
-          closeButton: true,
-          duration: Infinity,
-        });
-    });
+    const valid = this.formsService.validateGoalFormOnReportClose();
+    if (valid) {
+      toast.success('Alle Felder wurden korrekt ausgefüllt');
+      this.openDialog();
+    } else
+      toast.error(ErrorToastComponent, {
+        closeButton: true,
+        duration: Infinity,
+      });
   }
 
   private handleError(e: HttpErrorResponse) {

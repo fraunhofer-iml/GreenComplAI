@@ -73,8 +73,6 @@
           class="m-4"
           (refetchEvent)="reportsQuery.refetch()"
           [report]="reportsQuery.data()"
-          [validationRequired]="validationRequired"
-          (goalsValid)="isValid = $event"
         ></app-goal-information>
       </mat-tab>
     }
