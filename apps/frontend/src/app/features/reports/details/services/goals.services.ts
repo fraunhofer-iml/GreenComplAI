@@ -42,11 +42,11 @@ export class ReportsFormsService {
   );
 
   setGoalPlanningForm(form: FormGroup<GoalPlanningFormGroup>): void {
-    this.goalPlanningForm.apply(form);
+    this.goalPlanningForm.set(form);
   }
 
   setGoalsForm(form: FormGroup<{ goals: FormArray<GoalForm> }>): void {
-    this.goalsForm.apply(form);
+    this.goalsForm.set(form);
   }
 
   getGoalPlanningForm(): Signal<FormGroup<GoalPlanningFormGroup>> {
