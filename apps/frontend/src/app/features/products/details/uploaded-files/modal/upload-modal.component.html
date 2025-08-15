@@ -1,0 +1,58 @@
+<div class="w-full p-4">
+  <div class="card">
+    <div class="flex items-baseline">
+      <h1 class="mr-2 pb-4 font-semibold text-gray-700">
+        {{ 'Upload' }}
+      </h1>
+    </div>
+    <form [formGroup]="formGroup">
+      <div class="flex w-full cursor-pointer items-center justify-center">
+        <mat-form-field class="w-full" appearance="outline" class="w-full">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="documentName" class="w-full" />
+        </mat-form-field>
+        <button
+          mat-icon-button
+          class="ml-2"
+          (click)="fileInput.click()"
+          aria-label="Datei auswählen"
+        >
+          <mat-icon>attach_file</mat-icon>
+        </button>
+        <input
+          id="dropzone-file"
+          #fileInput
+          accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+          type="file"
+          class="hidden"
+          (change)="onFileSelected($event)"
+        />
+      </div>
+      <mat-form-field class="mt-4 w-full" appearance="outline">
+        <mat-label>Dokumententyp</mat-label>
+        <mat-select formControlName="documentType" required>
+          <mat-option value="CERTIFICATE">Zertifikate & Nachweise</mat-option>
+          <mat-option value="INSTRUCTIONS"
+            >Bedienungs- & Montageanleitungen</mat-option
+          >
+          <mat-option value="TECHNICAL_DOCUMENTATION"
+            >Technische Unterlagen</mat-option
+          >
+          <mat-option value="LEGAL_DOCUMENTS">Rechtliche Dokumente</mat-option>
+          <mat-option value="MISC">Sonstiges</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="flex items-center justify-end">
+        <button
+          mat-flat-button
+          class="mt-4 text-center"
+          [disabled]="!formGroup.valid"
+          (click)="submitDocument()"
+        >
+          Speichern
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

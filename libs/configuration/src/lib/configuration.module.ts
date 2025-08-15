@@ -11,6 +11,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ConfigurationService } from './configuration.service';
 import generalConfig from './configurations/general.config';
 import keycloakConfig from './configurations/keycloak.config';
+import minioConfig from './configurations/minio.config';
 import { KeycloakConfigurationService } from './keycloak.configuration.service';
 
 @Module({
@@ -19,7 +20,7 @@ import { KeycloakConfigurationService } from './keycloak.configuration.service';
       envFilePath: ['../../.env'],
       isGlobal: true,
       cache: true,
-      load: [keycloakConfig, generalConfig],
+      load: [keycloakConfig, generalConfig, minioConfig],
     }),
   ],
   controllers: [],

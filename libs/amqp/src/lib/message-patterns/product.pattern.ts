@@ -27,4 +27,8 @@ export enum ProductMessagePatterns {
   OUTLIERS = '/products/find-outliers',
   UPDATE_FLAGS = '/products/flags',
   OUTLIERS_VALIDATE = '/products/validate',
+  UPLOAD_FILE = '/products/upload-file',
+  GET_FILES = '/products/get-files',
+  DELETE_FILE = '/products/delete-file',
+  DOWNLOAD_FILE = '/products/download-file',
 }

@@ -18,3 +18,4 @@ export * from './analysis';
 export * from './report';
 export * from './mapping';
 export * from './measures';
+export * from './files';

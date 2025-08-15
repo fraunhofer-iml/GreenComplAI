@@ -6,7 +6,4 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export * from './authenticated-kc-user.type';
-export * from './properties';
-export * from './custom-types';
-export * from './document.type';
+export * from './file.dto';

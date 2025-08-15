@@ -40,6 +40,7 @@ import { BillOfMaterialComponent } from './bill-of-material/bill-of-material.com
 import { OrderHistoryComponent } from './order-history/order-history.component';
 import { ProductPackagingComponent } from './product-packaging/product-packaging.component';
 import { ProductWasteComponent } from './product-waste/product-waste.component';
+import { UploadedFilesComponent } from './uploaded-files/uploaded-files.component';
 
 @Component({
   selector: 'app-product-overview',
@@ -61,6 +62,7 @@ import { ProductWasteComponent } from './product-waste/product-waste.component';
     MatDividerModule,
     ProductWasteComponent,
     FlagableComponent,
+    UploadedFilesComponent,
   ],
   providers: [
     { provide: DataService, useClass: ProductsService },

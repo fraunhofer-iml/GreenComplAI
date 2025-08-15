@@ -11,3 +11,4 @@ export * from './lib/configuration.service';
 export * from './lib/keycloak.configuration.service';
 export * from './lib/configurations/keycloak.config';
 export * from './lib/configurations/general.config';
+export * from './lib/configurations/minio.config';

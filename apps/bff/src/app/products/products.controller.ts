@@ -10,6 +10,8 @@ import {
   AnalysisDto,
   AuthenticatedKCUser,
   AuthRoles,
+  DocumentType,
+  FileDto,
   getRealmRole,
   PackagingDto,
   PaginatedData,
@@ -32,7 +34,10 @@ import {
   Patch,
   Post,
   Query,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -381,6 +386,104 @@ export class ProductsController {
     @Body() data: { flags: string[] }
   ): Promise<ProductOutlierDto> {
     return this.productsService.validate({ id, dto: { flags: data.flags } });
+  }
+
+  @Post(':id/files')
+  @ApiBearerAuth()
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
+  @ApiOperation({
+    description: 'Upload file for product.',
+  })
+  @ApiBody({
+    type: 'multipart/form-data',
+    required: true,
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiOkResponse({
+    description: 'Successfull request: Return URL of uploaded file',
+    type: String,
+  })
+  uploadProductFile(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+    @Body('type') type: DocumentType,
+    @Body('fileName') fileName: string
+  ): Promise<void> {
+    return this.productsService.uploadProductFile({
+      file,
+      productId: id,
+      type: type,
+      fileName: fileName,
+    });
+  }
+
+  @Get(':id/files')
+  @ApiBearerAuth()
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
+  @ApiOperation({
+    description: 'Get all uploaded files of product.',
+  })
+  @ApiOkResponse({
+    description: 'Successfull request: Return all uploaded files of product',
+  })
+  getProductFiles(@Param('id') id: string): Promise<FileDto[]> {
+    return this.productsService.getProductFiles(id);
+  }
+
+  @Get(':id/files/file')
+  @ApiBearerAuth()
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
+  @ApiOperation({
+    description: 'Download file of product.',
+  })
+  @ApiOkResponse({
+    description: 'Successfull request: Return URL of downloaded file',
+    type: String,
+  })
+  async downloadProductFile(
+    @Query('path') path: string
+  ): Promise<{ url: string }> {
+    const res = await this.productsService.downloadProductFile(
+      decodeURIComponent(path)
+    );
+    return { url: res };
+  }
+
+  @Delete(':id/files/:fileId')
+  @ApiBearerAuth()
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
+  @ApiOperation({
+    description: 'Delete file of product.',
+  })
+  @ApiOkResponse({
+    description: 'Successfull request: 200 OK',
+  })
+  removeProductFile(
+    @Param('id') id: string,
+    @Param('fileId') fileId: string
+  ): Promise<void> {
+    return this.productsService.deleteProductFile({ productId: id, fileId });
   }
 
   @Delete(':id')

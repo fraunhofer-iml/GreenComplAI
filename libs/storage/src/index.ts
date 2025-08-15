@@ -6,7 +6,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export * from './authenticated-kc-user.type';
-export * from './properties';
-export * from './custom-types';
-export * from './document.type';
+export * from './lib/storage.module';
+export * from './lib/storage-service.interface';
+export * from './lib/minio/storage-minio.service';
