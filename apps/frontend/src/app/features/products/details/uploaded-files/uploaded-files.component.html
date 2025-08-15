@@ -1,6 +1,6 @@
 <div class="flex flex-col">
   <div class="flex items-center gap-2">
-    <h2>Uploaded Files</h2>
+    <h2>Angehängte Dateien</h2>
     <span class="text-gray-500">({{ filesQuery.data()?.length || 0 }})</span>
 
     <button
@@ -54,7 +54,7 @@
           class="flex cursor-pointer items-center justify-center"
           (click)="onClickDownloadButton(file.path)"
         >
-          <span class="material-symbols-outlined hover:text-orange-400"
+          <span class="material-symbols-outlined hover:text-primary-500"
             >download</span
           >
         </button>
