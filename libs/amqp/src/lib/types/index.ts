@@ -7,3 +7,4 @@
  */
 
 export * from './analysis';
+export * from './upload-file';

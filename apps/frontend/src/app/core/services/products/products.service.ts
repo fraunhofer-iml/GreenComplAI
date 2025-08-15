@@ -8,6 +8,8 @@
 
 import {
   AnalysisDto,
+  DocumentType,
+  FileDto,
   PackagingDto,
   PaginatedData,
   ProductCreateDto,
@@ -174,6 +176,50 @@ export class ProductsService extends DataService<PaginatedData<ProductDto>> {
       this.http.patch(`${this.url}${ApiUris.products}/${id}/outlier`, {
         flags: keys,
       })
+    );
+  }
+
+  getFiles(id: string): Promise<FileDto[]> {
+    return lastValueFrom(
+      this.http.get<FileDto[]>(`${this.url}${ApiUris.products}/${id}/files`)
+    );
+  }
+
+  uploadFile(
+    id: string,
+    file: File,
+    type: DocumentType,
+    fileName: string
+  ): Promise<void> {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('type', type);
+    formData.append('fileName', fileName);
+
+    return lastValueFrom(
+      this.http.post<void>(
+        `${this.url}${ApiUris.products}/${id}/files`,
+        formData
+      )
+    );
+  }
+
+  downloadFile(id: string, path: string): Promise<{ url: string }> {
+    return lastValueFrom(
+      this.http.get<{ url: string }>(
+        `${this.url}${ApiUris.products}/${id}/files/file`,
+        {
+          params: new HttpParams().set('path', encodeURIComponent(path)),
+        }
+      )
+    );
+  }
+
+  deleteFile(productId: string, fileId: string): Promise<void> {
+    return lastValueFrom(
+      this.http.delete<void>(
+        `${this.url}${ApiUris.products}/${productId}/files/${fileId}`
+      )
     );
   }
 }

@@ -273,6 +273,11 @@
       </div>
 
       <div class="flex flex-col gap-4">
+        <!-- Uploaded Files -->
+        <div class="rounded-lg bg-neutral-200 p-4">
+          <app-product-uploaded-files [productId]="data.id" />
+        </div>
+
         @if (!authService.isSupplier()) {
           <!-- Supplier -->
           <div class="rounded-lg bg-neutral-200 p-4">

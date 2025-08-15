@@ -6,12 +6,17 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { AmqpClientEnum, ProductMessagePatterns } from '@ap2/amqp';
+import {
+  AmqpClientEnum,
+  ProductMessagePatterns,
+  UploadFileRequest,
+} from '@ap2/amqp';
 import {
   AnalysisDto,
-  AuthenticatedKCUser,
   CreateProductProps,
   DeleteProductProps,
+  DocumentType,
+  FileDto,
   FindAllProductsProps,
   FindProductByIdProps,
   GenerateAnalysisProp,
@@ -36,9 +41,9 @@ import {
   Inject,
   Injectable,
   Logger,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { GCFile } from '@prisma/client';
 
 @Injectable()
 export class ProductsService {
@@ -232,5 +237,63 @@ export class ProductsService {
     }
 
     return res.data.outlier ? ['recycledWastePercentage'] : [];
+  }
+
+  async uploadProductFile({
+    file,
+    productId,
+    type,
+    fileName,
+  }: {
+    file: Express.Multer.File;
+    productId: string;
+    type: DocumentType;
+    fileName: string;
+  }): Promise<void> {
+    await firstValueFrom(
+      this.entityManagementService.send<void>(
+        ProductMessagePatterns.UPLOAD_FILE,
+        {
+          file: file.buffer,
+          productId,
+          type,
+          mimeType: file.mimetype,
+          fileName,
+        } satisfies UploadFileRequest
+      )
+    );
+  }
+
+  async getProductFiles(productId: string): Promise<FileDto[]> {
+    return firstValueFrom(
+      this.entityManagementService.send<GCFile[]>(
+        ProductMessagePatterns.GET_FILES,
+        { id: productId }
+      )
+    );
+  }
+
+  async downloadProductFile(path: string): Promise<string> {
+    return firstValueFrom(
+      this.entityManagementService.send<string>(
+        ProductMessagePatterns.DOWNLOAD_FILE,
+        { path }
+      )
+    );
+  }
+
+  async deleteProductFile({
+    productId,
+    fileId,
+  }: {
+    productId: string;
+    fileId: string;
+  }): Promise<void> {
+    await firstValueFrom(
+      this.entityManagementService.send<void>(
+        ProductMessagePatterns.DELETE_FILE,
+        { productId, fileId }
+      )
+    );
   }
 }

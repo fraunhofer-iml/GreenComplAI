@@ -90,6 +90,23 @@ model EcologicalThreshold {
   productId String?
 }
 
+enum DocumentType {
+  CERTIFICATE // Zertifikate und Nachweise
+  INSTRUCTIONS // Bedienungs- & Montageanleitungen
+  TECHNICAL_DOCUMENTATION // Technische Unterlagen
+  LEGAL_DOCUMENTS // Rechtliche Dokumente
+  MISC // Sonstige Dokumente
+}
+
+model GCFile {
+  id   String       @id @default(cuid())
+  path String?      @unique
+  type DocumentType
+
+  product   Product? @relation(fields: [productId], references: [id])
+  productId String?
+}
+
 model Material {
   id   String @id @default(cuid())
   name String @unique
@@ -197,6 +214,8 @@ model Product {
   criticalRawMaterials CriticalRawMaterials[]
 
   productionHistory ProductionHistory[]
+
+  uploadedFiles GCFile[]
 
   flags     String[]
   outlier   String[]

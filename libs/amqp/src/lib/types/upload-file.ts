@@ -6,7 +6,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export * from './authenticated-kc-user.type';
-export * from './properties';
-export * from './custom-types';
-export * from './document.type';
+import { DocumentType } from '@ap2/api-interfaces';
+
+export type UploadFileRequest = {
+  file: Buffer;
+  productId: string;
+  type: DocumentType;
+  mimeType: string;
+  fileName: string;
+};

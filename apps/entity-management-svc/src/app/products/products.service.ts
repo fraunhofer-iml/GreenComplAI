@@ -24,7 +24,9 @@ import {
   UpdateProductWasteProps,
 } from '@ap2/api-interfaces';
 import { Injectable } from '@nestjs/common';
+import { DocumentType, GCFile } from '@prisma/client';
 import { ProductCrudService } from './product-crud.service';
+import { ProductFileService } from './product-file.service';
 import { ProductOutlierService } from './product-outlier.service';
 import { ProductRelationsService } from './product-relations.service';
 import { ProductSupplierService } from './product-supplier.service';
@@ -35,7 +37,8 @@ export class ProductService {
     private readonly crudService: ProductCrudService,
     private readonly relationsService: ProductRelationsService,
     private readonly outlierService: ProductOutlierService,
-    private readonly supplierService: ProductSupplierService
+    private readonly supplierService: ProductSupplierService,
+    private readonly fileService: ProductFileService
   ) {}
 
   async create(props: CreateProductProps): Promise<ProductDto> {
@@ -130,5 +133,33 @@ export class ProductService {
     props: UpdateProductionHistoryProps
   ): Promise<ProductDto> {
     return this.relationsService.updateProductionHistory(props);
+  }
+
+  async uploadProductFile(
+    file: Buffer,
+    productId: string,
+    type: DocumentType,
+    mimeType: string,
+    fileName: string
+  ): Promise<void> {
+    await this.fileService.uploadProductFile(
+      file,
+      fileName,
+      productId,
+      type,
+      mimeType
+    );
+  }
+
+  async getProductFiles(productId: string): Promise<GCFile[]> {
+    return this.fileService.getProductFiles(productId);
+  }
+
+  async deleteProductFile(productId: string, fileId: string): Promise<void> {
+    await this.fileService.deleteProductFile(productId, fileId);
+  }
+
+  async downloadProductFile(path: string): Promise<string> {
+    return this.fileService.downloadProductFile(path);
   }
 }
