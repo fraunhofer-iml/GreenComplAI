@@ -265,14 +265,12 @@ export class ProductsService {
   }
 
   async getProductFiles(productId: string): Promise<FileDto[]> {
-    const gcFiles = firstValueFrom(
+    return firstValueFrom(
       this.entityManagementService.send<GCFile[]>(
         ProductMessagePatterns.GET_FILES,
         { id: productId }
       )
     );
-
-    return gcFiles;
   }
 
   async downloadProductFile(path: string): Promise<string> {
