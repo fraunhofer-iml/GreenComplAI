@@ -32,7 +32,7 @@ export class SuppliersService {
     props: FindAllProductsProps,
     user: AuthenticatedKCUser
   ): Promise<PaginatedData<Partial<ProductDto>>> {
-    const supplierCompanyId = this.getCompanyIdByUserId(user.sub);
+    const supplierCompanyId = await this.getCompanyIdByUserId(user.sub);
 
     return firstValueFrom(
       this.entityManagementService.send<PaginatedData<ProductDto>>(
@@ -49,7 +49,7 @@ export class SuppliersService {
     props: FindProductByIdProps,
     user: AuthenticatedKCUser
   ): Promise<Partial<ProductDto>> {
-    const supplierCompanyId = this.getCompanyIdByUserId(user.sub);
+    const supplierCompanyId = await this.getCompanyIdByUserId(user.sub);
 
     return firstValueFrom(
       this.entityManagementService.send<Partial<ProductDto>>(
@@ -62,11 +62,11 @@ export class SuppliersService {
     );
   }
 
-  update(
+  async update(
     props: UpdateProductProps,
     user: AuthenticatedKCUser
   ): Promise<ProductDto> {
-    const supplierCompanyId = this.getCompanyIdByUserId(user.sub);
+    const supplierCompanyId = await this.getCompanyIdByUserId(user.sub);
 
     return firstValueFrom(
       this.entityManagementService.send<ProductDto>(
