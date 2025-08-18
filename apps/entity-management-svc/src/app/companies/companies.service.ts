@@ -96,7 +96,7 @@ export class CompaniesService {
       email: dto.email,
       firstName: dto.name,
       lastName: '',
-      initialPassword: dto.name.trim().toLocaleLowerCase(),
+      initialPassword: dto.name.toLocaleLowerCase().replace(/\s+/g, '_'),
       groups: ['AP2/Lieferant'],
     });
 
