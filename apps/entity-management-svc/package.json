@@ -1,6 +1,6 @@
 {
   "name": "@greencomplai/entity-management-svc",
-  "version": "0.11.0",
+  "version": "0.11.1",
   "private": true,
   "license": "Apache-2.0",
   "dependencies": {}
