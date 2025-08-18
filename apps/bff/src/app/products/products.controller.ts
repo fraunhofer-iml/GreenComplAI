@@ -392,7 +392,8 @@ export class ProductsController {
   @ApiBearerAuth()
   @Roles(
     getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-    getRealmRole(AuthRoles.BUYER)
+    getRealmRole(AuthRoles.BUYER),
+    getRealmRole(AuthRoles.SUPPLIER)
   )
   @ApiOperation({
     description: 'Upload file for product.',
@@ -433,7 +434,8 @@ export class ProductsController {
   @ApiBearerAuth()
   @Roles(
     getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-    getRealmRole(AuthRoles.BUYER)
+    getRealmRole(AuthRoles.BUYER),
+    getRealmRole(AuthRoles.SUPPLIER)
   )
   @ApiOperation({
     description: 'Get all uploaded files of product.',
@@ -449,7 +451,8 @@ export class ProductsController {
   @ApiBearerAuth()
   @Roles(
     getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-    getRealmRole(AuthRoles.BUYER)
+    getRealmRole(AuthRoles.BUYER),
+    getRealmRole(AuthRoles.SUPPLIER)
   )
   @ApiOperation({
     description: 'Download file of product.',
@@ -471,7 +474,8 @@ export class ProductsController {
   @ApiBearerAuth()
   @Roles(
     getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
-    getRealmRole(AuthRoles.BUYER)
+    getRealmRole(AuthRoles.BUYER),
+    getRealmRole(AuthRoles.SUPPLIER)
   )
   @ApiOperation({
     description: 'Delete file of product.',
