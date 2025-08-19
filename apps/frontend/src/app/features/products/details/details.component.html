@@ -235,7 +235,7 @@
               [element]="'digitalProductPassportUrl'"
             >
               <a
-                [href]="data.digitalProductPassportUrl"
+                [href]="sanitizeUrl(data.digitalProductPassportUrl)"
                 target="_blank"
                 class="text-blue-500 underline"
                 >{{ data.digitalProductPassportUrl }}</a
