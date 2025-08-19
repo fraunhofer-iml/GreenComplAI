@@ -173,6 +173,8 @@ model Product {
   circularPrincipleMeasureable   Boolean @default(false)
   circularPrincipleAssumption    String?
 
+  digitalProductPassportUrl String?
+
   durability           Float?
   durabilityDifference Float?
   reparability         Float?
