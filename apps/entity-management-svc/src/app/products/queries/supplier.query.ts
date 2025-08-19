@@ -45,6 +45,7 @@ export const productFindManyOfSupplierQuery = ({
           addresses: true,
         },
       },
+      digitalProductPassportUrl: true,
       wasteFlow: true,
       waterUsed: true,
       name: true,
@@ -83,6 +84,7 @@ export const productFindUniqueOfSupplierQuery = (
           addresses: true,
         },
       },
+      digitalProductPassportUrl: true,
       wasteFlow: true,
       waterUsed: true,
       name: true,
@@ -121,5 +123,7 @@ export const updateProductOfSupplier = (dto: ProductUpdateDto, id: string) =>
       materials: materialUpdateQuery(dto.materials, id),
       criticalRawMaterials: materialUpdateQuery(dto.criticalRawMaterials, id),
       rareEarths: materialUpdateQuery(dto.rareEarths, id),
+      digitalProductPassportUrl:
+        dto.masterData.digitalProductPassportUrl ?? null,
     },
   }) satisfies Prisma.ProductUpdateArgs;

@@ -49,6 +49,7 @@ export interface MasterDataFormGroup {
   circularPrincipleJustification: FormControl<string | null>;
   circularPrincipleMeasureable: FormControl<boolean | null>;
   circularPrincipleAssumption: FormControl<string | null>;
+  digitalProductPassportUrl: FormControl<string | null>;
 }
 
 export interface ProducedItemsFormGroup {

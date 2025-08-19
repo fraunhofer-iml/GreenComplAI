@@ -227,6 +227,22 @@
             >
           }
 
+          @if (data.digitalProductPassportUrl) {
+            <app-flagable
+              [id]="id$() ?? ''"
+              [data]="data.flags"
+              [topic]="'Digitale Produktpass-URL'"
+              [element]="'digitalProductPassportUrl'"
+            >
+              <a
+                [href]="sanitizeUrl(data.digitalProductPassportUrl)"
+                target="_blank"
+                class="text-blue-500 underline"
+                >{{ data.digitalProductPassportUrl }}</a
+              >
+            </app-flagable>
+          }
+
           <div class="col-span-2 my-2 h-[1px] bg-neutral-300"></div>
 
           <app-flagable

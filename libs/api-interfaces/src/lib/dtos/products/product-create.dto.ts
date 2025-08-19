@@ -26,6 +26,8 @@ export class ProductCreateDto {
   durabilityDifference?: number;
   reparability?: number;
 
+  digitalProductPassportUrl?: string;
+
   billOfMaterial?: [ProductCreateDto, number][];
   billOfMaterialDescription?: string;
 

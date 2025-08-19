@@ -45,6 +45,7 @@ export class ProductDto {
   isSellable?: boolean;
   cascadePrinciple?: string;
   certificationSystem?: string;
+  digitalProductPassportUrl?: string;
 
   circularPrinciple?: boolean;
   circularPrincipleJustification?: string;
@@ -90,7 +91,8 @@ export class ProductDto {
     cascadePrinciple?: string,
     certificationSystem?: string,
     circularPrinciple?: boolean,
-    productionHistory?: { amount: number; year: number }[]
+    productionHistory?: { amount: number; year: number }[],
+    digitalProductPassportUrl?: string
   ) {
     this.id = id;
     this.name = name;
@@ -126,5 +128,6 @@ export class ProductDto {
     this.billOfMaterialDescription = billOfMaterialDescription;
     this.flags = flags;
     this.outlier = outlier;
+    this.digitalProductPassportUrl = digitalProductPassportUrl;
   }
 }

@@ -116,4 +116,17 @@ export class ProductDetailsComponent {
     this.date.setValue(ctrlValue);
     datepicker.close();
   }
+
+  sanitizeUrl(url: string) {
+    if (!url) return '';
+    try {
+      const parsed = new URL(url, window.location.origin);
+      if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+        return parsed.href;
+      }
+      return '';
+    } catch {
+      return '';
+    }
+  }
 }

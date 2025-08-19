@@ -36,6 +36,7 @@ export class ProductMasterDataDto {
 
   cascadePrinciple?: string;
   certification?: string;
+  digitalProductPassportUrl?: string;
 
   circularPrinciple?: boolean;
 
@@ -66,7 +67,8 @@ export class ProductMasterDataDto {
     wasteFlow?: string,
     cascadePrincipal?: string,
     certification?: string,
-    circularPrinciple?: boolean
+    circularPrinciple?: boolean,
+    digitalProductPassportUrl?: string
   ) {
     this.name = name;
     this.isSellable = isSellable;
@@ -93,5 +95,6 @@ export class ProductMasterDataDto {
     this.reparability = reparability;
     this.circularPrinciple = circularPrinciple;
     this.flags = flags;
+    this.digitalProductPassportUrl = digitalProductPassportUrl;
   }
 }
