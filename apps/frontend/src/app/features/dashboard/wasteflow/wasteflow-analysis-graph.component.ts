@@ -6,14 +6,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { GenericWasteFlowAnalysisDto, WasteFlowAnalysisDto } from '@ap2/api-interfaces';
+import {
+  GenericWasteFlowAnalysisDto,
+  WasteFlowAnalysisDto,
+} from '@ap2/api-interfaces';
 import * as echarts from 'echarts';
 import { BarSeriesOption, EChartsOption, SeriesOption } from 'echarts';
-import * as moment from 'moment';
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
 import { CommonModule } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { SkalaTheme } from '../../../../styles/chart-theme';
 import { AnalysisService } from '../../../core/services/analysis/analysis.service';
@@ -21,7 +23,10 @@ import {
   getBarChartOptions,
   getDefaultSeries,
 } from '../chart-options/bar-chart-options';
-import { getDefaultOption, getDefaultPieSeries } from '../chart-options/pie-chart-options';
+import {
+  getDefaultOption,
+  getDefaultPieSeries,
+} from '../chart-options/pie-chart-options';
 import { OutlierDetectionAnalysisComponent } from '../outliers/outlier-detection-analysis.component';
 
 @Component({
@@ -35,6 +40,8 @@ import { OutlierDetectionAnalysisComponent } from '../outliers/outlier-detection
   templateUrl: './wasteflow-analysis-graph.component.html',
 })
 export class WasteflowAnalysisGraphComponent {
+  private readonly analysisService = inject(AnalysisService);
+
   theme = SkalaTheme;
   from$ = input<Moment>(moment(new Date(2024, 0, 1)));
   to$ = input<Moment>(moment(new Date(2024, 0, 1)));
@@ -60,8 +67,6 @@ export class WasteflowAnalysisGraphComponent {
   }));
   legendChart: any;
   private chart: echarts.ECharts | undefined;
-
-  constructor(private readonly analysisService: AnalysisService) {}
 
   toChartData(analysis: WasteFlowAnalysisDto): {
     legend: EChartsOption;
@@ -312,13 +317,15 @@ export class WasteflowAnalysisGraphComponent {
 
   private removeLegendEntry(legendOptions: any, seriesName: string): number {
     let legendIndex = -1;
-    legendOptions.series = legendOptions.series.filter((el: {data: {name:string}[]}, i: number) => {
-      if (el.data[0].name === seriesName) {
-        legendIndex = i;
-        return false;
+    legendOptions.series = legendOptions.series.filter(
+      (el: { data: { name: string }[] }, i: number) => {
+        if (el.data[0].name === seriesName) {
+          legendIndex = i;
+          return false;
+        }
+        return true;
       }
-      return true;
-    });
+    );
     return legendIndex;
   }
 

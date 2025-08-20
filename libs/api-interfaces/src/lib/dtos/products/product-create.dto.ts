@@ -26,6 +26,8 @@ export class ProductCreateDto {
   durabilityDifference?: number;
   reparability?: number;
 
+  digitalProductPassportUrl?: string;
+
   billOfMaterial?: [ProductCreateDto, number][];
   billOfMaterialDescription?: string;
 
@@ -57,6 +59,10 @@ export class ProductCreateDto {
   certification?: string;
 
   circularPrinciple?: boolean;
+  circularPrincipleJustification?: string;
+  circularPrincipleMeasureable?: boolean;
+  circularPrincipleAssumption?: string;
+
   productionHistory?: { amount: number; year: number }[];
   flags: string[];
   outliers?: string[];
@@ -97,7 +103,7 @@ export class ProductCreateDto {
     cascadePrincipal?: string,
     certification?: string,
     circularPrinciple?: boolean,
-    outliers?: string[],
+    outliers?: string[]
   ) {
     this.name = name;
     this.isSellable = isSellable;

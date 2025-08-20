@@ -8,4 +8,7 @@
 
 export type AuthenticatedKCUser = {
   sub: string;
+  realm_access: {
+    roles: string[];
+  };
 };

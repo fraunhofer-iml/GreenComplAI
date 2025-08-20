@@ -11,10 +11,10 @@ import {
   ProductGroupDto,
   VariantDto,
 } from '@ap2/api-interfaces';
-import { CommonModule } from '@angular/common';
 import {
   Component,
   EventEmitter,
+  inject,
   input,
   OnChanges,
   Output,
@@ -38,9 +38,7 @@ import { ProductGroupService } from '../../../core/services/product-group/produc
 @Component({
   selector: 'app-product-group-create',
   imports: [
-    CommonModule,
     RouterModule,
-    CommonModule,
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
@@ -52,6 +50,8 @@ import { ProductGroupService } from '../../../core/services/product-group/produc
   templateUrl: './product-group-create.component.html',
 })
 export class ProductGroupCreateComponent implements OnChanges {
+  private readonly productGroupService = inject(ProductGroupService);
+
   form: FormGroup = new FormGroup({
     name: new FormControl<string>('', Validators.required),
     wasteFlow: new FormControl<string>('', Validators.required),
@@ -80,8 +80,6 @@ export class ProductGroupCreateComponent implements OnChanges {
   }));
 
   @Output() closeSheetEvent = new EventEmitter<ProductGroupDto>();
-
-  constructor(private readonly productGroupService: ProductGroupService) {}
 
   ngOnChanges() {
     this.form.patchValue({

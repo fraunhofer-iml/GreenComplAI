@@ -9,3 +9,4 @@
 export * from './authenticated-kc-user.type';
 export * from './properties';
 export * from './custom-types';
+export * from './document.type';

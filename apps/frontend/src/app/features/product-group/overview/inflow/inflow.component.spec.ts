@@ -11,7 +11,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import {
-  provideAngularQuery,
+  provideQueryClient,
   QueryClient,
 } from '@tanstack/angular-query-experimental';
 import { InflowComponent } from './inflow.component';
@@ -24,7 +24,7 @@ describe('InflowComponent', () => {
     await TestBed.configureTestingModule({
       imports: [InflowComponent, BrowserAnimationsModule],
       providers: [
-        provideAngularQuery(new QueryClient()),
+        provideQueryClient(new QueryClient()),
         provideHttpClient(),
         {
           provide: ActivatedRoute,

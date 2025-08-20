@@ -10,7 +10,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import {
-  provideAngularQuery,
+  provideQueryClient,
   QueryClient,
 } from '@tanstack/angular-query-experimental';
 import { AnalysisService } from '../../../core/services/analysis/analysis.service';
@@ -27,7 +27,7 @@ describe('WateflowAnalysisGraphComponent', () => {
         provideHttpClient(),
         provideRouter([]),
         AnalysisService,
-        provideAngularQuery(new QueryClient()),
+        provideQueryClient(new QueryClient()),
       ],
     }).compileComponents();
 

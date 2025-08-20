@@ -46,6 +46,9 @@ const measureStrategies = requireData('measure-strategy.json');
 const financialImpacts = requireData('financial-impacts.json');
 const criticalAssumptions = requireData('critical-assumptions.json');
 const partPackagings = requireData('part-packagings.json');
+const goalPlanning = requireData('goal-planning.json');
+const goals = requireData('goals.json');
+const goalStrategies = requireData('goal-strategy-connections.json');
 
 const prisma = new PrismaClient();
 
@@ -166,15 +169,33 @@ const dataSets: Entity[] = [
     records: rareEarths,
     createRecord: async (data: any) => await prisma.rareEarths.create({ data }),
   },
+
   {
     name: 'reports',
     records: reports,
     createRecord: async (data: any) => await prisma.report.create({ data }),
   },
   {
+    name: 'goal-information',
+    records: goalPlanning,
+    createRecord: async (data: any) =>
+      await prisma.goalPlanning.create({ data }),
+  },
+  {
     name: 'strategies',
     records: strategies,
     createRecord: async (data: any) => await prisma.strategy.create({ data }),
+  },
+  {
+    name: 'goals',
+    records: goals,
+    createRecord: async (data: any) => await prisma.goal.create({ data }),
+  },
+  {
+    name: 'goal strategies connections',
+    records: goalStrategies,
+    createRecord: async (data: any) =>
+      await prisma.goalStrategy.create({ data }),
   },
   {
     name: 'measures',

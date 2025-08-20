@@ -8,6 +8,8 @@
 
 import { MeasureDto } from '../measures';
 import { FinancialImpactDto } from './financial-impact.dto';
+import { GoalDto } from './goal-create.dto';
+import { GoalPlanningDto } from './goal.report.dto';
 import { StrategyDto } from './strategy.dto';
 
 export class ReportDto {
@@ -24,6 +26,10 @@ export class ReportDto {
   measures: MeasureDto[];
 
   financialImpacts: FinancialImpactDto[];
+
+  goalPlanning?: GoalPlanningDto;
+  goals: GoalDto[];
+
   flags: string[];
 
   constructor(
@@ -37,6 +43,8 @@ export class ReportDto {
     strategies: StrategyDto[],
     measures: MeasureDto[],
     financialImpacts: FinancialImpactDto[],
+    goalPlanning: GoalPlanningDto,
+    goals: GoalDto[],
     flags: string[]
   ) {
     this.id = id;
@@ -50,5 +58,7 @@ export class ReportDto {
     this.measures = measures;
     this.financialImpacts = financialImpacts;
     this.flags = flags;
+    this.goalPlanning = goalPlanning;
+    this.goals = goals;
   }
 }

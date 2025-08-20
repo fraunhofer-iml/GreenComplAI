@@ -8,8 +8,7 @@
 
 import { CompanyCreateDto, CompanyDto } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
-import { CommonModule } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import {
   FormArray,
   FormControl,
@@ -37,7 +36,6 @@ import { Uris } from '../../../shared/constants/uris';
   selector: 'app-company-create',
   imports: [
     RouterModule,
-    CommonModule,
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
@@ -54,6 +52,10 @@ import { Uris } from '../../../shared/constants/uris';
   templateUrl: './create.component.html',
 })
 export class CompanyCreateComponent {
+  private readonly companiesService = inject(CompaniesService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+
   id = input<string>();
   callback = input<string>();
   companyData: CompanyDto | undefined;
@@ -104,12 +106,6 @@ export class CompanyCreateComponent {
 
   usesImport = false;
 
-  constructor(
-    private readonly companiesService: CompaniesService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router
-  ) {}
-
   addAddress(): void {
     (this.companyForm.get('addresses') as FormArray).push(
       this.getAddressForm()
@@ -133,7 +129,7 @@ export class CompanyCreateComponent {
     if (this.id()) {
       this.updateMutation.mutate({ id: this.id() ?? '', dto: dto });
       this.navigateToCallbackIfSet();
-      return
+      return;
     }
 
     const isOwnCompany = this.route.snapshot.queryParamMap.get('own');

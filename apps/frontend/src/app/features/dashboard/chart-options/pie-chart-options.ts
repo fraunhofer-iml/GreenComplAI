@@ -6,7 +6,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-;
+import { EChartsOption, PieSeriesOption } from 'echarts';
+
 /*
  * Copyright Fraunhofer Institute for Material Flow and Logistics
  *
@@ -14,8 +15,6 @@
  * For details on the licensing terms, see the LICENSE file.
  * SPDX-License-Identifier: Apache-2.0
  */
-
-import { EChartsOption, PieSeriesOption } from 'echarts';
 
 //Chart colours get overridden by the SkalaTheme (see styles/chart-theme.ts)
 
@@ -42,10 +41,12 @@ export const getDefaultOption = (
   };
 };
 
-export const getDefaultPieSeries = (): PieSeriesOption => {
+export const getDefaultPieSeries = (
+  radius?: [string | number, string]
+): PieSeriesOption => {
   return {
     type: 'pie',
-    radius: ['40%', '90%'],
+    radius: radius ? radius : ['40%', '90%'],
     avoidLabelOverlap: false,
     itemStyle: {
       borderRadius: 4,

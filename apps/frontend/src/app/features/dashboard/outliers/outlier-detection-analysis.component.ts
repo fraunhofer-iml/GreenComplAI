@@ -6,22 +6,22 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Component, input } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { AnalysisService } from '../../../core/services/analysis/analysis.service';
-import { injectQuery } from '@tanstack/angular-query-experimental';
+import { OutlierDetectionAnalysisDto } from '@ap2/api-interfaces';
 import { EChartsOption, PieSeriesOption } from 'echarts';
 import * as echarts from 'echarts';
-
+import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
+import { CommonModule } from '@angular/common';
+import { Component, inject, input } from '@angular/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterModule } from '@angular/router';
+import { injectQuery } from '@tanstack/angular-query-experimental';
+import { SkalaTheme } from '../../../../styles/chart-theme';
+import { AnalysisService } from '../../../core/services/analysis/analysis.service';
+import { ChartLegends } from '../../../shared/constants/chart-legends';
 import {
   getDefaultOption,
   getDefaultPieSeries,
 } from '../chart-options/pie-chart-options';
-import { OutlierDetectionAnalysisDto } from '@ap2/api-interfaces';
-import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
-import { SkalaTheme } from '../../../../styles/chart-theme';
-import { RouterModule } from '@angular/router';
-import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-outlier-detection-analysis',
@@ -30,19 +30,19 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   templateUrl: './outlier-detection-analysis.component.html',
 })
 export class OutlierDetectionAnalysisComponent {
+  private readonly analysisService = inject(AnalysisService);
+
   productGroupId$ = input<string>('');
   productId$ = input<string>('');
 
   isOutlier = false;
   theme = SkalaTheme;
 
-  constructor(private readonly analysisService: AnalysisService) {}
-
   analysisQuery = injectQuery(() => ({
     queryKey: ['outlier-analysis', this.productGroupId$(), this.productId$()],
     queryFn: async () => {
       const analysis = await this.analysisService.getOutlierAnalysis(
-        this.productGroupId$(),
+        this.productGroupId$()
       );
       return this.toChartData(analysis);
     },
@@ -51,26 +51,41 @@ export class OutlierDetectionAnalysisComponent {
   toChartData(analysis: OutlierDetectionAnalysisDto): EChartsOption {
     if (this.productId$()) {
       const outlier = analysis.outliesByItem.find(
-        (item) => item.id === this.productId$(),
+        (item) => item.id === this.productId$()
       )?.numberOfOutliers;
       this.isOutlier = !!outlier;
     }
 
-    return this.createChartOption('', [
-      ['erkannte Ausreißer', analysis.totalNumberOfOutliers],
+    return this.createChartOption(
       [
-        'validierte Produkte',
-        analysis.totalNumberOfProducts - analysis.totalNumberOfOutliers,
+        [ChartLegends.OUTLIERS, analysis.totalNumberOfOutliers],
+        [
+          ChartLegends.VALIDATED,
+          analysis.totalNumberOfProducts - analysis.totalNumberOfOutliers,
+        ],
       ],
-    ]);
+      [
+        ...analysis.outliesByItem.map(
+          (item) =>
+            ['Ausreißer ' + item.id, item.numberOfOutliers] as [string, number]
+        ),
+        ...analysis.outliesByItem.map(
+          (item) =>
+            [
+              'Validiert ' + item.id,
+              item.numberOfProducts - item.numberOfOutliers,
+            ] as [string, number]
+        ),
+      ]
+    );
   }
 
   private createChartOption(
-    title: string,
-    data: [string, number][],
+    dataTotal: [string, number][],
+    dataByItems: [string, number][]
   ): EChartsOption {
     const chartOption: EChartsOption = getDefaultOption(true);
-    chartOption.title = { text: title };
+    chartOption.title = { text: '' };
     chartOption.legend = {
       orient: 'vertical',
       right: 0,
@@ -78,17 +93,38 @@ export class OutlierDetectionAnalysisComponent {
       textStyle: {
         color: '#fff',
       },
+      data: [ChartLegends.OUTLIERS, ChartLegends.VALIDATED],
     };
 
-    if (data.length === 0) chartOption.title.subtext = 'Keine Daten';
+    if (dataTotal.length === 0) chartOption.title.subtext = 'Keine Daten';
     else {
-      const tmpSeries: PieSeriesOption = getDefaultPieSeries();
-      tmpSeries.center = ['30%', '50%'];
-      tmpSeries.data = data.map((material) => ({
-        value: +material[1].toFixed(2),
-        name: material[0],
-      }));
-      chartOption.series = tmpSeries;
+      const outerPie: PieSeriesOption = getDefaultPieSeries(['60%', '90%']);
+      outerPie.center = ['30%', '50%'];
+      outerPie.label = { position: 'inside', formatter: '{c}' };
+      outerPie.data = dataByItems.map((item) => {
+        return {
+          value: +item[1].toFixed(2),
+          name: item[0],
+        };
+      });
+
+      const innerPie: PieSeriesOption = getDefaultPieSeries([0, '50 %']);
+      innerPie.center = ['30%', '50%'];
+      innerPie.label = {
+        position: 'inside',
+        formatter: function (params) {
+          const percent = params.percent?.toFixed(1);
+          return `${percent}%`;
+        },
+      };
+      innerPie.data = dataTotal.map((item) => {
+        return {
+          value: +item[1].toFixed(2),
+          name: item[0],
+        };
+      });
+
+      chartOption.series = [outerPie, innerPie];
     }
 
     return chartOption;

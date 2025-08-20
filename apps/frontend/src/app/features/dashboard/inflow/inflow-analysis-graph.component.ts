@@ -12,11 +12,9 @@ import {
 } from '@ap2/api-interfaces';
 import * as echarts from 'echarts';
 import { EChartsOption, PieSeriesOption } from 'echarts';
-import * as moment from 'moment';
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
-import { CommonModule } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { SkalaTheme } from '../../../../styles/chart-theme';
 import { AnalysisService } from '../../../core/services/analysis/analysis.service';
@@ -27,17 +25,17 @@ import {
 
 @Component({
   selector: 'app-inflow-analysis-graph',
-  imports: [CommonModule, NgxEchartsDirective],
+  imports: [NgxEchartsDirective],
   providers: [provideEchartsCore({ echarts })],
   templateUrl: './inflow-analysis-graph.component.html',
 })
 export class InflowAnalysisGraphComponent {
+  private readonly analysisService = inject(AnalysisService);
+
   from$ = input<Moment>(moment(new Date(2024, 0, 1)));
   to$ = input<Moment>(moment(new Date(2024, 0, 1)));
   productGroupId$ = input<string>('');
   productId$ = input<string>('');
-
-  constructor(private readonly analysisService: AnalysisService) {}
 
   theme = SkalaTheme;
 
@@ -87,22 +85,22 @@ export class InflowAnalysisGraphComponent {
     const rareEarths = this.createChartOption(
       'Eingekaufte seltene Erden',
       analysis.rareEarths,
-      "kg"
+      'kg'
     );
     const packaging = this.createChartOption(
       'Eingekaufte Verpackungen',
       analysis.packagings,
-      "stk"
+      'stk'
     );
     const materials = this.createChartOption(
       'Eingekaufte Materialien',
       analysis.materials,
-      "kg"
+      'kg'
     );
     const criticalRawMaterials = this.createChartOption(
       'Eingekaufte kritische Rohstoffe',
       analysis.criticalMaterials,
-      "kg"
+      'kg'
     );
     return [packaging, rareEarths, materials, criticalRawMaterials];
   }
@@ -113,12 +111,12 @@ export class InflowAnalysisGraphComponent {
     const amount = this.createChartOption(
       'Eingekaufte Produkte',
       analysis.analysis.map((item) => [item.name, item.amount]),
-      "stk"
+      'stk'
     );
     const water = this.createChartOption(
       'Verwendetes Wasser',
       analysis.analysis.map((item) => [item.name, item.water]),
-      "l"
+      'l'
     );
 
     return [water, amount];
@@ -127,13 +125,17 @@ export class InflowAnalysisGraphComponent {
   private getAmountChartsForProduct(
     analysis: GenericInFlowAnalysisDto
   ): EChartsOption[] {
-    const amount = this.createChartOption('Eingekaufte Produkte', [
-      [analysis.name, analysis.amount],
-    ],"stk");
+    const amount = this.createChartOption(
+      'Eingekaufte Produkte',
+      [[analysis.name, analysis.amount]],
+      'stk'
+    );
 
-    const water = this.createChartOption('Verwendetes Wasser', [
-      [analysis.name, analysis.water],
-    ], "l");
+    const water = this.createChartOption(
+      'Verwendetes Wasser',
+      [[analysis.name, analysis.water]],
+      'l'
+    );
 
     return [amount, water];
   }
@@ -144,7 +146,7 @@ export class InflowAnalysisGraphComponent {
     unit?: string
   ): EChartsOption {
     const chartOption: EChartsOption = getDefaultOption(true, unit);
-    chartOption.title = { text: title,  };
+    chartOption.title = { text: title };
 
     if (data.length === 0) chartOption.title.subtext = 'Keine Daten';
     else {

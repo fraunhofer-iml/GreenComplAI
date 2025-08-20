@@ -1,13 +1,15 @@
 <div class="flex w-full flex-col gap-4 p-8">
   <div class="flex items-center gap-2 text-lg">
     <a routerLink="/companies" class="font-semibold hover:underline"
-    >Lieferanten</a
+      >Lieferanten</a
     >
     <span class="material-symbols-outlined text-lg"> chevron_right </span>
     @if (id()) {
       <h1 class="font-medium">{{ id() }}</h1>
     } @else {
-      <h1 class="font-medium">{{!companyData?"hinzufügen":companyData.name}}</h1>
+      <h1 class="font-medium">
+        {{ !companyData ? 'hinzufügen' : companyData.name }}
+      </h1>
     }
   </div>
 
@@ -24,22 +26,24 @@
       >
         <span class="col-span-3" i18n>Kontaktdaten</span>
         <mat-form-field appearance="outline">
-          <mat-label i18n>
-            Name
-          </mat-label>
+          <mat-label i18n> Name </mat-label>
           <input matInput formControlName="name" />
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label i18n>
             E-Mail
-            <span *ngIf="companyData?.flags?.includes('email')">🚩</span>
+            @if (companyData?.flags?.includes('email')) {
+              <span>🚩</span>
+            }
           </mat-label>
           <input matInput formControlName="email"
-          /></mat-form-field>
+        /></mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label i18n>
             Telefon
-            <span *ngIf="companyData?.flags?.includes('phone')">🚩</span>
+            @if (companyData?.flags?.includes('phone')) {
+              <span>🚩</span>
+            }
           </mat-label>
           <input matInput formControlName="phone" />
         </mat-form-field>
@@ -50,8 +54,10 @@
       >
         <span i18n>Adressen</span>
 
-        @for (address of companyForm.controls.addresses.controls;
-          track $index) {
+        @for (
+          address of companyForm.controls.addresses.controls;
+          track $index
+        ) {
           <div
             [formGroupName]="$index"
             class="grid w-full grid-cols-1 gap-2 pt-2 md:grid-cols-3"
@@ -64,7 +70,7 @@
             <mat-form-field appearance="outline">
               <mat-label i18n>Stadt</mat-label>
               <input matInput formControlName="city"
-              /></mat-form-field>
+            /></mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label i18n>Postleitzahl</mat-label>
               <input matInput formControlName="postalCode" />

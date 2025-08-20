@@ -8,9 +8,15 @@
 
 import { CreateReportDto, ErrorMessages, ReportDto } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
-import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject, input, OnChanges, output } from '@angular/core';
+import {
+  Component,
+  inject,
+  input,
+  OnChanges,
+  output,
+  SimpleChanges,
+} from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -39,15 +45,15 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
 import { injectMutation } from '@tanstack/angular-query-experimental';
 import { ReportsService } from '../../../../core/services/reports/reports.service';
+import { ErrorToastComponent } from '../../../../shared/components/error-toast.component';
 import { FinalizeDialogComponent } from '../dialog/finalize.dialog';
+import { ReportsFormsService } from '../services/goals.services';
 import { ReportForm } from './report.form';
 import { ReportTooltip } from './tooltips';
 
 @Component({
   selector: 'app-report-information',
   imports: [
-    CommonModule,
-    CommonModule,
     RouterModule,
     MatFormFieldModule,
     MatInputModule,
@@ -73,11 +79,14 @@ import { ReportTooltip } from './tooltips';
 export class ReportInformationComponent implements OnChanges {
   report = input<ReportDto>();
   refetchEvent = output<void>();
+  validateEvent = output<void>();
   reportForm: FormGroup<ReportForm>;
+  isValid = input<boolean>(false);
 
   private readonly dialog = inject(MatDialog);
   private reportsService = inject(ReportsService);
   private router = inject(Router);
+  private readonly formsService = inject(ReportsFormsService);
 
   ReportTooltip = ReportTooltip;
 
@@ -95,8 +104,8 @@ export class ReportInformationComponent implements OnChanges {
     });
   }
 
-  ngOnChanges(): void {
-    this.setFormData(this.report());
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['report']) this.setFormData(this.report());
   }
 
   save(isFinal: boolean) {
@@ -145,12 +154,15 @@ export class ReportInformationComponent implements OnChanges {
     }
   }
 
-  openDialog() {
-    this.dialog
-      .open(FinalizeDialogComponent)
-      .afterClosed()
-      .subscribe((isFinal: boolean) => {
-        if (isFinal) this.save(true);
+  async onCloseReport() {
+    const valid = this.formsService.validateGoalFormOnReportClose();
+    if (valid) {
+      toast.success('Alle Felder wurden korrekt ausgefüllt');
+      this.openDialog();
+    } else
+      toast.error(ErrorToastComponent, {
+        closeButton: true,
+        duration: Infinity,
       });
   }
 
@@ -158,5 +170,14 @@ export class ReportInformationComponent implements OnChanges {
     return e.error.message === ErrorMessages.reportYearIsNotUnique
       ? toast.error('Für dieses Jahr gibt es bereits einen Bericht')
       : toast.error('Speichern fehlgeschlagen');
+  }
+
+  private openDialog() {
+    this.dialog
+      .open(FinalizeDialogComponent, { data: { isValid: this.isValid() } })
+      .afterClosed()
+      .subscribe((isFinal: boolean) => {
+        if (isFinal) this.save(true);
+      });
   }
 }

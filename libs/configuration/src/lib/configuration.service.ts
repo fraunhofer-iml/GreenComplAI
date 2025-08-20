@@ -16,6 +16,7 @@ import {
   KEYCLOAK_IDENTIFIER,
   KeycloakConfiguration,
 } from './configurations/keycloak.config';
+import { MinioConfig } from './configurations/minio.config';
 
 @Injectable()
 export class ConfigurationService {
@@ -43,5 +44,15 @@ export class ConfigurationService {
       throw new Error(msg);
     }
     return generalConfig;
+  }
+
+  public getMinioConfig() {
+    const minioConfig = this.configService.get<MinioConfig>('minio');
+    if (!minioConfig) {
+      const msg = 'Environment variables for MinIO configuration missing!';
+      this.logger.error(msg);
+      throw new Error(msg);
+    }
+    return minioConfig;
   }
 }

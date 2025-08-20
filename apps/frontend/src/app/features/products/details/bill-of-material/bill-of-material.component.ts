@@ -9,7 +9,6 @@
 import { ProductDto, ProductUpdateMapDto } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
 import { elementAt } from 'rxjs';
-import { CommonModule } from '@angular/common';
 import { Component, inject, input, OnChanges } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -30,7 +29,6 @@ import { BillOfMaterialFormGroup } from '../../create/model/product-form.model';
 @Component({
   selector: 'app-bill-of-material',
   imports: [
-    CommonModule,
     RouterModule,
     MatTableModule,
     ProductsSheetComponent,
@@ -41,7 +39,8 @@ import { BillOfMaterialFormGroup } from '../../create/model/product-form.model';
   templateUrl: './bill-of-material.component.html',
 })
 export class BillOfMaterialComponent implements OnChanges {
-  productService = inject(ProductsService);
+  private readonly productsService = inject(ProductsService);
+  private readonly constructionService = inject(ProductConstructionService);
 
   id$ = input<string>();
   flags = input<string[]>([]);
@@ -62,7 +61,7 @@ export class BillOfMaterialComponent implements OnChanges {
   preliminaryProductsQuery = injectQuery(() => ({
     queryKey: ['preliminaryProducts', this.id$()],
     queryFn: async () => {
-      const products = await this.productService.getPreliminary(
+      const products = await this.productsService.getPreliminary(
         this.id$() ?? ''
       );
 
@@ -78,10 +77,7 @@ export class BillOfMaterialComponent implements OnChanges {
     );
   }
 
-  constructor(
-    private readonly productsService: ProductsService,
-    private readonly constructionService: ProductConstructionService
-  ) {
+  constructor() {
     this.billOfMaterialForm = new FormGroup<BillOfMaterialFormGroup>({
       billOfMaterialDescription: new FormControl(),
       billOfMaterial: new FormControl<[ProductDto, number][]>([], {

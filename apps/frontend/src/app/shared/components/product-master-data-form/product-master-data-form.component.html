@@ -4,16 +4,13 @@
   >
     <div i18n class="col-span-1">Allgemeine Informationen</div>
     <div class="col-span-2 flex gap-4">
-      <section>
-        <mat-checkbox formControlName="isSellable"
-          >Verkaufsprodukt
-        </mat-checkbox>
-      </section>
-      <section>
-        <mat-checkbox formControlName="circularPrinciple"
-          >Kreislauforientierten Grundsätzen beachtet
-        </mat-checkbox>
-      </section>
+      @if (!authService.isSupplier()) {
+        <section>
+          <mat-checkbox formControlName="isSellable"
+            >Verkaufsprodukt
+          </mat-checkbox>
+        </section>
+      }
     </div>
 
     <mat-form-field appearance="outline">
@@ -24,14 +21,18 @@
       <mat-label>Beschreibung</mat-label>
       <input matInput formControlName="description" />
     </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Produkt Id</mat-label>
-      <input matInput formControlName="productId" />
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Kategorie</mat-label>
-      <input matInput formControlName="category" />
-    </mat-form-field>
+    @if (!authService.isSupplier()) {
+      <mat-form-field appearance="outline">
+        <mat-label>Produkt Id</mat-label>
+        <input matInput formControlName="productId" />
+      </mat-form-field>
+    }
+    @if (!authService.isSupplier()) {
+      <mat-form-field appearance="outline">
+        <mat-label>Kategorie</mat-label>
+        <input matInput formControlName="category" />
+      </mat-form-field>
+    }
     <div class="flex flex-wrap gap-1">
       <mat-form-field appearance="outline" class="w-full flex-none md:flex-1">
         <mat-label>Gewicht</mat-label>
@@ -48,23 +49,26 @@
         </mat-select>
       </mat-form-field>
     </div>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Lieferant</mat-label>
-      <input matInput formControlName="supplier" [matAutocomplete]="auto" />
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-        @for (option of associatedCompaniesQuery.data()?.data; track option) {
-          <mat-option [value]="option"
-            ><div class="flex flex-row items-center gap-1">
-              <span> {{ option.name }}</span>
-              @if (option.id === ownCompanyQuery.data()?.id) {
-                <mat-icon class="material-symbols-outlined">home_pin</mat-icon>
-              }
-            </div>
-          </mat-option>
-        }
-      </mat-autocomplete>
-    </mat-form-field>
+    @if (!authService.isSupplier()) {
+      <mat-form-field appearance="outline">
+        <mat-label>Lieferant</mat-label>
+        <input matInput formControlName="supplier" [matAutocomplete]="auto" />
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+          @for (option of associatedCompaniesQuery.data()?.data; track option) {
+            <mat-option [value]="option"
+              ><div class="flex flex-row items-center gap-1">
+                <span> {{ option.name }}</span>
+                @if (option.id === ownCompanyQuery.data()?.id) {
+                  <mat-icon class="material-symbols-outlined"
+                    >home_pin</mat-icon
+                  >
+                }
+              </div>
+            </mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+    }
 
     <mat-form-field appearance="outline">
       <mat-label>Hersteller</mat-label>
@@ -90,10 +94,12 @@
       </mat-autocomplete>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Preis</mat-label>
-      <input matInput type="number" formControlName="price" />
-    </mat-form-field>
+    @if (!authService.isSupplier()) {
+      <mat-form-field appearance="outline">
+        <mat-label>Preis</mat-label>
+        <input matInput type="number" formControlName="price" />
+      </mat-form-field>
+    }
 
     <mat-form-field appearance="outline">
       <mat-label>Abmessungen</mat-label>
@@ -104,51 +110,56 @@
       <mat-label>Relevante Abfallströme</mat-label>
       <input matInput formControlName="wasteFlow" />
     </mat-form-field>
-    <div class="flex justify-between gap-2">
-      <mat-form-field appearance="outline" class="flex-1">
-        <mat-label>Produktgruppe</mat-label>
-        <input
-          matInput
-          formControlName="productGroup"
-          [matAutocomplete]="groupAuto"
-        />
-        <button
-          matSuffix
-          mat-icon-button
-          class="mr-2"
-          (click)="$event.stopPropagation(); groupSheet.open()"
-        >
-          <mat-icon>add</mat-icon>
-        </button>
-        <mat-autocomplete
-          #groupAuto="matAutocomplete"
-          [displayWith]="displayFn"
-        >
-          @for (option of groupsQuery.data()?.data; track option) {
-            <mat-option [value]="option">{{ option.name }}</mat-option>
-          }
-        </mat-autocomplete>
-      </mat-form-field>
-    </div>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Variante</mat-label>
-      <mat-select
-        formControlName="variant"
-        name="variant"
-        [compareWith]="compareVariants"
-      >
-        @for (variant of selectedGroup()?.variants; track variant) {
-          <mat-option [value]="variant">{{ variant.name }}</mat-option>
-        }
-        @if (!selectedGroup()?.variants) {
-          <mat-option>Bitte Produktgruppe wählen</mat-option>
-        }
-        @if (selectedGroup()?.variants?.length === 0) {
-          <mat-option>Keine Varianten gefunden</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
+    @if (!authService.isSupplier()) {
+      <div class="flex justify-between gap-2">
+        <mat-form-field appearance="outline" class="flex-1">
+          <mat-label>Produktgruppe</mat-label>
+          <input
+            matInput
+            formControlName="productGroup"
+            [matAutocomplete]="groupAuto"
+          />
+          <button
+            matSuffix
+            mat-icon-button
+            class="mr-2"
+            (click)="$event.stopPropagation(); groupSheet.open()"
+          >
+            <mat-icon>add</mat-icon>
+          </button>
+          <mat-autocomplete
+            #groupAuto="matAutocomplete"
+            [displayWith]="displayFn"
+          >
+            @for (option of groupsQuery.data()?.data; track option) {
+              <mat-option [value]="option">{{ option.name }}</mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+    }
+
+    @if (!authService.isSupplier()) {
+      <mat-form-field appearance="outline">
+        <mat-label>Variante</mat-label>
+        <mat-select
+          formControlName="variant"
+          name="variant"
+          [compareWith]="compareVariants"
+        >
+          @for (variant of selectedGroup()?.variants; track variant) {
+            <mat-option [value]="variant">{{ variant.name }}</mat-option>
+          }
+          @if (!selectedGroup()?.variants) {
+            <mat-option>Bitte Produktgruppe wählen</mat-option>
+          }
+          @if (selectedGroup()?.variants?.length === 0) {
+            <mat-option>Keine Varianten gefunden</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    }
 
     <mat-form-field appearance="outline">
       <mat-label>Anteil erneuerbare Inputmaterialien (Prozent) </mat-label>
@@ -159,18 +170,20 @@
       />
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Haltbarkeit (in Monaten)</mat-label>
-      <input matInput type="number" formControlName="durability" />
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Haltbarkeit zum Branchenschnitt (in Monaten)</mat-label>
-      <input matInput type="number" formControlName="durabilityDifference" />
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Reparaturfähigkeit</mat-label>
-      <input matInput type="number" formControlName="reparability" />
-    </mat-form-field>
+    @if (!authService.isSupplier()) {
+      <mat-form-field appearance="outline">
+        <mat-label>Haltbarkeit (in Monaten)</mat-label>
+        <input matInput type="number" formControlName="durability" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Haltbarkeit zum Branchenschnitt (in Monaten)</mat-label>
+        <input matInput type="number" formControlName="durabilityDifference" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Reparaturfähigkeit</mat-label>
+        <input matInput type="number" formControlName="reparability" />
+      </mat-form-field>
+    }
     <mat-form-field appearance="outline">
       <mat-label>Verwendetes Wasser (Liter) </mat-label>
       <input matInput type="number" formControlName="waterUsed" />
@@ -190,6 +203,58 @@
         placeholder="Kaskadenprinzip"
       ></textarea>
     </mat-form-field>
+
+    <mat-form-field appearance="outline" class="col-span-3">
+      <mat-label>Digitale Produktpass-URL</mat-label>
+      <input matInput formControlName="digitalProductPassportUrl" />
+    </mat-form-field>
+
+    <div class="col-span-3 my-2 h-[1px] bg-neutral-300"></div>
+
+    <div class="col-span-3 grid grid-cols-2 gap-2">
+      <section>
+        <mat-checkbox formControlName="circularPrinciple"
+          >Kreislauforientierte Grundsätze beachtet
+        </mat-checkbox>
+      </section>
+      @if (form().controls.circularPrinciple.value) {
+        <section class="mb-2 space-x-2">
+          <mat-label class="text-sm">Wie wurden die Daten erhoben?</mat-label>
+          <mat-radio-group formControlName="circularPrincipleMeasureable">
+            <mat-radio-button [value]="true">gemessen</mat-radio-button>
+            <mat-radio-button [value]="false">geschätzt</mat-radio-button>
+          </mat-radio-group>
+        </section>
+        <mat-form-field appearance="outline">
+          <mat-label
+            >Begründung der Einordnung als kreislauforientiert konzipiertes
+            Produkt</mat-label
+          >
+          <textarea
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="1"
+            matInput
+            formControlName="circularPrincipleJustification"
+          ></textarea>
+        </mat-form-field>
+        @if (!form().controls.circularPrincipleMeasureable.value) {
+          <mat-form-field appearance="outline">
+            <mat-label
+              >Erläuterung der zugrundeliegenden Annahmen der
+              Schätzung</mat-label
+            >
+            <textarea
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
+              matInput
+              formControlName="circularPrincipleAssumption"
+            ></textarea>
+          </mat-form-field>
+        }
+      }
+    </div>
   </div>
 
   <!-- Materialien -->

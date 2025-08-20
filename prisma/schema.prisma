@@ -90,6 +90,23 @@ model EcologicalThreshold {
   productId String?
 }
 
+enum DocumentType {
+  CERTIFICATE // Zertifikate und Nachweise
+  INSTRUCTIONS // Bedienungs- & Montageanleitungen
+  TECHNICAL_DOCUMENTATION // Technische Unterlagen
+  LEGAL_DOCUMENTS // Rechtliche Dokumente
+  MISC // Sonstige Dokumente
+}
+
+model GCFile {
+  id   String       @id @default(cuid())
+  path String?      @unique
+  type DocumentType
+
+  product   Product? @relation(fields: [productId], references: [id])
+  productId String?
+}
+
 model Material {
   id   String @id @default(cuid())
   name String @unique
@@ -150,7 +167,13 @@ model Product {
   isSellable                      Boolean @default(false)
   certificationSystem             String?
   cascadePrinciple                String?
-  circularPrinciple               Boolean @default(false)
+
+  circularPrinciple              Boolean @default(false)
+  circularPrincipleJustification String?
+  circularPrincipleMeasureable   Boolean @default(false)
+  circularPrincipleAssumption    String?
+
+  digitalProductPassportUrl String?
 
   durability           Float?
   durabilityDifference Float?
@@ -193,6 +216,8 @@ model Product {
   criticalRawMaterials CriticalRawMaterials[]
 
   productionHistory ProductionHistory[]
+
+  uploadedFiles GCFile[]
 
   flags     String[]
   outlier   String[]
@@ -390,7 +415,11 @@ model Report {
   measures          Measure[] @relation(name: "measures")
 
   financialImpacts FinancialImpact[]
-  flags            String[]
+
+  flags          String[]
+  goals          Goal[]
+  goalPlanning   GoalPlanning?
+  goalPlanningId String?       @unique
 }
 
 model Strategy {
@@ -402,6 +431,7 @@ model Strategy {
   Report                       Report?              @relation(fields: [reportId], references: [id])
   reportId                     String?
   measures                     MeasuresStrategies[]
+  GoalStrategy                 GoalStrategy[]
 }
 
 model Measure {
@@ -484,4 +514,69 @@ model CriticalAssumption {
 enum ImpactType {
   RISK
   CHANCE
+}
+
+model GoalPlanning {
+  id String @id @default(cuid())
+
+  hasPlannedGoals                 Boolean?
+  goalsTracked                    Boolean?
+  noGoalsExplanation              String?
+  followUpProcedure               String?
+  targets                         String?
+  progressEvaluation              String?
+  referencePeriodForProgressStart DateTime?
+  referencePeriodForProgressEnd   DateTime?
+  deadlineStart                   DateTime?
+  deadlineEnd                     DateTime?
+
+  Report   Report? @relation(fields: [reportId], references: [id])
+  reportId String? @unique
+}
+
+model Goal {
+  id                                          String    @id @default(cuid())
+  title                                       String?
+  obligation                                  String?
+  target                                      String?
+  isRelative                                  Boolean?
+  scope                                       String?
+  action                                      String?
+  unit                                        String?
+  geographicScope                             String?
+  methodsAndAssumptions                       String?
+  referenceValue                              String?
+  referenceYear                               Int?
+  isScientificReferenced                      Boolean?
+  stakeholderInclusion                        Boolean?
+  changeOfGoalsOrMethods                      String?
+  effortsAndMonitoring                        String?
+  impactOnExtensionOfCircularityProductDesign String?
+  impactOnCircularityMaterialRate             String?
+  impactOnMinimizingOfPrimaryMaterialUse      String?
+  impactOnSustainableSourcing                 String?
+  impactOnWasteManagement                     String?
+  impactOnMiscellaneous                       String?
+  wasteHLevel                                 String?
+  stakeholderInclusionComment                 String?
+  hasEcologicalImpact                         Boolean?
+  ecologicalThresholdDescription              String?
+  ecologicalThresholdDetermination            String?
+  ecologicalThresholdResponsibilities         String?
+  validityPeriodStart                         DateTime?
+  validityPeriodEnd                           DateTime?
+
+  strategies GoalStrategy[]
+  Report     Report?        @relation(fields: [reportId], references: [id])
+  reportId   String?
+}
+
+model GoalStrategy {
+  strategy   Strategy @relation(fields: [strategyId], references: [id], onDelete: Cascade)
+  strategyId String
+  goal       Goal     @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  goalId     String
+  connection String
+
+  @@id([goalId, strategyId])
 }

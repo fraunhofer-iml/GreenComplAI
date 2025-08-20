@@ -22,7 +22,7 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import {
-  provideAngularQuery,
+  provideQueryClient,
   QueryClient,
 } from '@tanstack/angular-query-experimental';
 import { appRoutes } from './app.routes';
@@ -30,7 +30,9 @@ import { AuthenticationService } from './core/services/authentication/authentica
 import { CompaniesService } from './core/services/companies/companies.service';
 import { PackagingService } from './core/services/packaging/packaging.service';
 import { ProductsService } from './core/services/products/products.service';
+import { SupplierService } from './core/services/suppliers/suppliers.service';
 import { ProductConstructionService } from './features/products/create/form-construction/product-construction.service';
+import { ReportsFormsService } from './features/reports/details/services/goals.services';
 import { initializeKeycloak } from './init/keycloak-initializer';
 
 export const appConfig: ApplicationConfig = {
@@ -51,12 +53,14 @@ export const appConfig: ApplicationConfig = {
     ProductConstructionService,
     CompaniesService,
     ProductsService,
+    SupplierService,
     PackagingService,
+    ReportsFormsService,
     KeycloakService,
     AuthenticationService,
     provideAnimationsAsync(),
     provideHttpClient(withInterceptorsFromDi()),
-    provideAngularQuery(new QueryClient()),
+    provideQueryClient(new QueryClient()),
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: {

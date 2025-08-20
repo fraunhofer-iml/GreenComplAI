@@ -5,9 +5,11 @@
         >Berichte</a
       >
       <span class="material-symbols-outlined text-lg"> chevron_right </span>
-      <h1 class="font-medium" *ngIf="reportsQuery.isSuccess()">
-        {{ reportsQuery.data().evaluationYear }}
-      </h1>
+      @if (reportsQuery.isSuccess()) {
+        <h1 class="font-medium">
+          {{ reportsQuery.data().evaluationYear }}
+        </h1>
+      }
     </div>
     @if (reportsQuery.data()?.isFinalReport) {
       <mat-chip>
@@ -26,29 +28,52 @@
       <app-report-information
         class="m-4"
         (refetchEvent)="reportsQuery.refetch()"
+        (validateEvent)="validationRequired = true"
         [report]="reportsQuery.data()"
+        [isValid]="isValid"
       ></app-report-information>
     </mat-tab>
     @if (id() && reportsQuery.data() && reportsQuery.isSuccess()) {
-      <mat-tab label="Strategien">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          Strategien ({{ reportsQuery.data().strategies.length }})
+        </ng-template>
         <app-strategies
           class="m-4"
           (refetchEvent)="reportsQuery.refetch()"
           [report]="reportsQuery.data()"
         ></app-strategies>
       </mat-tab>
-      <mat-tab label="Maßnahmen">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          Maßnahmen ({{ reportsQuery.data().measures.length }})
+        </ng-template>
         <app-measures
           class="m-4"
           (refetchEvent)="reportsQuery.refetch()"
           [report]="reportsQuery.data()"
         ></app-measures> </mat-tab
-      ><mat-tab label="Finanzielle Auswirkungen">
+      ><mat-tab>
+        <ng-template mat-tab-label>
+          Finanzielle Auswirkungen ({{
+            reportsQuery.data().financialImpacts.length
+          }})
+        </ng-template>
         <app-financial-impact
           class="m-4"
           (refetchEvent)="reportsQuery.refetch()"
           [report]="reportsQuery.data()"
         ></app-financial-impact>
+      </mat-tab>
+      <mat-tab label="Ziele">
+        <ng-template mat-tab-label>
+          Ziele ({{ reportsQuery.data().goals.length }})
+        </ng-template>
+        <app-goal-information
+          class="m-4"
+          (refetchEvent)="reportsQuery.refetch()"
+          [report]="reportsQuery.data()"
+        ></app-goal-information>
       </mat-tab>
     }
   </mat-tab-group>

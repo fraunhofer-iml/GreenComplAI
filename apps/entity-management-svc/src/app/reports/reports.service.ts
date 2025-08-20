@@ -13,6 +13,8 @@ import {
   FinancialImpactCreateDto,
   FinancialImpactDto,
   FindAllReportsForCompanyProps,
+  GoalDto,
+  GoalPlanningDto,
   ImpactType,
   MeasureCreateDto,
   MeasureDto,
@@ -25,6 +27,9 @@ import {
 import { PrismaService } from '@ap2/database';
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { createUpdateGoalsPlanningQuery } from './queries/create-update-goals-planning.query';
+import { createGoalQuery } from './queries/goal-create.query';
+import { updateGoalQuery } from './queries/goal-update.query';
 import { upsertFinancialImpact } from './queries/impact-upsert.query';
 import { upsertMeasures } from './queries/measure-upsert.query';
 
@@ -70,6 +75,7 @@ export class ReportsService {
           type:
             f.type === ImpactType.CHANCE ? ImpactType.CHANCE : ImpactType.RISK,
         })),
+        goals: [],
       };
     } catch (error) {
       if (error.code === 'P2002') {
@@ -102,8 +108,9 @@ export class ReportsService {
         consultationsConducted: true,
         assetsBusinessActivitiesEvaluated: true,
         isFinalReport: true,
+        measures: true,
+        _count: { select: { measures: true, strategies: true, goals: true } },
       },
-
       orderBy: JSON.parse(
         sorting === '{}' ? '{"evaluationYear": "desc"}' : sorting
       ),
@@ -114,7 +121,12 @@ export class ReportsService {
     });
 
     return {
-      data: reports,
+      data: reports.map((result) => ({
+        ...result,
+        numberOfGoals: result._count.goals,
+        numberOfMeasures: result._count.measures,
+        numberOfStrategies: result._count.strategies,
+      })),
       meta: { page: page, totalCount: totalCount, pageSize: size },
     };
   }
@@ -161,6 +173,7 @@ export class ReportsService {
           type:
             f.type === ImpactType.CHANCE ? ImpactType.CHANCE : ImpactType.RISK,
         })),
+        goals: [],
       };
     } catch (error) {
       if (error.code === 'P2002') {
@@ -258,6 +271,11 @@ export class ReportsService {
           },
           orderBy: { title: 'asc' },
         },
+        goalPlanning: true,
+        goals: {
+          include: { strategies: { include: { strategy: true } } },
+          orderBy: { title: 'asc' },
+        },
       },
     });
 
@@ -276,6 +294,16 @@ export class ReportsService {
             ? MeasureStatus.IN_PROGRESS
             : MeasureStatus.PLANNED,
         previousReport: m.previousReport?.evaluationYear,
+      })),
+      goalPlanning: {
+        ...res.goalPlanning,
+      },
+      goals: res.goals.map((goal) => ({
+        ...goal,
+        strategies: goal.strategies.map((goalStrategy) => ({
+          id: goalStrategy.strategy.id,
+          connection: goalStrategy.connection,
+        })),
       })),
     };
   }
@@ -316,7 +344,7 @@ export class ReportsService {
     );
 
     if (measuresToCopy.length > 0) {
-      let nextReport = await this.prisma.report.findUnique({
+      let nextReport: Partial<ReportDto> = await this.prisma.report.findUnique({
         where: { evaluationYear: currentReport.evaluationYear + 1 },
       });
 
@@ -411,5 +439,56 @@ export class ReportsService {
     }
 
     return await Promise.all(updateCalls);
+  }
+
+  async updateGoalPlanning(
+    reportId: string,
+    planning: GoalPlanningDto
+  ): Promise<GoalPlanningDto> {
+    const report = await this.getReportById(reportId);
+    if (report.isFinalReport) return;
+
+    const result = await this.prisma.goalPlanning.upsert({
+      where: { id: planning.id ?? '' },
+      create: {
+        ...createUpdateGoalsPlanningQuery(planning),
+        reportId: reportId,
+      },
+      update: {
+        ...createUpdateGoalsPlanningQuery(planning),
+      },
+    });
+
+    await this.prisma.goal.deleteMany({ where: { reportId: reportId } });
+
+    return { ...result };
+  }
+
+  async createOrUpdateGoals(reportId: string, goals: GoalDto[]) {
+    const report = await this.getReportById(reportId);
+    if (report.isFinalReport) return;
+
+    await this.prisma.goal.deleteMany({
+      where: {
+        AND: [
+          { id: { notIn: goals.map((i) => i.id ?? '') } },
+          { reportId: reportId },
+        ],
+      },
+    });
+
+    const updateCalls = [];
+    goals.forEach((goal) => {
+      const { id, ...data } = goal;
+      updateCalls.push(
+        id
+          ? this.prisma.goal.update(updateGoalQuery(goal))
+          : this.prisma.goal.create(createGoalQuery(data, reportId))
+      );
+    });
+
+    await Promise.all(updateCalls);
+
+    return { ...report, goals: [] };
   }
 }

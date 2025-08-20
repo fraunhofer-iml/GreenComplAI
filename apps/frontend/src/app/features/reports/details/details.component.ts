@@ -7,7 +7,6 @@
  */
 
 import { ReportDto } from '@ap2/api-interfaces';
-import { CommonModule } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
@@ -31,6 +30,7 @@ import { injectQuery } from '@tanstack/angular-query-experimental';
 import { ReportsService } from '../../../core/services/reports/reports.service';
 import { ONLY_YEAR_FORMAT } from '../../../shared/constants/date-formats';
 import { FinancialImpactComponent } from './financial-impacts/overview/financial-impact.component';
+import { GoalInformationComponent } from './goal-informations/goal-information.component';
 import { MeasuresComponent } from './measures/measures.component';
 import { ReportInformationComponent } from './report-information/report-information.component';
 import { StrategiesComponent } from './strategies/strategies.component';
@@ -38,7 +38,6 @@ import { StrategiesComponent } from './strategies/strategies.component';
 @Component({
   selector: 'app-reports-overview',
   imports: [
-    CommonModule,
     RouterModule,
     MatFormFieldModule,
     MatInputModule,
@@ -57,6 +56,7 @@ import { StrategiesComponent } from './strategies/strategies.component';
     MatTabsModule,
     ReportInformationComponent,
     FinancialImpactComponent,
+    GoalInformationComponent,
   ],
   providers: [
     ReportsService,
@@ -73,6 +73,9 @@ export class ReportsDetailsComponent {
   id = input<string>();
 
   private reportsService = inject(ReportsService);
+
+  validationRequired = false;
+  isValid = false;
 
   reportsQuery = injectQuery(() => ({
     queryKey: ['reports', this.id()],

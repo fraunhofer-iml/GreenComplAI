@@ -1,0 +1,460 @@
+<div class="w-full">
+  @if (form()) {
+    <form [formGroup]="form()" class="flex flex-col gap-2 pt-4">
+      <div class="w-full rounded-md bg-neutral-200 p-4">
+        <div class="flex items-center justify-between pb-2">
+          <span class="text-sm">Allgemeine Information </span>
+          <button
+            mat-stroked-button
+            (click)="removeEvent.emit()"
+            class="justify-self-end"
+          >
+            <mat-icon>delete</mat-icon>
+            entfernen
+          </button>
+        </div>
+        <div class="grid w-full grid-cols-4 gap-2 rounded-lg">
+          <mat-form-field appearance="outline" class="col-span-2">
+            <mat-label i18n>Title</mat-label>
+            <input
+              matInput
+              formControlName="title"
+              [readonly]="isFinal()"
+              placeholder="Reduktion..."
+            />
+          </mat-form-field>
+
+          <app-date-picker-month-year
+            [form]="form().controls.validityPeriod"
+            [disabled]="isFinal()"
+            class="col-span-2"
+          >
+            <mat-label>Gültigkeit</mat-label></app-date-picker-month-year
+          >
+
+          <mat-form-field appearance="outline">
+            <mat-label i18n>Verbindlichkeit</mat-label>
+            <mat-select
+              formControlName="obligation"
+              placeholder="Verbindlichkeit des Berichtsziels"
+            >
+              <mat-option value="mandatory" i18n
+                >Verbindlich (gemäß Rechtsvorschrift)</mat-option
+              >
+              <mat-option value="voluntary" i18n>Freiwillig</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Zielniveau</mat-label>
+            <input
+              matInput
+              formControlName="target"
+              [readonly]="isFinal()"
+              placeholder="Zielniveau des Berichtsziels"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label i18n>Einheit</mat-label>
+            <input
+              matInput
+              formControlName="unit"
+              [readonly]="isFinal()"
+              placeholder="€, kg,t Co2, ... etc."
+            />
+          </mat-form-field>
+
+          <section class="items-center">
+            <mat-checkbox formControlName="isRelative"
+              >Relatives Ziel</mat-checkbox
+            >
+          </section>
+
+          <mat-form-field appearance="outline" class="col-span-4">
+            <mat-label i18n>Umfang des Ziels</mat-label>
+            <textarea
+              matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
+              [readonly]="isFinal()"
+              formControlName="scope"
+              placeholder="Umfang des Ziels"
+            ></textarea>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="col-span-4">
+            <mat-label i18n>
+              Unternehmensaktivitäten der vor- und/oder nachgelagerten
+              Wertschöpfungskette</mat-label
+            >
+            <textarea
+              matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
+              [readonly]="isFinal()"
+              formControlName="action"
+              placeholder="Unternehmensaktivitäten der vor- und/oder nachgelagerten Wertschöpfungskette"
+            ></textarea>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="col-span-4">
+            <mat-label i18n>Geographische Grenzen</mat-label>
+            <textarea
+              matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
+              [readonly]="isFinal()"
+              formControlName="geographicScope"
+              placeholder="Geographische Grenzen"
+            ></textarea>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="col-span-3">
+            <mat-label i18n>Bezugswert</mat-label>
+            <textarea
+              matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
+              [readonly]="isFinal()"
+              formControlName="referenceValue"
+              placeholder="Bezugswert"
+            ></textarea>
+          </mat-form-field>
+
+          <app-date-picker-year-only
+            [form]="form().controls.referenceYear"
+            [disabled]="isFinal()"
+          >
+            <mat-label>Bezugsjahr</mat-label></app-date-picker-year-only
+          >
+
+          <mat-form-field appearance="outline" class="col-span-4">
+            <mat-label i18n>Methoden und Annahmen</mat-label>
+            <textarea
+              matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
+              [readonly]="isFinal()"
+              formControlName="methodsAndAssumptions"
+              placeholder="Methoden und Annahmen"
+            ></textarea>
+          </mat-form-field>
+
+          <mat-checkbox
+            formControlName="isScientificReferenced"
+            class="col-span-4"
+            >Die Umweltziele beruhen auf schlüssigen wissenschaftlichen
+            Erkenntnissen
+          </mat-checkbox>
+          <mat-checkbox
+            formControlName="stakeholderInclusion"
+            class="col-span-4"
+            >Es wurden Stakeholder in die Festlegung der Ziele
+            einbezogen</mat-checkbox
+          >
+          @if (form().controls.stakeholderInclusion.value) {
+            <mat-form-field appearance="outline" class="col-span-4">
+              <mat-label i18n
+                >Beschreibung des Stakeholder Involvements</mat-label
+              >
+              <textarea
+                matInput
+                cdkTextareaAutosize
+                #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="1"
+                [readonly]="isFinal()"
+                formControlName="stakeholderInclusionComment"
+                placeholder="Die..."
+              ></textarea>
+            </mat-form-field>
+          }
+
+          <mat-form-field appearance="outline" class="col-span-2">
+            <mat-label i18n
+              >Änderungen der Ziele, der entsprechenden Parameter oder der
+              zugrunde liegenden Methoden
+            </mat-label>
+            <textarea
+              matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
+              [readonly]="isFinal()"
+              formControlName="changeOfGoalsOrMethods"
+              placeholder="Die..."
+            ></textarea>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="col-span-2">
+            <mat-label i18n
+              >Leistung im Vergleich zu den angegebenen Zielen, einschließlich
+              Informationen darüber, wie ein Ziel überwacht wird
+            </mat-label>
+            <textarea
+              matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
+              [readonly]="isFinal()"
+              formControlName="effortsAndMonitoring"
+              placeholder="Die..."
+            ></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+      <!-- SUSTAINABILITY -->
+      <mat-expansion-panel class="w-full !bg-neutral-200">
+        <mat-expansion-panel-header>
+          <span class="text-sm">Nachhaltigkeit</span>
+        </mat-expansion-panel-header>
+
+        <div class="grid grid-cols-2 gap-2">
+          <mat-label class="col-span-2"
+            >Das Ziel bezieht sich auf folgende Ebene der
+            Abfallhierarchie:</mat-label
+          ><mat-radio-group formControlName="wasteHLevel" class="col-span-2">
+            <mat-radio-button value="avoidance"
+              >1. Stufe Vermeidung</mat-radio-button
+            >
+            <mat-radio-button value="reuse"
+              >2. Stufe Vorbereitung zur Wiederverwendung</mat-radio-button
+            >
+            <mat-radio-button value="recycle"
+              >3. Stufe Recycling</mat-radio-button
+            >
+            <mat-radio-button value="misc"
+              >4. Stufe Sonstige Verwertung</mat-radio-button
+            >
+            <mat-radio-button value="disposal"
+              >5. Stufe Beseitigung</mat-radio-button
+            >
+          </mat-radio-group>
+          @if (form().controls.wasteHLevel.hasError('required')) {
+            <mat-error class="text-sm">Angabe erforderlich. </mat-error>
+          }
+          <section class="col-span-2">
+            <mat-checkbox formControlName="hasEcologicalImpact"
+              >ökologische Schwellenwerte wurden beachtet</mat-checkbox
+            >
+          </section>
+
+          @if (form().controls.hasEcologicalImpact.value) {
+            <mat-form-field appearance="outline">
+              <mat-label i18n
+                >Ökologischen Schwellenwerte und die Methode zur Ermittlung
+                dieser Schwellenwerte</mat-label
+              >
+              <textarea
+                matInput
+                cdkTextareaAutosize
+                #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="1"
+                [readonly]="isFinal()"
+                formControlName="ecologicalThresholdDescription"
+                placeholder="Die..."
+              ></textarea>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label i18n
+                >Sind die Ökologischen Schwellenwerte unternehmensspezifisch?
+                Wie wurden diese Festgelegt?</mat-label
+              >
+              <textarea
+                matInput
+                cdkTextareaAutosize
+                #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="1"
+                [readonly]="isFinal()"
+                formControlName="ecologicalThresholdDetermination"
+                placeholder="Die..."
+              ></textarea>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label i18n
+                >Wie werden die verantwortungen aufgeteilt?</mat-label
+              >
+              <textarea
+                matInput
+                cdkTextareaAutosize
+                #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="1"
+                [readonly]="isFinal()"
+                formControlName="ecologicalThresholdResponsibilities"
+                placeholder="Die..."
+              ></textarea>
+            </mat-form-field>
+
+            <mat-divider class="col-span-2 !my-2 opacity-25"></mat-divider>
+          }
+          <mat-form-field appearance="outline">
+            <mat-label i18n
+              >Einfluss auf die Ausweitung des kreislauforientierten
+              Produktdesigns</mat-label
+            >
+            <textarea
+              matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
+              [readonly]="isFinal()"
+              formControlName="impactOnExtensionOfCircularityProductDesign"
+              placeholder="(z. B. für Haltbarkeit, Demontage, Reparierbarkeit, Recyclingfähigkeit usw.)"
+            ></textarea>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label i18n
+              >Einfluss auf die Erhöhung der kreislauforientierten
+              Materialnutzungsrate</mat-label
+            >
+            <textarea
+              matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
+              [readonly]="isFinal()"
+              formControlName="impactOnCircularityMaterialRate"
+              placeholder="Einfluss auf die Erhöhung der kreislauforientierten Materialnutzungsrate"
+            ></textarea>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label i18n
+              >Einfluss auf die Minimierung von Primärrohstoffen</mat-label
+            >
+            <textarea
+              matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
+              [readonly]="isFinal()"
+              formControlName="impactOnMinimizingOfPrimaryMaterialUse"
+              placeholder="Einfluss auf die Minimierung von Primärrohstoffen"
+            ></textarea>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label i18n
+              >Einfluss auf die nachhaltige Beschaffung und Nutzung erneuerbarer
+              Ressourcen (im Einklang mit dem Kaskadenprinzip)
+            </mat-label>
+            <textarea
+              matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
+              [readonly]="isFinal()"
+              formControlName="impactOnSustainableSourcing"
+              placeholder="Einfluss auf die nachhaltige Beschaffung und Nutzung erneuerbarer Ressourcen (im Einklang mit dem Kaskadenprinzip)"
+            ></textarea>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label i18n
+              >Einfluss auf die Abfallbewirtschaftung, einschließlich der
+              Vorbereitung auf eine ordnungsgemäße Behandlung
+            </mat-label>
+            <textarea
+              matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
+              [readonly]="isFinal()"
+              formControlName="impactOnWasteManagement"
+              placeholder="Einfluss auf die Abfallbewirtschaftung, einschließlich der Vorbereitung auf eine ordnungsgemäße Behandlung"
+            ></textarea>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label i18n
+              >Einfluss auf sonstige Aspekte im Zusammenhang mit der
+              Ressourcennutzung oder der Kreislaufwirtschaft
+            </mat-label>
+            <textarea
+              matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
+              [readonly]="isFinal()"
+              formControlName="impactOnMiscellaneous"
+              placeholder="Einfluss auf sonstige Aspekte im Zusammenhang mit der Ressourcennutzung oder der Kreislaufwirtschaft"
+            ></textarea>
+          </mat-form-field>
+        </div>
+      </mat-expansion-panel>
+      <mat-expansion-panel class="!bg-neutral-200">
+        <mat-expansion-panel-header>
+          <span class="text-sm">Strategien </span>
+        </mat-expansion-panel-header>
+
+        @if (!isFinal()) {
+          <div formArrayName="strategies">
+            @for (
+              strategy of strategies.controls;
+              track $index;
+              let index = $index
+            ) {
+              <div
+                [formGroupName]="index"
+                class="flex w-full flex-row items-center gap-2 py-2"
+              >
+                <mat-checkbox
+                  (change)="updateValue()"
+                  formControlName="selected"
+                >
+                </mat-checkbox>
+                <div class="flex w-full flex-col">
+                  <h3>{{ strategy.value.strategy?.name }}</h3>
+                  <span class="overflow-ellipsis text-sm">{{
+                    strategy.value.strategy?.conceptInformationResources
+                  }}</span>
+                  @if (strategy.controls.selected.value) {
+                    <mat-form-field appearance="outline" class="mt-2">
+                      <mat-label i18n>Verbindung zum Ziel</mat-label>
+                      <textarea
+                        (change)="updateValue()"
+                        cdkTextareaAutosize
+                        #autosize="cdkTextareaAutosize"
+                        cdkAutosizeMinRows="1"
+                        matInput
+                        [readonly]="isFinal()"
+                        formControlName="connection"
+                        placeholder="Durch den Einsatz von..."
+                      ></textarea>
+                    </mat-form-field>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          @for (
+            strategy of getSelectedStrategies(strategies.controls);
+            track $index;
+            let index = $index
+          ) {
+            <div class="flex w-full flex-col">
+              <div class="flex flex-col py-2">
+                <span class="font-semibold"> {{ strategy.strategy }} </span>
+                <span class="text-sm">
+                  Verbindung zum Ziel:
+                  {{ strategy.connection || 'Keine Angabe' }}
+                </span>
+              </div>
+            </div>
+          }
+          @if (getSelectedStrategies(strategies.controls).length === 0) {
+            Keine Strategien angegeben.
+          }
+        }
+      </mat-expansion-panel>
+    </form>
+  }
+</div>

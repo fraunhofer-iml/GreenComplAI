@@ -16,7 +16,7 @@ import {
   RouterModule,
 } from '@angular/router';
 import {
-  provideAngularQuery,
+  provideQueryClient,
   QueryClient,
 } from '@tanstack/angular-query-experimental';
 import { AuthenticationService } from '../../../core/services/authentication/authentication.service';
@@ -47,7 +47,7 @@ describe('ProductCreateComponent', () => {
             getCurrentUserRole: () => AuthRoles.SUSTAINABILITY_MANAGER,
           },
         },
-        provideAngularQuery(new QueryClient()),
+        provideQueryClient(new QueryClient()),
         {
           provide: ActivatedRoute,
           useValue: {

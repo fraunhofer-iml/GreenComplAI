@@ -4,6 +4,14 @@
   "projectType": "application",
   "prefix": "app",
   "sourceRoot": "apps/frontend/src",
+  "i18n": {
+    "sourceLocale": "de",
+    "locales": {
+      "en-US": {
+        "translation": "apps/frontend/src/locales/messages.en-US.xlf"
+      }
+    }
+  },
   "tags": [],
   "targets": {
     "build": {
@@ -34,7 +42,7 @@
             {
               "type": "initial",
               "maximumWarning": "500kb",
-              "maximumError": "1mb"
+              "maximumError": "2mb"
             },
             {
               "type": "anyComponentStyle",
@@ -74,7 +82,8 @@
           "buildTarget": "frontend:build:development"
         }
       },
-      "defaultConfiguration": "development"
+      "defaultConfiguration": "development",
+      "continuous": true
     },
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
@@ -105,30 +114,14 @@
       }
     },
     "container": {
-      "executor": "@nx-tools/nx-container:build",
+      "executor": "@mschoenbo/nx-build-tools:tag-and-build",
       "options": {
+        "appName": "frontend",
+        "dockerRepository": "ghcr.io/fraunhofer-iml/greencomplai",
+        "dockerfile": "apps/frontend/Dockerfile",
+        "tagPrefix": "v",
         "push": true,
-        "metadata": {
-          "images": ["ghcr.io/fraunhofer-iml/greencomplai/frontend"],
-          "tags": [
-            "type=schedule",
-            "type=ref,event=branch",
-            "type=ref,event=tag",
-            "type=ref,event=pr",
-            "type=semver,pattern={{version}}",
-            "type=semver,pattern={{major}}.{{minor}}",
-            "type=semver,pattern={{major}}",
-            "type=sha"
-          ]
-        }
-      }
-    }
-  },
-  "i18n": {
-    "sourceLocale": "de",
-    "locales": {
-      "en-US": {
-        "translation": "apps/frontend/src/locales/messages.en-US.xlf"
+        "additionalTags": ["latest"]
       }
     }
   }

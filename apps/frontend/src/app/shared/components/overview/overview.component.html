@@ -38,7 +38,13 @@
             [routerLink]="[encodeURIComponent(element.id)]"
           >
             <div class="w-full">
-              {{ element[item] }}
+              {{
+                typeof element[item] === 'boolean'
+                  ? element[item]
+                    ? 'ja'
+                    : 'nein'
+                  : element[item]
+              }}
             </div>
           </td>
         </ng-container>

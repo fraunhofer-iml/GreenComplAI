@@ -32,3 +32,13 @@ export class CompanyDto {
     this.flags = flags;
   }
 }
+
+export class CompanyCreateResponse {
+  company: CompanyDto;
+  username: string;
+
+  constructor(company: CompanyDto, username: string) {
+    this.company = company;
+    this.username = username;
+  }
+}

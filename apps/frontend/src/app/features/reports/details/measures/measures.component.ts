@@ -12,7 +12,6 @@ import {
   ReportDto,
 } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
-import { CommonModule } from '@angular/common';
 import { Component, inject, input, OnChanges, output } from '@angular/core';
 import {
   FormArray,
@@ -53,7 +52,6 @@ import {
 @Component({
   selector: 'app-measures',
   imports: [
-    CommonModule,
     MatTabsModule,
     MatFormFieldModule,
     ReactiveFormsModule,
@@ -104,7 +102,6 @@ export class MeasuresComponent implements OnChanges {
 
   dateHandler(event: Date, picker: MatDatepicker<Date>, index: number) {
     picker.close();
-
     this.measures.controls[index].get('plannedCompletion')?.patchValue(event);
   }
 

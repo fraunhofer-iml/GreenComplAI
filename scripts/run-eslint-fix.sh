@@ -18,6 +18,7 @@ directories=(
     "libs/api-interfaces"
     "libs/configuration"
     "libs/database"
+    "libs/user-management"
     "libs/util"
 )
 

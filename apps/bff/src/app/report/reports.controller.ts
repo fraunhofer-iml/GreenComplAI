@@ -12,6 +12,8 @@ import {
   FinancialImpactCreateDto,
   FinancialImpactDto,
   getRealmRole,
+  GoalDto,
+  GoalPlanningDto,
   MeasureDto,
   PaginatedData,
   ProductDto,
@@ -51,9 +53,7 @@ export class ReportsController {
     type: ReportDto,
   })
   @ApiBearerAuth()
-  @Roles({
-    roles: [getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER)],
-  })
+  @Roles(getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER))
   @ApiOkResponse({
     description: 'Successfull request: Return created Reports',
     type: ReportDto,
@@ -64,9 +64,7 @@ export class ReportsController {
 
   @Get()
   @ApiBearerAuth()
-  @Roles({
-    roles: [getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER)],
-  })
+  @Roles(getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER))
   @ApiOperation({
     description: 'Get all Reports',
   })
@@ -90,9 +88,7 @@ export class ReportsController {
 
   @Patch(':id')
   @ApiBearerAuth()
-  @Roles({
-    roles: [getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER)],
-  })
+  @Roles(getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER))
   @ApiOperation({
     description: 'Update Report.',
   })
@@ -112,9 +108,7 @@ export class ReportsController {
 
   @Patch(':id/strategies')
   @ApiBearerAuth()
-  @Roles({
-    roles: [getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER)],
-  })
+  @Roles(getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER))
   @ApiOperation({
     description: 'Update Report.',
   })
@@ -134,9 +128,7 @@ export class ReportsController {
 
   @Patch(':id/measures')
   @ApiBearerAuth()
-  @Roles({
-    roles: [getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER)],
-  })
+  @Roles(getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER))
   @ApiOperation({
     description: 'Update Report.',
   })
@@ -156,9 +148,7 @@ export class ReportsController {
 
   @Patch(':id/financial-impacts')
   @ApiBearerAuth()
-  @Roles({
-    roles: [getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER)],
-  })
+  @Roles(getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER))
   @ApiOperation({
     description: 'Update Report.',
   })
@@ -167,7 +157,7 @@ export class ReportsController {
   })
   @ApiOkResponse({
     description: 'Successfull request: Return updated report with id',
-    type: ProductDto,
+    type: FinancialImpactDto,
   })
   updateFinancialImpacts(
     @Param('id') id: string,
@@ -176,11 +166,43 @@ export class ReportsController {
     return this.reportsService.updateFinancialImpacts(id, measures);
   }
 
+  @Patch(':id/goals')
+  @ApiBearerAuth()
+  @Roles(getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER))
+  @ApiBody({
+    type: ReportDto,
+  })
+  @ApiOkResponse({
+    description: 'Successfull request: Return updated report with id',
+    type: GoalPlanningDto,
+  })
+  updateGoals(
+    @Param('id') id: string,
+    @Body() goals: GoalDto[]
+  ): Promise<ReportDto> {
+    return this.reportsService.updateGoals(id, goals);
+  }
+
+  @Patch(':id/goal-planning')
+  @ApiBearerAuth()
+  @Roles(getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER))
+  @ApiBody({
+    type: ReportDto,
+  })
+  @ApiOkResponse({
+    description: 'Successfull request: Return updated report with id',
+    type: GoalPlanningDto,
+  })
+  updateGoalPlanning(
+    @Param('id') id: string,
+    @Body() goalPlanning: GoalPlanningDto
+  ): Promise<ReportDto> {
+    return this.reportsService.updateGoalPlanning(id, goalPlanning);
+  }
+
   @Get(':id')
   @ApiBearerAuth()
-  @Roles({
-    roles: [getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER)],
-  })
+  @Roles(getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER))
   @ApiOperation({
     description: 'Get Report by id',
   })

@@ -1,6 +1,11 @@
 <div class="col-span-3 rounded-lg bg-neutral-200 p-4">
   <div class="flex w-full items-center justify-between">
-    <app-flagable [id]="id$() ?? ''" [topic]="'Verpackungen'" [data]="flags()" [element]="'packagings'">
+    <app-flagable
+      [id]="id$() ?? ''"
+      [topic]="'Verpackungen'"
+      [data]="flags()"
+      [element]="'packagings'"
+    >
     </app-flagable>
     <button mat-button (click)="packagingSheet.open()">
       <mat-icon>edit</mat-icon> bearbeiten

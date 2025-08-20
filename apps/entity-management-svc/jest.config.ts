@@ -10,14 +10,12 @@ export default {
   displayName: 'entity-management-svc',
   preset: '../../jest.preset.js',
   testEnvironment: 'node',
-  coverageReporters: [
-    ['lcov', { projectRoot: __dirname }],
-    'text',
-    'text-summary',
-  ],
   transform: {
     '^.+\\.[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
   },
+  transformIgnorePatterns: [
+    'node_modules/(?!@keycloak/keycloak-admin-client|url-join|url-template|camelize-ts)',
+  ],
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: './coverage',
 };

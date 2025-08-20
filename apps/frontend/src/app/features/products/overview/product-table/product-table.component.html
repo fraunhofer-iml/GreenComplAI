@@ -240,12 +240,21 @@
         </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr
-        class="hover:bg-neutral-300"
-        mat-row
-        *matRowDef="let row; columns: displayedColumns"
-      ></tr>
+      @if (authService.isSupplier()) {
+        <tr mat-header-row *matHeaderRowDef="supplierDisplayedColumns"></tr>
+        <tr
+          class="hover:bg-neutral-300"
+          mat-row
+          *matRowDef="let row; columns: supplierDisplayedColumns"
+        ></tr>
+      } @else {
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr
+          class="hover:bg-neutral-300"
+          mat-row
+          *matRowDef="let row; columns: displayedColumns"
+        ></tr>
+      }
     </table>
   }
 

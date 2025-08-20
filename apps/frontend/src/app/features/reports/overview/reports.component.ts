@@ -6,7 +6,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatAnchor } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
@@ -17,7 +16,7 @@ import { ContentType } from '../../../shared/components/overview/table-content-t
 
 @Component({
   selector: 'app-reports-overview',
-  imports: [CommonModule, MatAnchor, OverviewComponent, RouterLink],
+  imports: [MatAnchor, OverviewComponent, RouterLink],
   providers: [{ provide: DataService, useClass: ReportsService }],
   templateUrl: './reports.component.html',
 })

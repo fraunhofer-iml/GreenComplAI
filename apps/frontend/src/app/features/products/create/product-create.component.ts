@@ -16,8 +16,7 @@ import {
   ProductGroupDto,
 } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
-import { CommonModule } from '@angular/common';
-import { Component, input, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import {
   FormArray,
   FormControl,
@@ -72,7 +71,6 @@ import { ProductionHistoryComponent } from './production-history/production-hist
 @Component({
   selector: 'app-product-create',
   imports: [
-    CommonModule,
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
@@ -105,6 +103,10 @@ import { ProductionHistoryComponent } from './production-history/production-hist
   templateUrl: './product-create.component.html',
 })
 export class ProductCreateComponent {
+  private readonly productsService = inject(ProductsService);
+  private readonly constructionService = inject(ProductConstructionService);
+  private readonly authService = inject(AuthenticationService);
+
   productGroupId = input<string>();
 
   masterDataForm: FormGroup<MasterDataFormGroup>;
@@ -160,11 +162,7 @@ export class ProductCreateComponent {
   }));
   protected readonly FormGroup = FormGroup;
 
-  constructor(
-    public readonly productsService: ProductsService,
-    private readonly constructionService: ProductConstructionService,
-    private readonly authService: AuthenticationService
-  ) {
+  constructor() {
     this.masterDataForm = masterDataFormGroup();
     this.producedItemsForm = producedItemsFormGroup();
     this.packagingsForm = new FormGroup<ProductPackagingFormGroup>({

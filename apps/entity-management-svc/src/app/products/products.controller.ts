@@ -6,11 +6,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { ProductMessagePatterns } from '@ap2/amqp';
+import { ProductMessagePatterns, UploadFileRequest } from '@ap2/amqp';
 import {
   AnalysisDto,
   CreateProductProps,
   DeleteProductProps,
+  FindAllProductsOfSupplierProps,
   FindAllProductsProps,
   FindProductByIdProps,
   GenerateAnalysisProp,
@@ -27,6 +28,7 @@ import {
 } from '@ap2/api-interfaces';
 import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
+import { DocumentType, GCFile } from '@prisma/client';
 import { ProductAnalysisService } from './analysis.service';
 import { ProductService } from './products.service';
 
@@ -52,6 +54,14 @@ export class ProductController {
     return this.productService.findAll(payload);
   }
 
+  @MessagePattern(ProductMessagePatterns.READ_ALL_OF_SUPPLIER)
+  findAllOfSupplier(
+    @Payload()
+    payload: FindAllProductsOfSupplierProps
+  ): Promise<PaginatedData<Partial<ProductDto>>> {
+    return this.productService.findAllOfSupplier(payload);
+  }
+
   @MessagePattern(ProductMessagePatterns.OUTLIERS)
   findOutliers(): Promise<ProductOutlierDto[]> {
     return this.productService.findOutliers();
@@ -65,6 +75,13 @@ export class ProductController {
   @MessagePattern(ProductMessagePatterns.READ_BY_ID)
   findOne(@Payload() payload: FindProductByIdProps): Promise<ProductDto> {
     return this.productService.findOne(payload);
+  }
+
+  @MessagePattern(ProductMessagePatterns.READ_OF_SUPPLIER_BY_ID)
+  findOneOfSupplier(
+    @Payload() payload: FindProductByIdProps & { supplierCompanyId: string }
+  ): Promise<Partial<ProductDto>> {
+    return this.productService.findOneOfSupplier(payload);
   }
 
   @MessagePattern(ProductMessagePatterns.PRELIMINARY)
@@ -84,6 +101,13 @@ export class ProductController {
   @MessagePattern(ProductMessagePatterns.UPDATE)
   update(@Payload() payload: UpdateProductProps): Promise<ProductDto> {
     return this.productService.update(payload);
+  }
+
+  @MessagePattern(ProductMessagePatterns.UPDATE_OF_SUPPLIER)
+  updateSupplier(
+    @Payload() payload: UpdateProductProps & { supplierCompanyId: string }
+  ): Promise<ProductDto> {
+    return this.productService.updateSupplier(payload);
   }
 
   @MessagePattern(ProductMessagePatterns.UPDATE_BOM)
@@ -139,5 +163,43 @@ export class ProductController {
   @MessagePattern(ProductMessagePatterns.OUTLIERS_VALIDATE)
   validate(@Payload() payload: UpdateFlagProductProps): Promise<ProductDto> {
     return this.productService.validateOutlier(payload);
+  }
+
+  @MessagePattern(ProductMessagePatterns.UPLOAD_FILE)
+  uploadProductFile(
+    @Payload()
+    payload: UploadFileRequest
+  ): Promise<void> {
+    return this.productService.uploadProductFile(
+      payload.file,
+      payload.productId,
+      payload.type,
+      payload.mimeType,
+      payload.fileName
+    );
+  }
+
+  @MessagePattern(ProductMessagePatterns.GET_FILES)
+  getProductFiles(@Payload() payload: FindProductByIdProps): Promise<GCFile[]> {
+    return this.productService.getProductFiles(payload.id);
+  }
+
+  @MessagePattern(ProductMessagePatterns.DELETE_FILE)
+  deleteProductFile(
+    @Payload()
+    payload: {
+      productId: string;
+      fileId: string;
+    }
+  ): Promise<void> {
+    return this.productService.deleteProductFile(
+      payload.productId,
+      payload.fileId
+    );
+  }
+
+  @MessagePattern(ProductMessagePatterns.DOWNLOAD_FILE)
+  downloadProductFile(@Payload() payload: { path: string }): Promise<string> {
+    return this.productService.downloadProductFile(payload.path);
   }
 }

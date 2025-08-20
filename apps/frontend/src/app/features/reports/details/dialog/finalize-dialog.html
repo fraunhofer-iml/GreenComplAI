@@ -6,6 +6,8 @@
   </p>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button (click)="finalize(true)">Bericht abschließen</button>
+  <button mat-button [disabled]="!data.isValid" (click)="finalize(true)">
+    Bericht abschließen
+  </button>
   <button mat-button (click)="finalize(false)">Abbrechen</button>
 </mat-dialog-actions>

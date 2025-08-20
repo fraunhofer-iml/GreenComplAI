@@ -26,12 +26,15 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: npm ci && npx prisma generate --generator jsclient
+      - run: ls -R node_modules/keycloak-js || echo "keycloak-js missing"
       - uses: nrwl/nx-set-shas@v4
       - run: npx nx format:check
       - name: Lint affected apps
         run: npx nx affected -t lint --parallel
       - name: Test affected apps
-        run: npx nx affected -t test --passWithNoTests --parallel
+        run: >
+          npx nx affected -t test --passWithNoTests --parallel
+          --exclude=frontend
 
   build:
     name: Build

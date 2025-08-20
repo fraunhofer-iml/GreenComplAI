@@ -9,6 +9,8 @@
 import {
   CreateReportDto,
   FinancialImpactCreateDto,
+  GoalDto,
+  GoalPlanningDto,
   MeasureCreateDto,
   MeasureDto,
   PaginatedData,
@@ -24,8 +26,9 @@ import { DataService } from '../data-service/data.service';
 
 @Injectable()
 export class ReportsService extends DataService<PaginatedData<ReportDto>> {
-  url = environment.baseUrl;
   private readonly http = inject(HttpClient);
+
+  url = environment.baseUrl;
 
   fetchData(
     page: number,
@@ -96,5 +99,23 @@ export class ReportsService extends DataService<PaginatedData<ReportDto>> {
 
   updateFlags(data: string[], id: string): Promise<unknown> {
     throw new Error('Method not implemented.');
+  }
+
+  updateGoalPlanning(data: GoalPlanningDto, id: string) {
+    return lastValueFrom(
+      this.http.patch<GoalPlanningDto>(
+        `${this.url}${ApiUris.reports}/${id}/goal-planning`,
+        data
+      )
+    );
+  }
+
+  updateGoals(data: GoalDto[], id: string) {
+    return lastValueFrom(
+      this.http.patch<GoalPlanningDto>(
+        `${this.url}${ApiUris.reports}/${id}/goals`,
+        data
+      )
+    );
   }
 }

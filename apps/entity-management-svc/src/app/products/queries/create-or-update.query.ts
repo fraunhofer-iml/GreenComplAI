@@ -8,7 +8,7 @@
 
 import { ProductCreateDto } from '@ap2/api-interfaces';
 
-export const upsertQuery = (dto: ProductCreateDto) => ({
+export const upsertQuery = (dto: Partial<ProductCreateDto>) => ({
   id: dto.id ? dto.id.toString() : undefined,
   name: dto.name ?? 'N/A',
   isSellable: dto.isSellable ?? false,
@@ -27,6 +27,10 @@ export const upsertQuery = (dto: ProductCreateDto) => ({
   durabilityDifference: Number(dto.durabilityDifference) || 0,
   reparability: Number(dto.reparability) || 0,
   circularPrinciple: dto.circularPrinciple ?? false,
+  circularPrincipleJustification: dto.circularPrincipleJustification ?? null,
+  circularPrincipleMeasureable: dto.circularPrincipleMeasureable ?? false,
+  circularPrincipleAssumption: dto.circularPrincipleAssumption ?? null,
+  digitalProductPassportUrl: dto.digitalProductPassportUrl ?? null,
   supplier: {
     connectOrCreate: {
       where: { id: dto.supplier ?? 'N/A' },
