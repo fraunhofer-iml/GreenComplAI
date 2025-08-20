@@ -19,7 +19,12 @@ Note: the Dockerfile that is provided here assumes, that you previously created 
 
 For the sake of simplicity, you can use the 'builddockerimage.sh' script. It will automatically create a new .jar file 
 from the current state of the source code and then run a 'docker build' command. The generated docker image will be 
-named 'dpp_basyx:latest'. 
+named 'dpp_basyx:latest'.
 
-
-
+### Run Project in new Container after Changes made
+Run 
+```
+sh docker.sh
+```
+to remove DPP BaSyx container, remove image, build project, build new image, and run the application in a 
+new container within docker compose.
