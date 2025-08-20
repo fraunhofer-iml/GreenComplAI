@@ -11,7 +11,7 @@ export default function ButtonAppBar() {
           <Divider orientation="vertical" flexItem sx={{ bgcolor: 'grey', mx: 2 }} />
           <Box sx={{ ml: 2 }}>
             <img
-              src="/skala-logo.jpg"
+              src=""
               alt="Logo"
               style={{ height: 48 }}
             />
