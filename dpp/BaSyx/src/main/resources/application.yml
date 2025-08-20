@@ -1,0 +1,9 @@
+keycloak:
+  url: ${KEYCLOAK_URL}
+  realm: ${KEYCLOAK_REALM}
+  client-id: ${KEYCLOAK_CLIENT_ID}
+  client-secret: ${KEYCLOAK_SECRET}
+
+logging:
+  level:
+    org.springframework.core.env: DEBUG

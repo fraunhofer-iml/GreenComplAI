@@ -1,30 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../css/App.css';
-import {Box} from "@mui/material";
-import kittenGif from '../assets/kitten-keybo.gif';
+import { getUserProfile } from '../service/UserService';
+
+export type UserProfile = {
+  username: string;
+  email?: string;
+  roles?: string[];
+};
 
 export default function ProfileView() {
-    return (
-        <Box
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: '100vh', // Gesamter Viewport
-                textAlign: 'center',
-            }}
-        >
-            <h2>Welcome to the Profile Page</h2>
-            <Box
-                component="img"
-                src={kittenGif}
-                alt="Cute kitten typing on keyboard"
-                sx={{
-                    maxWidth: '300px',
-                    marginTop: '20px',
-                }}
-            />
-        </Box>
-    );
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    getUserProfile()
+      .then(setProfile)
+      .catch((e) => setError(e.message));
+  }, []);
+
+  if (error) return <div>Auth check failed: {error}</div>;
+  if (!profile) return <div>Loading profile...</div>;
+  return <div>Welcome, {profile.username ?? profile.email ?? 'User'}</div>;
 }

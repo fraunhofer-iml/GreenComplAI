@@ -1,18 +1,25 @@
-# BaSyx Setup
-This is your BaSyx setup. To run the BaSyx containers, you need to have Docker installed on your device.
+## DPP BaSyx
 
-## How to run the BaSyx containers
-1. Extract the zip file on your device.
-2. Open a terminal and navigate to the extracted folder.
-3. Run the following command to start the BaSyx containers:
+This is a simple Spring Boot based project, that is importing the AAS repository and Submodel repository modules from 
+the BaSyx project. 
+
+### Run it in IntelliJ
+You should be able to run it in IntelliJ normally. Since the default setting in the application.properties is set 
+to "InMemory", it is not necessary to have a MongoDB server running. If you want to test on another port than the 
+default (8080), then also see the application.properties file.  
+
+
+### Create .jar
 ```
-docker-compose up -d
+./mvnw clean package -DskipTests
 ```
 
-## Access the BaSyx containers
-- AAS Environment: [http://localhost:8081](http://localhost:8081)
-- AAS Registry: [http://localhost:8082](http://localhost:8082)
-- Submodel Registry: [http://localhost:8083](http://localhost:8083)
+### Create a Docker Image
+Note: the Dockerfile that is provided here assumes, that you previously created a .jar file (see above). 
 
-## Include your own Asset Administration Shells
-To include your own Asset Administration Shells, you can either put them in the `aas` folder or upload them via the AAS Web UI.
+For the sake of simplicity, you can use the 'builddockerimage.sh' script. It will automatically create a new .jar file 
+from the current state of the source code and then run a 'docker build' command. The generated docker image will be 
+named 'dpp_basyx:latest'. 
+
+
+

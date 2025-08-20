@@ -1,20 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../css/App.css';
 import { useNavigate } from 'react-router-dom';
 
-export default function LoginView() {
-    const navigate = useNavigate(); // Hook für die Navigation
+export default function LoginView(props: {}) {
 
-    const handleLogin = () => {
-        // Hier kannst du z. B. Login-Logik hinzufügen
-        // Nach erfolgreichem Login zum Dashboard navigieren
-        navigate('/dashboard');
-    };
+  const navigate = useNavigate();
 
-    return (
-        <div className="login-view">
-            <h2>Login Page</h2>
-            <button onClick={handleLogin}>Login</button>
-        </div>
-    );
+  useEffect(() => {
+    fetch("/api/auth/status", { credentials: "include" })
+      .then(res => res.json()) // direkt JSON
+      .then(data => {
+        console.log("Antwort von /status:", data);
+        if (data.authenticated) {
+          navigate("/dashboard");
+        }
+      })
+      .catch(err => console.error("Fehler bei /status:", err));
+  }, [navigate]);
+
+  return <div>Redirecting to login...</div>;
 }

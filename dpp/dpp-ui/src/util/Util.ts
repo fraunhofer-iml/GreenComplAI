@@ -1,4 +1,3 @@
-
 class Util {
 
     public static base64UrlEncode(str: string): string {

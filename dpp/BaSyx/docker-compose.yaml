@@ -1,0 +1,8 @@
+services:
+  dpp-basyx:
+    container_name: dpp_basyx_skala
+    image: dpp_basyx_skala:latest
+    env_file:
+      - .env
+    ports:
+      - "8081:8080"

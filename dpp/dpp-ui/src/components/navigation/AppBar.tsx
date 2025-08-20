@@ -6,7 +6,7 @@ export default function ButtonAppBar() {
       <AppBar position="static" sx={{ bgcolor: 'white' }}>
         <Toolbar>
           <Typography variant="h2" component="div" sx={{ flexGrow: 1, textAlign: 'center', color: 'black' }}>
-            SKALA APP
+            DPP APP
           </Typography>
           <Divider orientation="vertical" flexItem sx={{ bgcolor: 'grey', mx: 2 }} />
           <Box sx={{ ml: 2 }}>

@@ -5,21 +5,13 @@ import '../css/ManagementView.css'
 import React, {useState} from "react";
 
 export default function ManagementView() {
-
     const [creationLog, setCreationLog] = useState<string[]>([]);
-    // const [creationLog, setCreationLog] = useState<string[]>([
-    //     "AAS erfolgreich erstellt",
-    //     "Submodel 1 verknüpft",
-    //     "Fehler bei Submodel 2",
-    // ]);
 
     return (
         <Box
             sx={{
                 display: 'flex',
                 flexWrap: 'wrap',
-                // border: 'solid black 1px',
-                // background: '#ededed',
                 height: 'auto',
             }}
         >
@@ -37,11 +29,8 @@ export default function ManagementView() {
                     <TextField
                         className="output-field"
                         key={index}
-                        // label={`Log ${index + 1}`}
-                        // label={`Log`}
                         value={entry}
                         variant="filled"
-                        // fullWidth
                         InputProps={{
                             readOnly: true,
                         }}

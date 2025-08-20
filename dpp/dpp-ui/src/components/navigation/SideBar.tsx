@@ -7,7 +7,7 @@ import PublishIcon from '@mui/icons-material/Publish';
 import {useNavigate} from "react-router-dom";
 
 export default function SideBar() {
-    const navigate = useNavigate(); // Hook für die Navigation
+    const navigate = useNavigate();
 
     return (
         <Drawer
@@ -48,6 +48,16 @@ export default function SideBar() {
                     </List>
                     <Divider />
                     <List>
+                        <ListItem>
+                            <ListItemButton
+                                onClick={() => {navigate('/dashboard/settings');}}
+                            >
+                                <ListItemIcon>
+                                    <SettingsIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Settings" />
+                            </ListItemButton>
+                        </ListItem>
                         <ListItem>
                             <ListItemButton
                                 onClick={() => {navigate('/dashboard/profile');}}

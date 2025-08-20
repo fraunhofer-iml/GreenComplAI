@@ -7,11 +7,11 @@ class AASService {
         const result = AssetAdministrationShell.safeParse(json);
 
         if (!result.success) {
-            console.error('❌ Parsing/Validation Fehler:', JSON.stringify(result.error.format(), null, 2));
+            console.error('Parsing/Validation Fehler:', JSON.stringify(result.error.format(), null, 2));
             throw new Error("Ungültiges AAS JSON.");
         }
 
-        console.log("✅ JSON erfolgreich validiert.");
+        console.log("JSON erfolgreich validiert.");
         return result.data; // getyptes und validiertes AAS-Objekt
     }
 
@@ -19,11 +19,11 @@ class AASService {
         const result = Submodel.safeParse(json);
 
         if (!result.success) {
-            console.error("❌ Parsing/Validation Fehler:", JSON.stringify(result.error.format(), null, 2));
+            console.error("Parsing/Validation Fehler:", JSON.stringify(result.error.format(), null, 2));
             throw new Error("Ungültiges Submodel JSON.");
         }
 
-        console.log("✅ Submodel JSON erfolgreich validiert.");
+        console.log("Submodel JSON erfolgreich validiert.");
         return result.data; // getyptes und validiertes Submodel-Objekt
     }
 }

@@ -27,8 +27,6 @@ const AASCreatePanel: React.FC<Props> = ({ creationLog, setCreationLog }) => {
     const handleAASFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         setAasFile(file);
-        // console.log(`File: ${file}`);
-        // console.log(`File.name: ${file?.name}`);
     };
 
     const handleSubmodelFilesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,34 +34,12 @@ const AASCreatePanel: React.FC<Props> = ({ creationLog, setCreationLog }) => {
         if (files) {
             setSubmodelFiles(Array.from(files));
             Array.from(files).forEach(file => {
-                // console.log(file.webkitRelativePath); // Gibt den relativen Pfad der File aus
-                console.log(file.name); // Gibt den Namen der File aus
+                console.log(file.name);
             });
         }
     };
 
-    // useEffect(() => {
-    //     fetch('/shells')
-    //         .then((res) => {
-    //             // console.log(`res: ${res}`);
-    //             // console.log(`res als JSON: ${JSON.stringify(res)}`);
-    //             res.json()
-    //         })
-    //         .then((data) => console.log('✅ Daten:', data))
-    //         .catch((err) => console.error('❌ Fehler:', err));
-    // }, []);
-
     const handleCreateAas = async () => {
-        //
-        //     console.error(`No AAS-File`);
-        //     return;
-        // }
-
-        // if (submodelFiles.length < 1) {
-        //     console.error(`No AAS-Submodel-Files`);
-        //     return;
-        // }
-
         // Create AAS
         if (aasFile != undefined) {
             await BaSyxUploadService.createAAS(basyxUrl, basyxPort, aasFile).then((res) => {
