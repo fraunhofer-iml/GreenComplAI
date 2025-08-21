@@ -16,12 +16,17 @@
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/frontend",
         "index": "apps/frontend/src/index.html",
         "main": "apps/frontend/src/main.ts",
-        "polyfills": ["zone.js", "@angular/localize/init"],
+        "polyfills": [
+          "zone.js",
+          "@angular/localize/init"
+        ],
         "tsConfig": "apps/frontend/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
@@ -30,12 +35,17 @@
             "input": "apps/frontend/public"
           }
         ],
-        "styles": ["apps/frontend/src/styles.scss",  "./node_modules/material-icons-font/material-icons-font.css"],
+        "styles": [
+          "apps/frontend/src/styles.scss",
+          "./node_modules/material-icons-font/material-icons-font.css"
+        ],
         "scripts": []
       },
       "configurations": {
         "en": {
-          "localize": ["en-US"]
+          "localize": [
+            "en-US"
+          ]
         },
         "production": {
           "budgets": [
@@ -94,7 +104,9 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
         "jestConfig": "apps/frontend/jest.config.ts",
         "codeCoverage": true
@@ -121,7 +133,9 @@
         "dockerfile": "apps/frontend/Dockerfile",
         "tagPrefix": "v",
         "push": true,
-        "additionalTags": ["latest"]
+        "additionalTags": [
+          "latest"
+        ]
       }
     }
   }
