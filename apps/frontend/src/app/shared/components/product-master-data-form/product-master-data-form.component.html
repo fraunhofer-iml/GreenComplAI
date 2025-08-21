@@ -1,9 +1,9 @@
 <form class="flex flex-col gap-4" [formGroup]="form()">
   <div
-    class="grid w-full grid-cols-1 gap-2 rounded-lg bg-neutral-200 p-8 md:grid-cols-3"
+    class="grid w-full grid-cols-1 gap-4 rounded-lg bg-neutral-200 p-8 md:grid-cols-4"
   >
     <div i18n class="col-span-1">Allgemeine Informationen</div>
-    <div class="col-span-2 flex gap-4">
+    <div class="col-span-3 flex gap-4">
       @if (!authService.isSupplier()) {
         <section>
           <mat-checkbox formControlName="isSellable"
@@ -21,6 +21,17 @@
       <mat-label>Beschreibung</mat-label>
       <input matInput formControlName="description" />
     </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>TARIC-Code</mat-label>
+      <input matInput formControlName="taricCode" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>GTIN</mat-label>
+      <input matInput formControlName="gtin" />
+    </mat-form-field>
+
     @if (!authService.isSupplier()) {
       <mat-form-field appearance="outline">
         <mat-label>Produkt Id</mat-label>
@@ -192,7 +203,7 @@
       <mat-label>Verwendetes Zertifizierungssystem</mat-label>
       <input matInput formControlName="certification" />
     </mat-form-field>
-    <mat-form-field appearance="outline" class="col-span-3">
+    <mat-form-field appearance="outline" class="col-span-2">
       <mat-label>Kaskadenprinzip</mat-label>
       <textarea
         cdkTextareaAutosize
@@ -204,14 +215,14 @@
       ></textarea>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="col-span-3">
+    <mat-form-field appearance="outline" class="col-span-2">
       <mat-label>Digitale Produktpass-URL</mat-label>
       <input matInput formControlName="digitalProductPassportUrl" />
     </mat-form-field>
 
-    <div class="col-span-3 my-2 h-[1px] bg-neutral-300"></div>
+    <div class="col-span-4 my-2 h-[1px] bg-neutral-300"></div>
 
-    <div class="col-span-3 grid grid-cols-2 gap-2">
+    <div class="col-span-4 grid grid-cols-2 gap-2">
       <section>
         <mat-checkbox formControlName="circularPrinciple"
           >Kreislauforientierte Grundsätze beachtet

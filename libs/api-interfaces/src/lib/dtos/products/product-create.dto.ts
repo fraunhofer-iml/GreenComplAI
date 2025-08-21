@@ -57,6 +57,8 @@ export class ProductCreateDto {
 
   cascadePrinciple?: string;
   certification?: string;
+  taricCode?: string;
+  gtin?: string;
 
   circularPrinciple?: boolean;
   circularPrincipleJustification?: string;
@@ -103,7 +105,9 @@ export class ProductCreateDto {
     cascadePrincipal?: string,
     certification?: string,
     circularPrinciple?: boolean,
-    outliers?: string[]
+    outliers?: string[],
+    taricCode?: string,
+    gtin?: string
   ) {
     this.name = name;
     this.isSellable = isSellable;
@@ -138,5 +142,7 @@ export class ProductCreateDto {
     this.productionHistory = producedItemsPerYear;
     this.flags = flags ?? [];
     this.outliers = outliers ?? [];
+    this.taricCode = taricCode;
+    this.gtin = gtin;
   }
 }

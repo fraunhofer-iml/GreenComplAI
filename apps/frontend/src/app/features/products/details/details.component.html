@@ -47,6 +47,26 @@
             </app-flagable>
           }
 
+          @if (data.taricCode) {
+            <app-flagable
+              [id]="id$() ?? ''"
+              [data]="data.flags"
+              [topic]="'TARIC-Code'"
+              [element]="'taricCode'"
+              ><span>{{ data.taricCode }}</span>
+            </app-flagable>
+          }
+
+          @if (data.gtin) {
+            <app-flagable
+              [id]="id$() ?? ''"
+              [data]="data.flags"
+              [topic]="'GTIN'"
+              [element]="'gtin'"
+              ><span>{{ data.gtin }}</span>
+            </app-flagable>
+          }
+
           @if (!authService.isSupplier()) {
             <app-flagable
               [id]="id$() ?? ''"

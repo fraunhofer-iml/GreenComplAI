@@ -50,6 +50,8 @@ export interface MasterDataFormGroup {
   circularPrincipleMeasureable: FormControl<boolean | null>;
   circularPrincipleAssumption: FormControl<string | null>;
   digitalProductPassportUrl: FormControl<string | null>;
+  taricCode: FormControl<string | null>;
+  gtin: FormControl<string | null>;
 }
 
 export interface ProducedItemsFormGroup {

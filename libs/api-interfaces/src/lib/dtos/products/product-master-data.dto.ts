@@ -37,6 +37,8 @@ export class ProductMasterDataDto {
   cascadePrinciple?: string;
   certification?: string;
   digitalProductPassportUrl?: string;
+  taricCode?: string;
+  gtin?: string;
 
   circularPrinciple?: boolean;
 
@@ -68,7 +70,9 @@ export class ProductMasterDataDto {
     cascadePrincipal?: string,
     certification?: string,
     circularPrinciple?: boolean,
-    digitalProductPassportUrl?: string
+    digitalProductPassportUrl?: string,
+    taricCode?: string,
+    gtin?: string
   ) {
     this.name = name;
     this.isSellable = isSellable;
@@ -96,5 +100,7 @@ export class ProductMasterDataDto {
     this.circularPrinciple = circularPrinciple;
     this.flags = flags;
     this.digitalProductPassportUrl = digitalProductPassportUrl;
+    this.taricCode = taricCode;
+    this.gtin = gtin;
   }
 }

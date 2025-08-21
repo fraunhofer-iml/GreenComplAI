@@ -167,6 +167,8 @@ model Product {
   isSellable                      Boolean @default(false)
   certificationSystem             String?
   cascadePrinciple                String?
+  taricCode                       String?
+  gtin                            String?
 
   circularPrinciple              Boolean @default(false)
   circularPrincipleJustification String?
