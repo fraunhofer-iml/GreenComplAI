@@ -30,7 +30,7 @@
             "input": "apps/frontend/public"
           }
         ],
-        "styles": ["apps/frontend/src/styles.scss"],
+        "styles": ["apps/frontend/src/styles.scss",  "./node_modules/material-icons-font/material-icons-font.css"],
         "scripts": []
       },
       "configurations": {
