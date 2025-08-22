@@ -6,10 +6,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export const includeSupplierName = (sorting: string) => {
-  const s: Record<string, 'asc' | 'desc'> = JSON.parse(sorting);
-  const key = Object.keys(s)[0];
-  const direction = s[key];
+export const includeSupplierName = (sortingInput: string) => {
+  const sorting: Record<string, 'asc' | 'desc'> = JSON.parse(sortingInput);
+  const key = Object.keys(sorting)[0];
+  const direction = sorting[key];
 
   if (key === 'supplierName' || key === 'supplier') {
     return {

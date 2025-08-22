@@ -96,7 +96,7 @@ export class ReportsService {
     PaginatedData<ReportOverviewDto | null>
   > {
     const skip: number = (page - 1) * size;
-    const f = this.getWhereCondition(filters);
+    const f = await this.getWhereCondition(filters);
 
     const reports = await this.prisma.report.findMany({
       skip: skip,
@@ -308,19 +308,32 @@ export class ReportsService {
     };
   }
 
-  private getWhereCondition(
+  private async getWhereCondition(
     filter: string | undefined
-  ): Prisma.ReportWhereInput[] {
+  ): Promise<Prisma.ReportWhereInput[]> {
     if (!filter) return [];
+
+    console.log(filter);
+
+    let filterAsBool: undefined | boolean = undefined;
+    if (filter.toLowerCase() === 'ja' || filter.toLowerCase() === 'true')
+      filterAsBool = true;
+    if (filter.toLowerCase() === 'nein' || filter.toLowerCase() === 'false')
+      filterAsBool = false;
 
     const filterAsNumber = Number(filter);
     const orConditions: Prisma.ReportWhereInput[] = [
       { id: { contains: filter } },
-      { evaluationMethodsAssumptionsTools: { contains: filter } },
-      { consultationMethods: { contains: filter } },
+      { consultationsConducted: { equals: filterAsBool } },
+      { assetsBusinessActivitiesEvaluated: { equals: filterAsBool } },
+      { isFinalReport: { equals: filterAsBool } },
     ];
 
     if (!isNaN(filterAsNumber)) {
+      const reportIds = await this.getIdsForAmountOfRelations(filterAsNumber);
+      orConditions.push({
+        id: { in: reportIds },
+      });
       orConditions.push({ evaluationYear: { equals: filterAsNumber } });
     }
 
@@ -490,5 +503,25 @@ export class ReportsService {
     await Promise.all(updateCalls);
 
     return { ...report, goals: [] };
+  }
+
+  private async getIdsForAmountOfRelations(
+    filerNumber: number
+  ): Promise<string[]> {
+    const t = await this.prisma.report.findMany({
+      select: {
+        id: true,
+        _count: { select: { measures: true, strategies: true, goals: true } },
+      },
+    });
+    return t
+      .filter((item) => {
+        return (
+          item._count.goals === filerNumber ||
+          item._count.measures === filerNumber ||
+          item._count.strategies === filerNumber
+        );
+      })
+      .map((i) => i.id);
   }
 }
