@@ -6,28 +6,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export const getSortingWithSupplier = (sortingInput: string) => {
-  const { key, direction } = parseSorting(sortingInput);
-
-  if (key === 'supplierName' || key === 'supplier')
-    return {
-      supplier: {
-        name: direction,
-      },
-    };
-
-  return {
-    [key]: direction,
-  };
-};
-
-export const getSortingWithCounts = (sortingInput: string) => {
+export const getSorting = (sortingInput: string) => {
   const { key, direction } = parseSorting(sortingInput);
 
   const mapping = {
     numberOfStrategies: 'strategies',
     numberOfMeasures: 'measures',
     numberOfGoals: 'goals',
+    amount: 'products',
   };
 
   if (mapping[key])
@@ -36,6 +22,19 @@ export const getSortingWithCounts = (sortingInput: string) => {
         _count: direction,
       },
     };
+
+  if (key === 'supplierName' || key === 'supplier')
+    return {
+      supplier: {
+        name: direction,
+      },
+    };
+
+  if (key === 'wasteFlow' || key === 'productGroup') {
+    return {
+      [key]: { name: direction },
+    };
+  }
 
   return {
     [key]: direction,

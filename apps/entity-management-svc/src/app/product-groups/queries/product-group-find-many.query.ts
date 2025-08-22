@@ -6,7 +6,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { getSortingWithCounts } from '../../utils/sorting.util';
+import { Prisma } from '@prisma/client';
+import { getSorting } from '../../utils/sorting.util';
 
 export const productGroupFindManyQuery = ({
   where,
@@ -16,19 +17,22 @@ export const productGroupFindManyQuery = ({
 }: {
   skip: number;
   size: number;
-  where: unknown;
+  where: Prisma.ProductGroupWhereInput;
   sorting: string;
-}) => ({
-  skip: skip,
-  take: size,
-  where: where,
-  include: {
-    _count: {
-      select: { products: true },
+}) =>
+  ({
+    skip: skip,
+    take: size,
+    where: where,
+    include: {
+      _count: {
+        select: { products: true },
+      },
+      products: true,
+      wasteFlow: true,
+      variants: true,
     },
-    products: true,
-    wasteFlow: true,
-    variants: true,
-  },
-  orderBy: getSortingWithCounts(sorting || '{}'),
-});
+    orderBy: getSorting(
+      sorting || '{}'
+    ) as Prisma.ProductGroupOrderByWithRelationInput,
+  }) satisfies Prisma.ProductGroupFindManyArgs;

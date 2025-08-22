@@ -19,7 +19,6 @@ import { PrismaService } from '@ap2/database';
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { FlagsService } from '../flags/flags.service';
-import { getSortingWithCounts } from '../utils/sorting.util';
 import { getTotalWeightOfWaste } from '../utils/weight.utils';
 import { productGroupCreateQuery } from './queries/product-group-create.query';
 import { productGroupFindManyQuery } from './queries/product-group-find-many.query';

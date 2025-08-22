@@ -31,7 +31,6 @@ export const getWhereCondition = (
         { productGroup: { name: { contains: filter } } },
         { wasteFlow: { name: { contains: filter } } },
         { supplier: { name: { contains: filter } } },
-        { manufacturer: { name: { contains: filter } } },
         {
           materials: {
             some: { material: { name: { contains: filter } } },

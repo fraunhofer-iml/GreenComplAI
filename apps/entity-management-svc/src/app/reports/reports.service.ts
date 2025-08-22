@@ -27,7 +27,7 @@ import {
 import { PrismaService } from '@ap2/database';
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { getSortingWithCounts } from '../utils/sorting.util';
+import { getSorting } from '../utils/sorting.util';
 import { createUpdateGoalsPlanningQuery } from './queries/create-update-goals-planning.query';
 import { createGoalQuery } from './queries/goal-create.query';
 import { updateGoalQuery } from './queries/goal-update.query';
@@ -98,9 +98,9 @@ export class ReportsService {
   > {
     const skip: number = (page - 1) * size;
     const f = await this.getWhereCondition(filters);
-    const s = getSortingWithCounts(
+    const s = getSorting(
       sorting === '{}' ? '{"evaluationYear": "desc"}' : sorting
-    );
+    ) as Prisma.ReportOrderByWithRelationInput;
 
     const reports = await this.prisma.report.findMany({
       skip: skip,
