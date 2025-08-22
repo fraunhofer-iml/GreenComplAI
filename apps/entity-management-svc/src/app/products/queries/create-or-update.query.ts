@@ -31,6 +31,8 @@ export const upsertQuery = (dto: Partial<ProductCreateDto>) => ({
   circularPrincipleMeasureable: dto.circularPrincipleMeasureable ?? false,
   circularPrincipleAssumption: dto.circularPrincipleAssumption ?? null,
   digitalProductPassportUrl: dto.digitalProductPassportUrl ?? null,
+  taricCode: dto.taricCode ?? null,
+  gtin: dto.gtin ?? null,
   supplier: {
     connectOrCreate: {
       where: { id: dto.supplier ?? 'N/A' },

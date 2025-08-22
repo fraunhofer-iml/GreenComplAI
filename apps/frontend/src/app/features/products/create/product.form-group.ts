@@ -68,4 +68,6 @@ export const masterDataFormGroup = () =>
     circularPrincipleMeasureable: new FormControl<boolean | null>(false),
     circularPrincipleAssumption: new FormControl<string | null>(null),
     digitalProductPassportUrl: new FormControl<string | null>(null),
+    taricCode: new FormControl<string | null>(null),
+    gtin: new FormControl<string | null>(null),
   });
