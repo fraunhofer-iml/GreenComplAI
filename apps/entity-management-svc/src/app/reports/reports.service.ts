@@ -27,6 +27,7 @@ import {
 import { PrismaService } from '@ap2/database';
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { getFilterAsBool } from '../utils/filter-utils';
 import { getSorting } from '../utils/sorting.util';
 import { createUpdateGoalsPlanningQuery } from './queries/create-update-goals-planning.query';
 import { createGoalQuery } from './queries/goal-create.query';
@@ -315,15 +316,9 @@ export class ReportsService {
   ): Promise<Prisma.ReportWhereInput[]> {
     if (!filter) return [];
 
-    console.log(filter);
-
-    let filterAsBool: undefined | boolean = undefined;
-    if (filter.toLowerCase() === 'ja' || filter.toLowerCase() === 'true')
-      filterAsBool = true;
-    if (filter.toLowerCase() === 'nein' || filter.toLowerCase() === 'false')
-      filterAsBool = false;
-
+    const filterAsBool = getFilterAsBool(filter);
     const filterAsNumber = Number(filter);
+
     const orConditions: Prisma.ReportWhereInput[] = [
       { id: { contains: filter } },
       { consultationsConducted: { equals: filterAsBool } },
