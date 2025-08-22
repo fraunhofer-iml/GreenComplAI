@@ -6,6 +6,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { getSortingWithCounts } from '../../utils/sorting.util';
+
 export const productGroupFindManyQuery = ({
   where,
   size,
@@ -28,5 +30,5 @@ export const productGroupFindManyQuery = ({
     wasteFlow: true,
     variants: true,
   },
-  orderBy: JSON.parse(sorting || '{}'),
+  orderBy: getSortingWithCounts(sorting || '{}'),
 });

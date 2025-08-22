@@ -6,20 +6,48 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export const includeSupplierName = (sortingInput: string) => {
-  const sorting: Record<string, 'asc' | 'desc'> = JSON.parse(sortingInput);
-  const key = Object.keys(sorting)[0];
-  const direction = sorting[key];
+export const getSortingWithSupplier = (sortingInput: string) => {
+  const { key, direction } = parseSorting(sortingInput);
 
-  if (key === 'supplierName' || key === 'supplier') {
+  if (key === 'supplierName' || key === 'supplier')
     return {
       supplier: {
         name: direction,
       },
     };
-  }
 
   return {
     [key]: direction,
   };
+};
+
+export const getSortingWithCounts = (sortingInput: string) => {
+  const { key, direction } = parseSorting(sortingInput);
+
+  const mapping = {
+    numberOfStrategies: 'strategies',
+    numberOfMeasures: 'measures',
+    numberOfGoals: 'goals',
+  };
+
+  if (mapping[key])
+    return {
+      [mapping[key]]: {
+        _count: direction,
+      },
+    };
+
+  return {
+    [key]: direction,
+  };
+};
+
+const parseSorting = (
+  sortingInput: string
+): { key: string; direction: 'asc' | 'desc' } => {
+  const sorting: Record<string, 'asc' | 'desc'> = JSON.parse(sortingInput);
+  const key = Object.keys(sorting)[0];
+  const direction = sorting[key];
+
+  return { key, direction };
 };

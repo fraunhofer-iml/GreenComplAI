@@ -7,7 +7,7 @@
  */
 
 import { Prisma } from '@prisma/client';
-import { includeSupplierName } from '../../utils/sorting.util';
+import { getSortingWithSupplier } from '../../utils/sorting.util';
 
 export const productFindManyQuery = ({
   filters,
@@ -54,5 +54,5 @@ export const productFindManyQuery = ({
       rareEarths: { include: { material: true } },
       criticalRawMaterials: { include: { material: true } },
     },
-    orderBy: includeSupplierName(sorting),
+    orderBy: getSortingWithSupplier(sorting),
   }) satisfies Prisma.ProductFindManyArgs;
