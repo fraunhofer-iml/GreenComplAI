@@ -17,6 +17,7 @@ import {
 } from '@ap2/api-interfaces';
 import { PrismaService } from '@ap2/database';
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { FlagsService } from '../flags/flags.service';
 import { getTotalWeightOfWaste } from '../utils/weight.utils';
 import { productGroupCreateQuery } from './queries/product-group-create.query';
@@ -59,21 +60,13 @@ export class ProductGroupService {
     sorting,
   }: FindAllProductGroupsProps): Promise<PaginatedData<ProductGroupDto>> {
     const skip: number = ((page || 1) - 1) * (size || 10);
-    const where =
-      filters && filters !== ''
-        ? {
-            OR: [
-              { name: { contains: filters } },
-              { id: { contains: filters } },
-            ],
-          }
-        : undefined;
+    const where = await this.getWhereCondition(filters);
 
     const retVal = await this.prismaService.productGroup.findMany(
       productGroupFindManyQuery({ where, size, skip, sorting })
     );
     const totalCount = await this.prismaService.productGroup.count({
-      where: { name: { contains: filters } },
+      where: where,
     });
 
     return {
@@ -160,5 +153,43 @@ export class ProductGroupService {
         },
       },
     });
+  }
+
+  private async getWhereCondition(
+    filters: string | undefined
+  ): Promise<Prisma.ProductGroupWhereInput> {
+    if (!filters || filters === '') return;
+
+    const filterAsNumber = Number(filters);
+    const orConditions: Prisma.ProductGroupWhereInput[] = [
+      { name: { contains: filters } },
+      { id: { contains: filters } },
+      { wasteFlow: { name: { contains: filters } } },
+    ];
+
+    if (!isNaN(filterAsNumber)) {
+      const ids = await this.getIdsForAmountOfRelations(filterAsNumber);
+      orConditions.push({
+        id: { in: ids },
+      });
+    }
+
+    return {
+      OR: orConditions,
+    };
+  }
+
+  private async getIdsForAmountOfRelations(
+    filerNumber: number
+  ): Promise<string[]> {
+    const t = await this.prismaService.productGroup.findMany({
+      select: {
+        id: true,
+        _count: { select: { products: true } },
+      },
+    });
+    return t
+      .filter((item) => item._count.products === filerNumber)
+      .map((i) => i.id);
   }
 }

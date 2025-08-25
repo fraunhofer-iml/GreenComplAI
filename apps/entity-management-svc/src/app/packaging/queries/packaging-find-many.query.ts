@@ -7,6 +7,7 @@
  */
 
 import { Prisma } from '@prisma/client';
+import { getSorting } from '../../utils/sorting.util';
 
 export const packagingFindManyQuery = (
   where: Prisma.PackagingWhereInput,
@@ -18,6 +19,6 @@ export const packagingFindManyQuery = (
     where: where,
     skip: skip,
     take: size,
-    orderBy: JSON.parse(sorting || '{}'),
+    orderBy: getSorting(sorting),
     include: { material: true, supplier: { include: { addresses: true } } },
   }) satisfies Prisma.PackagingFindManyArgs;

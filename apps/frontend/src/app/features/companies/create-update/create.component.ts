@@ -6,7 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { CompanyCreateDto, CompanyDto } from '@ap2/api-interfaces';
+import { AuthRoles, CompanyCreateDto, CompanyDto } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
 import { Component, inject, input } from '@angular/core';
 import {
@@ -25,6 +25,7 @@ import {
   injectMutation,
   injectQuery,
 } from '@tanstack/angular-query-experimental';
+import { AuthenticationService } from '../../../core/services/authentication/authentication.service';
 import { CompaniesService } from '../../../core/services/companies/companies.service';
 import { DataService } from '../../../core/services/data-service/data.service';
 import { UploadCSVComponent } from '../../../shared/components/csv-upload/uploadCSV.component';
@@ -55,7 +56,12 @@ export class CompanyCreateComponent {
   private readonly companiesService = inject(CompaniesService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly authService = inject(AuthenticationService);
 
+  protected readonly ContentType = ContentType;
+  protected readonly AuthRoles = AuthRoles;
+  usesImport = false;
+  isBuyer = false;
   id = input<string>();
   callback = input<string>();
   companyData: CompanyDto | undefined;
@@ -65,6 +71,7 @@ export class CompanyCreateComponent {
     phone: new FormControl<string | null>('', Validators.required),
     addresses: new FormArray<FormGroup>([this.getAddressForm()]),
   });
+
   companyQuery = injectQuery(() => ({
     queryKey: ['companies', this.id()],
     queryFn: async (): Promise<CompanyDto> => {
@@ -102,9 +109,10 @@ export class CompanyCreateComponent {
     onError: () => toast.error('Speichern fehlgeschlagen'),
   }));
 
-  protected readonly ContentType = ContentType;
-
-  usesImport = false;
+  constructor() {
+    const currentRole = this.authService.getCurrentUserRole();
+    this.isBuyer = currentRole === AuthRoles.BUYER;
+  }
 
   addAddress(): void {
     (this.companyForm.get('addresses') as FormArray).push(
