@@ -7,6 +7,7 @@
  */
 
 import { BarSeriesOption, EChartsOption } from 'echarts';
+import { formatNumber } from '@angular/common';
 
 //Chart colours get overridden by the SkalaTheme (see styles/chart-theme.ts)
 export const getBarChartOptions = (data: string[]): EChartsOption => {
@@ -32,6 +33,7 @@ export const getBarChartOptions = (data: string[]): EChartsOption => {
 };
 
 export const getDefaultSeries = (name: string): BarSeriesOption => {
+  const locale = navigator.language;
   return {
     name: name,
     type: 'bar',
@@ -43,9 +45,7 @@ export const getDefaultSeries = (name: string): BarSeriesOption => {
       trigger: 'item',
       position: { right: 'center', top: 0 },
       formatter: function (params) {
-        const locale = navigator.language;
-        const formatter = new Intl.NumberFormat(locale);
-        return `${params.marker} ${params.seriesName}: ${formatter.format(<number>params.value)} kg`;
+        return `${params.marker} ${params.seriesName}: ${formatNumber(<number>params.value,locale)} kg`;
       },
     },
     itemStyle: {
