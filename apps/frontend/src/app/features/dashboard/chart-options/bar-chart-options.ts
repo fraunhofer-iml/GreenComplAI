@@ -42,7 +42,12 @@ export const getDefaultSeries = (name: string): BarSeriesOption => {
     tooltip: {
       trigger: 'item',
       position: { right: 'center', top: 0 },
-      formatter: '{b} <br> {a}: {c} kg',
+      formatter: function(params) {
+        const locale = navigator.language;
+        let formatter = new Intl.NumberFormat(locale)
+        return `${params.marker} ${params.seriesName}: ${ formatter.format(<number>params.value)} kg`;
+      }
+
     },
     itemStyle: {
       borderRadius: 4,
