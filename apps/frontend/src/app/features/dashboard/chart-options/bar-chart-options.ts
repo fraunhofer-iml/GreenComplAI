@@ -45,7 +45,7 @@ export const getDefaultSeries = (name: string): BarSeriesOption => {
       trigger: 'item',
       position: { right: 'center', top: 0 },
       formatter: function (params) {
-        return `${params.marker} ${params.seriesName}: ${formatNumber(<number>params.value,locale)} kg`;
+        return `${params.marker} ${params.seriesName}: ${formatNumber(<number>params.value, locale)} kg`;
       },
     },
     itemStyle: {
