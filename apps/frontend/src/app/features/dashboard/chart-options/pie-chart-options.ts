@@ -26,11 +26,11 @@ export const getDefaultOption = (
     title: {},
     tooltip: {
       trigger: 'item',
-      formatter: function(params:any) {
+      formatter: function (params: any) {
         const locale = navigator.language;
-        let formatter = new Intl.NumberFormat(locale)
+        let formatter = new Intl.NumberFormat(locale);
         return `${params.marker} ${params.name}: ${formatter.format(<number>params.value)} ${unit ? `${unit}` : ''}`;
-      }
+      },
     },
     legend: {
       bottom: '0',
