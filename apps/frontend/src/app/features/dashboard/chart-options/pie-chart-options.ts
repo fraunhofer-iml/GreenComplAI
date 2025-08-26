@@ -7,6 +7,7 @@
  */
 
 import { EChartsOption, PieSeriesOption } from 'echarts';
+import { formatNumber } from '@angular/common';
 
 /*
  * Copyright Fraunhofer Institute for Material Flow and Logistics
@@ -22,11 +23,14 @@ export const getDefaultOption = (
   legendItemsSelectable: boolean,
   unit?: string
 ): EChartsOption => {
+  const locale = navigator.language;
   return {
     title: {},
     tooltip: {
       trigger: 'item',
-      formatter: `{b}:<br/> {c} ${unit ? `${unit}` : ''}`,
+      formatter: function (params: any) {
+        return `${params.marker} ${params.name}: ${formatNumber(<number>params.value, locale)} ${unit ? `${unit}` : ''}`;
+      },
     },
     legend: {
       bottom: '0',
