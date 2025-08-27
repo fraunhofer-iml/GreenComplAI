@@ -86,7 +86,6 @@ export class ProductCrudService {
     isSellable,
   }: FindAllProductsProps): Promise<PaginatedData<ProductDto>> {
     const skip: number = (page - 1) * size;
-
     const f = getWhereCondition(filters, isSellable);
 
     const products = await this.prismaService.product.findMany(

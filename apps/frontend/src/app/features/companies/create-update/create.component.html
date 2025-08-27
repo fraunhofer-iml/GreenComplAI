@@ -30,21 +30,11 @@
           <input matInput formControlName="name" />
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label i18n>
-            E-Mail
-            @if (companyData?.flags?.includes('email')) {
-              <span>🚩</span>
-            }
-          </mat-label>
+          <mat-label i18n> E-Mail </mat-label>
           <input matInput formControlName="email"
         /></mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label i18n>
-            Telefon
-            @if (companyData?.flags?.includes('phone')) {
-              <span>🚩</span>
-            }
-          </mat-label>
+          <mat-label i18n> Telefon </mat-label>
           <input matInput formControlName="phone" />
         </mat-form-field>
       </div>
@@ -81,26 +71,31 @@
             </mat-form-field>
           </div>
         }
-        <div class="col-span-3 mt-2 flex justify-end gap-2">
-          <button mat-flat-button (click)="addAddress()" i18n>
-            Addresse hinzufügen
-          </button>
-          <button mat-flat-button (click)="removeAddress()" i18n>
-            Addresse entfernen
-          </button>
-        </div>
+
+        @if (isBuyer) {
+          <div class="col-span-3 mt-2 flex justify-end gap-2">
+            <button mat-flat-button (click)="addAddress()" i18n>
+              Addresse hinzufügen
+            </button>
+            <button mat-flat-button (click)="removeAddress()" i18n>
+              Addresse entfernen
+            </button>
+          </div>
+        }
       </div>
 
-      <div class="col-span-2 flex justify-end gap-2">
-        <button
-          mat-flat-button
-          (click)="save()"
-          i18n
-          [disabled]="companyForm.invalid"
-        >
-          Speichern
-        </button>
-      </div>
+      @if (isBuyer) {
+        <div class="col-span-2 flex justify-end gap-2">
+          <button
+            mat-flat-button
+            (click)="save()"
+            i18n
+            [disabled]="companyForm.invalid"
+          >
+            Speichern
+          </button>
+        </div>
+      }
     </form>
   }
 </div>

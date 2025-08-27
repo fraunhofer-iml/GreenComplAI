@@ -27,6 +27,8 @@ import {
 import { PrismaService } from '@ap2/database';
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { getFilterAsBool } from '../utils/filter-utils';
+import { getSorting } from '../utils/sorting.util';
 import { createUpdateGoalsPlanningQuery } from './queries/create-update-goals-planning.query';
 import { createGoalQuery } from './queries/goal-create.query';
 import { updateGoalQuery } from './queries/goal-update.query';
@@ -96,7 +98,10 @@ export class ReportsService {
     PaginatedData<ReportOverviewDto | null>
   > {
     const skip: number = (page - 1) * size;
-    const f = this.getWhereCondition(filters);
+    const f = await this.getWhereCondition(filters);
+    const s = getSorting(
+      sorting === '{}' ? '{"evaluationYear": "desc"}' : sorting
+    ) as Prisma.ReportOrderByWithRelationInput;
 
     const reports = await this.prisma.report.findMany({
       skip: skip,
@@ -111,9 +116,7 @@ export class ReportsService {
         measures: true,
         _count: { select: { measures: true, strategies: true, goals: true } },
       },
-      orderBy: JSON.parse(
-        sorting === '{}' ? '{"evaluationYear": "desc"}' : sorting
-      ),
+      orderBy: s,
     });
 
     const totalCount = await this.prisma.report.count({
@@ -308,19 +311,26 @@ export class ReportsService {
     };
   }
 
-  private getWhereCondition(
+  private async getWhereCondition(
     filter: string | undefined
-  ): Prisma.ReportWhereInput[] {
+  ): Promise<Prisma.ReportWhereInput[]> {
     if (!filter) return [];
 
+    const filterAsBool = getFilterAsBool(filter);
     const filterAsNumber = Number(filter);
+
     const orConditions: Prisma.ReportWhereInput[] = [
       { id: { contains: filter } },
-      { evaluationMethodsAssumptionsTools: { contains: filter } },
-      { consultationMethods: { contains: filter } },
+      { consultationsConducted: { equals: filterAsBool } },
+      { assetsBusinessActivitiesEvaluated: { equals: filterAsBool } },
+      { isFinalReport: { equals: filterAsBool } },
     ];
 
     if (!isNaN(filterAsNumber)) {
+      const reportIds = await this.getIdsForAmountOfRelations(filterAsNumber);
+      orConditions.push({
+        id: { in: reportIds },
+      });
       orConditions.push({ evaluationYear: { equals: filterAsNumber } });
     }
 
@@ -490,5 +500,25 @@ export class ReportsService {
     await Promise.all(updateCalls);
 
     return { ...report, goals: [] };
+  }
+
+  private async getIdsForAmountOfRelations(
+    filerNumber: number
+  ): Promise<string[]> {
+    const t = await this.prisma.report.findMany({
+      select: {
+        id: true,
+        _count: { select: { measures: true, strategies: true, goals: true } },
+      },
+    });
+    return t
+      .filter((item) => {
+        return (
+          item._count.goals === filerNumber ||
+          item._count.measures === filerNumber ||
+          item._count.strategies === filerNumber
+        );
+      })
+      .map((i) => i.id);
   }
 }

@@ -285,6 +285,7 @@ export class PackagingService {
         { id: { contains: filter } },
         { name: { contains: filter } },
         { supplierId: { contains: filter } },
+        { supplier: { name: { contains: filter } } },
         { materialId: { contains: filter } },
       ],
     };

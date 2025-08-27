@@ -7,6 +7,7 @@
  */
 
 import { Prisma } from '@prisma/client';
+import { getFilterAsBool } from '../utils/filter-utils';
 
 export const getWhereCondition = (
   filter: string | undefined,
@@ -15,10 +16,11 @@ export const getWhereCondition = (
   const filterAsNumber = Number(filter);
 
   const conditions: Prisma.ProductWhereInput[] = [];
-
   if (isSellable !== undefined) {
     conditions.push({ isSellable });
   }
+
+  const filterAsBool = getFilterAsBool(filter);
 
   if (filter && filter !== '') {
     const orCondition: Prisma.ProductWhereInput = {
@@ -31,12 +33,12 @@ export const getWhereCondition = (
         { productGroup: { name: { contains: filter } } },
         { wasteFlow: { name: { contains: filter } } },
         { supplier: { name: { contains: filter } } },
-        { manufacturer: { name: { contains: filter } } },
         {
           materials: {
             some: { material: { name: { contains: filter } } },
           },
         },
+        { circularPrinciple: { equals: filterAsBool } },
       ],
     };
 
