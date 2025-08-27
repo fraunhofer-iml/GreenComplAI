@@ -11,6 +11,7 @@ export type DocumentType =
   | 'INSTRUCTIONS'
   | 'TECHNICAL_DOCUMENTATION'
   | 'LEGAL_DOCUMENTS'
+  | 'SAFETY_INFORMATION'
   | 'MISC';
 
 export const documentTypeToLabel: Record<DocumentType, string> = {
@@ -18,5 +19,6 @@ export const documentTypeToLabel: Record<DocumentType, string> = {
   INSTRUCTIONS: 'Bedienungs- & Montageanleitungen',
   TECHNICAL_DOCUMENTATION: 'Technische Unterlagen',
   LEGAL_DOCUMENTS: 'Rechtliche Dokumente',
+  SAFETY_INFORMATION: 'Sicherheitsinformationen & Warnhinweise',
   MISC: 'Sonstige Dokumente',
 };

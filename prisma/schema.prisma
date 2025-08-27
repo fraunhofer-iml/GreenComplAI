@@ -96,6 +96,7 @@ enum DocumentType {
   INSTRUCTIONS // Bedienungs- & Montageanleitungen
   TECHNICAL_DOCUMENTATION // Technische Unterlagen
   LEGAL_DOCUMENTS // Rechtliche Dokumente
+  SAFETY_INFORMATION // Sicherheitsinformationen & Warnhinweise
   MISC // Sonstige Dokumente
 }
 
