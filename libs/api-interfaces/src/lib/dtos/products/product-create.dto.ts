@@ -36,6 +36,7 @@ export class ProductCreateDto {
   packagings?: [string, number][];
 
   supplier?: string;
+  importer?: string;
   manufacturer?: string;
 
   materials?: { material: string; percentage: number }[];
@@ -84,6 +85,7 @@ export class ProductCreateDto {
     billOfMaterialDescription?: string,
     waste?: WasteCreateDto,
     supplier?: string,
+    importer?: string,
     materials?: { material: string; percentage: number }[],
     durability?: number,
     durabilityDifference?: number,
@@ -123,6 +125,7 @@ export class ProductCreateDto {
     this.billOfMaterialDescription = billOfMaterialDescription;
     this.waste = waste;
     this.supplier = supplier;
+    this.importer = importer;
     this.manufacturer = manufacturer;
     this.materials = materials;
     this.productGroup = productGroup;

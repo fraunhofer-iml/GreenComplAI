@@ -60,6 +60,13 @@ export class ProductConstructionService {
         typeof formData.value.supplier === 'object'
           ? (formData.value.supplier?.id ?? '')
           : '',
+      importer: formData.value.supplierIsImporter
+        ? (typeof formData.value.supplier === 'object'
+            ? (formData.value.supplier?.id ?? '')
+            : formData.value.supplier || '')
+        : (typeof formData.value.importer === 'object'
+            ? (formData.value.importer?.id ?? '')
+            : formData.value.importer || ''),
       manufacturer:
         typeof formData.value.manufacturer === 'object'
           ? (formData.value.manufacturer?.id ?? '')
@@ -112,6 +119,13 @@ export class ProductConstructionService {
         typeof masterData.value.supplier === 'object'
           ? (masterData.value.supplier?.id ?? '')
           : '',
+      importer: masterData.value.supplierIsImporter
+        ? (typeof masterData.value.supplier === 'object'
+            ? (masterData.value.supplier?.id ?? '')
+            : masterData.value.supplier || '')
+        : (typeof masterData.value.importer === 'object'
+            ? (masterData.value.importer?.id ?? '')
+            : masterData.value.importer || ''),
       manufacturer:
         typeof masterData.value.manufacturer === 'object'
           ? (masterData.value.manufacturer?.id ?? '')

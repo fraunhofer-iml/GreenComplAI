@@ -23,6 +23,7 @@ export class ProductMasterDataDto {
   reparability: number;
 
   supplier: string;
+  importer?: string;
   manufacturer?: string;
 
   productGroup?: string;
@@ -60,6 +61,7 @@ export class ProductMasterDataDto {
     reparability: number,
     flags: string[],
 
+    importer?: string,
     productGroup?: string,
     variant?: string,
     manufacturer?: string,
@@ -86,6 +88,7 @@ export class ProductMasterDataDto {
     this.percentageOfBiologicalMaterials = percentageOfBiologicalMaterials;
 
     this.supplier = supplier;
+    this.importer = importer;
     this.manufacturer = manufacturer;
     this.productGroup = productGroup;
     this.variant = variant;

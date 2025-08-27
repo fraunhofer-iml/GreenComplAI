@@ -213,6 +213,7 @@ export class ProductCrudService {
         { productGroup: { name: { contains: value } } },
         { manufacturer: { name: { contains: value } } },
         { supplier: { name: { contains: value } } },
+        { importer: { name: { contains: value } } },
         { category: { contains: value } },
         { productId: { contains: value } },
       ],
@@ -221,6 +222,7 @@ export class ProductCrudService {
       where: whereCondition,
       include: {
         supplier: { include: { addresses: true } },
+        importer: { include: { addresses: true } },
         manufacturer: { include: { addresses: true } },
         productGroup: true,
         rareEarths: { include: { material: true } },

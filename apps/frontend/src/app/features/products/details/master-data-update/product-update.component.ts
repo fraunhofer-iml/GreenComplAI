@@ -9,7 +9,7 @@
 import { ProductDto, ProductUpdateDto } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
 import { Component, inject, input } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -23,6 +23,7 @@ import { ProductsService } from '../../../../core/services/products/products.ser
 import { SupplierService } from '../../../../core/services/suppliers/suppliers.service';
 import { ConfirmUpdateDialogComponent } from '../../../../shared/components/confirm-update-dialog/confirm-update.dialog';
 import { ProductMasterDataFormComponent } from '../../../../shared/components/product-master-data-form/product-master-data-form.component';
+import { autocompleteValidator } from '../../../../shared/utils/autocomplete.validator';
 import { ProductConstructionService } from '../../create/form-construction/product-construction.service';
 import {
   materialFormArrayGroup,
@@ -114,10 +115,29 @@ export class ProductUpdateComponent {
   }
 
   setFormData(dto: Partial<ProductDto>) {
+    // Check if supplier is the same as importer
+    const supplierIsImporter = dto.supplier?.id === dto.importer?.id;
+
     this.form.patchValue({
       ...dto,
       variant: undefined,
+      supplierIsImporter: supplierIsImporter,
     });
+
+    // Set importer field state based on supplierIsImporter
+    if (supplierIsImporter) {
+      this.form.controls.importer.patchValue(dto.supplier || null);
+      this.form.controls.importer.disable();
+      this.form.controls.importer.clearValidators();
+    } else {
+      this.form.controls.importer.patchValue(dto.importer || null);
+      this.form.controls.importer.enable();
+      this.form.controls.importer.setValidators([
+        Validators.required,
+        autocompleteValidator(),
+      ]);
+    }
+    this.form.controls.importer.updateValueAndValidity();
 
     this.rareEarthsForm.controls.materials.clear();
     this.materialsForm.controls.materials.clear();

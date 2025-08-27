@@ -81,6 +81,35 @@
       </mat-form-field>
     }
 
+    @if (!authService.isSupplier()) {
+      <div class="col-span-4 flex items-center gap-2">
+        <mat-checkbox formControlName="supplierIsImporter">
+          Importeur = Lieferant
+        </mat-checkbox>
+      </div>
+    }
+
+    @if (!authService.isSupplier() && !form().get('supplierIsImporter')?.value) {
+      <mat-form-field appearance="outline">
+        <mat-label>Importeur</mat-label>
+        <input matInput formControlName="importer" [matAutocomplete]="importerAuto" />
+        <mat-autocomplete #importerAuto="matAutocomplete" [displayWith]="displayFn">
+          @for (option of associatedCompaniesQuery.data()?.data; track option) {
+            <mat-option [value]="option"
+              ><div class="flex flex-row items-center gap-1">
+                <span> {{ option.name }}</span>
+                @if (option.id === ownCompanyQuery.data()?.id) {
+                  <mat-icon class="material-symbols-outlined"
+                    >home_pin</mat-icon
+                  >
+                }
+              </div>
+            </mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+    }
+
     <mat-form-field appearance="outline">
       <mat-label>Hersteller</mat-label>
       <input

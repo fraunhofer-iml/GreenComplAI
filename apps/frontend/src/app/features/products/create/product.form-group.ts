@@ -37,6 +37,10 @@ export const masterDataFormGroup = () =>
       Validators.required,
       autocompleteValidator(),
     ]),
+    supplierIsImporter: new FormControl<boolean | null>(false),
+    importer: new FormControl<CompanyDto | string | null>('', [
+      autocompleteValidator(),
+    ]),
     manufacturer: new FormControl<CompanyDto | string | null>('', [
       Validators.required,
       autocompleteValidator(),

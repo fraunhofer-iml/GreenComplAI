@@ -33,6 +33,8 @@ export interface MasterDataFormGroup {
   dimensions: FormControl<string | null>;
   percentageOfBiologicalMaterials: FormControl<number | null>;
   supplier: FormControl<CompanyDto | string | null>;
+  supplierIsImporter: FormControl<boolean | null>;
+  importer: FormControl<CompanyDto | string | null>;
   manufacturer: FormControl<CompanyDto | string | null>;
   productGroup: FormControl<ProductGroupDto | string | null>;
   variant: FormControl<VariantDto | null>;

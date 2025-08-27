@@ -44,6 +44,7 @@ import {
 import { MasterDataFormGroup } from '../../../features/products/create/model/product-form.model';
 import { UNITS } from '../../constants/available-units';
 import { CRITICAL_RAW_MATERIAL, RARE_EARTHS } from '../../constants/inflows';
+import { autocompleteValidator } from '../../utils/autocomplete.validator';
 import { BaseSheetComponent } from '../sheet/base/sheet.component';
 
 @Component({
@@ -179,6 +180,21 @@ export class ProductMasterDataFormComponent implements OnInit {
       this.groupSearchValue.set(this.productGroupId() ?? '');
     }
 
+    // Set initial state of importer field
+    if (this.form().controls.supplierIsImporter.value) {
+      this.form().controls.importer.patchValue(
+        this.form().controls.supplier.value
+      );
+      this.form().controls.importer.disable();
+      this.form().controls.importer.clearValidators();
+    } else {
+      this.form().controls.importer.setValidators([
+        Validators.required,
+        autocompleteValidator(),
+      ]);
+    }
+    this.form().controls.importer.updateValueAndValidity();
+
     this.form().controls.supplier.valueChanges.subscribe((value) => {
       if (typeof value === 'string') {
         this.supplierSearchValue.set(value);
@@ -187,6 +203,31 @@ export class ProductMasterDataFormComponent implements OnInit {
       } else {
         this.mergeAddresses(value?.addresses ?? []);
       }
+
+      // If supplier is importer, update importer field
+      if (this.form().controls.supplierIsImporter.value) {
+        this.form().controls.importer.patchValue(value);
+      }
+    });
+
+    this.form().controls.supplierIsImporter.valueChanges.subscribe((value) => {
+      if (value) {
+        // If supplier is importer, set importer to supplier and disable importer field
+        this.form().controls.importer.patchValue(
+          this.form().controls.supplier.value
+        );
+        this.form().controls.importer.disable();
+        this.form().controls.importer.clearValidators();
+      } else {
+        // If supplier is not importer, enable importer field and clear it
+        this.form().controls.importer.enable();
+        this.form().controls.importer.patchValue(null);
+        this.form().controls.importer.setValidators([
+          Validators.required,
+          autocompleteValidator(),
+        ]);
+      }
+      this.form().controls.importer.updateValueAndValidity();
     });
 
     this.form().controls.manufacturer.valueChanges.subscribe((value) => {

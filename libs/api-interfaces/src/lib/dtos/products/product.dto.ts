@@ -30,6 +30,7 @@ export class ProductDto {
   durabilityDifference: number;
   reparability: number;
   supplier?: CompanyDto;
+  importer?: CompanyDto;
   manufacturer?: CompanyDto;
   waste?: Partial<WasteDto>;
   materials?: [MaterialDto, number][];
@@ -78,6 +79,7 @@ export class ProductDto {
     flags: string[],
     outlier?: string[],
     supplier?: CompanyDto,
+    importer?: CompanyDto,
     manufacturer?: CompanyDto,
     waste?: WasteDto,
     materials?: [MaterialDto, number][],
@@ -108,6 +110,7 @@ export class ProductDto {
     this.dimensions = dimensions;
     this.percentageOfBiologicalMaterials = percentageOfBiologicalMaterials;
     this.supplier = supplier;
+    this.importer = importer;
     this.manufacturer = manufacturer;
     this.waste = waste;
     this.materials = materials;
