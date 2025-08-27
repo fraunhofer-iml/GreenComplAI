@@ -61,7 +61,6 @@ export class ProductTableComponent {
     'description',
     'category',
     'supplier',
-    'importer',
     'percentageOfBiologicalMaterials',
     'wasteFlow',
     'circularPrinciple',

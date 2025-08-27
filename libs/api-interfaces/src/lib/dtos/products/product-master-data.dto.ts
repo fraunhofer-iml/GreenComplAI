@@ -24,6 +24,10 @@ export class ProductMasterDataDto {
 
   supplier: string;
   importer?: string;
+  importerName?: string;
+  importerEmail?: string;
+  importerPhone?: string;
+  importerAddress?: string;
   manufacturer?: string;
 
   productGroup?: string;
@@ -62,6 +66,10 @@ export class ProductMasterDataDto {
     flags: string[],
 
     importer?: string,
+    importerName?: string,
+    importerEmail?: string,
+    importerPhone?: string,
+    importerAddress?: string,
     productGroup?: string,
     variant?: string,
     manufacturer?: string,
@@ -89,6 +97,10 @@ export class ProductMasterDataDto {
 
     this.supplier = supplier;
     this.importer = importer;
+    this.importerName = importerName;
+    this.importerEmail = importerEmail;
+    this.importerPhone = importerPhone;
+    this.importerAddress = importerAddress;
     this.manufacturer = manufacturer;
     this.productGroup = productGroup;
     this.variant = variant;

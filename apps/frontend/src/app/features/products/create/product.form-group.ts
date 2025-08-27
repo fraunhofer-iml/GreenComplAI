@@ -38,9 +38,10 @@ export const masterDataFormGroup = () =>
       autocompleteValidator(),
     ]),
     supplierIsImporter: new FormControl<boolean | null>(false),
-    importer: new FormControl<CompanyDto | string | null>('', [
-      autocompleteValidator(),
-    ]),
+    importerName: new FormControl<string | null>(''),
+    importerEmail: new FormControl<string | null>(''),
+    importerPhone: new FormControl<string | null>(''),
+    importerAddress: new FormControl<string | null>(''),
     manufacturer: new FormControl<CompanyDto | string | null>('', [
       Validators.required,
       autocompleteValidator(),

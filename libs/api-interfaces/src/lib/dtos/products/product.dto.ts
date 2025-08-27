@@ -30,7 +30,10 @@ export class ProductDto {
   durabilityDifference: number;
   reparability: number;
   supplier?: CompanyDto;
-  importer?: CompanyDto;
+  importerName?: string;
+  importerEmail?: string;
+  importerPhone?: string;
+  importerAddress?: string;
   manufacturer?: CompanyDto;
   waste?: Partial<WasteDto>;
   materials?: [MaterialDto, number][];
@@ -79,7 +82,10 @@ export class ProductDto {
     flags: string[],
     outlier?: string[],
     supplier?: CompanyDto,
-    importer?: CompanyDto,
+    importerName?: string,
+    importerEmail?: string,
+    importerPhone?: string,
+    importerAddress?: string,
     manufacturer?: CompanyDto,
     waste?: WasteDto,
     materials?: [MaterialDto, number][],
@@ -110,7 +116,10 @@ export class ProductDto {
     this.dimensions = dimensions;
     this.percentageOfBiologicalMaterials = percentageOfBiologicalMaterials;
     this.supplier = supplier;
-    this.importer = importer;
+    this.importerName = importerName;
+    this.importerEmail = importerEmail;
+    this.importerPhone = importerPhone;
+    this.importerAddress = importerAddress;
     this.manufacturer = manufacturer;
     this.waste = waste;
     this.materials = materials;

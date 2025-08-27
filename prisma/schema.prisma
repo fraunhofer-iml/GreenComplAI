@@ -51,7 +51,6 @@ model Company {
   packaging Packaging[]
 
   suppliedProducts     Product[]             @relation("Supplier")
-  importedProducts     Product[]             @relation("Importer")
   manufacturedProducts Product[]             @relation("Manufacturer")
   associatedCompanies  AssociatedCompanies[] @relation("AssociatedCompany")
   parentCompanies      AssociatedCompanies[] @relation("ParentCompany")
@@ -199,8 +198,10 @@ model Product {
   supplier   Company? @relation(fields: [supplierId], references: [id], name: "Supplier")
   supplierId String?  @map("supplierId")
 
-  importer   Company? @relation(fields: [importerId], references: [id], name: "Importer")
-  importerId String?  @map("importerId")
+  importerName    String?
+  importerEmail   String?
+  importerPhone   String?
+  importerAddress String?
 
   manufacturer   Company? @relation(fields: [manufacturerId], references: [id], name: "Manufacturer")
   manufacturerId String?  @map("manufacturerId")

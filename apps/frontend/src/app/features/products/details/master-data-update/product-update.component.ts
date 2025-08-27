@@ -115,8 +115,9 @@ export class ProductUpdateComponent {
   }
 
   setFormData(dto: Partial<ProductDto>) {
-    // Check if supplier is the same as importer
-    const supplierIsImporter = dto.supplier?.id === dto.importer?.id;
+    // Check if supplier is the same as importer (when importer fields are populated from supplier)
+    const supplierIsImporter =
+      !dto.importerName || dto.importerName === dto.supplier?.name;
 
     this.form.patchValue({
       ...dto,
@@ -126,18 +127,38 @@ export class ProductUpdateComponent {
 
     // Set importer field state based on supplierIsImporter
     if (supplierIsImporter) {
-      this.form.controls.importer.patchValue(dto.supplier || null);
-      this.form.controls.importer.disable();
-      this.form.controls.importer.clearValidators();
+      if (dto.supplier) {
+        this.form.controls.importerName.patchValue(dto.supplier.name);
+        this.form.controls.importerEmail.patchValue(dto.supplier.email);
+        this.form.controls.importerPhone.patchValue(dto.supplier.phone);
+        this.form.controls.importerAddress.patchValue(
+          dto.supplier.addresses?.[0]
+            ? `${dto.supplier.addresses[0].street}, ${dto.supplier.addresses[0].postalCode} ${dto.supplier.addresses[0].city}, ${dto.supplier.addresses[0].country}`
+            : ''
+        );
+      }
+      this.form.controls.importerName.disable();
+      this.form.controls.importerEmail.disable();
+      this.form.controls.importerPhone.disable();
+      this.form.controls.importerAddress.disable();
     } else {
-      this.form.controls.importer.patchValue(dto.importer || null);
-      this.form.controls.importer.enable();
-      this.form.controls.importer.setValidators([
-        Validators.required,
-        autocompleteValidator(),
-      ]);
+      this.form.controls.importerName.patchValue(dto.importerName || '');
+      this.form.controls.importerEmail.patchValue(dto.importerEmail || '');
+      this.form.controls.importerPhone.patchValue(dto.importerPhone || '');
+      this.form.controls.importerAddress.patchValue(dto.importerAddress || '');
+      this.form.controls.importerName.enable();
+      this.form.controls.importerEmail.enable();
+      this.form.controls.importerPhone.enable();
+      this.form.controls.importerAddress.enable();
+      this.form.controls.importerName.setValidators([Validators.required]);
+      this.form.controls.importerEmail.setValidators([Validators.email]);
+      this.form.controls.importerPhone.setValidators([]);
+      this.form.controls.importerAddress.setValidators([]);
     }
-    this.form.controls.importer.updateValueAndValidity();
+    this.form.controls.importerName.updateValueAndValidity();
+    this.form.controls.importerEmail.updateValueAndValidity();
+    this.form.controls.importerPhone.updateValueAndValidity();
+    this.form.controls.importerAddress.updateValueAndValidity();
 
     this.rareEarthsForm.controls.materials.clear();
     this.materialsForm.controls.materials.clear();

@@ -60,13 +60,28 @@ export class ProductConstructionService {
         typeof formData.value.supplier === 'object'
           ? (formData.value.supplier?.id ?? '')
           : '',
-      importer: formData.value.supplierIsImporter
-        ? (typeof formData.value.supplier === 'object'
-            ? (formData.value.supplier?.id ?? '')
-            : formData.value.supplier || '')
-        : (typeof formData.value.importer === 'object'
-            ? (formData.value.importer?.id ?? '')
-            : formData.value.importer || ''),
+      importerName: formData.value.supplierIsImporter
+        ? typeof formData.value.supplier === 'object'
+          ? (formData.value.supplier?.name ?? '')
+          : ''
+        : formData.value.importerName || '',
+      importerEmail: formData.value.supplierIsImporter
+        ? typeof formData.value.supplier === 'object'
+          ? (formData.value.supplier?.email ?? '')
+          : ''
+        : formData.value.importerEmail || '',
+      importerPhone: formData.value.supplierIsImporter
+        ? typeof formData.value.supplier === 'object'
+          ? (formData.value.supplier?.phone ?? '')
+          : ''
+        : formData.value.importerPhone || '',
+      importerAddress: formData.value.supplierIsImporter
+        ? typeof formData.value.supplier === 'object'
+          ? formData.value.supplier?.addresses?.[0]
+            ? `${formData.value.supplier.addresses[0].street}, ${formData.value.supplier.addresses[0].postalCode} ${formData.value.supplier.addresses[0].city}, ${formData.value.supplier.addresses[0].country}`
+            : ''
+          : ''
+        : formData.value.importerAddress || '',
       manufacturer:
         typeof formData.value.manufacturer === 'object'
           ? (formData.value.manufacturer?.id ?? '')
@@ -119,13 +134,28 @@ export class ProductConstructionService {
         typeof masterData.value.supplier === 'object'
           ? (masterData.value.supplier?.id ?? '')
           : '',
-      importer: masterData.value.supplierIsImporter
-        ? (typeof masterData.value.supplier === 'object'
-            ? (masterData.value.supplier?.id ?? '')
-            : masterData.value.supplier || '')
-        : (typeof masterData.value.importer === 'object'
-            ? (masterData.value.importer?.id ?? '')
-            : masterData.value.importer || ''),
+      importerName: masterData.value.supplierIsImporter
+        ? typeof masterData.value.supplier === 'object'
+          ? (masterData.value.supplier?.name ?? '')
+          : ''
+        : masterData.value.importerName || '',
+      importerEmail: masterData.value.supplierIsImporter
+        ? typeof masterData.value.supplier === 'object'
+          ? (masterData.value.supplier?.email ?? '')
+          : ''
+        : masterData.value.importerEmail || '',
+      importerPhone: masterData.value.supplierIsImporter
+        ? typeof masterData.value.supplier === 'object'
+          ? (masterData.value.supplier?.phone ?? '')
+          : ''
+        : masterData.value.importerPhone || '',
+      importerAddress: masterData.value.supplierIsImporter
+        ? typeof masterData.value.supplier === 'object'
+          ? masterData.value.supplier?.addresses?.[0]
+            ? `${masterData.value.supplier.addresses[0].street}, ${masterData.value.supplier.addresses[0].postalCode} ${masterData.value.supplier.addresses[0].city}, ${masterData.value.supplier.addresses[0].country}`
+            : ''
+          : ''
+        : masterData.value.importerAddress || '',
       manufacturer:
         typeof masterData.value.manufacturer === 'object'
           ? (masterData.value.manufacturer?.id ?? '')

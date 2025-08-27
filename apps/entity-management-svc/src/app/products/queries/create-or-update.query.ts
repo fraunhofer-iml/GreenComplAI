@@ -39,14 +39,10 @@ export const upsertQuery = (dto: Partial<ProductCreateDto>) => ({
       create: { id: dto.supplier ?? 'N/A', name: dto.supplier ?? 'N/A' },
     },
   },
-  importer: dto.importer
-    ? {
-        connectOrCreate: {
-          where: { id: dto.importer },
-          create: { id: dto.importer, name: dto.importer },
-        },
-      }
-    : undefined,
+  importerName: dto.importerName,
+  importerEmail: dto.importerEmail,
+  importerPhone: dto.importerPhone,
+  importerAddress: dto.importerAddress,
   manufacturer: dto.manufacturer
     ? {
         connect: {

@@ -123,16 +123,6 @@
             ><span>{{ data.manufacturer?.name }}</span>
           </app-flagable>
 
-          @if (!authService.isSupplier()) {
-            <app-flagable
-              [id]="id$() ?? ''"
-              [data]="data.flags"
-              [topic]="'Importeur'"
-              [element]="'importer'"
-              ><span>{{ data.importer?.name || 'Nicht angegeben' }}</span>
-            </app-flagable>
-          }
-
           <app-flagable
             [id]="id$() ?? ''"
             [data]="data.flags"
@@ -405,67 +395,52 @@
                 [id]="id$() ?? ''"
                 [topic]="'Importeurdaten'"
                 [data]="data.flags"
-                [element]="'importer'"
+                [element]="'importerName'"
               >
               </app-flagable>
-
-              @if (data.importer?.id) {
-                <button
-                  mat-button
-                  [routerLink]="[Uris.companies, data.importer?.id]"
-                  [queryParams]="{ callback: Uris.products + '/' + data.id }"
-                >
-                  <mat-icon>edit</mat-icon>
-                  bearbeiten
-                </button>
-              }
             </div>
             <div class="mt-4 space-y-2 text-sm">
-              @if (data.importer) {
+              @if (data.importerName) {
                 <app-flagable
                   [id]="id$() ?? ''"
                   [topic]="'Name'"
                   [data]="data.flags"
-                  [element]="'importer.name'"
+                  [element]="'importerName'"
                 >
-                  <a [routerLink]="[Uris.companies, data.importer?.id]">
-                    {{ data.importer?.name }}</a
+                  <span>{{ data.importerName }}</span>
+                </app-flagable>
+
+                @if (data.importerEmail) {
+                  <app-flagable
+                    [id]="id$() ?? ''"
+                    [topic]="'Email'"
+                    [data]="data.flags"
+                    [element]="'importerEmail'"
                   >
-                </app-flagable>
+                    <span>{{ data.importerEmail }}</span>
+                  </app-flagable>
+                }
 
-                <app-flagable
-                  [id]="id$() ?? ''"
-                  [topic]="'Email'"
-                  [data]="data.flags"
-                  [element]="'importer.email'"
-                >
-                  <span>{{ data.importer?.email }}</span>
-                </app-flagable>
+                @if (data.importerPhone) {
+                  <app-flagable
+                    [id]="id$() ?? ''"
+                    [topic]="'Telefon'"
+                    [data]="data.flags"
+                    [element]="'importerPhone'"
+                  >
+                    <span>{{ data.importerPhone }}</span>
+                  </app-flagable>
+                }
 
-                <app-flagable
-                  [id]="id$() ?? ''"
-                  [topic]="'Telefon'"
-                  [data]="data.flags"
-                  [element]="'importer.phone'"
-                >
-                  <span>{{ data.importer?.phone }}</span>
-                </app-flagable>
-
-                @if (
-                  data.importer?.addresses &&
-                  (data.importer?.addresses)!.length > 0
-                ) {
+                @if (data.importerAddress) {
                   <app-flagable
                     [id]="id$() ?? ''"
                     [topic]="'Adresse'"
                     [data]="data.flags"
-                    [element]="'importer.addresses'"
+                    [element]="'importerAddress'"
                   >
                     <span class="flex justify-between text-right">
-                      {{ data.importer!.addresses[0].street }},
-                      {{ data.importer!.addresses[0].postalCode }}
-                      {{ data.importer!.addresses[0].city }},
-                      {{ data.importer!.addresses[0].country }}
+                      {{ data.importerAddress }}
                     </span>
                   </app-flagable>
                 }

@@ -40,11 +40,7 @@ export const productFindManyQuery = ({
           addresses: true,
         },
       },
-      importer: {
-        include: {
-          addresses: true,
-        },
-      },
+
       waste: {
         include: {
           wasteMaterials: {

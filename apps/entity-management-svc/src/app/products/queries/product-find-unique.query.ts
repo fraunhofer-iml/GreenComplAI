@@ -38,11 +38,7 @@ export const productFindUniqueQuery = (id: string) =>
           addresses: true,
         },
       },
-      importer: {
-        include: {
-          addresses: true,
-        },
-      },
+
       waste: {
         include: {
           wasteMaterials: {

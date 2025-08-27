@@ -37,6 +37,10 @@ export class ProductCreateDto {
 
   supplier?: string;
   importer?: string;
+  importerName?: string;
+  importerEmail?: string;
+  importerPhone?: string;
+  importerAddress?: string;
   manufacturer?: string;
 
   materials?: { material: string; percentage: number }[];
@@ -86,6 +90,10 @@ export class ProductCreateDto {
     waste?: WasteCreateDto,
     supplier?: string,
     importer?: string,
+    importerName?: string,
+    importerEmail?: string,
+    importerPhone?: string,
+    importerAddress?: string,
     materials?: { material: string; percentage: number }[],
     durability?: number,
     durabilityDifference?: number,
@@ -126,6 +134,10 @@ export class ProductCreateDto {
     this.waste = waste;
     this.supplier = supplier;
     this.importer = importer;
+    this.importerName = importerName;
+    this.importerEmail = importerEmail;
+    this.importerPhone = importerPhone;
+    this.importerAddress = importerAddress;
     this.manufacturer = manufacturer;
     this.materials = materials;
     this.productGroup = productGroup;

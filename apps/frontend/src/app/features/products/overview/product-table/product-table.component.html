@@ -240,26 +240,6 @@
         </td>
       </ng-container>
 
-      <ng-container matColumnDef="importer">
-        <th
-          class="!border-neutral-350"
-          mat-header-cell
-          *matHeaderCellDef
-          mat-sort-header
-          sortActionDescription="importer"
-        >
-          Importeur
-        </th>
-        <td
-          mat-cell
-          *matCellDef="let element"
-          [routerLink]="[element.id]"
-          class="cursor-pointer"
-        >
-          {{ element.importer?.name || 'Nicht angegeben' }}
-        </td>
-      </ng-container>
-
       @if (authService.isSupplier()) {
         <tr mat-header-row *matHeaderRowDef="supplierDisplayedColumns"></tr>
         <tr

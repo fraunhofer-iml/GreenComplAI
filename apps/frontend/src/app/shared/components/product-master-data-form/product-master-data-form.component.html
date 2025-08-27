@@ -60,79 +60,6 @@
         </mat-select>
       </mat-form-field>
     </div>
-    @if (!authService.isSupplier()) {
-      <mat-form-field appearance="outline">
-        <mat-label>Lieferant</mat-label>
-        <input matInput formControlName="supplier" [matAutocomplete]="auto" />
-        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-          @for (option of associatedCompaniesQuery.data()?.data; track option) {
-            <mat-option [value]="option"
-              ><div class="flex flex-row items-center gap-1">
-                <span> {{ option.name }}</span>
-                @if (option.id === ownCompanyQuery.data()?.id) {
-                  <mat-icon class="material-symbols-outlined"
-                    >home_pin</mat-icon
-                  >
-                }
-              </div>
-            </mat-option>
-          }
-        </mat-autocomplete>
-      </mat-form-field>
-    }
-
-    @if (!authService.isSupplier()) {
-      <div class="col-span-4 flex items-center gap-2">
-        <mat-checkbox formControlName="supplierIsImporter">
-          Importeur = Lieferant
-        </mat-checkbox>
-      </div>
-    }
-
-    @if (!authService.isSupplier() && !form().get('supplierIsImporter')?.value) {
-      <mat-form-field appearance="outline">
-        <mat-label>Importeur</mat-label>
-        <input matInput formControlName="importer" [matAutocomplete]="importerAuto" />
-        <mat-autocomplete #importerAuto="matAutocomplete" [displayWith]="displayFn">
-          @for (option of associatedCompaniesQuery.data()?.data; track option) {
-            <mat-option [value]="option"
-              ><div class="flex flex-row items-center gap-1">
-                <span> {{ option.name }}</span>
-                @if (option.id === ownCompanyQuery.data()?.id) {
-                  <mat-icon class="material-symbols-outlined"
-                    >home_pin</mat-icon
-                  >
-                }
-              </div>
-            </mat-option>
-          }
-        </mat-autocomplete>
-      </mat-form-field>
-    }
-
-    <mat-form-field appearance="outline">
-      <mat-label>Hersteller</mat-label>
-      <input
-        matInput
-        formControlName="manufacturer"
-        [matAutocomplete]="manufacturerAuto"
-      />
-      <mat-autocomplete
-        #manufacturerAuto="matAutocomplete"
-        [displayWith]="displayFn"
-      >
-        @for (option of associatedCompaniesQuery.data()?.data; track option) {
-          <mat-option [value]="option"
-            ><div class="flex flex-row items-center gap-1">
-              <span> {{ option.name }}</span>
-              @if (option.id === ownCompanyQuery.data()?.id) {
-                <mat-icon class="material-symbols-outlined">home_pin</mat-icon>
-              }
-            </div>
-          </mat-option>
-        }
-      </mat-autocomplete>
-    </mat-form-field>
 
     @if (!authService.isSupplier()) {
       <mat-form-field appearance="outline">
@@ -295,6 +222,110 @@
         }
       }
     </div>
+  </div>
+
+  <!-- Angaben zu Unternehmen -->
+  <div
+    class="grid w-full grid-cols-1 gap-4 rounded-lg bg-neutral-200 p-8 md:grid-cols-4"
+  >
+    <div i18n class="col-span-1">Angaben zu Unternehmen</div>
+    <div class="col-span-3"></div>
+
+    <div class="col-span-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+      <mat-form-field appearance="outline">
+        <mat-label>Hersteller</mat-label>
+        <input
+          matInput
+          formControlName="manufacturer"
+          [matAutocomplete]="manufacturerAuto"
+        />
+        <mat-autocomplete
+          #manufacturerAuto="matAutocomplete"
+          [displayWith]="displayFn"
+        >
+          @for (option of associatedCompaniesQuery.data()?.data; track option) {
+            <mat-option [value]="option"
+              ><div class="flex flex-row items-center gap-1">
+                <span> {{ option.name }}</span>
+                @if (option.id === ownCompanyQuery.data()?.id) {
+                  <mat-icon class="material-symbols-outlined"
+                    >home_pin</mat-icon
+                  >
+                }
+              </div>
+            </mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+
+      @if (!authService.isSupplier()) {
+        <mat-form-field appearance="outline">
+          <mat-label>Lieferant</mat-label>
+          <input matInput formControlName="supplier" [matAutocomplete]="auto" />
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+            @for (
+              option of associatedCompaniesQuery.data()?.data;
+              track option
+            ) {
+              <mat-option [value]="option"
+                ><div class="flex flex-row items-center gap-1">
+                  <span> {{ option.name }}</span>
+                  @if (option.id === ownCompanyQuery.data()?.id) {
+                    <mat-icon class="material-symbols-outlined"
+                      >home_pin</mat-icon
+                    >
+                  }
+                </div>
+              </mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+      }
+    </div>
+
+    @if (!authService.isSupplier()) {
+      <div class="col-span-4 flex items-center gap-2">
+        <mat-checkbox formControlName="supplierIsImporter">
+          Importeur = Lieferant
+        </mat-checkbox>
+      </div>
+    }
+
+    @if (
+      !authService.isSupplier() && !form().get('supplierIsImporter')?.value
+    ) {
+      <div class="col-span-4 rounded-lg bg-neutral-300 p-4">
+        <h3 class="mb-4 text-sm font-medium text-neutral-700">
+          Importeur Details
+        </h3>
+
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <mat-form-field appearance="outline">
+            <mat-label>Name *</mat-label>
+            <input matInput formControlName="importerName" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="importerEmail" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Telefon</mat-label>
+            <input matInput formControlName="importerPhone" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="md:col-span-2">
+            <mat-label>Adresse</mat-label>
+            <textarea
+              matInput
+              formControlName="importerAddress"
+              rows="3"
+            ></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+    }
   </div>
 
   <!-- Materialien -->

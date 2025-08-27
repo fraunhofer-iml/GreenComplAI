@@ -180,20 +180,33 @@ export class ProductMasterDataFormComponent implements OnInit {
       this.groupSearchValue.set(this.productGroupId() ?? '');
     }
 
-    // Set initial state of importer field
+    // Set initial state of importer fields
     if (this.form().controls.supplierIsImporter.value) {
-      this.form().controls.importer.patchValue(
-        this.form().controls.supplier.value
-      );
-      this.form().controls.importer.disable();
-      this.form().controls.importer.clearValidators();
+      const supplier = this.form().controls.supplier.value;
+      if (typeof supplier === 'object' && supplier) {
+        this.form().controls.importerName.patchValue(supplier.name);
+        this.form().controls.importerEmail.patchValue(supplier.email);
+        this.form().controls.importerPhone.patchValue(supplier.phone);
+        this.form().controls.importerAddress.patchValue(
+          supplier.addresses?.[0]
+            ? `${supplier.addresses[0].street}, ${supplier.addresses[0].postalCode} ${supplier.addresses[0].city}, ${supplier.addresses[0].country}`
+            : ''
+        );
+      }
+      this.form().controls.importerName.disable();
+      this.form().controls.importerEmail.disable();
+      this.form().controls.importerPhone.disable();
+      this.form().controls.importerAddress.disable();
     } else {
-      this.form().controls.importer.setValidators([
-        Validators.required,
-        autocompleteValidator(),
-      ]);
+      this.form().controls.importerName.setValidators([Validators.required]);
+      this.form().controls.importerEmail.setValidators([Validators.email]);
+      this.form().controls.importerPhone.setValidators([]);
+      this.form().controls.importerAddress.setValidators([]);
     }
-    this.form().controls.importer.updateValueAndValidity();
+    this.form().controls.importerName.updateValueAndValidity();
+    this.form().controls.importerEmail.updateValueAndValidity();
+    this.form().controls.importerPhone.updateValueAndValidity();
+    this.form().controls.importerAddress.updateValueAndValidity();
 
     this.form().controls.supplier.valueChanges.subscribe((value) => {
       if (typeof value === 'string') {
@@ -204,30 +217,58 @@ export class ProductMasterDataFormComponent implements OnInit {
         this.mergeAddresses(value?.addresses ?? []);
       }
 
-      // If supplier is importer, update importer field
+      // If supplier is importer, update importer fields
       if (this.form().controls.supplierIsImporter.value) {
-        this.form().controls.importer.patchValue(value);
+        if (typeof value === 'object' && value) {
+          this.form().controls.importerName.patchValue(value.name);
+          this.form().controls.importerEmail.patchValue(value.email);
+          this.form().controls.importerPhone.patchValue(value.phone);
+          this.form().controls.importerAddress.patchValue(
+            value.addresses?.[0]
+              ? `${value.addresses[0].street}, ${value.addresses[0].postalCode} ${value.addresses[0].city}, ${value.addresses[0].country}`
+              : ''
+          );
+        }
       }
     });
 
     this.form().controls.supplierIsImporter.valueChanges.subscribe((value) => {
       if (value) {
-        // If supplier is importer, set importer to supplier and disable importer field
-        this.form().controls.importer.patchValue(
-          this.form().controls.supplier.value
-        );
-        this.form().controls.importer.disable();
-        this.form().controls.importer.clearValidators();
+        // If supplier is importer, set importer fields to supplier values and disable them
+        const supplier = this.form().controls.supplier.value;
+        if (typeof supplier === 'object' && supplier) {
+          this.form().controls.importerName.patchValue(supplier.name);
+          this.form().controls.importerEmail.patchValue(supplier.email);
+          this.form().controls.importerPhone.patchValue(supplier.phone);
+          this.form().controls.importerAddress.patchValue(
+            supplier.addresses?.[0]
+              ? `${supplier.addresses[0].street}, ${supplier.addresses[0].postalCode} ${supplier.addresses[0].city}, ${supplier.addresses[0].country}`
+              : ''
+          );
+        }
+        this.form().controls.importerName.disable();
+        this.form().controls.importerEmail.disable();
+        this.form().controls.importerPhone.disable();
+        this.form().controls.importerAddress.disable();
       } else {
-        // If supplier is not importer, enable importer field and clear it
-        this.form().controls.importer.enable();
-        this.form().controls.importer.patchValue(null);
-        this.form().controls.importer.setValidators([
-          Validators.required,
-          autocompleteValidator(),
-        ]);
+        // If supplier is not importer, enable importer fields and clear them
+        this.form().controls.importerName.enable();
+        this.form().controls.importerEmail.enable();
+        this.form().controls.importerPhone.enable();
+        this.form().controls.importerAddress.enable();
+        this.form().controls.importerName.patchValue('');
+        this.form().controls.importerEmail.patchValue('');
+        this.form().controls.importerPhone.patchValue('');
+        this.form().controls.importerAddress.patchValue('');
+        this.form().controls.importerName.setValidators([Validators.required]);
+        this.form().controls.importerEmail.setValidators([Validators.email]);
+        this.form().controls.importerPhone.setValidators([]);
+        this.form().controls.importerAddress.setValidators([]);
       }
-      this.form().controls.importer.updateValueAndValidity();
+      this.form().controls.importerName.updateValueAndValidity();
+      this.form().controls.importerEmail.updateValueAndValidity();
+      this.form().controls.importerPhone.updateValueAndValidity();
+      this.form().controls.importerAddress.updateValueAndValidity();
     });
 
     this.form().controls.manufacturer.valueChanges.subscribe((value) => {

@@ -40,11 +40,7 @@ export const productFindManyOfSupplierQuery = ({
           addresses: true,
         },
       },
-      importer: {
-        include: {
-          addresses: true,
-        },
-      },
+
       manufacturer: {
         include: {
           addresses: true,
@@ -116,11 +112,10 @@ export const updateProductOfSupplier = (dto: ProductUpdateDto, id: string) =>
       manufacturer: {
         connect: { id: dto.masterData.manufacturer },
       },
-      importer: dto.masterData.importer
-        ? {
-            connect: { id: dto.masterData.importer },
-          }
-        : undefined,
+      importerName: dto.masterData.importerName,
+      importerEmail: dto.masterData.importerEmail,
+      importerPhone: dto.masterData.importerPhone,
+      importerAddress: dto.masterData.importerAddress,
       unit: dto.masterData.unit,
       dimensions: dto.masterData.dimensions,
       weight: dto.masterData.weight,
