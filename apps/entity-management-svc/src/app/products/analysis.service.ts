@@ -218,6 +218,10 @@ export class ProductAnalysisService {
       _count: true,
     });
 
+    const productGroupInfo = await this.prismaService.productGroup.findMany({
+      where: { id: { in: products.map((p) => p.productGroupId) } },
+    });
+
     const outliers = await this.prismaService.product.groupBy({
       by: [productGroupId ? 'id' : 'productGroupId'],
       where: where,
@@ -234,6 +238,10 @@ export class ProductAnalysisService {
       dto.totalNumberOfProducts += product._count;
       dto.outliesByItem.push({
         id: productGroupId ? product.id : product.productGroupId,
+        name: productGroupInfo.find(
+          (el) =>
+            el.id === (productGroupId ? product.id : product.productGroupId)
+        ).name,
         numberOfOutliers: 0,
         numberOfProducts: product._count,
       });
