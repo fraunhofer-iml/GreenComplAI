@@ -192,7 +192,13 @@
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Reparaturfähigkeit</mat-label>
-        <input matInput type="number" formControlName="reparability" />
+        <input
+          matInput
+          type="number"
+          formControlName="reparability"
+          [min]="0"
+          [max]="10"
+        />
       </mat-form-field>
     }
     <mat-form-field appearance="outline">

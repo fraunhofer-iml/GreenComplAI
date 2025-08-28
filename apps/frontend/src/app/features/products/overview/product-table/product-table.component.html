@@ -4,6 +4,15 @@
       <mat-label>Suche</mat-label>
       <input matInput formControlName="filter" />
       <mat-icon matPrefix>search</mat-icon>
+      @if (formGroup.controls.filter.value) {
+        <span
+          class="material-symbols-outlined mr-4 cursor-pointer"
+          matSuffix
+          role="none"
+          (click)="formGroup.controls.filter.patchValue('')"
+          >close</span
+        >
+      }
     </mat-form-field>
     <div>
       <mat-form-field appearance="outline">
