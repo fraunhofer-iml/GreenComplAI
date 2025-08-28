@@ -7,7 +7,7 @@
  */
 
 import moment, { Moment } from 'moment';
-import { CommonModule, DecimalPipe, formatNumber } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
@@ -111,12 +111,14 @@ export class InflowComponent {
       'inflow-analysis',
       this.fromYear$(),
       this.toYear$(),
+      this.filter(),
       this.productGroupId(),
     ],
     queryFn: async () => {
       return await this.analysisService.getInFlowAnalysisOfProductGroups(
         this.fromYear$().year(),
         this.toYear$().year(),
+        this.filter(),
         this.productGroupId()
       );
     },
@@ -124,6 +126,7 @@ export class InflowComponent {
 
   onFilterChange(value: string) {
     this.filter.set(value);
+    this.analysisQuery.refetch();
   }
 
   onSortChange(value: Sort) {
@@ -176,5 +179,11 @@ export class InflowComponent {
 
   displayArray(arr: string[]) {
     return arr && arr.length > 0 ? arr.join(', ') : 'keine Angabe';
+  }
+
+  back() {
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+    });
   }
 }

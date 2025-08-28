@@ -155,4 +155,10 @@ export class WasteFlowComponent {
 
     this.filter.set('');
   }
+
+  back() {
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+    });
+  }
 }

@@ -46,11 +46,13 @@ export class AnalysisService {
   getInFlowAnalysisOfProductGroups(
     fromYear: number,
     toYear: number,
+    filter: string,
     productGroupId?: string
   ) {
     let params = new HttpParams();
     params = params.set('fromYear', fromYear.toString());
     params = params.set('toYear', toYear.toString());
+    params = params.set('filter', filter);
     if (productGroupId) {
       params = params.set('productGroupId', productGroupId);
     }
