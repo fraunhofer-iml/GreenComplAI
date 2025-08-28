@@ -143,7 +143,7 @@
             <app-flagable
               [id]="id$() ?? ''"
               [data]="data.flags"
-              [topic]="'Preis'"
+              [topic]="'Preis [€]'"
               [element]="'price'"
               ><span>{{ ((data.price ?? 0) / 100).toFixed(2) }}</span>
             </app-flagable>
