@@ -7,7 +7,7 @@
  */
 
 import moment, { Moment } from 'moment';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe, formatNumber } from '@angular/common';
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
@@ -62,6 +62,7 @@ import { ONLY_YEAR_FORMAT } from '../../../../shared/constants/date-formats';
       deps: [MAT_DATE_LOCALE],
     },
     { provide: MAT_DATE_FORMATS, useValue: ONLY_YEAR_FORMAT },
+    DecimalPipe,
   ],
   templateUrl: './inflow.component.html',
 })
@@ -69,6 +70,7 @@ export class InflowComponent {
   private readonly analysisService = inject(AnalysisService);
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly decimalPipe = inject(DecimalPipe);
 
   fromYear$ = signal<Moment>(moment(new Date(2024, 0, 1)));
   toYear$ = signal<Moment>(moment(new Date(2025, 0, 1)));
@@ -152,13 +154,23 @@ export class InflowComponent {
 
   displayMaterials(map: [string, number][]) {
     return map && map.length > 0
-      ? map.map((item) => `${item[0]} (${item[1].toFixed(2)} kg)`).join(', ')
+      ? map
+          .map(
+            (item) =>
+              `${item[0]} (${this.decimalPipe.transform(item[1], '1.0-2')} kg)`
+          )
+          .join(', ')
       : 'keine Angabe';
   }
 
   displayPackagings(map: [string, number][]) {
     return map && map.length > 0
-      ? map.map((item) => `${item[0]} (${item[1]})`).join(', ')
+      ? map
+          .map(
+            (item) =>
+              `${item[0]} (${this.decimalPipe.transform(item[1], '1.0-2')})`
+          )
+          .join(', ')
       : 'keine Angabe';
   }
 

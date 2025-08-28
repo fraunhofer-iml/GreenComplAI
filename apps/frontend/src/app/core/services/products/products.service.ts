@@ -38,6 +38,8 @@ export class ProductsService extends DataService<PaginatedData<ProductDto>> {
     sorting: string,
     additional?: Map<string, string>
   ): Promise<PaginatedData<ProductDto>> {
+    console.log('fetch data');
+
     let params = new HttpParams({
       fromObject: { page, pageSize, sorting, filters },
     });
@@ -144,6 +146,7 @@ export class ProductsService extends DataService<PaginatedData<ProductDto>> {
     );
   }
   getPackaging(id: string): Promise<[PackagingDto, number][]> {
+    console.log('get packaging for product');
     return lastValueFrom(
       this.http.get<[PackagingDto, number][]>(
         `${this.url}${ApiUris.products}/${id}/packaging`

@@ -113,6 +113,8 @@ export class ProductsController {
     @Query('sorting') sorting?: string,
     @Query('isSellable') isSellable?: boolean
   ): Promise<PaginatedData<ProductDto>> {
+    console.log('filters: ' + filters);
+    console.log('sorting: ' + sorting);
     return this.productsService.findAll({
       filters,
       sorting,

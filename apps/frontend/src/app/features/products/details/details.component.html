@@ -128,7 +128,7 @@
             [data]="data.flags"
             [topic]="'Gewicht'"
             [element]="'weight'"
-            ><span>{{ data.weight }}</span>
+            ><span>{{ data.weight | number }}</span>
           </app-flagable>
 
           <app-flagable
@@ -145,7 +145,9 @@
               [data]="data.flags"
               [topic]="'Preis'"
               [element]="'price'"
-              ><span>{{ ((data.price ?? 0) / 100).toFixed(2) }}</span>
+              ><span>{{
+                ((data.price ?? 0) / 100).toFixed(2) | number: '1.2'
+              }}</span>
             </app-flagable>
           }
 
@@ -207,7 +209,7 @@
             [element]="'percentageOfBiologicalMaterials'"
           >
             <span class="text-right">{{
-              data.percentageOfBiologicalMaterials
+              data.percentageOfBiologicalMaterials | number: '1.0-2'
             }}</span></app-flagable
           >
 
