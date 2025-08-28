@@ -104,12 +104,16 @@
             class="cursor-pointer"
             (click)="navigate(element.id)"
           >
-            {{ element.amount > 0 ? element.amount : 'keine Vorprodukte' }}
+            {{
+              element.amount > 0
+                ? (element.amount | number)
+                : 'keine Vorprodukte'
+            }}
           </td>
           <td mat-footer-cell *matFooterCellDef>
             {{
               analysisQuery.data().amount > 0
-                ? analysisQuery.data().amount
+                ? (analysisQuery.data().amount | number)
                 : 'keine Vorprodukte'
             }}
           </td>

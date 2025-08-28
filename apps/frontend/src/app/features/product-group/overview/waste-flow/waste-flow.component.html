@@ -105,10 +105,10 @@
             class="cursor-pointer"
             (click)="navigate(element.id)"
           >
-            {{ element.producedItems }}
+            {{ element.producedItems | number }}
           </td>
           <td mat-footer-cell *matFooterCellDef>
-            {{ analysisQuery.data().totalProducedItems }}
+            {{ analysisQuery.data().totalProducedItems | number }}
           </td>
         </ng-container>
 
