@@ -190,10 +190,6 @@ export class InflowComponent {
       : 'keine Angabe';
   }
 
-  displayArray(arr: string[]) {
-    return arr && arr.length > 0 ? arr.join(', ') : 'keine Angabe';
-  }
-
   back() {
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
