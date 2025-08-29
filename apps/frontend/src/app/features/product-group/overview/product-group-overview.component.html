@@ -9,37 +9,11 @@
 ></app-overview>
 
 <mat-accordion class="flex w-full justify-between px-8 pt-4">
-  <mat-expansion-panel
-    class="w-full !bg-neutral-200"
-    (opened)="inflowPanelState.set(true)"
-    (closed)="inflowPanelState.set(false)"
-  >
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        @if (!inflowPanelState()) {
-          Auswertung Ressourcenzuflüsse
-        }
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <app-inflow [productGroupId]="productGroupId()"></app-inflow>
-  </mat-expansion-panel>
+  <app-inflow [productGroupId]="productGroupId()"></app-inflow>
 </mat-accordion>
 
 <mat-accordion class="flex w-full justify-between px-8 py-4">
-  <mat-expansion-panel
-    class="w-full !bg-neutral-200"
-    (opened)="outflowPanelState.set(true)"
-    (closed)="outflowPanelState.set(false)"
-  >
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        @if (!outflowPanelState()) {
-          Auswertung Ressourcenabflüsse
-        }
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <app-waste-flow [productGroupId]="productGroupId()"></app-waste-flow>
-  </mat-expansion-panel>
+  <app-waste-flow [productGroupId]="productGroupId()"></app-waste-flow>
 </mat-accordion>
 
 <app-base-sheet #sheet>
