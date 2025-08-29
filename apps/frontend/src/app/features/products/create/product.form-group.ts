@@ -56,6 +56,7 @@ export const masterDataFormGroup = () =>
     wasteFlow: new FormControl<string | null>(null, Validators.required),
 
     waterUsed: new FormControl<number | null>(null),
+    productCarbonFootprint: new FormControl<number | null>(null),
     cascadePrinciple: new FormControl<string | null>(null),
     certification: new FormControl<string | null>(null),
     durability: new FormControl<number | null>(null, Validators.required),

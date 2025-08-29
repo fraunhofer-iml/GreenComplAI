@@ -60,6 +60,8 @@ export class ProductCreateDto {
 
   waterUsed?: number;
 
+  productCarbonFootprint?: number;
+
   cascadePrinciple?: string;
   certification?: string;
   taricCode?: string;
@@ -112,6 +114,8 @@ export class ProductCreateDto {
     warehouseLocation?: string,
     productionLocation?: string,
     wasteFlow?: string,
+    waterUsed?: number,
+    productCarbonFootprint?: number,
     cascadePrincipal?: string,
     certification?: string,
     circularPrinciple?: boolean,
@@ -146,6 +150,8 @@ export class ProductCreateDto {
     this.warehouseLocation = warehouseLocation;
     this.productionLocation = productionLocation;
     this.wasteFlow = wasteFlow;
+    this.waterUsed = waterUsed;
+    this.productCarbonFootprint = productCarbonFootprint;
     this.rareEarths = rareEarths;
     this.criticalRawMaterials = criticalRawMaterials;
     this.cascadePrinciple = cascadePrincipal;

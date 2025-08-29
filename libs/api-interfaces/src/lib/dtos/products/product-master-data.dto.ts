@@ -39,6 +39,8 @@ export class ProductMasterDataDto {
 
   waterUsed?: number;
 
+  productCarbonFootprint?: number;
+
   cascadePrinciple?: string;
   certification?: string;
   digitalProductPassportUrl?: string;
@@ -77,6 +79,8 @@ export class ProductMasterDataDto {
     warehouseLocation?: string,
     productionLocation?: string,
     wasteFlow?: string,
+    waterUsed?: number,
+    productCarbonFootprint?: number,
     cascadePrincipal?: string,
     certification?: string,
     circularPrinciple?: boolean,
@@ -107,6 +111,8 @@ export class ProductMasterDataDto {
     this.warehouseLocation = warehouseLocation;
     this.productionLocation = productionLocation;
     this.wasteFlow = wasteFlow;
+    this.waterUsed = waterUsed;
+    this.productCarbonFootprint = productCarbonFootprint;
     this.cascadePrinciple = cascadePrincipal;
     this.certification = certification;
     this.durability = durability;

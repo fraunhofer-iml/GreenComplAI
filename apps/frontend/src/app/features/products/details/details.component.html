@@ -263,6 +263,18 @@
             </app-flagable>
           }
 
+          <app-flagable
+            [id]="id$() ?? ''"
+            [topic]="'CO2-Fußabdruck'"
+            [data]="data.flags"
+            [element]="'productCarbonFootprint'"
+          >
+            <span class="text-right">
+              {{ data.productCarbonFootprint ?? 'keine Angabe' }}
+              {{ data.productCarbonFootprint ? ' kgCO2e' : '' }}
+            </span>
+          </app-flagable>
+
           <div class="col-span-2 my-2 h-[1px] bg-neutral-300"></div>
 
           <app-flagable

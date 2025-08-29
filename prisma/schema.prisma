@@ -219,6 +219,8 @@ model Product {
 
   waterUsed Float?
 
+  productCarbonFootprint Float?
+
   wasteFlow            WasteFlow?             @relation(fields: [wasteFlowId], references: [id])
   wasteFlowId          String?
   rareEarths           RareEarths[]

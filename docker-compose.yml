@@ -83,6 +83,8 @@ services:
         condition: service_healthy
       mongo:
         condition: service_healthy
+    profiles:
+      - dpp
   aas-registry:
     image: eclipsebasyx/aas-registry-log-mongodb:2.0.0-SNAPSHOT
     container_name: aas-registry
@@ -96,6 +98,8 @@ services:
     depends_on:
       mongo:
         condition: service_healthy
+    profiles:
+      - dpp
   sm-registry:
     image: eclipsebasyx/submodel-registry-log-mongodb:2.0.0-SNAPSHOT
     container_name: sm-registry
@@ -109,6 +113,8 @@ services:
     depends_on:
       mongo:
         condition: service_healthy
+    profiles:
+      - dpp
   aas-discovery:
     image: eclipsebasyx/aas-discovery:2.0.0-SNAPSHOT
     container_name: aas-discovery
@@ -122,6 +128,8 @@ services:
     depends_on:
       mongo:
         condition: service_healthy
+    profiles:
+      - dpp
   mongo:
     image: mongo:5.0.10
     container_name: mongo
@@ -134,6 +142,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    profiles:
+      - dpp
   aas-web-ui:
     image: eclipsebasyx/aas-gui:SNAPSHOT
     container_name: aas-ui
@@ -150,6 +160,8 @@ services:
     depends_on:
       aas-env:
         condition: service_healthy
+    profiles:
+      - dpp
 
 networks:
   default:

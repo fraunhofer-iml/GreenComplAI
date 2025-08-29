@@ -45,6 +45,7 @@ export interface MasterDataFormGroup {
   warehouseLocation: FormControl<AddressDto | null>;
   wasteFlow: FormControl<string | null>;
   waterUsed: FormControl<number | null>;
+  productCarbonFootprint: FormControl<number | null>;
   cascadePrinciple: FormControl<string | null>;
   certification: FormControl<string | null>;
   durability: FormControl<number | null>;

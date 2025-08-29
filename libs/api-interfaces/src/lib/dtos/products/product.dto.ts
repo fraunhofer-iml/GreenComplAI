@@ -46,6 +46,7 @@ export class ProductDto {
   rareEarths?: [MaterialDto, number][];
   criticalRawMaterials?: [MaterialDto, number][];
   waterUsed?: number;
+  productCarbonFootprint?: number;
   isSellable?: boolean;
   cascadePrinciple?: string;
   certificationSystem?: string;
@@ -97,6 +98,7 @@ export class ProductDto {
     wasteFlow?: string,
     variant?: string,
     waterUsed?: number,
+    productCarbonFootprint?: number,
     isSellable?: boolean,
     cascadePrinciple?: string,
     certificationSystem?: string,
@@ -133,6 +135,7 @@ export class ProductDto {
     this.rareEarths = rareEarths;
     this.criticalRawMaterials = criticalRawMaterials;
     this.waterUsed = waterUsed;
+    this.productCarbonFootprint = productCarbonFootprint;
     this.isSellable = isSellable;
     this.cascadePrinciple = cascadePrinciple;
     this.certificationSystem = certificationSystem;
