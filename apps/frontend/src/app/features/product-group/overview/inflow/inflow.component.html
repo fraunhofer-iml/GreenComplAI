@@ -17,14 +17,10 @@
   </div>
 
   <div class="flex h-full w-full flex-col gap-4 pb-4">
-    <div class="flex w-full gap-2">
+    <div class="flex w-full gap-2" [formGroup]="formGroup">
       <mat-form-field appearance="outline" class="flex-1">
         <mat-label>Suche</mat-label>
-        <input
-          matInput
-          #filterInput
-          (keyup)="onFilterChange(filterInput.value)"
-        />
+        <input matInput formControlName="filter" />
         <mat-icon matPrefix>search</mat-icon>
       </mat-form-field>
       <mat-form-field appearance="outline">

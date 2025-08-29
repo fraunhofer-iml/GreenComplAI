@@ -23,7 +23,7 @@ import { findProductGroupsQuery } from './queries/find-product-groups.query';
 export class InFlowAnalysisService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly analysisServive: ProductAnalysisService
+    private readonly analysisService: ProductAnalysisService
   ) {}
 
   getInFlowAnalysis({
@@ -55,7 +55,7 @@ export class InFlowAnalysisService {
 
     const analysisOfProductGroups: GenericInFlowAnalysisDto[] = [];
 
-    const multiplier = await this.analysisServive.getMultiplierForProducts(
+    const multiplier = await this.analysisService.getMultiplierForProducts(
       productGroups.flatMap((g) => g.products.map((p) => p.id)),
       fromYear,
       toYear
@@ -98,7 +98,7 @@ export class InFlowAnalysisService {
       findProductsByGroupIdQuery(productGroupId, filter)
     );
 
-    const multiplier = await this.analysisServive.getMultiplierForProducts(
+    const multiplier = await this.analysisService.getMultiplierForProducts(
       products.map((p) => p.id),
       fromYear,
       toYear

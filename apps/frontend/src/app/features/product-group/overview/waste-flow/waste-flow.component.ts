@@ -7,9 +7,15 @@
  */
 
 import moment, { Moment } from 'moment';
+import { debounceTime } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, input, signal } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
@@ -87,6 +93,10 @@ export class WasteFlowComponent {
     'wasteWeightNotRecyclablePercentage',
   ];
 
+  formGroup = new FormGroup({
+    filter: new FormControl(''),
+  });
+
   productGroupId = input<string>();
 
   filteredAndSortedAnalysis = computed(() => {
@@ -117,6 +127,12 @@ export class WasteFlowComponent {
       );
     },
   }));
+
+  constructor() {
+    this.formGroup.controls.filter.valueChanges
+      .pipe(debounceTime(500))
+      .subscribe((value) => this.onFilterChange(value ?? ''));
+  }
 
   onFilterChange(value: string) {
     this.filter.set(value);
