@@ -7,6 +7,7 @@
  */
 
 import { ProductDto, ProductUpdateHistoryDto } from '@ap2/api-interfaces';
+import { DecimalPipe } from '@angular/common';
 import { Component, inject, Input, input } from '@angular/core';
 import {
   FormControl,
@@ -66,6 +67,7 @@ import { SelectProducedPerYearComponent } from '../../create/select-produced-per
     BaseSheetComponent,
     SelectProducedPerYearComponent,
     FlagableComponent,
+    DecimalPipe,
   ],
   templateUrl: './order-history.component.html',
 })
@@ -93,7 +95,7 @@ export class OrderHistoryComponent {
       this.setHistory(product.productionHistory ?? []);
       return product;
     },
-    enabled: !!this.productId && !!this.year(),
+    enabled: !!this.productId,
   }));
 
   updateHistoryMutation = injectMutation(() => ({
@@ -129,11 +131,12 @@ export class OrderHistoryComponent {
   }
 
   save(productionHistory: FormGroup<ProducedItemsFormGroup>) {
-    if (!this.product()?.id) return;
+    const id = this.product()?.id;
+    if (!id) return;
     const dto: ProductUpdateHistoryDto =
       this.productConstructionService.createUpdateProductionHistoryDto(
         productionHistory
       );
-    this.updateHistoryMutation.mutate({ dto: dto, id: this.product()!.id! });
+    this.updateHistoryMutation.mutate({ dto: dto, id: id });
   }
 }

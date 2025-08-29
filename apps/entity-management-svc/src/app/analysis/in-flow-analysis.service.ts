@@ -23,36 +23,39 @@ import { findProductGroupsQuery } from './queries/find-product-groups.query';
 export class InFlowAnalysisService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly analysisServive: ProductAnalysisService
+    private readonly analysisService: ProductAnalysisService
   ) {}
 
   getInFlowAnalysis({
     fromYear,
     toYear,
+    filter,
     productGroupId,
   }: AnalysisQuery): Promise<InFlowAnalysisDto> {
     if (productGroupId) {
       return this.getInFlowAnalysisOfProductGroupById(
         productGroupId,
         fromYear,
-        toYear
+        toYear,
+        filter
       );
     }
 
-    return this.getInFlowAnalysisForProductGroups(fromYear, toYear);
+    return this.getInFlowAnalysisForProductGroups(fromYear, toYear, filter);
   }
 
   async getInFlowAnalysisForProductGroups(
     fromYear: number,
-    toYear: number
+    toYear: number,
+    filter: string
   ): Promise<InFlowAnalysisDto> {
     const productGroups = await this.prisma.productGroup.findMany(
-      findProductGroupsQuery()
+      findProductGroupsQuery(filter)
     );
 
     const analysisOfProductGroups: GenericInFlowAnalysisDto[] = [];
 
-    const multiplier = await this.analysisServive.getMultiplierForProducts(
+    const multiplier = await this.analysisService.getMultiplierForProducts(
       productGroups.flatMap((g) => g.products.map((p) => p.id)),
       fromYear,
       toYear
@@ -88,13 +91,14 @@ export class InFlowAnalysisService {
   async getInFlowAnalysisOfProductGroupById(
     productGroupId: string,
     fromYear: number,
-    toYear: number
+    toYear: number,
+    filter: string
   ): Promise<InFlowAnalysisDto> {
     const products = await this.prisma.product.findMany(
-      findProductsByGroupIdQuery(productGroupId)
+      findProductsByGroupIdQuery(productGroupId, filter)
     );
 
-    const multiplier = await this.analysisServive.getMultiplierForProducts(
+    const multiplier = await this.analysisService.getMultiplierForProducts(
       products.map((p) => p.id),
       fromYear,
       toYear

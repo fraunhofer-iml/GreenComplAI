@@ -30,9 +30,11 @@ export class WasteFlowAnalysisService {
     fromYear,
     toYear,
     productGroupId,
+    filter,
   }: {
     fromYear: number;
     toYear: number;
+    filter: string;
     productGroupId?: string;
   }) {
     if (productGroupId) {
@@ -40,20 +42,28 @@ export class WasteFlowAnalysisService {
         productGroupId,
         fromYear,
         toYear,
+        filter,
       });
     }
 
-    return this.getWasteFlowAnalysisForProductGroups({ fromYear, toYear });
+    return this.getWasteFlowAnalysisForProductGroups({
+      fromYear,
+      toYear,
+      filter,
+    });
   }
 
   async getWasteFlowAnalysisForProductGroups({
     fromYear,
     toYear,
+    filter,
   }: {
     fromYear: number;
     toYear: number;
+    filter: string;
   }): Promise<WasteFlowAnalysisDto> {
     const productGroups = await this.prisma.productGroup.findMany({
+      where: { name: { contains: filter } },
       include: {
         products: {
           include: {
@@ -323,15 +333,18 @@ export class WasteFlowAnalysisService {
     productGroupId,
     fromYear,
     toYear,
+    filter,
   }: {
     productGroupId: string;
     fromYear: number;
     toYear: number;
+    filter: string;
   }): Promise<WasteFlowAnalysisDto> {
     const productGroup = await this.prisma.productGroup.findUnique({
       where: { id: productGroupId },
       include: {
         products: {
+          where: { name: { contains: filter } },
           include: {
             productionHistory: true,
             waste: {

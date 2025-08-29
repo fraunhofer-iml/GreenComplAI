@@ -6,7 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Component, input, signal } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { RouterModule } from '@angular/router';
@@ -37,7 +37,5 @@ import { WasteFlowComponent } from './waste-flow/waste-flow.component';
 })
 export class ProductGroupOverviewComponent {
   ContentType = ContentType;
-  readonly inflowPanelState = signal(false);
-  readonly outflowPanelState = signal(false);
   productGroupId = input<string>();
 }

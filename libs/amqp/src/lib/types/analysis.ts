@@ -9,5 +9,6 @@
 export type AnalysisQuery = {
   fromYear: number;
   toYear: number;
+  filter: string;
   productGroupId?: string;
 };

@@ -7,9 +7,15 @@
  */
 
 import moment, { Moment } from 'moment';
+import { debounceTime } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, input, signal } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
@@ -23,6 +29,7 @@ import {
   MatDatepicker,
   MatDatepickerModule,
 } from '@angular/material/datepicker';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -53,6 +60,7 @@ import { ONLY_YEAR_FORMAT } from '../../../../shared/constants/date-formats';
     MatSortModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatExpansionModule,
   ],
   providers: [
     {
@@ -87,21 +95,20 @@ export class WasteFlowComponent {
     'wasteWeightNotRecyclablePercentage',
   ];
 
+  formGroup = new FormGroup({
+    filter: new FormControl(''),
+  });
+
   productGroupId = input<string>();
 
   filteredAndSortedAnalysis = computed(() => {
-    const response = this.analysisQuery
-      .data()
-      ?.analysis.filter((a) =>
-        a.name.toLocaleLowerCase().includes(this.filter().toLocaleLowerCase())
-      )
-      .sort((a, b) => {
-        if (this.sorting()[1] === 'asc') {
-          return a[this.sorting()[0]] < b[this.sorting()[0]] ? -1 : 1;
-        } else {
-          return b[this.sorting()[0]] < a[this.sorting()[0]] ? -1 : 1;
-        }
-      });
+    const response = this.analysisQuery.data()?.analysis.sort((a, b) => {
+      if (this.sorting()[1] === 'asc') {
+        return a[this.sorting()[0]] < b[this.sorting()[0]] ? -1 : 1;
+      } else {
+        return b[this.sorting()[0]] < a[this.sorting()[0]] ? -1 : 1;
+      }
+    });
     return response;
   });
 
@@ -110,16 +117,24 @@ export class WasteFlowComponent {
       'waste-flow-analysis',
       this.fromYear$(),
       this.toYear$(),
+      this.filter(),
       this.productGroupId(),
     ],
     queryFn: async () => {
       return await this.analysisService.getWasteFlowAnalysisOfProductGroups(
         this.fromYear$().year(),
         this.toYear$().year(),
+        this.filter(),
         this.productGroupId()
       );
     },
   }));
+
+  constructor() {
+    this.formGroup.controls.filter.valueChanges
+      .pipe(debounceTime(500))
+      .subscribe((value) => this.onFilterChange(value ?? ''));
+  }
 
   onFilterChange(value: string) {
     this.filter.set(value);
@@ -154,5 +169,11 @@ export class WasteFlowComponent {
     });
 
     this.filter.set('');
+  }
+
+  back() {
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+    });
   }
 }
