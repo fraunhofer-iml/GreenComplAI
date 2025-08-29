@@ -123,7 +123,6 @@ export class PackagingController {
     @Query('page') page?: number,
     @Query('pageSize') pageSize?: number
   ): Promise<PaginatedData<PackagingDto>> {
-    console.log('packaging: test');
     return this.packagingService.findAll({
       filters: filters,
       sorting: sorting,
