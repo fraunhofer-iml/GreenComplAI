@@ -90,18 +90,13 @@ export class WasteFlowComponent {
   productGroupId = input<string>();
 
   filteredAndSortedAnalysis = computed(() => {
-    const response = this.analysisQuery
-      .data()
-      ?.analysis.filter((a) =>
-        a.name.toLocaleLowerCase().includes(this.filter().toLocaleLowerCase())
-      )
-      .sort((a, b) => {
-        if (this.sorting()[1] === 'asc') {
-          return a[this.sorting()[0]] < b[this.sorting()[0]] ? -1 : 1;
-        } else {
-          return b[this.sorting()[0]] < a[this.sorting()[0]] ? -1 : 1;
-        }
-      });
+    const response = this.analysisQuery.data()?.analysis.sort((a, b) => {
+      if (this.sorting()[1] === 'asc') {
+        return a[this.sorting()[0]] < b[this.sorting()[0]] ? -1 : 1;
+      } else {
+        return b[this.sorting()[0]] < a[this.sorting()[0]] ? -1 : 1;
+      }
+    });
     return response;
   });
 
@@ -110,12 +105,14 @@ export class WasteFlowComponent {
       'waste-flow-analysis',
       this.fromYear$(),
       this.toYear$(),
+      this.filter(),
       this.productGroupId(),
     ],
     queryFn: async () => {
       return await this.analysisService.getWasteFlowAnalysisOfProductGroups(
         this.fromYear$().year(),
         this.toYear$().year(),
+        this.filter(),
         this.productGroupId()
       );
     },

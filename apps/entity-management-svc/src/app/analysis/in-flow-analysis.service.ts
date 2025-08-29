@@ -29,25 +29,28 @@ export class InFlowAnalysisService {
   getInFlowAnalysis({
     fromYear,
     toYear,
+    filter,
     productGroupId,
   }: AnalysisQuery): Promise<InFlowAnalysisDto> {
     if (productGroupId) {
       return this.getInFlowAnalysisOfProductGroupById(
         productGroupId,
         fromYear,
-        toYear
+        toYear,
+        filter
       );
     }
 
-    return this.getInFlowAnalysisForProductGroups(fromYear, toYear);
+    return this.getInFlowAnalysisForProductGroups(fromYear, toYear, filter);
   }
 
   async getInFlowAnalysisForProductGroups(
     fromYear: number,
-    toYear: number
+    toYear: number,
+    filter: string
   ): Promise<InFlowAnalysisDto> {
     const productGroups = await this.prisma.productGroup.findMany(
-      findProductGroupsQuery()
+      findProductGroupsQuery(filter)
     );
 
     const analysisOfProductGroups: GenericInFlowAnalysisDto[] = [];
@@ -88,10 +91,11 @@ export class InFlowAnalysisService {
   async getInFlowAnalysisOfProductGroupById(
     productGroupId: string,
     fromYear: number,
-    toYear: number
+    toYear: number,
+    filter: string
   ): Promise<InFlowAnalysisDto> {
     const products = await this.prisma.product.findMany(
-      findProductsByGroupIdQuery(productGroupId)
+      findProductsByGroupIdQuery(productGroupId, filter)
     );
 
     const multiplier = await this.analysisServive.getMultiplierForProducts(
