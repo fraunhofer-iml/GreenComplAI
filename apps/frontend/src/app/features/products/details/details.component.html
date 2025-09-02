@@ -152,9 +152,9 @@
           <app-flagable
             [id]="id$() ?? ''"
             [data]="data.flags"
-            [topic]="'Maße (Länge x Breite x Höhe)'"
+            [topic]="'Abmessungen'"
             [element]="'dimensions'"
-            ><span>{{ data.dimensions }} mm</span></app-flagable
+            ><span>{{ data.dimensions }}</span></app-flagable
           >
 
           @if (!authService.isSupplier()) {
