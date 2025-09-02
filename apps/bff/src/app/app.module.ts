@@ -26,6 +26,7 @@ import { ProductGroupModule } from './product-group/product-group.module';
 import { ProductsModule } from './products/products.module';
 import { ReportsModule } from './report/reports.module';
 import { SuppliersModule } from './suppliers/suppliers.module';
+import { IdocModule } from './idoc/idoc.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { SuppliersModule } from './suppliers/suppliers.module';
     ReportsModule,
     MappingModule,
     SuppliersModule,
+    IdocModule,
   ],
   controllers: [],
   providers: [
