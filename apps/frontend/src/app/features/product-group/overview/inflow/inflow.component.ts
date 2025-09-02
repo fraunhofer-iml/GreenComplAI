@@ -7,9 +7,15 @@
  */
 
 import moment, { Moment } from 'moment';
-import { CommonModule } from '@angular/common';
+import { debounceTime } from 'rxjs';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { Component, computed, inject, input, signal } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
@@ -23,6 +29,7 @@ import {
   MatDatepicker,
   MatDatepickerModule,
 } from '@angular/material/datepicker';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -54,6 +61,7 @@ import { ONLY_YEAR_FORMAT } from '../../../../shared/constants/date-formats';
     MatDatepickerModule,
     MatNativeDateModule,
     MatPaginatorModule,
+    MatExpansionModule,
   ],
   providers: [
     {
@@ -62,6 +70,7 @@ import { ONLY_YEAR_FORMAT } from '../../../../shared/constants/date-formats';
       deps: [MAT_DATE_LOCALE],
     },
     { provide: MAT_DATE_FORMATS, useValue: ONLY_YEAR_FORMAT },
+    DecimalPipe,
   ],
   templateUrl: './inflow.component.html',
 })
@@ -69,6 +78,7 @@ export class InflowComponent {
   private readonly analysisService = inject(AnalysisService);
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly decimalPipe = inject(DecimalPipe);
 
   fromYear$ = signal<Moment>(moment(new Date(2024, 0, 1)));
   toYear$ = signal<Moment>(moment(new Date(2025, 0, 1)));
@@ -87,21 +97,20 @@ export class InflowComponent {
     'water',
   ];
 
+  formGroup = new FormGroup({
+    filter: new FormControl(''),
+  });
+
   productGroupId = input<string>();
 
   filteredAndSortedAnalysis = computed(() => {
-    return this.analysisQuery
-      .data()
-      ?.analysis.filter((a) =>
-        a.name.toLocaleLowerCase().includes(this.filter().toLocaleLowerCase())
-      )
-      .sort((a, b) => {
-        if (this.sorting()[1] === 'asc') {
-          return a[this.sorting()[0]] < b[this.sorting()[0]] ? -1 : 1;
-        } else {
-          return b[this.sorting()[0]] < a[this.sorting()[0]] ? -1 : 1;
-        }
-      });
+    return this.analysisQuery.data()?.analysis.sort((a, b) => {
+      if (this.sorting()[1] === 'asc') {
+        return a[this.sorting()[0]] < b[this.sorting()[0]] ? -1 : 1;
+      } else {
+        return b[this.sorting()[0]] < a[this.sorting()[0]] ? -1 : 1;
+      }
+    });
   });
 
   analysisQuery = injectQuery(() => ({
@@ -109,19 +118,28 @@ export class InflowComponent {
       'inflow-analysis',
       this.fromYear$(),
       this.toYear$(),
+      this.filter(),
       this.productGroupId(),
     ],
     queryFn: async () => {
       return await this.analysisService.getInFlowAnalysisOfProductGroups(
         this.fromYear$().year(),
         this.toYear$().year(),
+        this.filter(),
         this.productGroupId()
       );
     },
   }));
 
+  constructor() {
+    this.formGroup.controls.filter.valueChanges
+      .pipe(debounceTime(500))
+      .subscribe((value) => this.onFilterChange(value ?? ''));
+  }
+
   onFilterChange(value: string) {
     this.filter.set(value);
+    this.analysisQuery.refetch();
   }
 
   onSortChange(value: Sort) {
@@ -152,17 +170,29 @@ export class InflowComponent {
 
   displayMaterials(map: [string, number][]) {
     return map && map.length > 0
-      ? map.map((item) => `${item[0]} (${item[1].toFixed(2)} kg)`).join(', ')
+      ? map
+          .map(
+            (item) =>
+              `${item[0]} (${this.decimalPipe.transform(item[1], '1.0-2')} kg)`
+          )
+          .join(', ')
       : 'keine Angabe';
   }
 
   displayPackagings(map: [string, number][]) {
     return map && map.length > 0
-      ? map.map((item) => `${item[0]} (${item[1]})`).join(', ')
+      ? map
+          .map(
+            (item) =>
+              `${item[0]} (${this.decimalPipe.transform(item[1], '1.0-2')})`
+          )
+          .join(', ')
       : 'keine Angabe';
   }
 
-  displayArray(arr: string[]) {
-    return arr && arr.length > 0 ? arr.join(', ') : 'keine Angabe';
+  back() {
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+    });
   }
 }

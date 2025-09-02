@@ -8,6 +8,7 @@
 
 import { PackagingDto, ProductUpdateMapDto } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
+import { DecimalPipe } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -34,6 +35,7 @@ import { ProductPackagingFormGroup } from '../../create/model/product-form.model
     RouterModule,
     PackagingSheetComponent,
     FlagableComponent,
+    DecimalPipe,
   ],
   templateUrl: './product-packaging.component.html',
 })
@@ -57,7 +59,7 @@ export class ProductPackagingComponent {
   packagingsForm: FormGroup<ProductPackagingFormGroup>;
 
   packagingQuery = injectQuery(() => ({
-    queryKey: ['packaging', this.id$()],
+    queryKey: ['product-packaging', this.id$()],
     queryFn: async (): Promise<[PackagingDto, number][]> => {
       const packagings = await this.productService.getPackaging(
         this.id$() ?? ''

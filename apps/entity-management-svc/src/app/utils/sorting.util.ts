@@ -7,6 +7,7 @@
  */
 
 export const getSorting = (sortingInput: string) => {
+  if (!sortingInput) return;
   const { key, direction } = parseSorting(sortingInput);
 
   const mapping = {
