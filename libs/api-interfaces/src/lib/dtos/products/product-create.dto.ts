@@ -47,7 +47,7 @@ export class ProductCreateDto {
     material: string;
     percentage: number;
     renewable?: boolean;
-    materialType?: boolean;
+    primary?: boolean;
   }[];
 
   productGroup?: string;
@@ -105,7 +105,7 @@ export class ProductCreateDto {
       material: string;
       percentage: number;
       renewable?: boolean;
-      materialType?: boolean;
+      primary?: boolean;
     }[],
     durability?: number,
     durabilityDifference?: number,
