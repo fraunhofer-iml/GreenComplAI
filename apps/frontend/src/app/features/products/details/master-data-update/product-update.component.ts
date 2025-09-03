@@ -28,6 +28,8 @@ import { ProductConstructionService } from '../../create/form-construction/produ
 import {
   materialFormArrayGroup,
   materialFormGroup,
+  regularMaterialFormArrayGroup,
+  regularMaterialFormGroup,
 } from '../../create/material.form-group';
 import { MasterDataFormGroup } from '../../create/model/product-form.model';
 import { masterDataFormGroup } from '../../create/product.form-group';
@@ -73,6 +75,8 @@ export class ProductUpdateComponent {
       FormGroup<{
         material: FormControl<string>;
         percentage: FormControl<number>;
+        renewable: FormControl<boolean | null>;
+        primary: FormControl<boolean | null>;
       }>
     >;
   }>;
@@ -109,7 +113,7 @@ export class ProductUpdateComponent {
 
   constructor() {
     this.form = masterDataFormGroup();
-    this.materialsForm = materialFormArrayGroup();
+    this.materialsForm = regularMaterialFormArrayGroup();
     this.rareEarthsForm = materialFormArrayGroup();
     this.criticalRawMaterialsForm = materialFormArrayGroup();
   }
@@ -176,9 +180,14 @@ export class ProductUpdateComponent {
       this.criticalRawMaterialsForm.controls.materials.push(newForm);
     });
 
-    dto.materials?.map((earth) => {
-      const newForm = materialFormGroup();
-      newForm.patchValue({ material: earth[0].name, percentage: earth[1] });
+    dto.materials?.map((material) => {
+      const newForm = regularMaterialFormGroup();
+      newForm.patchValue({
+        material: material[0].name,
+        percentage: material[1],
+        renewable: material[2],
+        primary: material[3],
+      });
       this.materialsForm.controls.materials.push(newForm);
     });
   }
@@ -190,6 +199,8 @@ export class ProductUpdateComponent {
       this.criticalRawMaterialsForm,
       this.rareEarthsForm
     );
+
+    console.log(dto);
 
     this.updateMutation.mutate(dto);
   }

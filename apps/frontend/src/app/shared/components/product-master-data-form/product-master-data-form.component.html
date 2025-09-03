@@ -345,6 +345,12 @@
           @if (item.material && item.percentage) {
             <mat-chip-row [aria-description]="'material'"
               >{{ item.material }} ({{ item.percentage }} %)
+              @if (item.renewable !== null) {
+                - {{ item.renewable ? 'Erneuerbar' : 'Nicht erneuerbar' }}
+              }
+              @if (item.primary) {
+                - {{ item.primary ? 'Primär' : 'Sekundär' }}
+              }
             </mat-chip-row>
           }
         }
@@ -467,17 +473,21 @@
 <app-base-sheet #materialSheet>
   <app-select-materials
     (closeSheetEvent)="materialSheet.close()"
-    (addMaterialEvent)="addMaterialFormGroup(materialsForm())"
-    (removeMaterialEvent)="removeMaterialFormGroup(materialsForm(), $event)"
-    (addRareEarthEvent)="addMaterialFormGroup(rareEarthsForm())"
-    (removeRareEarthEvent)="removeMaterialFormGroup(rareEarthsForm(), $event)"
+    (addMaterialEvent)="addRegularMaterialFormGroup(materialsForm())"
+    (removeMaterialEvent)="
+      removeRegularMaterialFormGroup(materialsForm(), $event)
+    "
+    (addRareEarthEvent)="addBasicMaterialFormGroup(rareEarthsForm())"
+    (removeRareEarthEvent)="
+      removeBasicMaterialFormGroup(rareEarthsForm(), $event)
+    "
     (addCriticalRawMaterialEvent)="
-      addMaterialFormGroup(criticalRawMaterialsForm())
+      addBasicMaterialFormGroup(criticalRawMaterialsForm())
     "
     (removeCriticalRawMaterialEvent)="
-      removeMaterialFormGroup(criticalRawMaterialsForm(), $event)
+      removeBasicMaterialFormGroup(criticalRawMaterialsForm(), $event)
     "
-    [form]="materialsForm()"
+    [materialsForm]="materialsForm()"
     [rareEarthsForm]="rareEarthsForm()"
     [criticalRawMaterialsForm]="criticalRawMaterialsForm()"
   ></app-select-materials>

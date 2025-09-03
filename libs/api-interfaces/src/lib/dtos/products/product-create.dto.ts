@@ -43,7 +43,12 @@ export class ProductCreateDto {
   importerAddress?: string;
   manufacturer?: string;
 
-  materials?: { material: string; percentage: number }[];
+  materials?: {
+    material: string;
+    percentage: number;
+    renewable?: boolean;
+    materialType?: boolean;
+  }[];
 
   productGroup?: string;
   variant?: string;
@@ -96,7 +101,12 @@ export class ProductCreateDto {
     importerEmail?: string,
     importerPhone?: string,
     importerAddress?: string,
-    materials?: { material: string; percentage: number }[],
+    materials?: {
+      material: string;
+      percentage: number;
+      renewable?: boolean;
+      materialType?: boolean;
+    }[],
     durability?: number,
     durabilityDifference?: number,
     reparability?: number,

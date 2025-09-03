@@ -35,16 +35,18 @@ import { injectQuery } from '@tanstack/angular-query-experimental';
 import { AuthenticationService } from '../../../core/services/authentication/authentication.service';
 import { CompaniesService } from '../../../core/services/companies/companies.service';
 import { ProductGroupService } from '../../../core/services/product-group/product-group.service';
+import { RegularMaterialsFormGroup } from '../../../features/materials/select-materials/materials-form.model';
 import { SelectMaterialsComponent } from '../../../features/materials/select-materials/select-materials.component';
 import { ProductGroupCreateComponent } from '../../../features/product-group/create/product-group-create.component';
 import {
-  addMaterialFormGroup,
-  removeMaterialFormGroup,
+  addBasicMaterialFormGroup,
+  addRegularMaterialFormGroup,
+  removeBasicMaterialFormGroup,
+  removeRegularMaterialFormGroup,
 } from '../../../features/products/create/material.form-group';
 import { MasterDataFormGroup } from '../../../features/products/create/model/product-form.model';
 import { UNITS } from '../../constants/available-units';
 import { CRITICAL_RAW_MATERIAL, RARE_EARTHS } from '../../constants/inflows';
-import { autocompleteValidator } from '../../utils/autocomplete.validator';
 import { BaseSheetComponent } from '../sheet/base/sheet.component';
 
 @Component({
@@ -75,16 +77,7 @@ export class ProductMasterDataFormComponent implements OnInit {
   productGroupId = input<string>();
   form = input.required<FormGroup<MasterDataFormGroup>>();
 
-  materialsForm = input.required<
-    FormGroup<{
-      materials: FormArray<
-        FormGroup<{
-          material: FormControl<string>;
-          percentage: FormControl<number>;
-        }>
-      >;
-    }>
-  >();
+  materialsForm = input.required<FormGroup<RegularMaterialsFormGroup>>();
 
   rareEarthsForm = input.required<
     FormGroup<{
@@ -121,8 +114,12 @@ export class ProductMasterDataFormComponent implements OnInit {
   RARE_EARTHS = RARE_EARTHS;
   CRITICAL_RAW_MATERIAL = CRITICAL_RAW_MATERIAL;
 
-  addMaterialFormGroup = addMaterialFormGroup;
-  removeMaterialFormGroup = removeMaterialFormGroup;
+  addMaterialFormGroup = addRegularMaterialFormGroup;
+  removeMaterialFormGroup = removeRegularMaterialFormGroup;
+  addRegularMaterialFormGroup = addRegularMaterialFormGroup;
+  removeRegularMaterialFormGroup = removeRegularMaterialFormGroup;
+  addBasicMaterialFormGroup = addBasicMaterialFormGroup;
+  removeBasicMaterialFormGroup = removeBasicMaterialFormGroup;
 
   associatedCompaniesQuery = injectQuery(() => ({
     queryKey: ['searchSuppliers', this.supplierSearchValue()],

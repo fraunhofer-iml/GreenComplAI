@@ -94,15 +94,17 @@
     (closeSheetEvent)="materialSheet.close()"
     (addMaterialEvent)="addMaterialFormGroup(materialsForm)"
     (removeMaterialEvent)="removeMaterialFormGroup(materialsForm, $event)"
-    (addRareEarthEvent)="addMaterialFormGroup(rareEarthsForm)"
-    (removeRareEarthEvent)="removeMaterialFormGroup(rareEarthsForm, $event)"
+    (addRareEarthEvent)="addBasicMaterialFormGroup(rareEarthsForm)"
+    (removeRareEarthEvent)="
+      removeBasicMaterialFormGroup(rareEarthsForm, $event)
+    "
     (addCriticalRawMaterialEvent)="
-      addMaterialFormGroup(criticalRawMaterialsForm)
+      addBasicMaterialFormGroup(criticalRawMaterialsForm)
     "
     (removeCriticalRawMaterialEvent)="
-      removeMaterialFormGroup(rareEarthsForm, $event)
+      removeBasicMaterialFormGroup(criticalRawMaterialsForm, $event)
     "
-    [form]="materialsForm"
+    [materialsForm]="materialsForm"
     [rareEarthsForm]="rareEarthsForm"
     [criticalRawMaterialsForm]="criticalRawMaterialsForm"
   ></app-select-materials>

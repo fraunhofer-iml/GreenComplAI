@@ -251,6 +251,8 @@ model ProductMaterials {
   material     Material @relation(fields: [materialName], references: [name])
   materialName String   @map("materialName")
   percentage   Float
+  renewable    Boolean?
+  primary      Boolean?
 
   @@id([productId, materialName])
 }

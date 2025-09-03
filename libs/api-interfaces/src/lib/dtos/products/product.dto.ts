@@ -36,7 +36,7 @@ export class ProductDto {
   importerAddress?: string;
   manufacturer?: CompanyDto;
   waste?: Partial<WasteDto>;
-  materials?: [MaterialDto, number][];
+  materials?: [MaterialDto, number, boolean?, boolean?][];
   productGroup?: ProductGroupDto;
   packagings?: [PackagingDto, number][];
   warehouseLocation?: AddressDto;
@@ -89,7 +89,7 @@ export class ProductDto {
     importerAddress?: string,
     manufacturer?: CompanyDto,
     waste?: WasteDto,
-    materials?: [MaterialDto, number][],
+    materials?: [MaterialDto, number, boolean?, boolean?][],
     productId?: string,
     productGroup?: ProductGroupDto,
     packagings?: [PackagingDto, number][],

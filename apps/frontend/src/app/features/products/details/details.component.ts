@@ -106,10 +106,6 @@ export class ProductDetailsComponent {
     this.id$.set(id);
   }
 
-  displayMaterials(materials: [MaterialDto, number][]) {
-    return materials.map((m) => `${m[0].name} (${m[1]} %)`).join(', ');
-  }
-
   setYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
     const ctrlValue = this.date.value ?? moment();
     ctrlValue.year(normalizedMonthAndYear.year());

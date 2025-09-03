@@ -8,8 +8,10 @@
 
 export class MaterialDto {
   name: string;
+  materialType?: 'primary' | 'secondary';
 
-  constructor(name: string) {
+  constructor(name: string, materialType?: 'primary' | 'secondary') {
     this.name = name;
+    this.materialType = materialType;
   }
 }

@@ -17,7 +17,10 @@ import {
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { WasteFormGroup } from '../../../../shared/components/waste-create/waste-form';
-import { MaterialsFormGroup } from '../../../materials/select-materials/materials-form.model';
+import {
+  MaterialsFormGroup,
+  RegularMaterialsFormGroup,
+} from '../../../materials/select-materials/materials-form.model';
 import {
   BillOfMaterialFormGroup,
   MasterDataFormGroup,
@@ -31,7 +34,7 @@ export class ProductConstructionService {
     formData: FormGroup<MasterDataFormGroup>,
     billOfMaterialForm: FormGroup<BillOfMaterialFormGroup>,
     wasteForm: FormGroup<WasteFormGroup>,
-    materialsForm: FormGroup<MaterialsFormGroup>,
+    materialsForm: FormGroup<RegularMaterialsFormGroup>,
     rareEarthsForm: FormGroup<MaterialsFormGroup>,
     criticalRawMaterialsForm: FormGroup<MaterialsFormGroup>,
     packagingsForm: FormGroup<ProductPackagingFormGroup>,
@@ -92,6 +95,7 @@ export class ProductConstructionService {
       materials: materialsForm.value.materials?.map((m) => ({
         material: m.material,
         percentage: m.percentage,
+        renewable: m.renewable,
       })),
       productGroup:
         typeof formData.value.productGroup === 'object'
@@ -216,7 +220,7 @@ export class ProductConstructionService {
 
   createUpdateDto(
     form: FormGroup<MasterDataFormGroup>,
-    materials: FormGroup<MaterialsFormGroup>,
+    materials: FormGroup<RegularMaterialsFormGroup>,
     criticalRawMaterials: FormGroup<MaterialsFormGroup>,
     rareEarths: FormGroup<MaterialsFormGroup>
   ): ProductUpdateDto {

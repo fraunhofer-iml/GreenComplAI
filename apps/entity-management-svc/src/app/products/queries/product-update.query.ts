@@ -18,12 +18,85 @@ export const productUpdateQuery = (dto: ProductUpdateDto, id: string) =>
       ...upsertQuery(dto.masterData),
 
       materials: materialUpdateQuery(dto.materials, id),
-      criticalRawMaterials: materialUpdateQuery(dto.criticalRawMaterials, id),
-      rareEarths: materialUpdateQuery(dto.rareEarths, id),
+      criticalRawMaterials: criticalRawMaterialUpdateQuery(
+        dto.criticalRawMaterials,
+        id
+      ),
+      rareEarths: rareEarthUpdateQuery(dto.rareEarths, id),
     },
   }) satisfies Prisma.ProductUpdateArgs;
 
 export const materialUpdateQuery = (
+  materials: {
+    material: string;
+    percentage: number;
+    renewable?: boolean;
+    primary?: boolean;
+  }[],
+  id: string
+) => ({
+  upsert: materials
+    .filter((mat) => mat?.material && mat?.percentage)
+    .map((mat) => ({
+      where: {
+        productId_materialName: { productId: id, materialName: mat.material },
+      },
+      create: {
+        material: {
+          connectOrCreate: {
+            where: {
+              name: mat.material,
+            },
+            create: {
+              name: mat.material,
+            },
+          },
+        },
+        percentage: mat.percentage,
+        renewable: mat.renewable,
+        primary: mat.primary,
+      },
+      update: {
+        percentage: mat.percentage,
+        renewable: mat.renewable,
+        primary: mat.primary,
+      },
+    })),
+});
+
+export const criticalRawMaterialUpdateQuery = (
+  materials: {
+    material: string;
+    percentage: number;
+  }[],
+  id: string
+) => ({
+  upsert: materials
+    .filter((mat) => mat?.material && mat?.percentage)
+    .map((mat) => ({
+      where: {
+        productId_materialName: { productId: id, materialName: mat.material },
+      },
+      create: {
+        material: {
+          connectOrCreate: {
+            where: {
+              name: mat.material,
+            },
+            create: {
+              name: mat.material,
+            },
+          },
+        },
+        percentage: mat.percentage,
+      },
+      update: {
+        percentage: mat.percentage,
+      },
+    })),
+});
+
+export const rareEarthUpdateQuery = (
   materials: {
     material: string;
     percentage: number;

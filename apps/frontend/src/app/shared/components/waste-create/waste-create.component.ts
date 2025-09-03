@@ -6,7 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Component, computed, input, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatIconButton } from '@angular/material/button';
@@ -18,8 +18,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SelectMaterialsComponent } from '../../../features/materials/select-materials/select-materials.component';
 import {
-  addMaterialFormGroup,
-  removeMaterialFormGroup,
+  addBasicMaterialFormGroup,
+  removeBasicMaterialFormGroup,
 } from '../../../features/products/create/material.form-group';
 import { BaseSheetComponent } from '../sheet/base/sheet.component';
 import { WasteFormGroup } from './waste-form';
@@ -47,6 +47,7 @@ export class WasteCreateComponent {
 
   outlier = input<string[]>([]);
 
-  protected readonly addMaterialFormGroup = addMaterialFormGroup;
-  protected readonly removeMaterialFormGroup = removeMaterialFormGroup;
+  protected readonly addBasicMaterialFormGroup = addBasicMaterialFormGroup;
+  protected readonly removeBasicMaterialFormGroup =
+    removeBasicMaterialFormGroup;
 }
