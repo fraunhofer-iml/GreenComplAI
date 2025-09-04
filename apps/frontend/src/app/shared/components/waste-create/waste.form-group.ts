@@ -7,6 +7,7 @@
  */
 
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { RegularMaterialsFormGroup } from '../../../features/materials/select-materials/materials-form.model';
 import {
   GeneralWasteFormGroup,
   NonUtilizableWasteFormGroup,
@@ -16,22 +17,15 @@ import {
 
 export const wasteFormGroup = () => {
   return new FormGroup<WasteFormGroup>({
-    wasteMaterials: new FormGroup({
-      materials: new FormArray(
-        [
-          new FormGroup({
-            material: new FormControl<string>('', {
-              nonNullable: true,
-              validators: [Validators.required],
-            }),
-            percentage: new FormControl<number>(0, {
-              nonNullable: true,
-              validators: [Validators.required, Validators.min(0)],
-            }),
-          }),
-        ],
-        Validators.required
-      ),
+    wasteMaterials: new FormGroup<RegularMaterialsFormGroup>({
+      materials: new FormArray<
+        FormGroup<{
+          material: FormControl<string>;
+          percentage: FormControl<number>;
+          renewable: FormControl<boolean | null>;
+          primary: FormControl<boolean | null>;
+        }>
+      >([]),
     }),
     radioactiveAmount: new FormControl<number | null>(
       null,

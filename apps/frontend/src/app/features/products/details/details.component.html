@@ -207,7 +207,6 @@
 
           <app-flagable
             [id]="id$() ?? ''"
-            [data]="data.flags"
             [topic]="'Anteil biologischer Materialien'"
             [element]="'percentageOfBiologicalMaterials'"
           >
@@ -223,15 +222,7 @@
             [element]="'wasteFlow'"
             ><span>{{ data.wasteFlow }}</span></app-flagable
           >
-          @if (data.materials) {
-            <app-flagable
-              [id]="id$() ?? ''"
-              [data]="data.flags"
-              [topic]="'Materialien'"
-              [element]="'materials'"
-              ><span>{{ displayMaterials(data.materials) }}</span></app-flagable
-            >
-          }
+
           @if (data.cascadePrinciple) {
             <app-flagable
               [id]="id$() ?? ''"
@@ -267,6 +258,18 @@
               >
             </app-flagable>
           }
+
+          <app-flagable
+            [id]="id$() ?? ''"
+            [topic]="'CO2-Fußabdruck'"
+            [data]="data.flags"
+            [element]="'productCarbonFootprint'"
+          >
+            <span class="text-right">
+              {{ data.productCarbonFootprint ?? 'keine Angabe' }}
+              {{ data.productCarbonFootprint ? ' kgCO2e' : '' }}
+            </span>
+          </app-flagable>
 
           <div class="col-span-2 my-2 h-[1px] bg-neutral-300"></div>
 
@@ -392,6 +395,70 @@
           </div>
         }
 
+        @if (!authService.isSupplier()) {
+          <!-- Importer -->
+          <div class="rounded-lg bg-neutral-200 p-4">
+            <div class="flex flex-row items-center justify-between">
+              <app-flagable
+                [id]="id$() ?? ''"
+                [topic]="'Importeurdaten'"
+                [data]="data.flags"
+                [element]="'importerName'"
+              >
+              </app-flagable>
+            </div>
+            <div class="mt-4 space-y-2 text-sm">
+              @if (data.importerName) {
+                <app-flagable
+                  [id]="id$() ?? ''"
+                  [topic]="'Name'"
+                  [data]="data.flags"
+                  [element]="'importerName'"
+                >
+                  <span>{{ data.importerName }}</span>
+                </app-flagable>
+
+                @if (data.importerEmail) {
+                  <app-flagable
+                    [id]="id$() ?? ''"
+                    [topic]="'Email'"
+                    [data]="data.flags"
+                    [element]="'importerEmail'"
+                  >
+                    <span>{{ data.importerEmail }}</span>
+                  </app-flagable>
+                }
+
+                @if (data.importerPhone) {
+                  <app-flagable
+                    [id]="id$() ?? ''"
+                    [topic]="'Telefon'"
+                    [data]="data.flags"
+                    [element]="'importerPhone'"
+                  >
+                    <span>{{ data.importerPhone }}</span>
+                  </app-flagable>
+                }
+
+                @if (data.importerAddress) {
+                  <app-flagable
+                    [id]="id$() ?? ''"
+                    [topic]="'Adresse'"
+                    [data]="data.flags"
+                    [element]="'importerAddress'"
+                  >
+                    <span class="flex justify-between text-right">
+                      {{ data.importerAddress }}
+                    </span>
+                  </app-flagable>
+                }
+              } @else {
+                <span class="text-gray-500">Kein Importeur angegeben</span>
+              }
+            </div>
+          </div>
+        }
+
         <!-- Ressourcenzuflüsse -->
         <div class="rounded-lg bg-neutral-200 p-4">
           <h2 class="font-medium">Ressourcenzuflüsse</h2>
@@ -412,36 +479,93 @@
                 {{ data.waterUsed ? 'l' : '' }}
               </span>
             </app-flagable>
-
-            <app-flagable
-              [id]="id$() ?? ''"
-              [topic]="'Seltene Erden'"
-              [data]="data.flags"
-              [element]="'rareEarths'"
-            >
-              <span class="text-right">{{
-                data.rareEarths && data.rareEarths.length > 0
-                  ? displayMaterials(data.rareEarths)
-                  : 'keine Angabe'
-              }}</span>
-            </app-flagable>
-
-            <app-flagable
-              [id]="id$() ?? ''"
-              [topic]="'Kritische Rohstoffe'"
-              [data]="data.flags"
-              [element]="'criticalRawMaterials'"
-            >
-              <span class="text-right">{{
-                data.criticalRawMaterials &&
-                data.criticalRawMaterials.length > 0
-                  ? displayMaterials(data.criticalRawMaterials)
-                  : 'keine Angabe'
-              }}</span>
-            </app-flagable>
           </div>
         </div>
       </div>
+
+      <!-- Materials Card -->
+      @if (data.materials || data.rareEarths || data.criticalRawMaterials) {
+        <div class="col-span-3 rounded-lg bg-neutral-200 p-6">
+          <h2 class="mb-4 text-lg font-medium">Materialien</h2>
+          <div
+            class="grid grid-cols-1 gap-4 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-8"
+          >
+            @if (data.materials) {
+              @for (material of data.materials; track $index) {
+                <div class="flex-shrink-0 rounded-lg bg-neutral-300 p-4">
+                  <div class="flex flex-col gap-2">
+                    <div class="font-medium">
+                      {{ material[0].name }}
+                    </div>
+                    <div class="text-sm">{{ material[1] }}%</div>
+                    <div class="flex flex-wrap gap-2">
+                      @if (material[2] !== null && material[2] !== undefined) {
+                        <span
+                          class="rounded-full border border-gray-300 px-3 py-1 text-xs"
+                        >
+                          {{ material[2] ? 'Erneuerbar' : 'Nicht erneuerbar' }}
+                        </span>
+                      }
+                      @if (material[3]) {
+                        <span
+                          class="rounded-full border border-gray-300 px-3 py-1 text-xs"
+                        >
+                          {{ material[3] ? 'Primär' : 'Sekundär' }}
+                        </span>
+                      }
+                    </div>
+                  </div>
+                </div>
+              }
+            }
+            @if (data.rareEarths && data.rareEarths.length > 0) {
+              @for (rareEarth of data.rareEarths; track $index) {
+                <div
+                  class="flex-shrink-0 rounded-lg border border-amber-600 bg-amber-900/20 p-4"
+                >
+                  <div class="flex flex-col gap-2">
+                    <div
+                      class="flex flex-row items-center justify-between gap-2 font-medium"
+                    >
+                      {{ rareEarth[0].name }}
+                      <span
+                        class="rounded-full border border-amber-600 px-3 py-1 text-xs text-amber-500"
+                        >Seltene Erde</span
+                      >
+                    </div>
+                    <div class="font-medium">{{ rareEarth[1] }}%</div>
+                  </div>
+                </div>
+              }
+            }
+            @if (
+              data.criticalRawMaterials && data.criticalRawMaterials.length > 0
+            ) {
+              @for (
+                criticalMaterial of data.criticalRawMaterials;
+                track $index
+              ) {
+                <div
+                  class="flex-shrink-0 rounded-lg border border-red-600 bg-red-900/20 p-4"
+                >
+                  <div class="flex flex-col gap-2">
+                    <div
+                      class="flex flex-row items-center justify-between gap-2 font-medium"
+                    >
+                      {{ criticalMaterial[0].name }}
+                      <span
+                        class="rounded-full border border-red-600 px-3 py-1 text-xs text-red-500"
+                        >Kritischer Rohstoff</span
+                      >
+                    </div>
+                    <div class="font-medium">{{ criticalMaterial[1] }}%</div>
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        </div>
+      }
 
       @if (!authService.isSupplier()) {
         <app-bill-of-material

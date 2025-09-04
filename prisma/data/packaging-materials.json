@@ -1,0 +1,30 @@
+[
+  {
+    "packagingId": "EcoBox-500",
+    "materialName": "Pappe",
+    "percentage": 100,
+    "renewable": true,
+    "primary": false
+  },
+  {
+    "packagingId": "GreenPack-250",
+    "materialName": "Pappe",
+    "percentage": 100,
+    "renewable": true,
+    "primary": false
+  },
+  {
+    "packagingId": "GreenPack-500",
+    "materialName": "Pappe",
+    "percentage": 100,
+    "renewable": true,
+    "primary": false
+  },
+  {
+    "packagingId": "Biodegradable-Foil-2000",
+    "materialName": "Plastik",
+    "percentage": 100,
+    "renewable": false,
+    "primary": false
+  }
+]

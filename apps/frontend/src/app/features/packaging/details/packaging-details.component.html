@@ -42,8 +42,16 @@
             <span>{{ data.weight }}</span>
           </div>
           <div class="flex justify-between">
-            <span class="font-medium">Material</span>
-            <span>{{ data.material.name }}</span>
+            <span class="font-medium">Materialien</span>
+            <div class="flex flex-col gap-1">
+              @if (data.materials && data.materials.length > 0) {
+                @for (material of data.materials; track material) {
+                  <span>{{ material[0].name }} ({{ material[1] }}%)</span>
+                }
+              } @else {
+                <span>Keine Materialien angegeben</span>
+              }
+            </div>
           </div>
         </div>
       </div>
@@ -149,10 +157,13 @@
         </mat-autocomplete>
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label i18n>Material</mat-label>
-        <input matInput formControlName="materialName" />
-      </mat-form-field>
+      <div class="col-span-2 mt-4">
+        <app-select-materials
+          (addMaterialEvent)="addMaterialFormGroup(materialsForm)"
+          (removeMaterialEvent)="removeMaterialFormGroup(materialsForm, $event)"
+          [materialsForm]="materialsForm"
+        ></app-select-materials>
+      </div>
     </div>
     <div class="flex w-full justify-end">
       <button mat-flat-button (click)="sheet.close(); save()">Speichern</button>

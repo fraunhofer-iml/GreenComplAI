@@ -2,7 +2,9 @@
   {
     "productId": "product-1",
     "materialName": "Metall",
-    "percentage": 50
+    "percentage": 50,
+    "primary": true,
+    "renewable": false
   },
   {
     "productId": "product-2",

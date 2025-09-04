@@ -23,6 +23,11 @@ export class ProductMasterDataDto {
   reparability: number;
 
   supplier: string;
+  importer?: string;
+  importerName?: string;
+  importerEmail?: string;
+  importerPhone?: string;
+  importerAddress?: string;
   manufacturer?: string;
 
   productGroup?: string;
@@ -33,6 +38,8 @@ export class ProductMasterDataDto {
   wasteFlow?: string;
 
   waterUsed?: number;
+
+  productCarbonFootprint?: number;
 
   cascadePrinciple?: string;
   certification?: string;
@@ -60,6 +67,11 @@ export class ProductMasterDataDto {
     reparability: number,
     flags: string[],
 
+    importer?: string,
+    importerName?: string,
+    importerEmail?: string,
+    importerPhone?: string,
+    importerAddress?: string,
     productGroup?: string,
     variant?: string,
     manufacturer?: string,
@@ -67,6 +79,8 @@ export class ProductMasterDataDto {
     warehouseLocation?: string,
     productionLocation?: string,
     wasteFlow?: string,
+    waterUsed?: number,
+    productCarbonFootprint?: number,
     cascadePrincipal?: string,
     certification?: string,
     circularPrinciple?: boolean,
@@ -86,12 +100,19 @@ export class ProductMasterDataDto {
     this.percentageOfBiologicalMaterials = percentageOfBiologicalMaterials;
 
     this.supplier = supplier;
+    this.importer = importer;
+    this.importerName = importerName;
+    this.importerEmail = importerEmail;
+    this.importerPhone = importerPhone;
+    this.importerAddress = importerAddress;
     this.manufacturer = manufacturer;
     this.productGroup = productGroup;
     this.variant = variant;
     this.warehouseLocation = warehouseLocation;
     this.productionLocation = productionLocation;
     this.wasteFlow = wasteFlow;
+    this.waterUsed = waterUsed;
+    this.productCarbonFootprint = productCarbonFootprint;
     this.cascadePrinciple = cascadePrincipal;
     this.certification = certification;
     this.durability = durability;

@@ -17,6 +17,12 @@ export class PackagingCreateDto {
   supplierId: string;
   materialId: string;
   partPackagings: [string, number][];
+  materials?: {
+    material: string;
+    percentage: number;
+    renewable?: boolean;
+    primary?: boolean;
+  }[];
   flags: string[];
   waste?: WasteCreateDto;
 
@@ -30,7 +36,13 @@ export class PackagingCreateDto {
     materialId: string,
     partPackagings: [string, number][],
     flags: string[],
-    waste?: WasteCreateDto
+    waste?: WasteCreateDto,
+    materials?: {
+      material: string;
+      percentage: number;
+      renewable?: boolean;
+      primary?: boolean;
+    }[]
   ) {
     this.weight = weight;
     this.name = name;
@@ -42,5 +54,6 @@ export class PackagingCreateDto {
     this.partPackagings = partPackagings;
     this.waste = waste;
     this.flags = flags;
+    this.materials = materials;
   }
 }

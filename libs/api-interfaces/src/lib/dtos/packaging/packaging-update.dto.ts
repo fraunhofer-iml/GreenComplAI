@@ -6,36 +6,54 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { WasteCreateDto } from '../waste';
+
 export class PackagingUpdateDto {
-  id: string;
-  name: string;
-  weight: number;
-  percentageOfRenewableMaterial: number;
-  percentageOfRStrategies: number;
-  percentageOfRecycledMaterial: number;
-  supplierId: string;
-  materialId: string;
-  flags: string[];
+  weight?: number;
+  name?: string;
+  percentageOfRenewableMaterial?: number;
+  percentageOfRecycledMaterial?: number;
+  percentageOfRStrategies?: number;
+  supplierId?: string;
+  materialId?: string;
+  partPackagings?: [string, number][];
+  materials?: {
+    material: string;
+    percentage: number;
+    renewable?: boolean;
+    primary?: boolean;
+  }[];
+  flags?: string[];
+  waste?: WasteCreateDto;
 
   constructor(
-    id: string,
-    weight: number,
-    name: string,
-    percentageOfRenewableMaterial: number,
-    percentageOfRStrategies: number,
-    percentageOfRecycledMaterial: number,
-    supplierId: string,
-    materialId: string,
-    flags: string[]
+    weight?: number,
+    name?: string,
+    percentageOfRenewableMaterial?: number,
+    percentageOfRecycledMaterial?: number,
+    percentageOfRStrategies?: number,
+    supplierId?: string,
+    materialId?: string,
+    partPackagings?: [string, number][],
+    flags?: string[],
+    waste?: WasteCreateDto,
+    materials?: {
+      material: string;
+      percentage: number;
+      renewable?: boolean;
+      primary?: boolean;
+    }[]
   ) {
-    this.id = id;
     this.weight = weight;
     this.name = name;
     this.percentageOfRenewableMaterial = percentageOfRenewableMaterial;
-    this.percentageOfRStrategies = percentageOfRStrategies;
     this.percentageOfRecycledMaterial = percentageOfRecycledMaterial;
+    this.percentageOfRStrategies = percentageOfRStrategies;
     this.supplierId = supplierId;
     this.materialId = materialId;
+    this.partPackagings = partPackagings;
+    this.waste = waste;
     this.flags = flags;
+    this.materials = materials;
   }
 }

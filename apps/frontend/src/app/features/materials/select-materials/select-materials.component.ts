@@ -25,11 +25,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import {
   CRITICAL_RAW_MATERIAL,
   RARE_EARTHS,
 } from '../../../shared/constants/inflows';
-import { MaterialsFormGroup } from './materials-form.model';
+import {
+  MaterialsFormGroup,
+  RegularMaterialsFormGroup,
+} from './materials-form.model';
 
 @Component({
   selector: 'app-select-materials',
@@ -41,11 +45,13 @@ import { MaterialsFormGroup } from './materials-form.model';
     MatButtonModule,
     FormsModule,
     MatAutocompleteModule,
+    MatSelectModule,
   ],
   templateUrl: './select-materials.component.html',
 })
 export class SelectMaterialsComponent {
-  @Input() form?: FormGroup<MaterialsFormGroup>;
+  @Input() materialsForm?: FormGroup<RegularMaterialsFormGroup>;
+  @Input() basicForm?: FormGroup<MaterialsFormGroup>;
   @Input() rareEarthsForm?: FormGroup<MaterialsFormGroup>;
   @Input() criticalRawMaterialsForm?: FormGroup<MaterialsFormGroup>;
 
@@ -81,7 +87,7 @@ export class SelectMaterialsComponent {
   }
 
   get materials() {
-    return this.form?.get('materials') as FormArray;
+    return this.materialsForm?.get('materials') as FormArray;
   }
   get rareEarths() {
     return this.rareEarthsForm?.get('materials') as FormArray;

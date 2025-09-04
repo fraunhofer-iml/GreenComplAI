@@ -7,7 +7,6 @@
     "percentageOfRecycledMaterial": 0.5,
     "percentageOfRStrategies": 0.5,
     "supplierId": "company-1",
-    "materialId": "Pappe",
     "flags": []
   },
   {
@@ -18,7 +17,6 @@
     "percentageOfRecycledMaterial": 0.83,
     "percentageOfRStrategies": 0.8,
     "supplierId": "company-2",
-    "materialId": "Pappe",
     "flags": []
   },
   {
@@ -29,7 +27,6 @@
     "percentageOfRecycledMaterial": 0.83,
     "percentageOfRStrategies": 0.8,
     "supplierId": "company-2",
-    "materialId": "Pappe",
     "flags": []
   },
   {
@@ -40,7 +37,6 @@
     "percentageOfRecycledMaterial": 0.83,
     "percentageOfRStrategies": 0.8,
     "supplierId": "company-2",
-    "materialId": "Plastik",
     "flags": []
   }
 ]

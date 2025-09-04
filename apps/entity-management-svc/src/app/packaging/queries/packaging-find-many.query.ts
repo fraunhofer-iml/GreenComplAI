@@ -20,5 +20,8 @@ export const packagingFindManyQuery = (
     skip: skip,
     take: size,
     orderBy: getSorting(sorting),
-    include: { material: true, supplier: { include: { addresses: true } } },
+    include: {
+      materials: { include: { material: true } },
+      supplier: { include: { addresses: true } },
+    },
   }) satisfies Prisma.PackagingFindManyArgs;

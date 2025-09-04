@@ -46,13 +46,25 @@
             [routerLink]="[encodeURIComponent(element.id)]"
           >
             <div class="w-full">
-              {{
-                typeof element[item] === 'boolean'
-                  ? element[item]
-                    ? 'ja'
-                    : 'nein'
-                  : element[item]
-              }}
+              @if (item === 'materials' && element[item]) {
+                @if (element[item].length > 0) {
+                  @for (material of element[item]; track $index) {
+                    <div class="text-sm">
+                      {{ material[0].name }} ({{ material[1] }}%)
+                    </div>
+                  }
+                } @else {
+                  Keine Materialien
+                }
+              } @else {
+                {{
+                  typeof element[item] === 'boolean'
+                    ? element[item]
+                      ? 'ja'
+                      : 'nein'
+                    : element[item]
+                }}
+              }
             </div>
           </td>
         </ng-container>

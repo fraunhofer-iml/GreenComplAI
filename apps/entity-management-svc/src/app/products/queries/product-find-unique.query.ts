@@ -38,6 +38,7 @@ export const productFindUniqueQuery = (id: string) =>
           addresses: true,
         },
       },
+
       waste: {
         include: {
           wasteMaterials: {

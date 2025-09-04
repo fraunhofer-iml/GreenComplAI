@@ -36,9 +36,19 @@ export class ProductCreateDto {
   packagings?: [string, number][];
 
   supplier?: string;
+  importer?: string;
+  importerName?: string;
+  importerEmail?: string;
+  importerPhone?: string;
+  importerAddress?: string;
   manufacturer?: string;
 
-  materials?: { material: string; percentage: number }[];
+  materials?: {
+    material: string;
+    percentage: number;
+    renewable?: boolean;
+    primary?: boolean;
+  }[];
 
   productGroup?: string;
   variant?: string;
@@ -54,6 +64,8 @@ export class ProductCreateDto {
   }[];
 
   waterUsed?: number;
+
+  productCarbonFootprint?: number;
 
   cascadePrinciple?: string;
   certification?: string;
@@ -84,7 +96,17 @@ export class ProductCreateDto {
     billOfMaterialDescription?: string,
     waste?: WasteCreateDto,
     supplier?: string,
-    materials?: { material: string; percentage: number }[],
+    importer?: string,
+    importerName?: string,
+    importerEmail?: string,
+    importerPhone?: string,
+    importerAddress?: string,
+    materials?: {
+      material: string;
+      percentage: number;
+      renewable?: boolean;
+      primary?: boolean;
+    }[],
     durability?: number,
     durabilityDifference?: number,
     reparability?: number,
@@ -102,6 +124,8 @@ export class ProductCreateDto {
     warehouseLocation?: string,
     productionLocation?: string,
     wasteFlow?: string,
+    waterUsed?: number,
+    productCarbonFootprint?: number,
     cascadePrincipal?: string,
     certification?: string,
     circularPrinciple?: boolean,
@@ -123,6 +147,11 @@ export class ProductCreateDto {
     this.billOfMaterialDescription = billOfMaterialDescription;
     this.waste = waste;
     this.supplier = supplier;
+    this.importer = importer;
+    this.importerName = importerName;
+    this.importerEmail = importerEmail;
+    this.importerPhone = importerPhone;
+    this.importerAddress = importerAddress;
     this.manufacturer = manufacturer;
     this.materials = materials;
     this.productGroup = productGroup;
@@ -131,6 +160,8 @@ export class ProductCreateDto {
     this.warehouseLocation = warehouseLocation;
     this.productionLocation = productionLocation;
     this.wasteFlow = wasteFlow;
+    this.waterUsed = waterUsed;
+    this.productCarbonFootprint = productCarbonFootprint;
     this.rareEarths = rareEarths;
     this.criticalRawMaterials = criticalRawMaterials;
     this.cascadePrinciple = cascadePrincipal;

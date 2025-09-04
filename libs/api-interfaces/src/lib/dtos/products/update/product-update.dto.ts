@@ -11,7 +11,12 @@ import { ProductMasterDataDto } from '../product-master-data.dto';
 
 export class ProductUpdateDto {
   masterData: Partial<ProductMasterDataDto>;
-  materials: { material: string; percentage: number }[];
+  materials: {
+    material: string;
+    percentage: number;
+    renewable?: boolean;
+    primary?: boolean;
+  }[];
   rareEarths: { material: RareEarths; percentage: number }[];
   criticalRawMaterials: {
     material: CriticalRawMaterials;
@@ -20,7 +25,12 @@ export class ProductUpdateDto {
 
   constructor(
     masterData: ProductMasterDataDto,
-    materials: { material: string; percentage: number }[],
+    materials: {
+      material: string;
+      percentage: number;
+      renewable?: boolean;
+      primary?: boolean;
+    }[],
     rareEarths: { material: RareEarths; percentage: number }[],
     criticalRawMaterials: {
       material: CriticalRawMaterials;

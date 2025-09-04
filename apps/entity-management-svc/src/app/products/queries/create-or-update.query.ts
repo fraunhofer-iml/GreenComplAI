@@ -39,6 +39,10 @@ export const upsertQuery = (dto: Partial<ProductCreateDto>) => ({
       create: { id: dto.supplier ?? 'N/A', name: dto.supplier ?? 'N/A' },
     },
   },
+  importerName: dto.importerName,
+  importerEmail: dto.importerEmail,
+  importerPhone: dto.importerPhone,
+  importerAddress: dto.importerAddress,
   manufacturer: dto.manufacturer
     ? {
         connect: {
@@ -93,5 +97,6 @@ export const upsertQuery = (dto: Partial<ProductCreateDto>) => ({
       }
     : undefined,
   waterUsed: Number(dto.waterUsed) || 0,
+  productCarbonFootprint: Number(dto.productCarbonFootprint) || 0,
   flags: dto.flags,
 });

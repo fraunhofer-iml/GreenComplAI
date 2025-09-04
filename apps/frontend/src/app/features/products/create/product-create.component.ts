@@ -54,9 +54,14 @@ import {
 import { SelectMaterialsComponent } from '../../materials/select-materials/select-materials.component';
 import { ProductConstructionService } from './form-construction/product-construction.service';
 import {
+  addBasicMaterialFormGroup,
   addMaterialFormGroup,
+  addRegularMaterialFormGroup,
   materialFormArrayGroup,
+  regularMaterialFormArrayGroup,
+  removeBasicMaterialFormGroup,
   removeMaterialFormGroup,
+  removeRegularMaterialFormGroup,
 } from './material.form-group';
 import {
   BillOfMaterialFormGroup,
@@ -119,6 +124,8 @@ export class ProductCreateComponent {
       FormGroup<{
         material: FormControl<string>;
         percentage: FormControl<number>;
+        renewable: FormControl<boolean | null>;
+        primary: FormControl<boolean | null>;
       }>
     >;
   }>;
@@ -153,8 +160,10 @@ export class ProductCreateComponent {
   RARE_EARTHS = RARE_EARTHS;
   CRITICAL_RAW_MATERIAL = CRITICAL_RAW_MATERIAL;
 
-  addMaterialFormGroup = addMaterialFormGroup;
-  removeMaterialFormGroup = removeMaterialFormGroup;
+  addMaterialFormGroup = addRegularMaterialFormGroup;
+  removeMaterialFormGroup = removeRegularMaterialFormGroup;
+  addBasicMaterialFormGroup = addBasicMaterialFormGroup;
+  removeBasicMaterialFormGroup = removeBasicMaterialFormGroup;
 
   createMutation = injectMutation(() => ({
     mutationFn: (dto: ProductCreateDto) => this.productsService.create(dto),
@@ -170,7 +179,7 @@ export class ProductCreateComponent {
         nonNullable: true,
       }),
     });
-    this.materialsForm = materialFormArrayGroup();
+    this.materialsForm = regularMaterialFormArrayGroup();
     this.rareEarthsForm = materialFormArrayGroup();
     this.criticalRawMaterialsForm = materialFormArrayGroup();
     this.currentRole = this.authService.getCurrentUserRole();

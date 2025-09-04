@@ -9,6 +9,7 @@
 import {
   CreatePackagingProps,
   FindAllPackagingProps,
+  MaterialDto,
   PackagingCreateDto,
   PackagingDto,
   PackagingIdProps,
@@ -46,7 +47,7 @@ export class PackagingService {
       dto.flags
     );
 
-    const packaging: PackagingDto = await this.prismaService.packaging.create(
+    const packaging = await this.prismaService.packaging.create(
       packagingCreateQuery(dto)
     );
     if (packaging.waste)
@@ -59,7 +60,18 @@ export class PackagingService {
         packaging.id,
         dto.partPackagings
       );
-    return packaging;
+    if (dto.materials)
+      await this.createPackagingMaterialsConnection(
+        packaging.id,
+        dto.materials
+      );
+
+    // Transform materials to expected format and add missing fields
+    return {
+      ...packaging,
+      materials: PackagingService.transformMaterialsToDto(packaging.materials),
+      products: [],
+    };
   }
 
   async findAll({
@@ -80,6 +92,10 @@ export class PackagingService {
       const p: PackagingDto = {
         ...packaging,
         supplierName: packaging.supplier.name,
+        materials: PackagingService.transformMaterialsToDto(
+          packaging.materials
+        ),
+        products: [],
       };
       retVal.push(p);
     });
@@ -100,6 +116,8 @@ export class PackagingService {
     const totalWasteWeight = getTotalWeightOfWaste(packaging.waste);
     return {
       ...packaging,
+      materials: PackagingService.transformMaterialsToDto(packaging.materials),
+      products: [],
       waste: packaging.waste
         ? {
             ...packaging.waste,
@@ -111,12 +129,11 @@ export class PackagingService {
               : [],
           }
         : undefined,
-      products: [],
     };
   }
 
   async update({ id, dto }: UpdatePackagingProps): Promise<PackagingDto> {
-    return this.prismaService.packaging.update({
+    const packaging = await this.prismaService.packaging.update({
       where: {
         id: id,
       },
@@ -135,15 +152,27 @@ export class PackagingService {
             },
           },
         },
-        material: {
-          connectOrCreate: {
-            where: { name: dto.materialId },
-            create: { name: dto.materialId },
-          },
-        },
       },
-      include: { material: true, supplier: { include: { addresses: true } } },
+      include: {
+        materials: { include: { material: true } },
+        supplier: { include: { addresses: true } },
+      },
     });
+
+    if (dto.materials) {
+      await this.updatePackagingMaterials(id, dto.materials);
+    }
+
+    return {
+      ...packaging,
+      materials:
+        packaging.materials?.map((mat) => [
+          mat.material,
+          mat.percentage,
+          mat.renewable,
+          mat.primary,
+        ]) || [],
+    };
   }
 
   async updatePartPackaging({
@@ -266,13 +295,24 @@ export class PackagingService {
             waste: {
               include: { wasteMaterials: { include: { material: true } } },
             },
-            material: true,
+            materials: { include: { material: true } },
           },
         },
       },
     });
 
-    return products.map((p) => [p.partPackaging, p.amount] as const);
+    return products.map(
+      (p) =>
+        [
+          {
+            ...p.partPackaging,
+            materials: PackagingService.transformMaterialsToDto(
+              p.partPackaging.materials
+            ),
+          },
+          p.amount,
+        ] as const
+    );
   }
 
   private getWhereCondition(
@@ -286,7 +326,6 @@ export class PackagingService {
         { name: { contains: filter } },
         { supplierId: { contains: filter } },
         { supplier: { name: { contains: filter } } },
-        { materialId: { contains: filter } },
       ],
     };
 
@@ -314,5 +353,83 @@ export class PackagingService {
         packagingId,
       })),
     });
+  }
+
+  private async createPackagingMaterialsConnection(
+    packagingId: string,
+    materials: {
+      material: string;
+      percentage: number;
+      renewable?: boolean;
+      primary?: boolean;
+    }[]
+  ): Promise<void> {
+    // First ensure all materials exist in the Material table
+    for (const mat of materials) {
+      if (mat?.material && mat?.percentage) {
+        // Check if material exists, if not create it
+        const existingMaterial = await this.prismaService.material.findUnique({
+          where: { name: mat.material },
+        });
+
+        if (!existingMaterial) {
+          await this.prismaService.material.create({
+            data: {
+              name: mat.material,
+            },
+          });
+        }
+      }
+    }
+
+    const materialData = materials
+      .filter((mat) => mat?.material && mat?.percentage)
+      .map((mat) => ({
+        packagingId,
+        materialName: mat.material,
+        percentage: mat.percentage,
+        renewable: mat.renewable,
+        primary: mat.primary,
+      }));
+
+    if (materialData.length > 0) {
+      await this.prismaService.packagingMaterials.createMany({
+        data: materialData,
+      });
+    }
+  }
+
+  private async updatePackagingMaterials(
+    packagingId: string,
+    materials: {
+      material: string;
+      percentage: number;
+      renewable?: boolean;
+      primary?: boolean;
+    }[]
+  ): Promise<void> {
+    // Delete existing materials
+    await this.prismaService.packagingMaterials.deleteMany({
+      where: { packagingId },
+    });
+
+    // Create new materials
+    await this.createPackagingMaterialsConnection(packagingId, materials);
+  }
+
+  static transformMaterialsToDto(
+    materials: {
+      material: MaterialDto;
+      percentage: number;
+      renewable?: boolean;
+      primary?: boolean;
+    }[]
+  ): [MaterialDto, number, boolean?, boolean?][] {
+    return materials.map((mat) => [
+      mat.material,
+      mat.percentage,
+      mat.renewable ?? false,
+      mat.primary ?? false,
+    ]);
   }
 }
