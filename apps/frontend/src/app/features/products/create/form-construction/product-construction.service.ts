@@ -96,6 +96,7 @@ export class ProductConstructionService {
         material: m.material,
         percentage: m.percentage,
         renewable: m.renewable,
+        primary: m.primary,
       })),
       productGroup:
         typeof formData.value.productGroup === 'object'

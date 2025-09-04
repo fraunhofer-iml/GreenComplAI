@@ -174,16 +174,12 @@ export class ProductCrudService {
       },
     });
 
-    console.log('DTO:', dto);
-
     const product = await this.prismaService.product.update({
       where: {
         id,
       },
       ...productUpdateQuery(dto, id),
     });
-
-    console.log('Product:', product);
 
     return {
       ...product,
