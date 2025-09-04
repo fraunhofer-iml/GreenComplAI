@@ -43,18 +43,20 @@
             Anteil an erneuerbaren Materialien
           </th>
           <td mat-cell *matCellDef="let element">
-            {{ element[0].percentageOfRenewableMaterial ?? 0 }} %
+            {{ element[0].percentageOfRenewableMaterial ?? 0 | number }} %
           </td>
         </ng-container>
         <ng-container matColumnDef="percentageOfRStrategies">
           <th mat-header-cell *matHeaderCellDef>Anteil an R-Strategien</th>
           <td mat-cell *matCellDef="let element">
-            {{ element[0].percentageOfRStrategies ?? 0 }} %
+            {{ element[0].percentageOfRStrategies ?? 0 | number }} %
           </td>
         </ng-container>
         <ng-container matColumnDef="weight">
           <th mat-header-cell *matHeaderCellDef>Gewicht</th>
-          <td mat-cell *matCellDef="let element">{{ element[0].weight }} kg</td>
+          <td mat-cell *matCellDef="let element">
+            {{ element[0].weight | number }} kg
+          </td>
         </ng-container>
         <ng-container matColumnDef="supplierId">
           <th mat-header-cell *matHeaderCellDef>Lieferant</th>

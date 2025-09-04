@@ -2,9 +2,17 @@
   @if (query.isSuccess()) {
     <div class="flex w-full content-around gap-2">
       <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Suche</mat-label>
+        <mat-label>Suche</mat-label><mat-icon matPrefix>search</mat-icon>
         <input matInput #input (keyup)="onFilterChange(input.value)" />
-        <mat-icon matPrefix>search</mat-icon>
+        @if (filter) {
+          <span
+            class="material-symbols-outlined mr-4 cursor-pointer"
+            matSuffix
+            role="none"
+            (click)="input.value = ''; onFilterChange(input.value)"
+            >close</span
+          >
+        }
       </mat-form-field>
     </div>
   }

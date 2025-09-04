@@ -1,250 +1,268 @@
-<div class="flex flex-col gap-8">
-  <div class="flex flex-row items-center gap-2">
-    <span class="text-xl">
-      Auswertung Resourcenzuflüsse
-      <span class="text-sm text-neutral-500">
-        @if (productGroupId()) {
-          Produkte
-        } @else {
-          Produktgruppen
-        }
+<mat-expansion-panel class="w-full !bg-neutral-200">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <button
+        matIconButton
+        (click)="back()"
+        [disabled]="!productGroupId()"
+        (click)="$event.stopPropagation()"
+      >
+        <span class="material-symbols-outlined"> chevron_backward </span>
+      </button>
+
+      <span class="text-base">
+        Auswertung Ressourcenzuflüsse
+        <span class="text-sm text-neutral-500">
+          @if (productGroupId()) {
+            Produkte
+          } @else {
+            Produktgruppen
+          }
+        </span>
       </span>
-    </span>
-  </div>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <div class="flex w-full flex-col gap-8">
+    <div class="flex h-full w-full flex-col gap-4">
+      <div class="mt-2 flex w-full gap-2" [formGroup]="formGroup">
+        <mat-form-field appearance="outline" class="flex-1">
+          <mat-label>Suche</mat-label>
+          <input matInput formControlName="filter" />
+          <mat-icon matPrefix>search</mat-icon>
+          @if (formGroup.controls.filter.value) {
+            <span
+              class="material-symbols-outlined mr-4 cursor-pointer"
+              matSuffix
+              role="none"
+              (click)="formGroup.controls.filter.patchValue('')"
+              >close</span
+            >
+          }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Von</mat-label>
+          <input [value]="fromYear$()" matInput [matDatepicker]="fromPicker" />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="fromPicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker
+            #fromPicker
+            startView="multi-year"
+            (yearSelected)="fromYearHandler($event, fromPicker)"
+          >
+          </mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Bis</mat-label>
+          <input [value]="toYear$()" matInput [matDatepicker]="toPicker" />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="toPicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker
+            #toPicker
+            startView="multi-year"
+            (yearSelected)="toYearHandler($event, toPicker)"
+          >
+          </mat-datepicker>
+        </mat-form-field>
+      </div>
 
-  <div class="flex h-full w-full flex-col gap-4 pb-4">
-    <div class="flex w-full gap-2">
-      <mat-form-field appearance="outline" class="flex-1">
-        <mat-label>Suche</mat-label>
-        <input
-          matInput
-          #filterInput
-          (keyup)="onFilterChange(filterInput.value)"
-        />
-        <mat-icon matPrefix>search</mat-icon>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Von</mat-label>
-        <input [value]="fromYear$()" matInput [matDatepicker]="fromPicker" />
-        <mat-datepicker-toggle
-          matSuffix
-          [for]="fromPicker"
-        ></mat-datepicker-toggle>
-        <mat-datepicker
-          #fromPicker
-          startView="multi-year"
-          (yearSelected)="fromYearHandler($event, fromPicker)"
+      @if (analysisQuery.isPending()) {
+        <span i18n>Daten werden geladen</span>
+      } @else if (analysisQuery.isSuccess() && analysisQuery.data()) {
+        <table
+          mat-table
+          [dataSource]="filteredAndSortedAnalysis() ?? []"
+          class="overflow-hidden !rounded-lg !bg-neutral-200"
+          matSort
+          (matSortChange)="onSortChange($event)"
+          matSortDisableClear
         >
-        </mat-datepicker>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Bis</mat-label>
-        <input [value]="toYear$()" matInput [matDatepicker]="toPicker" />
-        <mat-datepicker-toggle
-          matSuffix
-          [for]="toPicker"
-        ></mat-datepicker-toggle>
-        <mat-datepicker
-          #toPicker
-          startView="multi-year"
-          (yearSelected)="toYearHandler($event, toPicker)"
-        >
-        </mat-datepicker>
-      </mat-form-field>
+          <ng-container matColumnDef="name">
+            <th
+              class="!border-neutral-350"
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header="name"
+            >
+              @if (productGroupId()) {
+                <span i18n>Produktname</span>
+              } @else {
+                <span i18n>Produktgruppe</span>
+              }
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let element"
+              class="cursor-pointer"
+              (click)="navigate(element.id)"
+            >
+              {{ element.name }}
+            </td>
+            <td mat-footer-cell *matFooterCellDef>Gesamt</td>
+          </ng-container>
+
+          <!--AMOUNT-->
+          <ng-container matColumnDef="amount">
+            <th
+              class="!border-neutral-350"
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header="amount"
+            >
+              <span i18n class="text-left">Anzahl Vorprodukte</span>
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let element"
+              class="cursor-pointer"
+              (click)="navigate(element.id)"
+            >
+              {{
+                element.amount > 0
+                  ? (element.amount | number)
+                  : 'keine Vorprodukte'
+              }}
+            </td>
+            <td mat-footer-cell *matFooterCellDef>
+              {{
+                analysisQuery.data().amount > 0
+                  ? (analysisQuery.data().amount | number)
+                  : 'keine Vorprodukte'
+              }}
+            </td>
+          </ng-container>
+
+          <!--WATER-->
+          <ng-container matColumnDef="water">
+            <th class="!border-neutral-350" mat-header-cell *matHeaderCellDef>
+              Verwendetes Wasser
+            </th>
+            <td
+              class="cursor-pointer"
+              mat-cell
+              *matCellDef="let element"
+              (click)="navigate(element.id)"
+            >
+              @if (element.amount > 0) {
+                <div class="w-full">
+                  {{ element.water | number: '1.0-0' }} l
+                </div>
+              }
+            </td>
+            <td mat-footer-cell *matFooterCellDef>
+              {{ analysisQuery.data().water | number: '1.0-0' }} l
+            </td>
+          </ng-container>
+
+          <!--CRITICAL RAW MATERIALS-->
+          <ng-container matColumnDef="criticalMaterials">
+            <th class="!border-neutral-350" mat-header-cell *matHeaderCellDef>
+              Kritische Rohstoffe
+            </th>
+            <td
+              class="cursor-pointer"
+              mat-cell
+              *matCellDef="let element"
+              (click)="navigate(element.id)"
+            >
+              @if (element.amount > 0) {
+                <div class="w-full">
+                  {{ displayMaterials(element.criticalMaterials) }}
+                </div>
+              }
+            </td>
+            <td mat-footer-cell *matFooterCellDef>
+              {{ displayMaterials(analysisQuery.data().criticalMaterials) }}
+            </td>
+          </ng-container>
+
+          <!--RARE EARTHS-->
+          <ng-container matColumnDef="rareEarths">
+            <th class="!border-neutral-350" mat-header-cell *matHeaderCellDef>
+              Seltene Erden
+            </th>
+            <td
+              class="cursor-pointer"
+              mat-cell
+              *matCellDef="let element"
+              (click)="navigate(element.id)"
+            >
+              @if (element.amount > 0) {
+                <div class="w-full">
+                  {{ displayMaterials(element.rareEarths) }}
+                </div>
+              }
+            </td>
+            <td mat-footer-cell *matFooterCellDef>
+              {{ displayMaterials(analysisQuery.data().rareEarths) }}
+            </td>
+          </ng-container>
+
+          <!--MATERIALS-->
+          <ng-container matColumnDef="materials">
+            <th class="!border-neutral-350" mat-header-cell *matHeaderCellDef>
+              Materialien
+            </th>
+            <td
+              class="cursor-pointer"
+              mat-cell
+              *matCellDef="let element"
+              (click)="navigate(element.id)"
+            >
+              @if (element.amount > 0) {
+                <div class="w-full">
+                  {{ displayMaterials(element.materials) }}
+                </div>
+              }
+            </td>
+            <td mat-footer-cell *matFooterCellDef>
+              {{ displayMaterials(analysisQuery.data().materials) }}
+            </td>
+          </ng-container>
+
+          <!--PACKAGING-->
+          <ng-container matColumnDef="packagings">
+            <th class="!border-neutral-350" mat-header-cell *matHeaderCellDef>
+              Verpackungen (Stück)
+            </th>
+            <td
+              class="cursor-pointer"
+              mat-cell
+              *matCellDef="let element"
+              (click)="navigate(element.id)"
+            >
+              @if (element.amount > 0) {
+                <div class="w-full">
+                  {{ displayPackagings(element.packagings) }}
+                </div>
+              }
+            </td>
+            <td mat-footer-cell *matFooterCellDef>
+              {{ displayPackagings(analysisQuery.data().packagings) }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr
+            class="hover:bg-neutral-300"
+            mat-row
+            *matRowDef="let row; columns: displayedColumns"
+          ></tr>
+          <tr
+            mat-footer-row
+            *matFooterRowDef="displayedColumns"
+            class="border-t-2"
+          ></tr>
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell px-4 py-4" colspan="4">
+              Keine Daten gefunden.
+            </td>
+          </tr>
+        </table>
+      }
     </div>
-
-    @if (analysisQuery.isPending()) {
-      <span i18n>Daten werden geladen</span>
-    } @else if (analysisQuery.isSuccess() && analysisQuery.data()) {
-      <table
-        mat-table
-        [dataSource]="filteredAndSortedAnalysis() ?? []"
-        class="overflow-hidden !rounded-lg !bg-neutral-200"
-        matSort
-        (matSortChange)="onSortChange($event)"
-        matSortDisableClear
-      >
-        <ng-container matColumnDef="name">
-          <th
-            class="!border-neutral-350"
-            mat-header-cell
-            *matHeaderCellDef
-            mat-sort-header="name"
-          >
-            @if (productGroupId()) {
-              <span i18n>Produktname</span>
-            } @else {
-              <span i18n>Produktgruppe</span>
-            }
-          </th>
-          <td
-            mat-cell
-            *matCellDef="let element"
-            class="cursor-pointer"
-            (click)="navigate(element.id)"
-          >
-            {{ element.name }}
-          </td>
-          <td mat-footer-cell *matFooterCellDef>Gesamt</td>
-        </ng-container>
-
-        <!--AMOUNT-->
-        <ng-container matColumnDef="amount">
-          <th
-            class="!border-neutral-350"
-            mat-header-cell
-            *matHeaderCellDef
-            mat-sort-header="amount"
-          >
-            <span i18n class="text-left">Anzahl Vorprodukte</span>
-          </th>
-          <td
-            mat-cell
-            *matCellDef="let element"
-            class="cursor-pointer"
-            (click)="navigate(element.id)"
-          >
-            {{ element.amount > 0 ? element.amount : 'keine Vorprodukte' }}
-          </td>
-          <td mat-footer-cell *matFooterCellDef>
-            {{
-              analysisQuery.data().amount > 0
-                ? analysisQuery.data().amount
-                : 'keine Vorprodukte'
-            }}
-          </td>
-        </ng-container>
-
-        <!--WATER-->
-        <ng-container matColumnDef="water">
-          <th class="!border-neutral-350" mat-header-cell *matHeaderCellDef>
-            Verwendetes Wasser
-          </th>
-          <td
-            class="cursor-pointer"
-            mat-cell
-            *matCellDef="let element"
-            (click)="navigate(element.id)"
-          >
-            @if (element.amount > 0) {
-              <div class="w-full">{{ element.water | number: '1.0-0' }} l</div>
-            }
-          </td>
-          <td mat-footer-cell *matFooterCellDef>
-            {{ analysisQuery.data().water | number: '1.0-0' }} l
-          </td>
-        </ng-container>
-
-        <!--CRITICAL RAW MATERIALS-->
-        <ng-container matColumnDef="criticalMaterials">
-          <th class="!border-neutral-350" mat-header-cell *matHeaderCellDef>
-            Kritische Rohstoffe
-          </th>
-          <td
-            class="cursor-pointer"
-            mat-cell
-            *matCellDef="let element"
-            (click)="navigate(element.id)"
-          >
-            @if (element.amount > 0) {
-              <div class="w-full">
-                {{ displayMaterials(element.criticalMaterials) }}
-              </div>
-            }
-          </td>
-          <td mat-footer-cell *matFooterCellDef>
-            {{ displayMaterials(analysisQuery.data().criticalMaterials) }}
-          </td>
-        </ng-container>
-
-        <!--RARE EARTHS-->
-        <ng-container matColumnDef="rareEarths">
-          <th class="!border-neutral-350" mat-header-cell *matHeaderCellDef>
-            Seltene Erden
-          </th>
-          <td
-            class="cursor-pointer"
-            mat-cell
-            *matCellDef="let element"
-            (click)="navigate(element.id)"
-          >
-            @if (element.amount > 0) {
-              <div class="w-full">
-                {{ displayMaterials(element.rareEarths) }}
-              </div>
-            }
-          </td>
-          <td mat-footer-cell *matFooterCellDef>
-            {{ displayMaterials(analysisQuery.data().rareEarths) }}
-          </td>
-        </ng-container>
-
-        <!--MATERIALS-->
-        <ng-container matColumnDef="materials">
-          <th class="!border-neutral-350" mat-header-cell *matHeaderCellDef>
-            Materialien
-          </th>
-          <td
-            class="cursor-pointer"
-            mat-cell
-            *matCellDef="let element"
-            (click)="navigate(element.id)"
-          >
-            @if (element.amount > 0) {
-              <div class="w-full">
-                {{ displayMaterials(element.materials) }}
-              </div>
-            }
-          </td>
-          <td mat-footer-cell *matFooterCellDef>
-            {{ displayMaterials(analysisQuery.data().materials) }}
-          </td>
-        </ng-container>
-
-        <!--PACKAGING-->
-        <ng-container matColumnDef="packagings">
-          <th class="!border-neutral-350" mat-header-cell *matHeaderCellDef>
-            Verpackungen (Stück)
-          </th>
-          <td
-            class="cursor-pointer"
-            mat-cell
-            *matCellDef="let element"
-            (click)="navigate(element.id)"
-          >
-            @if (element.amount > 0) {
-              <div class="w-full">
-                {{ displayPackagings(element.packagings) }}
-              </div>
-            }
-          </td>
-          <td mat-footer-cell *matFooterCellDef>
-            {{ displayPackagings(analysisQuery.data().packagings) }}
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr
-          class="hover:bg-neutral-300"
-          mat-row
-          *matRowDef="let row; columns: displayedColumns"
-        ></tr>
-        <tr
-          mat-footer-row
-          *matFooterRowDef="displayedColumns"
-          class="border-t-2"
-        ></tr>
-      </table>
-    }
-
-    @if (analysisQuery.isSuccess() && analysisQuery.data()) {
-      <mat-paginator
-        class="overflow-hidden !rounded-lg !bg-neutral-200"
-        [pageSizeOptions]="[5, 10, 15, 20]"
-        aria-label="Select page"
-        showFirstLastButtons
-      >
-      </mat-paginator>
-    }
   </div>
-</div>
+</mat-expansion-panel>

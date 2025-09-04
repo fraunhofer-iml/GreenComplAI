@@ -327,6 +327,12 @@ export class ProductMasterDataFormComponent implements OnInit {
         this.form().controls.circularPrincipleAssumption.updateValueAndValidity();
       }
     );
+
+    this.form().controls.reparability.valueChanges.subscribe((change) => {
+      if (!change) return;
+      if (change > 10) this.form().controls.reparability.patchValue(10);
+      if (change < 0) this.form().controls.reparability.patchValue(0);
+    });
   }
 
   private mergeAddresses(addresses: AddressDto[]) {

@@ -7,7 +7,8 @@
  */
 
 import { WasteDto, WasteMaterialDto } from '@ap2/api-interfaces';
-import { Component, input } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
+import { Component, inject, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,7 +23,9 @@ import { FlagableComponent } from '../../../../shared/components/flagable-elemen
     MatButtonModule,
     RouterModule,
     FlagableComponent,
+    DecimalPipe,
   ],
+  providers: [DecimalPipe],
   templateUrl: './product-waste.component.html',
 })
 export class ProductWasteComponent {
@@ -31,10 +34,13 @@ export class ProductWasteComponent {
   flags = input<string[] | undefined>([]);
   outlier = input<string[]>([]);
 
+  decimalPipe = inject(DecimalPipe);
+
   displayWasteMaterials(materials: WasteMaterialDto[]) {
     return materials
       .map(
-        (m) => `${m.material?.name} ( ${m.percentage} % | ${m.weightInKg} kg )`
+        (m) =>
+          `${m.material?.name} ( ${this.decimalPipe.transform(m.percentage, '1.0-2')} % | ${this.decimalPipe.transform(m.weightInKg, '1.0-2')} kg )`
       )
       .join(', ');
   }
