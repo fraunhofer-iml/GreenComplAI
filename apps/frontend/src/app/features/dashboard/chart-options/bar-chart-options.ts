@@ -24,7 +24,11 @@ export const getBarChartOptions = (data: string[]): EChartsOption => {
     },
     yAxis: {
       type: 'category',
-      axisLabel: { color: '#fff' },
+      axisLabel: {
+        color: '#fff',
+        overflow: 'break',
+        width: '240',
+      },
       data: data,
     },
     series: [],
