@@ -159,13 +159,9 @@
 
       <div class="col-span-2 mt-4">
         <app-select-materials
-          (addMaterialEvent)="
-            addMaterialFormGroup(packagingForm.controls.materials)
-          "
-          (removeMaterialEvent)="
-            removeMaterialFormGroup(packagingForm.controls.materials, $event)
-          "
-          [materialsForm]="packagingForm.controls.materials"
+          (addMaterialEvent)="addMaterialFormGroup(materialsForm)"
+          (removeMaterialEvent)="removeMaterialFormGroup(materialsForm, $event)"
+          [materialsForm]="materialsForm"
         ></app-select-materials>
       </div>
     </div>

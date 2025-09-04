@@ -25,7 +25,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import {
   injectMutation,
   injectQuery,
@@ -40,6 +40,7 @@ import { RegularMaterialsFormGroup } from '../../materials/select-materials/mate
 import { SelectMaterialsComponent } from '../../materials/select-materials/select-materials.component';
 import {
   addRegularMaterialFormGroup,
+  regularMaterialFormArrayGroup,
   removeRegularMaterialFormGroup,
 } from '../../products/create/material.form-group';
 import { ProductWasteComponent } from '../../products/details/product-waste/product-waste.component';
@@ -91,32 +92,40 @@ export class PackagingDetailsComponent implements OnInit {
     ),
 
     supplier: new FormControl<CompanyDto | string | null>(null),
-    materials: new FormGroup<RegularMaterialsFormGroup>({
-      materials: new FormArray<FormGroup>([]),
-    }),
   });
+  materialsForm: FormGroup<{
+    materials: FormArray<
+      FormGroup<{
+        material: FormControl<string>;
+        percentage: FormControl<number>;
+        renewable: FormControl<boolean | null>;
+        primary: FormControl<boolean | null>;
+      }>
+    >;
+  }>;
+
   private readonly packagingService = inject(PackagingService);
+
   packagingQuery = injectQuery(() => ({
     queryKey: ['packaging', this.id()],
     queryFn: async (): Promise<PackagingDto> => {
       const res = await this.packagingService.getById(this.id() ?? '');
-      console.log(res);
       this.packagingForm.patchValue({
         ...res,
-        materials: {
-          materials:
-            res.materials?.map((material) => ({
-              material: material[0].name,
-              percentage: material[1],
-              renewable: material[2],
-              primary: material[3],
-            })) ?? [],
-        },
+      });
+      this.materialsForm.patchValue({
+        materials: res.materials?.map((material) => ({
+          material: material[0].name,
+          percentage: material[1],
+          renewable: material[2] ?? null,
+          primary: material[3] ?? null,
+        })),
       });
       return res;
     },
     enabled: !!this.id(),
   }));
+
   updateMutation = injectMutation(() => ({
     mutationFn: async (dto: PackagingUpdateDto) =>
       await this.packagingService.update(dto, this.id() ?? ''),
@@ -137,9 +146,10 @@ export class PackagingDetailsComponent implements OnInit {
       );
     },
   }));
-  private readonly router = inject(Router);
-  private readonly queryClient = inject(QueryClient);
 
+  constructor() {
+    this.materialsForm = regularMaterialFormArrayGroup();
+  }
   ngOnInit() {
     this.packagingForm.controls.supplier.valueChanges.subscribe((value) => {
       if (typeof value === 'string') {
@@ -153,15 +163,14 @@ export class PackagingDetailsComponent implements OnInit {
   }
 
   save() {
-    const materials =
-      this.packagingForm.controls.materials.controls.materials.controls.map(
-        (material) => ({
-          material: material.controls.material.value as string,
-          percentage: material.controls.percentage.value as number,
-          renewable: material.controls.renewable?.value ?? undefined,
-          primary: material.controls.primary?.value ?? undefined,
-        })
-      );
+    const materials = this.materialsForm.controls.materials.controls.map(
+      (material) => ({
+        material: material.controls.material.value as string,
+        percentage: material.controls.percentage.value as number,
+        renewable: material.controls.renewable?.value ?? undefined,
+        primary: material.controls.primary?.value ?? undefined,
+      })
+    );
 
     const dto: PackagingUpdateDto = {
       weight: this.packagingForm.value.weight ?? undefined,

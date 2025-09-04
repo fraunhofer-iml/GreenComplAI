@@ -18,8 +18,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SelectMaterialsComponent } from '../../../features/materials/select-materials/select-materials.component';
 import {
-  addBasicMaterialFormGroup,
-  removeBasicMaterialFormGroup,
+  addRegularMaterialFormGroup,
+  removeRegularMaterialFormGroup,
 } from '../../../features/products/create/material.form-group';
 import { BaseSheetComponent } from '../sheet/base/sheet.component';
 import { WasteFormGroup } from './waste-form';
@@ -47,7 +47,6 @@ export class WasteCreateComponent {
 
   outlier = input<string[]>([]);
 
-  protected readonly addBasicMaterialFormGroup = addBasicMaterialFormGroup;
-  protected readonly removeBasicMaterialFormGroup =
-    removeBasicMaterialFormGroup;
+  protected readonly addMaterialFormGroup = addRegularMaterialFormGroup;
+  protected readonly removeMaterialFormGroup = removeRegularMaterialFormGroup;
 }

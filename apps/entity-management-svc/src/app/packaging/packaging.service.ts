@@ -60,6 +60,11 @@ export class PackagingService {
         packaging.id,
         dto.partPackagings
       );
+    if (dto.materials)
+      await this.createPackagingMaterialsConnection(
+        packaging.id,
+        dto.materials
+      );
 
     // Transform materials to expected format and add missing fields
     return {
@@ -359,6 +364,24 @@ export class PackagingService {
       primary?: boolean;
     }[]
   ): Promise<void> {
+    // First ensure all materials exist in the Material table
+    for (const mat of materials) {
+      if (mat?.material && mat?.percentage) {
+        // Check if material exists, if not create it
+        const existingMaterial = await this.prismaService.material.findUnique({
+          where: { name: mat.material },
+        });
+
+        if (!existingMaterial) {
+          await this.prismaService.material.create({
+            data: {
+              name: mat.material,
+            },
+          });
+        }
+      }
+    }
+
     const materialData = materials
       .filter((mat) => mat?.material && mat?.percentage)
       .map((mat) => ({

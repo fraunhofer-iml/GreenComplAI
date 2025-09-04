@@ -226,12 +226,10 @@
 <app-base-sheet #materialSheet>
   <app-select-materials
     (closeSheetEvent)="materialSheet.close()"
-    (addMaterialEvent)="
-      addBasicMaterialFormGroup(waste().controls.wasteMaterials)
-    "
+    (addMaterialEvent)="addMaterialFormGroup(waste().controls.wasteMaterials)"
     (removeMaterialEvent)="
-      removeBasicMaterialFormGroup(waste().controls.wasteMaterials, $event)
+      removeMaterialFormGroup(waste().controls.wasteMaterials, $event)
     "
-    [basicForm]="waste().controls.wasteMaterials"
+    [materialsForm]="waste().controls.wasteMaterials"
   ></app-select-materials>
 </app-base-sheet>
