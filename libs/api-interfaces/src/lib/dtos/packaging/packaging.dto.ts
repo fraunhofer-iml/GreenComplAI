@@ -19,7 +19,8 @@ export class PackagingDto {
   percentageOfRecycledMaterial: number;
   percentageOfRStrategies: number;
   supplier: CompanyDto;
-  material: MaterialDto;
+  material?: MaterialDto;
+  materials?: [MaterialDto, number, boolean?, boolean?][];
   flags: string[];
   products?: ProductDto[];
   waste?: Partial<WasteDto>;
@@ -33,11 +34,12 @@ export class PackagingDto {
     percentageOfRecycledMaterial: number,
     percentageOfRStrategies: number,
     supplier: CompanyDto,
-    material: MaterialDto,
     flags: string[],
     waste?: WasteDto,
     products?: ProductDto[],
-    supplierName?: string
+    supplierName?: string,
+    materials?: [MaterialDto, number, boolean?, boolean?][],
+    material?: MaterialDto
   ) {
     this.id = id;
     this.name = name;
@@ -46,11 +48,11 @@ export class PackagingDto {
     this.percentageOfRecycledMaterial = percentageOfRecycledMaterial;
     this.percentageOfRStrategies = percentageOfRStrategies;
     this.supplier = supplier;
-    this.material = material;
     this.products = products;
     this.waste = waste;
     this.supplierName = supplierName;
-    this.material = material;
     this.flags = flags;
+    this.materials = materials;
+    this.material = material;
   }
 }

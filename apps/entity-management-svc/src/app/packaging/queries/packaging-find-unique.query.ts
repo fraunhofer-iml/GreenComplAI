@@ -26,7 +26,7 @@ export const packagingFindUniqueQuery = (id: string) =>
           wasteMaterials: { include: { material: true } },
         },
       },
-      material: true,
+      materials: { include: { material: true } },
       supplier: { include: { addresses: true } },
     },
   }) satisfies Prisma.PackagingFindUniqueArgs;

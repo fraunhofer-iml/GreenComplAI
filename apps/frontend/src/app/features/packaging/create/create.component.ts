@@ -17,6 +17,7 @@ import {
 } from '@ap2/api-interfaces';
 import { Component, inject } from '@angular/core';
 import {
+  FormArray,
   FormControl,
   FormGroup,
   FormsModule,
@@ -32,13 +33,19 @@ import { MatListOption } from '@angular/material/list';
 import { RouterModule } from '@angular/router';
 import { DataService } from '../../../core/services/data-service/data.service';
 import { PackagingService } from '../../../core/services/packaging/packaging.service';
-import { ProductsService } from '../../../core/services/products/products.service';
 import { UploadCSVComponent } from '../../../shared/components/csv-upload/uploadCSV.component';
 import { ContentType } from '../../../shared/components/overview/table-content-type.enum';
 import { PackagingSelectionComponent } from '../../../shared/components/selection/packaging-selection.component';
+import { BaseSheetComponent } from '../../../shared/components/sheet/base/sheet.component';
 import { SuppliersSheetComponent } from '../../../shared/components/sheet/suppliers-sheet/suppliers-sheet.component';
 import { WasteCreateComponent } from '../../../shared/components/waste-create/waste-create.component';
 import { wasteFormGroup } from '../../../shared/components/waste-create/waste.form-group';
+import { RegularMaterialsFormGroup } from '../../materials/select-materials/materials-form.model';
+import { SelectMaterialsComponent } from '../../materials/select-materials/select-materials.component';
+import {
+  addRegularMaterialFormGroup,
+  removeRegularMaterialFormGroup,
+} from '../../products/create/material.form-group';
 import { ProductPackagingFormGroup } from '../../products/create/model/product-form.model';
 
 @Component({
@@ -57,6 +64,8 @@ import { ProductPackagingFormGroup } from '../../products/create/model/product-f
     WasteCreateComponent,
     PackagingSelectionComponent,
     UploadCSVComponent,
+    SelectMaterialsComponent,
+    BaseSheetComponent,
   ],
   providers: [
     PackagingService,
@@ -69,6 +78,9 @@ import { ProductPackagingFormGroup } from '../../products/create/model/product-f
 })
 export class PackagingCreateComponent {
   private readonly packagingService = inject(PackagingService);
+
+  addMaterialFormGroup = addRegularMaterialFormGroup;
+  removeMaterialFormGroup = removeRegularMaterialFormGroup;
 
   packagingForm = new FormGroup({
     weight: new FormControl<number | null>(null, Validators.required),
@@ -93,6 +105,9 @@ export class PackagingCreateComponent {
         nonNullable: true,
       }),
     }),
+    materials: new FormGroup<RegularMaterialsFormGroup>({
+      materials: new FormArray<FormGroup>([]),
+    }),
   });
   company: CompanyDto | undefined;
 
@@ -105,6 +120,17 @@ export class PackagingCreateComponent {
       this.packagingForm.controls.partPackagings.controls.packagings.value.map(
         ([packaging, amount]) => [packaging.id, amount]
       ) ?? [];
+
+    const materials =
+      this.packagingForm.controls.materials.controls.materials.controls.map(
+        (material) => ({
+          material: material.controls.material.value as string,
+          percentage: material.controls.percentage.value as number,
+          renewable: material.controls.renewable?.value ?? undefined,
+          primary: material.controls.primary?.value ?? undefined,
+        })
+      );
+
     const waste: WasteCreateDto = {
       wasteMaterials: this.packagingForm
         .get('waste')
@@ -137,14 +163,15 @@ export class PackagingCreateComponent {
     const dto = new PackagingCreateDto(
       Number(this.packagingForm.get('weight')?.value),
       this.packagingForm.get('name')?.value as string,
-      Number(this.packagingForm.get('percentageOfBiologicalMaterials')?.value),
+      Number(this.packagingForm.get('percentageOfRenewableMaterial')?.value),
       Number(this.packagingForm.get('percentageOfRecycledMaterial')?.value),
       Number(this.packagingForm.get('percentageOfRStrategies')?.value),
       this.packagingForm.get('company')?.value as string,
       this.packagingForm.get('materialName')?.value as string,
       partPackagingsMap,
       [],
-      waste
+      waste,
+      materials
     );
     this.packagingService.create(dto);
   }

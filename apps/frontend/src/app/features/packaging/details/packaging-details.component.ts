@@ -14,6 +14,7 @@ import {
 import { toast } from 'ngx-sonner';
 import { Component, inject, input, OnInit, signal } from '@angular/core';
 import {
+  FormArray,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -35,6 +36,12 @@ import { DataService } from '../../../core/services/data-service/data.service';
 import { PackagingService } from '../../../core/services/packaging/packaging.service';
 import { BaseSheetComponent } from '../../../shared/components/sheet/base/sheet.component';
 import { Uris } from '../../../shared/constants/uris';
+import { RegularMaterialsFormGroup } from '../../materials/select-materials/materials-form.model';
+import { SelectMaterialsComponent } from '../../materials/select-materials/select-materials.component';
+import {
+  addRegularMaterialFormGroup,
+  removeRegularMaterialFormGroup,
+} from '../../products/create/material.form-group';
 import { ProductWasteComponent } from '../../products/details/product-waste/product-waste.component';
 import { PartPackagingComponent } from './part-packaging/part-packaging.component';
 
@@ -51,6 +58,7 @@ import { PartPackagingComponent } from './part-packaging/part-packaging.componen
     MatInputModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
+    SelectMaterialsComponent,
   ],
   providers: [
     QueryClient,
@@ -61,6 +69,9 @@ import { PartPackagingComponent } from './part-packaging/part-packaging.componen
 export class PackagingDetailsComponent implements OnInit {
   id = input<string>();
   supplierSearchValue = signal<string>('');
+
+  addMaterialFormGroup = addRegularMaterialFormGroup;
+  removeMaterialFormGroup = removeRegularMaterialFormGroup;
 
   Uris = Uris;
   packagingForm = new FormGroup({
@@ -79,17 +90,28 @@ export class PackagingDetailsComponent implements OnInit {
       Validators.required
     ),
 
-    materialName: new FormControl<string | null>('', Validators.required),
     supplier: new FormControl<CompanyDto | string | null>(null),
+    materials: new FormGroup<RegularMaterialsFormGroup>({
+      materials: new FormArray<FormGroup>([]),
+    }),
   });
   private readonly packagingService = inject(PackagingService);
   packagingQuery = injectQuery(() => ({
     queryKey: ['packaging', this.id()],
     queryFn: async (): Promise<PackagingDto> => {
       const res = await this.packagingService.getById(this.id() ?? '');
+      console.log(res);
       this.packagingForm.patchValue({
         ...res,
-        materialName: res.material.name,
+        materials: {
+          materials:
+            res.materials?.map((material) => ({
+              material: material[0].name,
+              percentage: material[1],
+              renewable: material[2],
+              primary: material[3],
+            })) ?? [],
+        },
       });
       return res;
     },
@@ -131,14 +153,31 @@ export class PackagingDetailsComponent implements OnInit {
   }
 
   save() {
+    const materials =
+      this.packagingForm.controls.materials.controls.materials.controls.map(
+        (material) => ({
+          material: material.controls.material.value as string,
+          percentage: material.controls.percentage.value as number,
+          renewable: material.controls.renewable?.value ?? undefined,
+          primary: material.controls.primary?.value ?? undefined,
+        })
+      );
+
     const dto: PackagingUpdateDto = {
-      ...this.packagingForm.value,
-      materialId: this.packagingForm.value.materialName ?? '',
+      weight: this.packagingForm.value.weight ?? undefined,
+      name: this.packagingForm.value.name ?? undefined,
+      percentageOfRenewableMaterial:
+        this.packagingForm.value.percentageOfRenewableMaterial ?? undefined,
+      percentageOfRecycledMaterial:
+        this.packagingForm.value.percentageOfRecycledMaterial ?? undefined,
+      percentageOfRStrategies:
+        this.packagingForm.value.percentageOfRStrategies ?? undefined,
       supplierId:
         typeof this.packagingForm.value.supplier === 'object'
-          ? (this.packagingForm.value.supplier?.id ?? '')
-          : '',
-    } as PackagingUpdateDto;
+          ? (this.packagingForm.value.supplier?.id ?? undefined)
+          : (this.packagingForm.value.supplier ?? undefined),
+      materials: materials,
+    };
 
     this.updateMutation.mutate(dto);
   }

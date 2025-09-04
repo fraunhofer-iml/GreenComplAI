@@ -29,12 +29,6 @@ export const packagingCreateQuery = (dto: PackagingCreateDto) =>
           },
         },
       },
-      material: {
-        connectOrCreate: {
-          where: { name: dto.materialId?.toString() ?? 'N/A' },
-          create: { name: dto.materialId?.toString() ?? 'N/A' },
-        },
-      },
       waste: dto.waste
         ? {
             create: {
@@ -55,7 +49,7 @@ export const packagingCreateQuery = (dto: PackagingCreateDto) =>
     },
     include: {
       waste: true,
-      material: true,
+      materials: { include: { material: true } },
       supplier: { include: { addresses: true } },
     },
   }) satisfies Prisma.PackagingCreateArgs;

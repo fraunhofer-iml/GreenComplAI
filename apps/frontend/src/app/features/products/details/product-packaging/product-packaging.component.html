@@ -28,9 +28,13 @@
           </td>
         </ng-container>
         <ng-container matColumnDef="material">
-          <th mat-header-cell *matHeaderCellDef>Material</th>
+          <th mat-header-cell *matHeaderCellDef>Materialien</th>
           <td mat-cell *matCellDef="let element">
-            {{ element[0].material.name }}
+            @if (element[0].materials && element[0].materials.length > 0) {
+              {{ element[0].materials[0][0].name }}
+            } @else {
+              Keine Materialien
+            }
           </td>
         </ng-container>
 

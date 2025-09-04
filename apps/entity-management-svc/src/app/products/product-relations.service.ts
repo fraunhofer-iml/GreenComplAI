@@ -20,6 +20,7 @@ import { PrismaService } from '@ap2/database';
 import { Injectable, Logger } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { FlagsService } from '../flags/flags.service';
+import { PackagingService } from '../packaging/packaging.service';
 import { productCreateQuery } from './queries/product-create.query';
 import {
   historyUpdateQuery,
@@ -86,7 +87,7 @@ export class ProductRelationsService {
         packaging: {
           include: {
             supplier: { include: { addresses: true } },
-            material: true,
+            materials: { include: { material: true } },
           },
         },
       },
@@ -97,6 +98,9 @@ export class ProductRelationsService {
         [
           {
             ...p.packaging,
+            materials: PackagingService.transformMaterialsToDto(
+              p.packaging.materials
+            ),
           },
           p.amount,
         ] as const
@@ -248,13 +252,21 @@ export class ProductRelationsService {
         packaging: {
           include: {
             waste: true,
-            material: true,
+            materials: { include: { material: true } },
             supplier: { include: { addresses: true } },
           },
         },
       },
     });
 
-    return packagings.map((p) => [p.packaging, p.amount]);
+    return packagings.map((p) => [
+      {
+        ...p.packaging,
+        materials: PackagingService.transformMaterialsToDto(
+          p.packaging.materials
+        ),
+      },
+      p.amount,
+    ]);
   }
 }

@@ -115,6 +115,8 @@ model Material {
 
   packaging Packaging[]
 
+  packagingMaterials PackagingMaterials[]
+
   materials            WasteMaterial[]        @relation("Material")
   products             ProductMaterials[]
   rareEarths           RareEarths[]
@@ -129,19 +131,21 @@ model Packaging {
   percentageOfRStrategies       Float?
   percentageOfRecycledMaterial  Float?
 
-  supplier   Company  @relation(fields: [supplierId], references: [id])
+  supplier   Company @relation(fields: [supplierId], references: [id])
   supplierId String
-  material   Material @relation(fields: [materialId], references: [id])
-  materialId String
 
   partPackagings PackagingPartPackaging[] @relation("PartPackaging")
   packagings     PackagingPartPackaging[] @relation("Packaging")
 
   products ProductPackaging[] @relation(name: "Packaging")
 
-  waste   Waste?   @relation(fields: [wasteId], references: [id])
-  wasteId String?  @unique
-  flags   String[]
+  materials PackagingMaterials[]
+
+  waste      Waste?    @relation(fields: [wasteId], references: [id])
+  wasteId    String?   @unique
+  flags      String[]
+  Material   Material? @relation(fields: [materialId], references: [id])
+  materialId String?
 }
 
 model PackagingPartPackaging {
@@ -592,4 +596,16 @@ model GoalStrategy {
   connection String
 
   @@id([goalId, strategyId])
+}
+
+model PackagingMaterials {
+  packaging    Packaging @relation(fields: [packagingId], references: [id])
+  packagingId  String
+  material     Material  @relation(fields: [materialName], references: [name])
+  materialName String    @map("materialName")
+  percentage   Float
+  renewable    Boolean?
+  primary      Boolean?
+
+  @@id([packagingId, materialName])
 }
