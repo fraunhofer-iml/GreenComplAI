@@ -129,7 +129,7 @@ export class ProductCrudService {
       ...product,
       packagings,
       materials: product.materials.map(
-        (m) => [m.material, m.percentage] as const
+        (m) => [m.material, m.percentage, m.renewable, m.primary] as const
       ),
       wasteFlow: product.wasteFlow?.name ? product.wasteFlow.name : 'N/A',
       rareEarths: product.rareEarths.map(

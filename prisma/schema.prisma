@@ -14,8 +14,9 @@ generator pyclient {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL")
 }
 
 model Action {
@@ -95,6 +96,7 @@ enum DocumentType {
   INSTRUCTIONS // Bedienungs- & Montageanleitungen
   TECHNICAL_DOCUMENTATION // Technische Unterlagen
   LEGAL_DOCUMENTS // Rechtliche Dokumente
+  SAFETY_INFORMATION // Sicherheitsinformationen & Warnhinweise
   MISC // Sonstige Dokumente
 }
 
@@ -113,6 +115,8 @@ model Material {
 
   packaging Packaging[]
 
+  packagingMaterials PackagingMaterials[]
+
   materials            WasteMaterial[]        @relation("Material")
   products             ProductMaterials[]
   rareEarths           RareEarths[]
@@ -127,19 +131,21 @@ model Packaging {
   percentageOfRStrategies       Float?
   percentageOfRecycledMaterial  Float?
 
-  supplier   Company  @relation(fields: [supplierId], references: [id])
+  supplier   Company @relation(fields: [supplierId], references: [id])
   supplierId String
-  material   Material @relation(fields: [materialId], references: [id])
-  materialId String
 
   partPackagings PackagingPartPackaging[] @relation("PartPackaging")
   packagings     PackagingPartPackaging[] @relation("Packaging")
 
   products ProductPackaging[] @relation(name: "Packaging")
 
-  waste   Waste?   @relation(fields: [wasteId], references: [id])
-  wasteId String?  @unique
-  flags   String[]
+  materials PackagingMaterials[]
+
+  waste      Waste?    @relation(fields: [wasteId], references: [id])
+  wasteId    String?   @unique
+  flags      String[]
+  Material   Material? @relation(fields: [materialId], references: [id])
+  materialId String?
 }
 
 model PackagingPartPackaging {
@@ -197,6 +203,11 @@ model Product {
   supplier   Company? @relation(fields: [supplierId], references: [id], name: "Supplier")
   supplierId String?  @map("supplierId")
 
+  importerName    String?
+  importerEmail   String?
+  importerPhone   String?
+  importerAddress String?
+
   manufacturer   Company? @relation(fields: [manufacturerId], references: [id], name: "Manufacturer")
   manufacturerId String?  @map("manufacturerId")
 
@@ -211,6 +222,8 @@ model Product {
   productionLocationId String?
 
   waterUsed Float?
+
+  productCarbonFootprint Float?
 
   wasteFlow            WasteFlow?             @relation(fields: [wasteFlowId], references: [id])
   wasteFlowId          String?
@@ -242,6 +255,8 @@ model ProductMaterials {
   material     Material @relation(fields: [materialName], references: [name])
   materialName String   @map("materialName")
   percentage   Float
+  renewable    Boolean?
+  primary      Boolean?
 
   @@id([productId, materialName])
 }
@@ -581,4 +596,16 @@ model GoalStrategy {
   connection String
 
   @@id([goalId, strategyId])
+}
+
+model PackagingMaterials {
+  packaging    Packaging @relation(fields: [packagingId], references: [id])
+  packagingId  String
+  material     Material  @relation(fields: [materialName], references: [name])
+  materialName String    @map("materialName")
+  percentage   Float
+  renewable    Boolean?
+  primary      Boolean?
+
+  @@id([packagingId, materialName])
 }

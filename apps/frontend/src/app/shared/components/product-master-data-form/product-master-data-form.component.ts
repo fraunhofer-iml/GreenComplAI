@@ -35,11 +35,14 @@ import { injectQuery } from '@tanstack/angular-query-experimental';
 import { AuthenticationService } from '../../../core/services/authentication/authentication.service';
 import { CompaniesService } from '../../../core/services/companies/companies.service';
 import { ProductGroupService } from '../../../core/services/product-group/product-group.service';
+import { RegularMaterialsFormGroup } from '../../../features/materials/select-materials/materials-form.model';
 import { SelectMaterialsComponent } from '../../../features/materials/select-materials/select-materials.component';
 import { ProductGroupCreateComponent } from '../../../features/product-group/create/product-group-create.component';
 import {
-  addMaterialFormGroup,
-  removeMaterialFormGroup,
+  addBasicMaterialFormGroup,
+  addRegularMaterialFormGroup,
+  removeBasicMaterialFormGroup,
+  removeRegularMaterialFormGroup,
 } from '../../../features/products/create/material.form-group';
 import { MasterDataFormGroup } from '../../../features/products/create/model/product-form.model';
 import { UNITS } from '../../constants/available-units';
@@ -74,16 +77,7 @@ export class ProductMasterDataFormComponent implements OnInit {
   productGroupId = input<string>();
   form = input.required<FormGroup<MasterDataFormGroup>>();
 
-  materialsForm = input.required<
-    FormGroup<{
-      materials: FormArray<
-        FormGroup<{
-          material: FormControl<string>;
-          percentage: FormControl<number>;
-        }>
-      >;
-    }>
-  >();
+  materialsForm = input.required<FormGroup<RegularMaterialsFormGroup>>();
 
   rareEarthsForm = input.required<
     FormGroup<{
@@ -120,8 +114,12 @@ export class ProductMasterDataFormComponent implements OnInit {
   RARE_EARTHS = RARE_EARTHS;
   CRITICAL_RAW_MATERIAL = CRITICAL_RAW_MATERIAL;
 
-  addMaterialFormGroup = addMaterialFormGroup;
-  removeMaterialFormGroup = removeMaterialFormGroup;
+  addMaterialFormGroup = addRegularMaterialFormGroup;
+  removeMaterialFormGroup = removeRegularMaterialFormGroup;
+  addRegularMaterialFormGroup = addRegularMaterialFormGroup;
+  removeRegularMaterialFormGroup = removeRegularMaterialFormGroup;
+  addBasicMaterialFormGroup = addBasicMaterialFormGroup;
+  removeBasicMaterialFormGroup = removeBasicMaterialFormGroup;
 
   associatedCompaniesQuery = injectQuery(() => ({
     queryKey: ['searchSuppliers', this.supplierSearchValue()],
@@ -179,6 +177,34 @@ export class ProductMasterDataFormComponent implements OnInit {
       this.groupSearchValue.set(this.productGroupId() ?? '');
     }
 
+    // Set initial state of importer fields
+    if (this.form().controls.supplierIsImporter.value) {
+      const supplier = this.form().controls.supplier.value;
+      if (typeof supplier === 'object' && supplier) {
+        this.form().controls.importerName.patchValue(supplier.name);
+        this.form().controls.importerEmail.patchValue(supplier.email);
+        this.form().controls.importerPhone.patchValue(supplier.phone);
+        this.form().controls.importerAddress.patchValue(
+          supplier.addresses?.[0]
+            ? `${supplier.addresses[0].street}, ${supplier.addresses[0].postalCode} ${supplier.addresses[0].city}, ${supplier.addresses[0].country}`
+            : ''
+        );
+      }
+      this.form().controls.importerName.disable();
+      this.form().controls.importerEmail.disable();
+      this.form().controls.importerPhone.disable();
+      this.form().controls.importerAddress.disable();
+    } else {
+      this.form().controls.importerName.setValidators([Validators.required]);
+      this.form().controls.importerEmail.setValidators([Validators.email]);
+      this.form().controls.importerPhone.setValidators([]);
+      this.form().controls.importerAddress.setValidators([]);
+    }
+    this.form().controls.importerName.updateValueAndValidity();
+    this.form().controls.importerEmail.updateValueAndValidity();
+    this.form().controls.importerPhone.updateValueAndValidity();
+    this.form().controls.importerAddress.updateValueAndValidity();
+
     this.form().controls.supplier.valueChanges.subscribe((value) => {
       if (typeof value === 'string') {
         this.supplierSearchValue.set(value);
@@ -187,6 +213,59 @@ export class ProductMasterDataFormComponent implements OnInit {
       } else {
         this.mergeAddresses(value?.addresses ?? []);
       }
+
+      // If supplier is importer, update importer fields
+      if (this.form().controls.supplierIsImporter.value) {
+        if (typeof value === 'object' && value) {
+          this.form().controls.importerName.patchValue(value.name);
+          this.form().controls.importerEmail.patchValue(value.email);
+          this.form().controls.importerPhone.patchValue(value.phone);
+          this.form().controls.importerAddress.patchValue(
+            value.addresses?.[0]
+              ? `${value.addresses[0].street}, ${value.addresses[0].postalCode} ${value.addresses[0].city}, ${value.addresses[0].country}`
+              : ''
+          );
+        }
+      }
+    });
+
+    this.form().controls.supplierIsImporter.valueChanges.subscribe((value) => {
+      if (value) {
+        // If supplier is importer, set importer fields to supplier values and disable them
+        const supplier = this.form().controls.supplier.value;
+        if (typeof supplier === 'object' && supplier) {
+          this.form().controls.importerName.patchValue(supplier.name);
+          this.form().controls.importerEmail.patchValue(supplier.email);
+          this.form().controls.importerPhone.patchValue(supplier.phone);
+          this.form().controls.importerAddress.patchValue(
+            supplier.addresses?.[0]
+              ? `${supplier.addresses[0].street}, ${supplier.addresses[0].postalCode} ${supplier.addresses[0].city}, ${supplier.addresses[0].country}`
+              : ''
+          );
+        }
+        this.form().controls.importerName.disable();
+        this.form().controls.importerEmail.disable();
+        this.form().controls.importerPhone.disable();
+        this.form().controls.importerAddress.disable();
+      } else {
+        // If supplier is not importer, enable importer fields and clear them
+        this.form().controls.importerName.enable();
+        this.form().controls.importerEmail.enable();
+        this.form().controls.importerPhone.enable();
+        this.form().controls.importerAddress.enable();
+        this.form().controls.importerName.patchValue('');
+        this.form().controls.importerEmail.patchValue('');
+        this.form().controls.importerPhone.patchValue('');
+        this.form().controls.importerAddress.patchValue('');
+        this.form().controls.importerName.setValidators([Validators.required]);
+        this.form().controls.importerEmail.setValidators([Validators.email]);
+        this.form().controls.importerPhone.setValidators([]);
+        this.form().controls.importerAddress.setValidators([]);
+      }
+      this.form().controls.importerName.updateValueAndValidity();
+      this.form().controls.importerEmail.updateValueAndValidity();
+      this.form().controls.importerPhone.updateValueAndValidity();
+      this.form().controls.importerAddress.updateValueAndValidity();
     });
 
     this.form().controls.manufacturer.valueChanges.subscribe((value) => {

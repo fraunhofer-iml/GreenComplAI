@@ -25,6 +25,7 @@ const addresses = requireData('addresses.json');
 const products = requireData('products.json');
 const material = requireData('material.json');
 const packaging = requireData('packaging.json');
+const packagingMaterials = requireData('packaging-materials.json');
 const generalWaste = requireData('waste-general.json');
 const utilizableWaste = requireData('waste-utilizable.json');
 const nonUtilizableWaste = requireData('waste-non-utilizable.json');
@@ -127,6 +128,12 @@ const dataSets: Entity[] = [
     name: 'packaging',
     records: packaging,
     createRecord: async (data: any) => await prisma.packaging.create({ data }),
+  },
+  {
+    name: 'packagingMaterials',
+    records: packagingMaterials,
+    createRecord: async (data: any) =>
+      await prisma.packagingMaterials.create({ data }),
   },
   {
     name: 'partpackaging',

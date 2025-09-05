@@ -8,6 +8,7 @@
 
 import { AuthRoles, MaterialDto, ProductDto } from '@ap2/api-interfaces';
 import moment, { Moment } from 'moment/moment';
+import { DecimalPipe } from '@angular/common';
 import { Component, inject, Input, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
@@ -63,6 +64,7 @@ import { UploadedFilesComponent } from './uploaded-files/uploaded-files.componen
     ProductWasteComponent,
     FlagableComponent,
     UploadedFilesComponent,
+    DecimalPipe,
   ],
   providers: [
     { provide: DataService, useClass: ProductsService },
@@ -73,13 +75,15 @@ import { UploadedFilesComponent } from './uploaded-files/uploaded-files.componen
       useClass: MomentDateAdapter,
       deps: [MAT_DATE_LOCALE],
     },
+    DecimalPipe,
   ],
   templateUrl: './details.component.html',
 })
 export class ProductDetailsComponent {
   private productService = inject(ProductsService);
   private supplierService = inject(SupplierService);
-  authService = inject(AuthenticationService);
+  protected authService = inject(AuthenticationService);
+  private readonly decimalPipe = inject(DecimalPipe);
 
   Uris = Uris;
 
@@ -104,10 +108,6 @@ export class ProductDetailsComponent {
 
   @Input() set id(id: string) {
     this.id$.set(id);
-  }
-
-  displayMaterials(materials: [MaterialDto, number][]) {
-    return materials.map((m) => `${m[0].name} (${m[1]} %)`).join(', ');
   }
 
   setYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {

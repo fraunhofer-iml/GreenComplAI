@@ -26,10 +26,17 @@ export class OutliersByItem {
   id: string;
   numberOfOutliers: number;
   numberOfProducts: number;
+  name?: string;
 
-  constructor(id: string, numberOfProducts: number, numberOfOutliers: number) {
+  constructor(
+    id: string,
+    numberOfProducts: number,
+    numberOfOutliers: number,
+    name?: string
+  ) {
     this.id = id;
     this.numberOfOutliers = numberOfOutliers;
     this.numberOfProducts = numberOfProducts;
+    this.name = name;
   }
 }

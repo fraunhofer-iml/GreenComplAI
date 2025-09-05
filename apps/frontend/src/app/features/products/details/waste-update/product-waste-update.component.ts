@@ -22,7 +22,7 @@ import { ConfirmUpdateDialogComponent } from '../../../../shared/components/conf
 import { WasteCreateComponent } from '../../../../shared/components/waste-create/waste-create.component';
 import { WasteFormGroup } from '../../../../shared/components/waste-create/waste-form';
 import { wasteFormGroup } from '../../../../shared/components/waste-create/waste.form-group';
-import { materialFormGroup } from '../../create/material.form-group';
+import { regularMaterialFormGroup } from '../../create/material.form-group';
 
 @Component({
   selector: 'app-product-waste-update',
@@ -68,7 +68,7 @@ export class ProductWasteUpdateComponent {
     });
 
     dto.wasteMaterials?.map((mat) => {
-      const newForm = materialFormGroup();
+      const newForm = regularMaterialFormGroup();
       newForm.patchValue({
         material: mat.material?.name ?? '',
         percentage: mat.percentage,
