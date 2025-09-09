@@ -47,7 +47,17 @@
         [data]="flags()"
         [element]="'waste.wasteMaterials'"
       >
-        <span>{{ displayWasteMaterials(waste()?.wasteMaterials ?? []) }}</span>
+        <div class="flex flex-row flex-wrap gap-1">
+          @for (item of waste()?.wasteMaterials ?? []; track $index) {
+            <mat-chip>
+              {{ item.material?.name }}
+              <span class="ml-2 !text-neutral-700"
+                >{{ item.percentage | number }} % |
+                {{ item.weightInKg | number }} kg</span
+              >
+            </mat-chip>
+          }
+        </div>
       </app-flagable>
 
       <mat-divider class="col-span-3"></mat-divider>

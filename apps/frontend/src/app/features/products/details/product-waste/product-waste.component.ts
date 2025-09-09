@@ -10,6 +10,7 @@ import { WasteDto, WasteMaterialDto } from '@ap2/api-interfaces';
 import { DecimalPipe } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatChip } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
@@ -24,6 +25,7 @@ import { FlagableComponent } from '../../../../shared/components/flagable-elemen
     RouterModule,
     FlagableComponent,
     DecimalPipe,
+    MatChip,
   ],
   providers: [DecimalPipe],
   templateUrl: './product-waste.component.html',
