@@ -18,11 +18,11 @@ export const productUpdateQuery = (dto: ProductUpdateDto, id: string) =>
       ...upsertQuery(dto.masterData),
 
       materials: materialUpdateQuery(dto.materials, id),
-      criticalRawMaterials: criticalRawMaterialUpdateQuery(
+      criticalRawMaterials: minimalMaterialUpdateQuery(
         dto.criticalRawMaterials,
         id
       ),
-      rareEarths: rareEarthUpdateQuery(dto.rareEarths, id),
+      rareEarths: minimalMaterialUpdateQuery(dto.rareEarths, id),
     },
   }) satisfies Prisma.ProductUpdateArgs;
 
@@ -64,39 +64,7 @@ export const materialUpdateQuery = (
     })),
 });
 
-export const criticalRawMaterialUpdateQuery = (
-  materials: {
-    material: string;
-    percentage: number;
-  }[],
-  id: string
-) => ({
-  upsert: materials
-    .filter((mat) => mat?.material && mat?.percentage)
-    .map((mat) => ({
-      where: {
-        productId_materialName: { productId: id, materialName: mat.material },
-      },
-      create: {
-        material: {
-          connectOrCreate: {
-            where: {
-              name: mat.material,
-            },
-            create: {
-              name: mat.material,
-            },
-          },
-        },
-        percentage: mat.percentage,
-      },
-      update: {
-        percentage: mat.percentage,
-      },
-    })),
-});
-
-export const rareEarthUpdateQuery = (
+export const minimalMaterialUpdateQuery = (
   materials: {
     material: string;
     percentage: number;

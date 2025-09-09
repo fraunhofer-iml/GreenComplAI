@@ -4,7 +4,7 @@
     "materialName": "Metall",
     "percentage": 50,
     "primary": true,
-    "renewable": true
+    "renewable": false
   },
   {
     "productId": "product-2",

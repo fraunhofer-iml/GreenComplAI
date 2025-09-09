@@ -9,9 +9,8 @@
 import { ProductUpdateDto } from '@ap2/api-interfaces';
 import { Prisma } from '@prisma/client';
 import {
-  criticalRawMaterialUpdateQuery,
   materialUpdateQuery,
-  rareEarthUpdateQuery,
+  minimalMaterialUpdateQuery,
 } from './product-update.query';
 
 export const productFindManyOfSupplierQuery = ({
@@ -134,11 +133,11 @@ export const updateProductOfSupplier = (dto: ProductUpdateDto, id: string) =>
       productCarbonFootprint:
         Number(dto.masterData.productCarbonFootprint) || 0,
       materials: materialUpdateQuery(dto.materials, id),
-      criticalRawMaterials: criticalRawMaterialUpdateQuery(
+      criticalRawMaterials: minimalMaterialUpdateQuery(
         dto.criticalRawMaterials,
         id
       ),
-      rareEarths: rareEarthUpdateQuery(dto.rareEarths, id),
+      rareEarths: minimalMaterialUpdateQuery(dto.rareEarths, id),
       digitalProductPassportUrl:
         dto.masterData.digitalProductPassportUrl ?? null,
     },
