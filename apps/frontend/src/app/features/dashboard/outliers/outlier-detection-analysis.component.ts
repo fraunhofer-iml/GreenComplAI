@@ -92,8 +92,8 @@ export class OutlierDetectionAnalysisComponent {
       top: 'center',
       textStyle: {
         color: '#fff',
-        overflow: 'break',
-        width: '240',
+        overflow: 'truncate',
+        width: '200',
       },
       formatter: function (name) {
         const value = dataTotal

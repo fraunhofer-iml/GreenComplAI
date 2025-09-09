@@ -200,8 +200,6 @@ export class ProductUpdateComponent {
       this.rareEarthsForm
     );
 
-    console.log(dto);
-
     this.updateMutation.mutate(dto);
   }
 

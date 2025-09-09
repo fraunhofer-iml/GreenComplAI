@@ -148,6 +148,14 @@ export class InflowAnalysisGraphComponent {
   ): EChartsOption {
     const chartOption: EChartsOption = getDefaultOption(true, unit);
     chartOption.title = { text: title };
+    chartOption.legend = {
+      ...chartOption.legend,
+      textStyle: {
+        color: '#fff',
+        overflow: 'truncate',
+        width: '200',
+      },
+    };
 
     if (data.length === 0) chartOption.title.subtext = 'Keine Daten';
     else {

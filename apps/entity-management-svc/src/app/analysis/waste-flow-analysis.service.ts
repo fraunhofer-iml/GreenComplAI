@@ -340,8 +340,6 @@ export class WasteFlowAnalysisService {
     toYear: number;
     filter: string;
   }): Promise<WasteFlowAnalysisDto> {
-    console.log('filter: ' + filter);
-
     const productGroup = await this.prisma.productGroup.findUnique({
       where: { id: productGroupId },
       include: {
