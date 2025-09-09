@@ -58,6 +58,11 @@
             </mat-chip>
           }
         </div>
+        @if (
+          !waste()?.wasteMaterials || waste()?.wasteMaterials?.length === 0
+        ) {
+          <span>keine Angabe</span>
+        }
       </app-flagable>
 
       <mat-divider class="col-span-3"></mat-divider>
