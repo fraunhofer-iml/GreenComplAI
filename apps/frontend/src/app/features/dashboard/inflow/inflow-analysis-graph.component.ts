@@ -52,6 +52,7 @@ export class InflowAnalysisGraphComponent {
         await this.analysisService.getInFlowAnalysisOfProductGroups(
           this.from$().year(),
           this.to$().year(),
+          '',
           this.productGroupId$()
         );
       return this.toChartData(analysis);

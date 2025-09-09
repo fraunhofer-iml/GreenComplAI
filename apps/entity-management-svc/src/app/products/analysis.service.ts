@@ -211,7 +211,6 @@ export class ProductAnalysisService {
         productGroupId: productGroupId,
       });
     }
-    console.log('id: ' + productGroupId);
     const products = await this.prismaService.product.groupBy({
       by: [productGroupId ? 'id' : 'productGroupId'],
       where: productGroupId ? { productGroupId: productGroupId } : undefined,

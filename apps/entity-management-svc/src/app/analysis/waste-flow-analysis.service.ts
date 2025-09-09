@@ -29,8 +29,8 @@ export class WasteFlowAnalysisService {
   getWasteFlowAnalysis({
     fromYear,
     toYear,
-    productGroupId,
     filter,
+    productGroupId,
   }: {
     fromYear: number;
     toYear: number;
@@ -340,11 +340,13 @@ export class WasteFlowAnalysisService {
     toYear: number;
     filter: string;
   }): Promise<WasteFlowAnalysisDto> {
+    console.log('filter: ' + filter);
+
     const productGroup = await this.prisma.productGroup.findUnique({
       where: { id: productGroupId },
       include: {
         products: {
-          where: { name: { contains: filter } },
+          where: { name: { contains: filter ?? '' } },
           include: {
             productionHistory: true,
             waste: {
@@ -354,8 +356,6 @@ export class WasteFlowAnalysisService {
         },
       },
     });
-
-    console.log(productGroup);
 
     const multiplier = await this.analysisService.getMultiplierForProducts(
       productGroup.products.map((p) => p.id),
