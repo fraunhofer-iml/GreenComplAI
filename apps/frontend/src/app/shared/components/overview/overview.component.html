@@ -62,7 +62,8 @@
                     ? element[item]
                       ? 'ja'
                       : 'nein'
-                    : typeof element[item] === 'number'
+                    : typeof element[item] === 'number' &&
+                        item !== 'evaluationYear'
                       ? ((element[item] | number) ?? '' | unit: item)
                       : element[item]
                 }}
