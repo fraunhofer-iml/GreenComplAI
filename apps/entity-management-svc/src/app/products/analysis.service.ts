@@ -211,15 +211,21 @@ export class ProductAnalysisService {
         productGroupId: productGroupId,
       });
     }
-
+    console.log('id: ' + productGroupId);
     const products = await this.prismaService.product.groupBy({
       by: [productGroupId ? 'id' : 'productGroupId'],
       where: productGroupId ? { productGroupId: productGroupId } : undefined,
       _count: true,
     });
 
+    console.log(products);
+
     const productGroupInfo = await this.prismaService.productGroup.findMany({
-      where: { id: { in: products.map((p) => p.productGroupId) } },
+      where: {
+        id: {
+          in: products.map((p) => p.productGroupId),
+        },
+      },
     });
 
     const outliers = await this.prismaService.product.groupBy({

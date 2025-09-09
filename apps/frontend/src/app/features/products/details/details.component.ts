@@ -6,7 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { AuthRoles, MaterialDto, ProductDto } from '@ap2/api-interfaces';
+import { AuthRoles, ProductDto } from '@ap2/api-interfaces';
 import moment, { Moment } from 'moment/moment';
 import { DecimalPipe } from '@angular/common';
 import { Component, inject, Input, signal } from '@angular/core';

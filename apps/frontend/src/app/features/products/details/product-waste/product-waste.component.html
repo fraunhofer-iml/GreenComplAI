@@ -14,7 +14,9 @@
   </div>
 
   @if (!waste()) {
-    <span class="text-sm">Keine Daten zum Abfall angegeben</span>
+    <span class="px-2 text-sm text-neutral-600"
+      >Keine Daten zum Abfall angegeben</span
+    >
   } @else {
     <div class="mt-2 grid grid-cols-3 gap-x-4 gap-y-2 text-sm">
       <app-flagable
@@ -253,7 +255,7 @@
           <span>{{ waste()?.hazardousType ?? 'keine Angabe' }} </span>
         </app-flagable>
       } @else {
-        <span>Keine gefährlichen Abfälle enthalten</span>
+        <span class="text-sm">Keine gefährlichen Abfälle enthalten</span>
       }
     </div>
   }
