@@ -355,6 +355,8 @@ export class WasteFlowAnalysisService {
       },
     });
 
+    console.log(productGroup);
+
     const multiplier = await this.analysisService.getMultiplierForProducts(
       productGroup.products.map((p) => p.id),
       fromYear,
