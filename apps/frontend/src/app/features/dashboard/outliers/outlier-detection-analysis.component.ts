@@ -92,6 +92,8 @@ export class OutlierDetectionAnalysisComponent {
       top: 'center',
       textStyle: {
         color: '#fff',
+        overflow: 'break',
+        width: '240',
       },
       formatter: function (name) {
         const value = dataTotal
@@ -116,6 +118,10 @@ export class OutlierDetectionAnalysisComponent {
           name: item[0],
         };
       });
+      outerPie.tooltip = {
+        ...outerPie.tooltip,
+        position: { right: 'center', top: 0 },
+      };
 
       const innerPie: PieSeriesOption = getDefaultPieSeries([0, '50 %']);
       innerPie.center = ['30%', '50%'];
@@ -132,6 +138,10 @@ export class OutlierDetectionAnalysisComponent {
           name: item[0],
         };
       });
+      innerPie.tooltip = {
+        ...innerPie.tooltip,
+        position: { right: 'center', top: 0 },
+      };
 
       chartOption.series = [outerPie, innerPie];
     }

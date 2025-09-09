@@ -218,15 +218,26 @@ export class ProductAnalysisService {
       _count: true,
     });
 
-    console.log(products);
+    let productGroupInfo: Prisma.ProductGroupGetPayload<true>[] | undefined;
+    let productInfo: Prisma.ProductGetPayload<true>[] | undefined;
 
-    const productGroupInfo = await this.prismaService.productGroup.findMany({
-      where: {
-        id: {
-          in: products.map((p) => p.productGroupId),
+    if (!productGroupId) {
+      productGroupInfo = await this.prismaService.productGroup.findMany({
+        where: {
+          id: {
+            in: products.map((p) => p.productGroupId ?? null),
+          },
         },
-      },
-    });
+      });
+    } else {
+      productInfo = await this.prismaService.product.findMany({
+        where: {
+          id: {
+            in: products.map((p) => p.id ?? null),
+          },
+        },
+      });
+    }
 
     const outliers = await this.prismaService.product.groupBy({
       by: [productGroupId ? 'id' : 'productGroupId'],
@@ -244,10 +255,15 @@ export class ProductAnalysisService {
       dto.totalNumberOfProducts += product._count;
       dto.outliesByItem.push({
         id: productGroupId ? product.id : product.productGroupId,
-        name: productGroupInfo.find(
-          (el) =>
-            el.id === (productGroupId ? product.id : product.productGroupId)
-        ).name,
+        name: productGroupId
+          ? productInfo.find(
+              (el) =>
+                el.id === (productGroupId ? product.id : product.productGroupId)
+            ).name
+          : productGroupInfo.find(
+              (el) =>
+                el.id === (productGroupId ? product.id : product.productGroupId)
+            ).name,
         numberOfOutliers: 0,
         numberOfProducts: product._count,
       });
