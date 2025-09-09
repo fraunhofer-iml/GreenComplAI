@@ -141,7 +141,7 @@ GreenComplAI follows a microservices architecture with the following components:
 3. **Start infrastructure services**
 
    ```bash
-   docker-compose up -d
+   docker compose up -d
    ```
 
 4. **Set up database**
