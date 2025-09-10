@@ -8,7 +8,7 @@
       <h1 class="font-medium">{{ id() }}</h1>
     } @else {
       <h1 class="font-medium">
-        {{ !companyData ? 'hinzufügen' : companyData.name }}
+        {{ companyQuery.data() ? 'hinzufügen' : companyQuery.data()?.name }}
       </h1>
     }
   </div>
@@ -22,7 +22,7 @@
   @if (!usesImport) {
     <form class="flex flex-col gap-4" [formGroup]="companyForm">
       <div
-        class="grid w-full grid-cols-1 gap-2 rounded-lg bg-neutral-200 p-8 md:grid-cols-3"
+        class="grid w-full grid-cols-1 gap-2 rounded-lg bg-neutral-200 p-4 md:grid-cols-3"
       >
         <span class="col-span-3" i18n>Kontaktdaten</span>
         <mat-form-field appearance="outline">
@@ -38,21 +38,26 @@
           <input matInput formControlName="phone" />
         </mat-form-field>
       </div>
-      <div
-        class="w-full gap-2 rounded-lg bg-neutral-200 p-8"
-        formArrayName="addresses"
-      >
-        <span i18n>Adressen</span>
-
+      <div formArrayName="addresses" class="flex flex-col gap-2">
         @for (
           address of companyForm.controls.addresses.controls;
-          track $index
+          track address
         ) {
           <div
             [formGroupName]="$index"
-            class="grid w-full grid-cols-1 gap-2 pt-2 md:grid-cols-3"
+            class="hover:border-primary-800/80 group grid w-full grid-cols-1 gap-2 rounded-md border-2 border-transparent bg-neutral-200 p-4 md:grid-cols-3"
           >
-            <span class="col-span-3">Adresse {{ $index + 1 }}</span>
+            <div class="col-span-3 flex justify-between">
+              <span class="col-span-3">Adresse {{ $index + 1 }}</span>
+              <button
+                mat-stroked-button
+                (click)="removeAddress($index)"
+                class="invisible group-hover:visible group-hover:cursor-pointer"
+              >
+                Löschen
+              </button>
+            </div>
+
             <mat-form-field appearance="outline" class="col-span-3">
               <mat-label i18n>Straße</mat-label>
               <input matInput formControlName="street" />
@@ -71,21 +76,13 @@
             </mat-form-field>
           </div>
         }
-
-        @if (isBuyer) {
-          <div class="col-span-3 mt-2 flex justify-end gap-2">
-            <button mat-flat-button (click)="addAddress()" i18n>
-              Addresse hinzufügen
-            </button>
-            <button mat-flat-button (click)="removeAddress()" i18n>
-              Addresse entfernen
-            </button>
-          </div>
-        }
       </div>
 
       @if (isBuyer) {
         <div class="col-span-2 flex justify-end gap-2">
+          <button mat-stroked-button (click)="addAddress()" i18n>
+            Addresse hinzufügen
+          </button>
           <button
             mat-flat-button
             (click)="save()"

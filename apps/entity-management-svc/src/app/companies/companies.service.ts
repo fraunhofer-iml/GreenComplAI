@@ -232,9 +232,11 @@ export class CompaniesService {
       data: {
         ...dto,
         addresses: {
-          updateMany: dto.addresses.map((address) => ({
-            where: { id: address.id },
-            data: { ...address },
+          deleteMany: { id: { notIn: dto.addresses.map((a) => a.id ?? '') } },
+          upsert: dto.addresses.map((address) => ({
+            where: { id: address.id ?? '' },
+            create: { ...address },
+            update: { ...address },
           })),
         },
       },
