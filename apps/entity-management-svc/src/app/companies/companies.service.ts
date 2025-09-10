@@ -233,10 +233,9 @@ export class CompaniesService {
         ...dto,
         addresses: {
           deleteMany: { id: { notIn: dto.addresses.map((a) => a.id ?? '') } },
-          upsert: dto.addresses.map((address) => ({
-            where: { id: address.id ?? '' },
-            create: { ...address },
-            update: { ...address },
+          updateMany: dto.addresses.map((address) => ({
+            where: { id: address.id },
+            data: { ...address },
           })),
         },
       },
