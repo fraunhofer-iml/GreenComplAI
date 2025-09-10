@@ -49,13 +49,15 @@
           >
             <div class="col-span-3 flex justify-between">
               <span class="col-span-3">Adresse {{ $index + 1 }}</span>
-              <button
-                mat-stroked-button
-                (click)="removeAddress($index)"
-                class="invisible group-hover:visible group-hover:cursor-pointer"
-              >
-                Löschen
-              </button>
+              @if (isBuyer) {
+                <button
+                  mat-stroked-button
+                  (click)="removeAddress($index)"
+                  class="invisible group-hover:visible group-hover:cursor-pointer"
+                >
+                  Löschen
+                </button>
+              }
             </div>
 
             <mat-form-field appearance="outline" class="col-span-3">
