@@ -79,9 +79,8 @@ import { ReportTooltip } from './tooltips';
 export class ReportInformationComponent implements OnChanges {
   report = input<ReportDto>();
   refetchEvent = output<void>();
-  validateEvent = output<void>();
   reportForm: FormGroup<ReportForm>;
-  isValid = input<boolean>(false);
+  isValid = false;
 
   private readonly dialog = inject(MatDialog);
   private reportsService = inject(ReportsService);
@@ -155,8 +154,8 @@ export class ReportInformationComponent implements OnChanges {
   }
 
   async onCloseReport() {
-    const valid = this.formsService.validateGoalFormOnReportClose();
-    if (valid) {
+    this.isValid = this.formsService.validateGoalFormOnReportClose();
+    if (this.isValid) {
       toast.success('Alle Felder wurden korrekt ausgefüllt');
       this.openDialog();
     } else
@@ -174,7 +173,7 @@ export class ReportInformationComponent implements OnChanges {
 
   private openDialog() {
     this.dialog
-      .open(FinalizeDialogComponent, { data: { isValid: this.isValid() } })
+      .open(FinalizeDialogComponent)
       .afterClosed()
       .subscribe((isFinal: boolean) => {
         if (isFinal) this.save(true);
