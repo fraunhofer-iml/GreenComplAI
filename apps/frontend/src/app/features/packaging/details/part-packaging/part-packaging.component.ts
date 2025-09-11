@@ -8,6 +8,7 @@
 
 import { PackagingDto, ProductUpdateMapDto } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
+import { DecimalPipe } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -32,6 +33,7 @@ import { ProductPackagingFormGroup } from '../../../products/create/model/produc
     MatTableModule,
     MatIconModule,
     MatButtonModule,
+    DecimalPipe,
   ],
   templateUrl: './part-packaging.component.html',
 })

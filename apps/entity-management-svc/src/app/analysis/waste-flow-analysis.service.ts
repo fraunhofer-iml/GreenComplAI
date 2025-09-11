@@ -29,8 +29,8 @@ export class WasteFlowAnalysisService {
   getWasteFlowAnalysis({
     fromYear,
     toYear,
-    productGroupId,
     filter,
+    productGroupId,
   }: {
     fromYear: number;
     toYear: number;
@@ -344,7 +344,7 @@ export class WasteFlowAnalysisService {
       where: { id: productGroupId },
       include: {
         products: {
-          where: { name: { contains: filter } },
+          where: { name: { contains: filter ?? '' } },
           include: {
             productionHistory: true,
             waste: {

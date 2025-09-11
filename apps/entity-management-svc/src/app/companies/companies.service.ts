@@ -232,6 +232,7 @@ export class CompaniesService {
       data: {
         ...dto,
         addresses: {
+          deleteMany: { id: { notIn: dto.addresses.map((a) => a.id ?? '') } },
           updateMany: dto.addresses.map((address) => ({
             where: { id: address.id },
             data: { ...address },
