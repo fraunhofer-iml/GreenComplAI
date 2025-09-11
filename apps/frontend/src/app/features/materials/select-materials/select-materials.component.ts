@@ -54,6 +54,7 @@ export class SelectMaterialsComponent {
   @Input() basicForm?: FormGroup<MaterialsFormGroup>;
   @Input() rareEarthsForm?: FormGroup<MaterialsFormGroup>;
   @Input() criticalRawMaterialsForm?: FormGroup<MaterialsFormGroup>;
+  @Input() isWateMaterial = false;
 
   @Output() closeSheetEvent = new EventEmitter<void>();
 

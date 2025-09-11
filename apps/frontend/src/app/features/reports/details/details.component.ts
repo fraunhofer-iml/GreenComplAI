@@ -74,7 +74,6 @@ export class ReportsDetailsComponent {
 
   private reportsService = inject(ReportsService);
 
-  validationRequired = false;
   isValid = false;
 
   reportsQuery = injectQuery(() => ({

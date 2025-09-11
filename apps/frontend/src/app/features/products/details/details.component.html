@@ -210,9 +210,12 @@
             [topic]="'Anteil biologischer Materialien'"
             [element]="'percentageOfBiologicalMaterials'"
           >
-            <span class="text-right">{{
-              data.percentageOfBiologicalMaterials | number: '1.0-2'
-            }}</span></app-flagable
+            <span class="text-right"
+              >{{
+                data.percentageOfBiologicalMaterials | number: '1.0-2'
+              }}
+              %</span
+            ></app-flagable
           >
 
           <app-flagable
@@ -497,7 +500,7 @@
                     <div class="font-medium">
                       {{ material[0].name }}
                     </div>
-                    <div class="text-sm">{{ material[1] }}%</div>
+                    <div class="text-sm">{{ material[1] | number }} %</div>
                     <div class="flex flex-wrap gap-2">
                       @if (material[2] !== null && material[2] !== undefined) {
                         <span
@@ -533,7 +536,7 @@
                         >Seltene Erde</span
                       >
                     </div>
-                    <div class="font-medium">{{ rareEarth[1] }}%</div>
+                    <div class="font-medium">{{ rareEarth[1] | number }} %</div>
                   </div>
                 </div>
               }
@@ -558,7 +561,9 @@
                         >Kritischer Rohstoff</span
                       >
                     </div>
-                    <div class="font-medium">{{ criticalMaterial[1] }}%</div>
+                    <div class="font-medium">
+                      {{ criticalMaterial[1] | number }} %
+                    </div>
                   </div>
                 </div>
               }

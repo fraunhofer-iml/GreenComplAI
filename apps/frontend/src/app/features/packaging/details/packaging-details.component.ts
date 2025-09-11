@@ -12,6 +12,7 @@ import {
   PackagingUpdateDto,
 } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
+import { DecimalPipe } from '@angular/common';
 import { Component, inject, input, OnInit, signal } from '@angular/core';
 import {
   FormArray,
@@ -36,7 +37,6 @@ import { DataService } from '../../../core/services/data-service/data.service';
 import { PackagingService } from '../../../core/services/packaging/packaging.service';
 import { BaseSheetComponent } from '../../../shared/components/sheet/base/sheet.component';
 import { Uris } from '../../../shared/constants/uris';
-import { RegularMaterialsFormGroup } from '../../materials/select-materials/materials-form.model';
 import { SelectMaterialsComponent } from '../../materials/select-materials/select-materials.component';
 import {
   addRegularMaterialFormGroup,
@@ -60,6 +60,7 @@ import { PartPackagingComponent } from './part-packaging/part-packaging.componen
     ReactiveFormsModule,
     MatAutocompleteModule,
     SelectMaterialsComponent,
+    DecimalPipe,
   ],
   providers: [
     QueryClient,

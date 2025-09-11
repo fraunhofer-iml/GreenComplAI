@@ -14,7 +14,9 @@
   </div>
 
   @if (!waste()) {
-    <span class="text-sm">Keine Daten zum Abfall angegeben</span>
+    <span class="px-2 text-sm text-neutral-600"
+      >Keine Daten zum Abfall angegeben</span
+    >
   } @else {
     <div class="mt-2 grid grid-cols-3 gap-x-4 gap-y-2 text-sm">
       <app-flagable
@@ -45,7 +47,22 @@
         [data]="flags()"
         [element]="'waste.wasteMaterials'"
       >
-        <span>{{ displayWasteMaterials(waste()?.wasteMaterials ?? []) }}</span>
+        <div class="flex flex-row flex-wrap gap-1">
+          @for (item of waste()?.wasteMaterials ?? []; track $index) {
+            <mat-chip>
+              {{ item.material?.name }}
+              <span class="ml-2 !text-neutral-700"
+                >{{ item.percentage | number }} % |
+                {{ item.weightInKg | number }} kg</span
+              >
+            </mat-chip>
+          }
+        </div>
+        @if (
+          !waste()?.wasteMaterials || waste()?.wasteMaterials?.length === 0
+        ) {
+          <span>keine Angabe</span>
+        }
       </app-flagable>
 
       <mat-divider class="col-span-3"></mat-divider>
@@ -253,7 +270,7 @@
           <span>{{ waste()?.hazardousType ?? 'keine Angabe' }} </span>
         </app-flagable>
       } @else {
-        <span>Keine gefährlichen Abfälle enthalten</span>
+        <span class="text-sm">Keine gefährlichen Abfälle enthalten</span>
       }
     </div>
   }

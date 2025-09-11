@@ -211,16 +211,32 @@ export class ProductAnalysisService {
         productGroupId: productGroupId,
       });
     }
-
     const products = await this.prismaService.product.groupBy({
       by: [productGroupId ? 'id' : 'productGroupId'],
       where: productGroupId ? { productGroupId: productGroupId } : undefined,
       _count: true,
     });
 
-    const productGroupInfo = await this.prismaService.productGroup.findMany({
-      where: { id: { in: products.map((p) => p.productGroupId) } },
-    });
+    let productGroupInfo: Prisma.ProductGroupGetPayload<true>[] | undefined;
+    let productInfo: Prisma.ProductGetPayload<true>[] | undefined;
+
+    if (productGroupId) {
+      productInfo = await this.prismaService.product.findMany({
+        where: {
+          id: {
+            in: products.map((p) => p.id ?? null),
+          },
+        },
+      });
+    } else {
+      productGroupInfo = await this.prismaService.productGroup.findMany({
+        where: {
+          id: {
+            in: products.map((p) => p.productGroupId ?? null),
+          },
+        },
+      });
+    }
 
     const outliers = await this.prismaService.product.groupBy({
       by: [productGroupId ? 'id' : 'productGroupId'],
@@ -238,10 +254,10 @@ export class ProductAnalysisService {
       dto.totalNumberOfProducts += product._count;
       dto.outliesByItem.push({
         id: productGroupId ? product.id : product.productGroupId,
-        name: productGroupInfo.find(
-          (el) =>
-            el.id === (productGroupId ? product.id : product.productGroupId)
-        ).name,
+        name: productGroupId
+          ? productInfo.find((el) => el.id === product.id).name
+          : productGroupInfo.find((el) => el.id === product.productGroupId)
+              .name,
         numberOfOutliers: 0,
         numberOfProducts: product._count,
       });

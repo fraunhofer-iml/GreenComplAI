@@ -64,7 +64,7 @@
         <ng-container matColumnDef="price">
           <th mat-header-cell *matHeaderCellDef>Preis / Stück</th>
           <td mat-cell *matCellDef="let element">
-            {{ (element[0].price / 100).toFixed(2) }} €
+            {{ element[0].price / 100 | number: '1.2' }} €
           </td>
         </ng-container>
         <ng-container matColumnDef="amount">
@@ -77,7 +77,7 @@
         <ng-container matColumnDef="totalPrice">
           <th mat-header-cell *matHeaderCellDef>Gesamtpreis</th>
           <td mat-cell *matCellDef="let element">
-            {{ ((element[1] * element[0].price) / 100).toFixed(2) }} €
+            {{ (element[1] * element[0].price) / 100 | number: '1.2' }} €
           </td>
         </ng-container>
 

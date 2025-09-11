@@ -5,7 +5,7 @@
         <div formArrayName="strategies" class="space-y-4">
           @for (
             strategy of strategies.controls;
-            track $index;
+            track strategy;
             let pindex = $index
           ) {
             <div
