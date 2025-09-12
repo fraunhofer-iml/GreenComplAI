@@ -7,14 +7,10 @@
  */
 
 import { IdocMessagePatterns } from '@ap2/amqp';
-import {
-  CreateProductFromIdocRawProps,
-  ProductDto,
-} from '@ap2/api-interfaces';
-import { Controller, Logger } from '@nestjs/common';
+import { CreateProductFromIdocRawProps, ProductCreateDto, ProductDto } from '@ap2/api-interfaces';
+import { Controller, Header, Logger } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { IdocService } from './idoc.service';
-
 
 @Controller()
 export class IdocController {
@@ -22,6 +18,7 @@ export class IdocController {
 
   constructor(private readonly idocService: IdocService) {}
 
+  @Header('Content-Type', 'text/xml')
   @MessagePattern(IdocMessagePatterns.CREATE)
   async createProductFromIdocRaw(
     @Payload() payload: CreateProductFromIdocRawProps

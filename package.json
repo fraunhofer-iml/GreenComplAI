@@ -50,6 +50,7 @@
     "amqp-connection-manager": "^4.1.14",
     "amqplib": "^0.10.8",
     "axios": "^1.11.0",
+    "body-parser": "^2.2.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
     "echarts": "^6.0.0",

@@ -6,36 +6,26 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { AddressDto, CompanyCreateDto, ProductDto } from '@ap2/api-interfaces';
-import { PrismaService } from '@ap2/database';
-import { XMLParser } from 'fast-xml-parser';
 import {
-  IUserManagementService,
-  USER_MANAGEMENT_SERVICE_TOKEN,
-} from '@greencomplai/user-management';
-import { Inject, Injectable } from '@nestjs/common';
-import { FlagsService } from '../flags/flags.service';
+  ProductCreateDto, ProductDto,
+} from '@ap2/api-interfaces';
+import { XMLParser } from 'fast-xml-parser';
+import { Injectable, Logger } from '@nestjs/common';
+import { ProductService } from '../products/products.service';
+
 
 @Injectable()
 export class IdocService {
+  private readonly logger: Logger = new Logger(IdocService.name);
+
   constructor(
-    private readonly prismaService: PrismaService,
-    private readonly flagsService: FlagsService,
-    @Inject(USER_MANAGEMENT_SERVICE_TOKEN)
-    private readonly userManagementService: IUserManagementService
+    private readonly productService: ProductService,
   ) {}
 
   async createProductFromIdocRaw(
     idoc: string,
     userId: string
   ): Promise<ProductDto> {
-    const evaluationElement = new CompanyCreateDto(
-      '',
-      '',
-      '',
-      [new AddressDto('', '', '', '')],
-      []
-    );
 
     const parser = new XMLParser({
       ignoreAttributes: false, // sonst gehen dir Attribute wie SEGMENT verloren
@@ -44,6 +34,8 @@ export class IdocService {
     });
 
     const parsed = parser.parse(idoc);
+
+    this.logger.log(`[IdocService] Parsed IDoc: ${JSON.stringify(parsed, null, 2)}`);
     const idocObj = parsed?.IDOC;
 
     if (!idocObj) {
@@ -68,20 +60,29 @@ export class IdocService {
     const description =
       maktm.find((m: any) => m.SPRAS === 'DE')?.MAKTX ?? undefined;
 
+    this.logger.log(`[IdocService] Name: ${name}, Description: ${description}`);
+
     // Produkt-DTO zusammenbauen
     const dto = new ProductCreateDto(name);
 
     dto.productId = maram.MATNR;
-    dto.category = maram.MATKL;
+    dto.category = maram.MATKL ? String(maram.MATKL) : undefined;
     dto.unit = marm.MEINH ?? maram.MEINS;
-    dto.gtin = marm.EAN11;
-    dto.price = mbewm.STPRS ? parseFloat(mbewm.STPRS) : undefined;
-    dto.productionLocation = marcm.WERKS;
+    dto.gtin = marm.EAN11 ? String(marm.EAN11) : undefined;
+    dto.price = mbewm.STPRS ? Math.round(parseFloat(mbewm.STPRS)) : undefined; // Int
+    dto.productionLocation = marcm.WERKS ? String(marcm.WERKS) : undefined; // aber muss später via relation auf Address gemappt werden
     dto.description = description;
 
-    // Flags für Nachvollziehbarkeit
-    dto.flags = ['imported-from-idoc'];
+    dto.productionLocation = marcm.WERKS?.toString() ?? 'UNKNOWN';
+    dto.warehouseLocation = marcm.LGORT?.toString() ?? 'UNKNOWN';
 
-    return dto;
+    this.logger.log('[IdocService] ProductCreateDto:', dto);
+
+    const product = await this.productService.create({
+      dto: dto,
+      outlierDetectionResult: []
+    })
+
+    return product;
   }
 }

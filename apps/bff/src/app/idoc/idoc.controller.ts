@@ -1,11 +1,4 @@
-import {
-  AuthenticatedKCUser,
-  AuthRoles,
-  CompanyDto,
-  getRealmRole,
-  ProductDto,
-} from '@ap2/api-interfaces';
-import { KeycloakUser, Roles } from 'nest-keycloak-connect';
+;
 /*
  * Copyright Fraunhofer Institute for Material Flow and Logistics
  *
@@ -14,29 +7,16 @@ import { KeycloakUser, Roles } from 'nest-keycloak-connect';
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  HttpCode,
-  HttpStatus,
-  Logger,
-  Post,
-  UploadedFile,
-  UseInterceptors,
-} from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import {
-  ApiBody,
-  ApiConsumes,
-  ApiOkResponse,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { AuthenticatedKCUser, AuthRoles, getRealmRole, ProductDto } from '@ap2/api-interfaces';
+import { KeycloakUser, Roles } from 'nest-keycloak-connect';
+import { Controller, Logger, Post } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { RawBody } from '../../RawBodyXML';
 import { IdocService } from './idoc.service';
 
+
 @ApiTags('Idoc')
+@ApiBearerAuth()
 @Controller('Idoc')
 export class IdocController {
   private readonly logger: Logger = new Logger(IdocController.name);
@@ -49,9 +29,18 @@ export class IdocController {
     getRealmRole(AuthRoles.BUYER)
   )
   @ApiOperation({
-    summary: 'Ingest IDOC/XML from raw body',
+    summary: 'Import IDOC/XML from raw body payload',
     description:
       'Accepts the raw XML text of a SAP iDoc (e.g., MATMAS, ORDERS). Converts to GreenComplAI products and persists them.',
+  })
+  @ApiConsumes('application/xml', 'text/xml')
+  @ApiBody({
+    description: 'SAP iDoc XML payload',
+    required: true,
+    schema: {
+      type: 'string',
+      example: `<?xml version="1.0" encoding="UTF-8"?><IDOC>...</IDOC>`,
+    },
   })
   @ApiOkResponse({
     description: 'Created Product',
@@ -59,42 +48,12 @@ export class IdocController {
   })
   async createProductFromIdocRaw(
     @KeycloakUser() user: AuthenticatedKCUser,
-    @Body() idoc: string
+    @RawBody() idoc: string // RawBody to indicate that provided Payload Body is XML instead of JSON
   ): Promise<ProductDto> {
+
     return await this.idocService.createProductFromIdocRaw({
       idoc: idoc,
-      userId: user.sub
+      userId: user.sub,
     });
   }
-
-  // @Post('upload')
-  // @HttpCode(HttpStatus.CREATED)
-  // @ApiOperation({
-  //   summary: 'Upload IDOC/XML file (multipart/form-data)',
-  //   description:
-  //     'Alternative upload endpoint that accepts an XML file via multipart/form-data.',
-  // })
-  // @ApiConsumes('multipart/form-data')
-  // @ApiBody({
-  //   schema: {
-  //     type: 'object',
-  //     properties: {
-  //       file: { type: 'string', format: 'binary' },
-  //       source: { type: 'string' },
-  //     },
-  //     required: ['file'],
-  //   },
-  // })
-  // @ApiResponse({ status: 201, type: IdocIngestResponse })
-  // @UseInterceptors(FileInterceptor('file'))
-  // async createProductFromIdocFile(
-  //   @UploadedFile() file: Express.Multer.File,
-  //   @Body('source') source?: string
-  // ): Promise<IdocIngestResponse> {
-  //   if (!file || !file.buffer?.length) {
-  //     throw new BadRequestException('No file uploaded');
-  //   }
-  //   const xml = file.buffer.toString('utf8');
-  //   return this.converter.convertAndPersist(xml, source);
-  // }
 }

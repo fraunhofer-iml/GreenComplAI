@@ -17,6 +17,7 @@ import { Module } from '@nestjs/common';
 import { FlagsModule } from '../flags/flags.module';
 import { IdocController } from './idoc.controller';
 import { IdocService } from './idoc.service';
+import { ProductsModule } from '../products/products.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { IdocService } from './idoc.service';
     DatabaseModule,
     FlagsModule,
     UserManagementModule,
+    ProductsModule,
   ],
   controllers: [IdocController],
   providers: [

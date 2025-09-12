@@ -302,7 +302,7 @@ npx nx e2e frontend-e2e
 
 ```bash
 # Check if PostgreSQL is running
-docker-compose ps postgres
+docker compose ps postgres
 
 # Reset database
 npm run set-up-database
@@ -312,10 +312,10 @@ npm run set-up-database
 
 ```bash
 # Check service logs
-docker-compose logs <service-name>
+docker compose logs <service-name>
 
 # Restart services
-docker-compose restart
+docker compose restart
 ```
 
 #### Build Issues
