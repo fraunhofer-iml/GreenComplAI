@@ -1,4 +1,3 @@
-;
 /*
  * Copyright Fraunhofer Institute for Material Flow and Logistics
  *
@@ -8,14 +7,10 @@
  */
 
 import { AmqpClientEnum, IdocMessagePatterns } from '@ap2/amqp';
-import {
-  CreateProductFromIdocRawProps,
-  ProductDto,
-} from '@ap2/api-interfaces';
+import { CreateProductFromIdocRawProps, ProductDto } from '@ap2/api-interfaces';
 import { firstValueFrom } from 'rxjs';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-
 
 @Injectable()
 export class IdocService {
@@ -26,7 +21,9 @@ export class IdocService {
     private readonly entityManagementService: ClientProxy
   ) {}
 
-  createProductFromIdocRaw(props: CreateProductFromIdocRawProps): Promise<ProductDto> {
+  createProductFromIdocRaw(
+    props: CreateProductFromIdocRawProps
+  ): Promise<ProductDto> {
     return firstValueFrom(
       this.entityManagementService.send<ProductDto>(
         IdocMessagePatterns.CREATE,

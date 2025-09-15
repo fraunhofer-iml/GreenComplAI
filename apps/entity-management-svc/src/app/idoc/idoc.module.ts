@@ -15,9 +15,9 @@ import {
 } from '@greencomplai/user-management';
 import { Module } from '@nestjs/common';
 import { FlagsModule } from '../flags/flags.module';
+import { ProductsModule } from '../products/products.module';
 import { IdocController } from './idoc.controller';
 import { IdocService } from './idoc.service';
-import { ProductsModule } from '../products/products.module';
 
 @Module({
   imports: [

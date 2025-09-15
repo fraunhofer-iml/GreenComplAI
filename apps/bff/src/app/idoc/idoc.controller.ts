@@ -1,4 +1,3 @@
-;
 /*
  * Copyright Fraunhofer Institute for Material Flow and Logistics
  *
@@ -7,13 +6,24 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { AuthenticatedKCUser, AuthRoles, getRealmRole, ProductDto } from '@ap2/api-interfaces';
+import {
+  AuthenticatedKCUser,
+  AuthRoles,
+  getRealmRole,
+  ProductDto,
+} from '@ap2/api-interfaces';
 import { KeycloakUser, Roles } from 'nest-keycloak-connect';
 import { Controller, Logger, Post } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { RawBody } from '../../RawBodyXML';
 import { IdocService } from './idoc.service';
-
 
 @ApiTags('Idoc')
 @ApiBearerAuth()
@@ -50,7 +60,6 @@ export class IdocController {
     @KeycloakUser() user: AuthenticatedKCUser,
     @RawBody() idoc: string // RawBody to indicate that provided Payload Body is XML instead of JSON
   ): Promise<ProductDto> {
-
     return await this.idocService.createProductFromIdocRaw({
       idoc: idoc,
       userId: user.sub,

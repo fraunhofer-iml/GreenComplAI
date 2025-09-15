@@ -6,27 +6,21 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {
-  ProductCreateDto, ProductDto,
-} from '@ap2/api-interfaces';
+import { ProductCreateDto, ProductDto } from '@ap2/api-interfaces';
 import { XMLParser } from 'fast-xml-parser';
 import { Injectable, Logger } from '@nestjs/common';
 import { ProductService } from '../products/products.service';
-
 
 @Injectable()
 export class IdocService {
   private readonly logger: Logger = new Logger(IdocService.name);
 
-  constructor(
-    private readonly productService: ProductService,
-  ) {}
+  constructor(private readonly productService: ProductService) {}
 
   async createProductFromIdocRaw(
     idoc: string,
     userId: string
   ): Promise<ProductDto> {
-
     const parser = new XMLParser({
       ignoreAttributes: false, // sonst gehen dir Attribute wie SEGMENT verloren
       parseTagValue: true, // wandelt Strings automatisch in Zahlen/Booleans wo sinnvoll
@@ -35,7 +29,9 @@ export class IdocService {
 
     const parsed = parser.parse(idoc);
 
-    this.logger.log(`[IdocService] Parsed IDoc: ${JSON.stringify(parsed, null, 2)}`);
+    this.logger.log(
+      `[IdocService] Parsed IDoc: ${JSON.stringify(parsed, null, 2)}`
+    );
     const idocObj = parsed?.IDOC;
 
     if (!idocObj) {
@@ -80,8 +76,8 @@ export class IdocService {
 
     const product = await this.productService.create({
       dto: dto,
-      outlierDetectionResult: []
-    })
+      outlierDetectionResult: [],
+    });
 
     return product;
   }

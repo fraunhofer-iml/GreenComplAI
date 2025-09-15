@@ -6,9 +6,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { Broker } from '@ap2/amqp';
 import { Module } from '@nestjs/common';
 import { IdocController } from './idoc.controller';
-import { Broker } from '@ap2/amqp';
 import { IdocService } from './idoc.service';
 
 @Module({

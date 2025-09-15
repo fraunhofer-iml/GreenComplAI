@@ -7,7 +7,11 @@
  */
 
 import { IdocMessagePatterns } from '@ap2/amqp';
-import { CreateProductFromIdocRawProps, ProductCreateDto, ProductDto } from '@ap2/api-interfaces';
+import {
+  CreateProductFromIdocRawProps,
+  ProductCreateDto,
+  ProductDto,
+} from '@ap2/api-interfaces';
 import { Controller, Header, Logger } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { IdocService } from './idoc.service';

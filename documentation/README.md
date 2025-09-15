@@ -42,13 +42,11 @@ GreenComplAI follows a microservices architecture with the following components:
 ### Core Services
 
 1. **Frontend (Angular)**
-
    - Location: `apps/frontend/`
    - Purpose: User interface for order placement and data visualization
    - Technologies: Angular 19, Angular Material, TailwindCSS, ECharts
 
 2. **Backend for Frontend (BFF)**
-
    - Location: `apps/bff/`
    - Purpose: API gateway and request routing
    - Technologies: NestJS, AMQP messaging

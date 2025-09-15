@@ -12,5 +12,5 @@ export const RawBody = createParamDecorator(
   (_data: unknown, ctx: ExecutionContext) => {
     const req = ctx.switchToHttp().getRequest();
     return req.rawBody?.toString() ?? req.body;
-  },
+  }
 );
