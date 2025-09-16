@@ -42,13 +42,11 @@ GreenComplAI follows a microservices architecture with the following components:
 ### Core Services
 
 1. **Frontend (Angular)**
-
    - Location: `apps/frontend/`
    - Purpose: User interface for order placement and data visualization
    - Technologies: Angular 19, Angular Material, TailwindCSS, ECharts
 
 2. **Backend for Frontend (BFF)**
-
    - Location: `apps/bff/`
    - Purpose: API gateway and request routing
    - Technologies: NestJS, AMQP messaging
@@ -141,7 +139,7 @@ GreenComplAI follows a microservices architecture with the following components:
 3. **Start infrastructure services**
 
    ```bash
-   docker-compose up -d
+   docker compose up -d
    ```
 
 4. **Set up database**
@@ -302,7 +300,7 @@ npx nx e2e frontend-e2e
 
 ```bash
 # Check if PostgreSQL is running
-docker-compose ps postgres
+docker compose ps postgres
 
 # Reset database
 npm run set-up-database
@@ -312,10 +310,10 @@ npm run set-up-database
 
 ```bash
 # Check service logs
-docker-compose logs <service-name>
+docker compose logs <service-name>
 
 # Restart services
-docker-compose restart
+docker compose restart
 ```
 
 #### Build Issues

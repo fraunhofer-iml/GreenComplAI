@@ -20,6 +20,7 @@ import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { AnalysisModule } from './analysis/analysis.module';
 import { CompaniesModule } from './companies/companies.module';
 import { ErrorsInterceptor } from './core/error-interceptor';
+import { IdocModule } from './idoc/idoc.module';
 import { MappingModule } from './mappings/mappings.module';
 import { PackagingModule } from './packaging/packaging.module';
 import { ProductGroupModule } from './product-group/product-group.module';
@@ -42,6 +43,7 @@ import { SuppliersModule } from './suppliers/suppliers.module';
     ReportsModule,
     MappingModule,
     SuppliersModule,
+    IdocModule,
   ],
   controllers: [],
   providers: [

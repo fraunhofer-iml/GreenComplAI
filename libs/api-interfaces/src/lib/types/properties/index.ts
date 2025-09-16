@@ -13,3 +13,4 @@ export * from './analysis.types';
 export * from './product-groups.types';
 export * from './reports.types';
 export * from './mapping.types';
+export * from './idocs.types';
