@@ -22,7 +22,6 @@ export class IdocController {
 
   constructor(private readonly idocService: IdocService) {}
 
-  @Header('Content-Type', 'text/xml')
   @MessagePattern(IdocMessagePatterns.CREATE)
   async createProductFromIdocRaw(
     @Payload() payload: CreateProductFromIdocRawProps

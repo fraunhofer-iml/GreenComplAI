@@ -6,23 +6,18 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {
-  AuthenticatedKCUser,
-  AuthRoles,
-  getRealmRole,
-  ProductDto,
-} from '@ap2/api-interfaces';
+import { AuthenticatedKCUser, AuthRoles, getRealmRole, ProductDto } from '@ap2/api-interfaces';
 import { KeycloakUser, Roles } from 'nest-keycloak-connect';
-import { Controller, Logger, Post } from '@nestjs/common';
 import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiConsumes,
-  ApiOkResponse,
-  ApiOperation,
-  ApiTags,
-} from '@nestjs/swagger';
-import { RawBody } from '../../RawBodyXML';
+  BadRequestException,
+  Controller,
+  Logger,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { IdocService } from './idoc.service';
 
 @ApiTags('Idoc')
@@ -39,29 +34,41 @@ export class IdocController {
     getRealmRole(AuthRoles.BUYER)
   )
   @ApiOperation({
-    summary: 'Import IDOC/XML from raw body payload',
+    summary: 'Upload IDOC/XML file (multipart/form-data)',
     description:
-      'Accepts the raw XML text of a SAP iDoc (e.g., MATMAS, ORDERS). Converts to GreenComplAI products and persists them.',
+      'Accepts an XML file upload (SAP iDoc, e.g., MATMAS, ORDERS), parses it and persists as Product.',
   })
-  @ApiConsumes('application/xml', 'text/xml')
+  @ApiConsumes('multipart/form-data')
   @ApiBody({
-    description: 'SAP iDoc XML payload',
-    required: true,
     schema: {
-      type: 'string',
-      example: `<?xml version="1.0" encoding="UTF-8"?><IDOC>...</IDOC>`,
+      type: 'object',
+      properties: {
+        file: { type: 'string', format: 'binary' },
+      },
+      required: ['file'],
     },
   })
   @ApiOkResponse({
     description: 'Created Product',
     type: ProductDto,
   })
+  @UseInterceptors(FileInterceptor('file'))
   async createProductFromIdocRaw(
     @KeycloakUser() user: AuthenticatedKCUser,
-    @RawBody() idoc: string // RawBody to indicate that provided Payload Body is XML instead of JSON
+    @UploadedFile() file: Express.Multer.File
   ): Promise<ProductDto> {
+    this.logger.log('[bff/IdocController] - Entered via file upload');
+
+    if (!file || !file.buffer?.length) {
+      throw new BadRequestException('No XML file uploaded');
+    }
+
+    const xml = file.buffer.toString('utf8');
+    this.logger.log(
+      `[bff/IdocController] - XML file received, size: ${file.size} bytes`
+    );
     return await this.idocService.createProductFromIdocRaw({
-      idoc: idoc,
+      idoc: xml,
       userId: user.sub,
     });
   }
