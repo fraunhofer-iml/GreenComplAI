@@ -20,12 +20,13 @@ import {
   Configuration,
   SubmodelRepositoryClient,
 } from 'basyx-typescript-sdk';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { AasSubmoduleService } from './submodules/aas-submodule.service';
 import { SubmoduleCreationService } from './submodules/submodule-creation.service';
 
 @Injectable()
 export class AppService {
+  private readonly logger: Logger = new Logger(AppService.name);
   private client: AasRepositoryClient;
   private submodelRepositoryClient: SubmodelRepositoryClient;
   private configuration: Configuration;
@@ -66,7 +67,7 @@ export class AppService {
           submodelIdentifier: submodel.keys[0].value,
         });
         if (!sub.success) {
-          console.error('Failed to get submodel');
+          this.logger.error('Failed to get submodel');
           continue;
         }
         connectedSubmodels.push(sub.data);
@@ -116,7 +117,7 @@ export class AppService {
         submodules
       );
     } catch (error) {
-      console.error('Error attaching submodules to AAS:', error);
+      this.logger.error('Error attaching submodules to AAS:', error);
     }
 
     if (!result.success) {
