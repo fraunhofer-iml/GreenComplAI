@@ -15,3 +15,4 @@ export * from './product-group.pattern';
 export * from './report.pattern';
 export * from './mapping.pattern';
 export * from './outlier.pattern';
+export * from './dpp.pattern';

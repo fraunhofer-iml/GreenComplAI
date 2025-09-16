@@ -1,0 +1,128 @@
+@if (dppData) {
+  <div class="mb-6 rounded-lg bg-neutral-200 p-4">
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-gray-200">info</span>
+      <h2 class="font-medium text-gray-200">Allgemeine AAS-Informationen</h2>
+    </div>
+    <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div>
+        <span class="text-sm font-medium text-gray-300">AAS ID</span>
+        <p>{{ dppData.id }}</p>
+      </div>
+      @if (dppData.idShort) {
+        <div>
+          <span class="text-sm font-medium text-gray-300">Kurze ID</span>
+          <p>{{ dppData.idShort }}</p>
+        </div>
+      }
+      @if (dppData.displayName?.length) {
+        <div>
+          <span class="text-sm font-medium text-gray-300">Anzeigename</span>
+          <p>{{ getDisplayText(dppData.displayName) }}</p>
+        </div>
+      }
+      @if (dppData.description?.length) {
+        <div>
+          <span class="text-sm font-medium text-gray-300">Beschreibung</span>
+          <p>{{ getDisplayText(dppData.description) }}</p>
+        </div>
+      }
+      @if (dppData.category) {
+        <div>
+          <span class="text-sm font-medium text-gray-300">Kategorie</span>
+          <p>{{ dppData.category }}</p>
+        </div>
+      }
+    </div>
+  </div>
+  @if (dppData.connectedSubmodels.length) {
+    <mat-tab-group>
+      @for (submodel of dppData.connectedSubmodels; track submodel.idShort) {
+        <mat-tab [label]="getSubmodelDisplayName(submodel)">
+          <div class="mt-4">
+            <div class="rounded-lg bg-neutral-200 p-4">
+              @if (submodel.description?.length) {
+                <div class="mb-4">
+                  <p class="text-gray-300">
+                    {{ getDisplayText(submodel.description) }}
+                  </p>
+                </div>
+                <mat-divider class="my-4"></mat-divider>
+              }
+
+              @if (submodel.submodelElements?.length) {
+                <div class="mt-4 space-y-4">
+                  @for (
+                    element of submodel.submodelElements;
+                    track element.idShort
+                  ) {
+                    <ng-container
+                      [ngTemplateOutlet]="renderElement"
+                      [ngTemplateOutletContext]="{ element: element }"
+                    />
+                  }
+                </div>
+              } @else {
+                <p class="py-8 text-center text-gray-500">
+                  Keine Daten verfügbar
+                </p>
+              }
+            </div>
+          </div>
+        </mat-tab>
+      }
+    </mat-tab-group>
+  }
+
+  <ng-template #renderElement let-element="element">
+    @if (isProperty(element)) {
+      <div class="grid grid-cols-1 gap-1 md:grid-cols-2">
+        <span class="text-sm font-medium text-gray-300">
+          {{ getElementDisplayName(element) }}
+        </span>
+        <span class="text-sm">
+          {{ formatValue(element.value, element.idShort) }}
+        </span>
+      </div>
+    } @else if (isSubmodelElementCollection(element)) {
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title class="flex items-center gap-2 text-gray-200">
+            <mat-icon>folder</mat-icon>
+            {{ getElementDisplayName(element) }}
+          </mat-panel-title>
+          @if (element.description?.length) {
+            <mat-panel-description class="text-gray-400">
+              {{ getDisplayText(element.description) }}
+            </mat-panel-description>
+          }
+        </mat-expansion-panel-header>
+        <div class="space-y-3">
+          @if (element.value?.length) {
+            @for (child of element.value; track child.idShort) {
+              @if (isProperty(child)) {
+                <div class="grid grid-cols-1 gap-1 md:grid-cols-2">
+                  <span class="text-sm font-medium text-gray-300">
+                    {{ getElementDisplayName(child) }}
+                  </span>
+                  <span class="text-sm">{{
+                    formatValue(child.value, child.idShort)
+                  }}</span>
+                </div>
+              } @else {
+                <ng-container
+                  [ngTemplateOutlet]="renderElement"
+                  [ngTemplateOutletContext]="{ element: child }"
+                />
+              }
+            }
+          } @else {
+            <p class="py-2 text-sm text-gray-500">
+              Keine Daten in dieser Gruppe
+            </p>
+          }
+        </div>
+      </mat-expansion-panel>
+    }
+  </ng-template>
+}

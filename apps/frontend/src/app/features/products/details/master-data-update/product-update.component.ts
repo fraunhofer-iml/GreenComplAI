@@ -23,7 +23,6 @@ import { ProductsService } from '../../../../core/services/products/products.ser
 import { SupplierService } from '../../../../core/services/suppliers/suppliers.service';
 import { ConfirmUpdateDialogComponent } from '../../../../shared/components/confirm-update-dialog/confirm-update.dialog';
 import { ProductMasterDataFormComponent } from '../../../../shared/components/product-master-data-form/product-master-data-form.component';
-import { autocompleteValidator } from '../../../../shared/utils/autocomplete.validator';
 import { ProductConstructionService } from '../../create/form-construction/product-construction.service';
 import {
   materialFormArrayGroup,

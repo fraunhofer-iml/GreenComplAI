@@ -610,7 +610,20 @@
       <!-- BOM -->
     </div>
     @if (role === AuthRoles.SUSTAINABILITY_MANAGER) {
-      <div class="mt-4 flex justify-end">
+      <div class="mt-4 flex justify-end gap-2">
+        <button
+          mat-flat-button
+          color="primary"
+          (click)="createDpp()"
+          [disabled]="dppMutation.isPending()"
+        >
+          @if (dppMutation.isPending()) {
+            <span class="material-symbols-outlined animate-spin"
+              >progress_activity</span
+            >
+          }
+          DPP erstellen
+        </button>
         <button
           mat-flat-button
           i18n
