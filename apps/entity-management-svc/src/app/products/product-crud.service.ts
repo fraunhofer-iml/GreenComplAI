@@ -151,28 +151,31 @@ export class ProductCrudService {
   }
 
   async update({ dto, id }: UpdateProductProps): Promise<ProductDto> {
-    await this.prismaService.productMaterials.deleteMany({
-      where: {
-        productId: id,
-        materialName: { notIn: dto.materials.map((m) => m.material) },
-      },
-    });
-
-    await this.prismaService.rareEarths.deleteMany({
-      where: {
-        productId: id,
-        materialName: { notIn: dto.rareEarths.map((m) => m.material) },
-      },
-    });
-
-    await this.prismaService.criticalRawMaterials.deleteMany({
-      where: {
-        productId: id,
-        materialName: {
-          notIn: dto.criticalRawMaterials.map((m) => m.material),
+    if (dto.materials)
+      await this.prismaService.productMaterials.deleteMany({
+        where: {
+          productId: id,
+          materialName: { notIn: dto.materials.map((m) => m.material) },
         },
-      },
-    });
+      });
+
+    if (dto.rareEarths)
+      await this.prismaService.rareEarths.deleteMany({
+        where: {
+          productId: id,
+          materialName: { notIn: dto.rareEarths.map((m) => m.material) },
+        },
+      });
+
+    if (dto.criticalRawMaterials)
+      await this.prismaService.criticalRawMaterials.deleteMany({
+        where: {
+          productId: id,
+          materialName: {
+            notIn: dto.criticalRawMaterials.map((m) => m.material),
+          },
+        },
+      });
 
     const product = await this.prismaService.product.update({
       where: {

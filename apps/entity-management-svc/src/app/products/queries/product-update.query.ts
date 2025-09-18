@@ -16,13 +16,15 @@ export const productUpdateQuery = (dto: ProductUpdateDto, id: string) =>
     where: { id: id },
     data: {
       ...upsertQuery(dto.masterData),
-
-      materials: materialUpdateQuery(dto.materials, id),
-      criticalRawMaterials: minimalMaterialUpdateQuery(
-        dto.criticalRawMaterials,
-        id
-      ),
-      rareEarths: minimalMaterialUpdateQuery(dto.rareEarths, id),
+      materials: dto.materials
+        ? materialUpdateQuery(dto.materials, id)
+        : undefined,
+      criticalRawMaterials: dto.criticalRawMaterials
+        ? minimalMaterialUpdateQuery(dto.criticalRawMaterials, id)
+        : undefined,
+      rareEarths: dto.rareEarths
+        ? minimalMaterialUpdateQuery(dto.rareEarths, id)
+        : undefined,
     },
   }) satisfies Prisma.ProductUpdateArgs;
 
