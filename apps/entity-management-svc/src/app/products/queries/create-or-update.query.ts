@@ -11,7 +11,7 @@ import { ProductCreateDto } from '@ap2/api-interfaces';
 export const upsertQuery = (dto: Partial<ProductCreateDto>) => ({
   id: dto.id ? dto.id.toString() : undefined,
   name: dto.name || undefined,
-  isSellable: dto.isSellable ?? false,
+  isSellable: dto.isSellable ?? undefined,
   productId: dto.productId?.toString() || undefined,
   description: dto.description ? dto.description.toString() : undefined,
   category: dto.category || undefined,
