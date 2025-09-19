@@ -151,28 +151,23 @@ export class ProductCrudService {
   }
 
   async update({ dto, id }: UpdateProductProps): Promise<ProductDto> {
-    await this.prismaService.productMaterials.deleteMany({
-      where: {
-        productId: id,
-        materialName: { notIn: dto.materials.map((m) => m.material) },
-      },
-    });
+    if (dto.materials)
+      await this.removeMaterials(
+        id,
+        dto.materials.map((m) => m.material)
+      );
 
-    await this.prismaService.rareEarths.deleteMany({
-      where: {
-        productId: id,
-        materialName: { notIn: dto.rareEarths.map((m) => m.material) },
-      },
-    });
+    if (dto.rareEarths)
+      await this.removeRareEarths(
+        id,
+        dto.rareEarths.map((m) => m.material)
+      );
 
-    await this.prismaService.criticalRawMaterials.deleteMany({
-      where: {
-        productId: id,
-        materialName: {
-          notIn: dto.criticalRawMaterials.map((m) => m.material),
-        },
-      },
-    });
+    if (dto.criticalRawMaterials)
+      await this.removeCriticalRawMaterials(
+        id,
+        dto.criticalRawMaterials.map((m) => m.material)
+      );
 
     const product = await this.prismaService.product.update({
       where: {
@@ -236,5 +231,35 @@ export class ProductCrudService {
         (o: { key: string; value: number }) => o.key
       ),
     }));
+  }
+
+  private async removeMaterials(productId: string, materials: string[]) {
+    await this.prismaService.productMaterials.deleteMany({
+      where: {
+        productId: productId,
+        materialName: { notIn: materials },
+      },
+    });
+  }
+
+  private async removeRareEarths(productId: string, materials: string[]) {
+    await this.prismaService.rareEarths.deleteMany({
+      where: {
+        productId: productId,
+        materialName: { notIn: materials },
+      },
+    });
+  }
+
+  private async removeCriticalRawMaterials(
+    productId: string,
+    materials: string[]
+  ) {
+    await this.prismaService.criticalRawMaterials.deleteMany({
+      where: {
+        productId: productId,
+        materialName: { notIn: materials },
+      },
+    });
   }
 }
