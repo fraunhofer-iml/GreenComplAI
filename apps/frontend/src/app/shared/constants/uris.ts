@@ -27,4 +27,5 @@ export enum ApiUris {
   reports = '/reports',
   mapping = '/mappings',
   outlierAnalysis = '/analysis/outlier-detection',
+  dpp = '/dpp',
 }

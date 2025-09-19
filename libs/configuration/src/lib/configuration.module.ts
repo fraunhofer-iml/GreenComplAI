@@ -9,6 +9,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ConfigurationService } from './configuration.service';
+import basyxConfig from './configurations/basyx.config';
 import generalConfig from './configurations/general.config';
 import keycloakConfig from './configurations/keycloak.config';
 import minioConfig from './configurations/minio.config';
@@ -20,7 +21,7 @@ import { KeycloakConfigurationService } from './keycloak.configuration.service';
       envFilePath: ['../../.env'],
       isGlobal: true,
       cache: true,
-      load: [keycloakConfig, generalConfig, minioConfig],
+      load: [keycloakConfig, generalConfig, minioConfig, basyxConfig],
     }),
   ],
   controllers: [],

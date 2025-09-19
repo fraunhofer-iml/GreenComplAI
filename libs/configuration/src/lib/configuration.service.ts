@@ -9,6 +9,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
+  BASYX_CONFIG_IDENTIFIER,
+  BasyxConfiguration,
+} from './configurations/basyx.config';
+import {
   GENERAL_CONFIG_IDENTIFIER,
   GeneralConfiguration,
 } from './configurations/general.config';
@@ -54,5 +58,17 @@ export class ConfigurationService {
       throw new Error(msg);
     }
     return minioConfig;
+  }
+
+  public getBasyxConfig(): BasyxConfiguration {
+    const basyxConfig = this.configService.get<BasyxConfiguration>(
+      BASYX_CONFIG_IDENTIFIER
+    );
+    if (!basyxConfig) {
+      const msg = 'Environment variables for Basyx configuration missing!';
+      this.logger.error(msg);
+      throw new Error(msg);
+    }
+    return basyxConfig;
   }
 }

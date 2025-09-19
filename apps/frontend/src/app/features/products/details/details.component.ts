@@ -8,6 +8,7 @@
 
 import { AuthRoles, ProductDto } from '@ap2/api-interfaces';
 import moment, { Moment } from 'moment/moment';
+import { toast } from 'ngx-sonner';
 import { DecimalPipe } from '@angular/common';
 import { Component, inject, Input, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -28,9 +29,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
-import { injectQuery } from '@tanstack/angular-query-experimental';
+import {
+  injectMutation,
+  injectQuery,
+} from '@tanstack/angular-query-experimental';
 import { AuthenticationService } from '../../../core/services/authentication/authentication.service';
 import { DataService } from '../../../core/services/data-service/data.service';
+import { DppService } from '../../../core/services/dpp/dpp.service';
 import { ProductsService } from '../../../core/services/products/products.service';
 import { SupplierService } from '../../../core/services/suppliers/suppliers.service';
 import { FlagableComponent } from '../../../shared/components/flagable-element/flagable.component';
@@ -69,6 +74,7 @@ import { UploadedFilesComponent } from './uploaded-files/uploaded-files.componen
   providers: [
     { provide: DataService, useClass: ProductsService },
     ProductsService,
+    DppService,
     { provide: MAT_DATE_FORMATS, useValue: ONLY_YEAR_FORMAT },
     {
       provide: DateAdapter,
@@ -82,8 +88,8 @@ import { UploadedFilesComponent } from './uploaded-files/uploaded-files.componen
 export class ProductDetailsComponent {
   private productService = inject(ProductsService);
   private supplierService = inject(SupplierService);
+  private dppService = inject(DppService);
   protected authService = inject(AuthenticationService);
-  private readonly decimalPipe = inject(DecimalPipe);
 
   Uris = Uris;
 
@@ -102,6 +108,18 @@ export class ProductDetailsComponent {
       return this.productService.getById(this.id$() ?? '');
     },
     enabled: !!this.id$(),
+  }));
+
+  dppMutation = injectMutation(() => ({
+    mutationFn: (productId: string) => {
+      return this.dppService.createDpp(productId);
+    },
+    onSuccess: () => {
+      toast.success('DPP erfolgreich erstellt');
+    },
+    onError: () => {
+      toast.error('DPP erstellen fehlgeschlagen');
+    },
   }));
 
   role = this.authService.getCurrentUserRole();
@@ -128,5 +146,12 @@ export class ProductDetailsComponent {
     } catch {
       return '';
     }
+  }
+
+  async createDpp() {
+    const productId = this.id$();
+    if (!productId) return;
+
+    this.dppMutation.mutate(productId);
   }
 }

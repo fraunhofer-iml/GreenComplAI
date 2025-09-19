@@ -15,6 +15,10 @@ export class Broker {
     return this.getMessageBroker(AmqpClientEnum.QUEUE_ENTITY_MANAGEMENT);
   }
 
+  public getDppBroker(): DynamicModule {
+    return this.getMessageBroker(AmqpClientEnum.QUEUE_DPP);
+  }
+
   private getMessageBroker(queue: string): DynamicModule {
     const amqpUri = process.env['AMQP_URI'];
 
