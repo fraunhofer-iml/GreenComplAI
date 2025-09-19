@@ -46,18 +46,18 @@ export class DppService {
       );
 
       product.digitalProductPassportUrl = dpp.id;
-      // TODO: FIX endpoint to not write N/A into fields if undefined
-      // await this.productsService.update({
-      //   id: productId,
-      //   dto: {
-      //     masterData: {
-      //       digitalProductPassportUrl: `dpp/${dpp.id}`,
-      //     },
-      //     materials: [],
-      //     rareEarths: [],
-      //     criticalRawMaterials: [],
-      //   },
-      // });
+
+      await this.productsService.update({
+        id: productId,
+        dto: {
+          masterData: {
+            digitalProductPassportUrl: `dpp/${dpp.id}`,
+          },
+          materials: undefined,
+          rareEarths: undefined,
+          criticalRawMaterials: undefined,
+        },
+      });
     } catch (error) {
       this.logger.error(
         `Failed to create DPP for product ${productId}:`,
