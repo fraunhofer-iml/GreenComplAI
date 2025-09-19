@@ -165,9 +165,9 @@ export class ProductConstructionService {
         typeof masterData.value.manufacturer === 'object'
           ? (masterData.value.manufacturer?.id ?? '')
           : '',
-      productionLocation: masterData.value.productionLocation ?? '',
+      productionLocation: masterData.value.productionLocation?.id ?? '',
 
-      warehouseLocation: masterData.value.warehouseLocation ?? '',
+      warehouseLocation: masterData.value.warehouseLocation?.id ?? '',
     } as ProductMasterDataDto;
   }
 
