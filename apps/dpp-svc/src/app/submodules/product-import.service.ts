@@ -12,7 +12,7 @@ import {
   Property,
   SubmodelElementCollection,
 } from '@aas-core-works/aas-core3.0-typescript/types';
-import { AddressDto, CompanyDto } from '@ap2/api-interfaces';
+import { AddressDto, CompanyDto, ProductDto } from '@ap2/api-interfaces';
 import { Injectable } from '@nestjs/common';
 import {
   CIRCILAR_PROPERTIES_KEYS,
@@ -33,7 +33,7 @@ import {
 export class ProductImportService {
   setIdentificationDetails(
     submodelElements: ISubmodelElement[]
-  ): ProductIdentificationSubmodule {
+  ): Partial<ProductDto> {
     const submodelMap = new Map<string, any>();
     this.mapSubmodelsToMap(submodelMap, submodelElements);
 
@@ -42,15 +42,13 @@ export class ProductImportService {
 
     const importer = this.submodelToCompany(submodelMap.get('importer'));
     submodelMap.set('importer', importer);
-    const submodel: ProductIdentificationSubmodule = Object.fromEntries(
-      [...submodelMap].filter(([key]) =>
-        PRODUCT_IDENTIFICATION_KEYS.includes(
-          key as ProductIdentificationSubmoduleKeys
-        )
-      )
-    ) as ProductIdentificationSubmodule;
-    console.log(submodel);
-    return submodel;
+    const submodelData: Partial<ProductDto> = {
+      productId: submodelMap.get('uniqueProductIdentifier'),
+      gtin: submodelMap.get('gtin'),
+      taricCode: submodelMap.get('taricCode'),
+      supplier: submodelMap.get('supplier'),
+    };
+    return submodelData;
   }
 
   getLegalComplianceSubmodel(submodelElements: ISubmodelElement[]) {

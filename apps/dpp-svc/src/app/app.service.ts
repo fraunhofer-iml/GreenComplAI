@@ -14,7 +14,7 @@ import {
   LangStringNameType,
   Submodel,
 } from '@aas-core-works/aas-core3.0-typescript/types';
-import { FileDto, ProductDto } from '@ap2/api-interfaces';
+import { FileDto, MaterialDto, ProductDto } from '@ap2/api-interfaces';
 import { ConfigurationService } from '@ap2/configuration';
 import {
   AasRepositoryClient,
@@ -28,7 +28,6 @@ import {
   LegalComplianceSubmodule,
   MaterialCompositionSubmodule,
   PackagingSubmodule,
-  ProductIdentificationSubmodule,
   ProductImportService,
 } from './submodules';
 import { AasSubmoduleService } from './submodules/aas-submodule.service';
@@ -148,9 +147,9 @@ export class AppService {
       submodelMap.set(e.idShort, e.submodelElements)
     );
 
-    const product = { id: id } as ProductDto;
+    let product = { id: id } as ProductDto;
 
-    const productIdentificationSubmodel: ProductIdentificationSubmodule =
+    const productIdentificationSubmodel: Partial<ProductDto> =
       this.privateProductImportService.setIdentificationDetails(
         submodelMap.get('product_identification')
       );
@@ -194,9 +193,41 @@ export class AppService {
       ...usagePhase,
     });
 
-    return {
-      productId: productIdentificationSubmodel.uniqueProductIdentifier,
-      supplier: productIdentificationSubmodel.supplier,
+    product.supplier = {
+      id: null,
+      ...productIdentificationSubmodel.supplier,
+      flags: [],
+    };
+
+    product = {
+      id: id,
+      productId: productIdentificationSubmodel.productId,
+      supplier: {
+        id: null,
+        ...productIdentificationSubmodel.supplier,
+        flags: [],
+      },
+      criticalRawMaterials: circiularProperties.concerningSubstances.map(
+        (substance) => [{ name: substance }, 0]
+      ),
+      reparability: circiularProperties.repairabilityScore,
+      productCarbonFootprint: ESRSynergies.productCarbonFootprint,
+      waterUsed: ESRSynergies.waterFootprint,
+      packagings: packagingSubmodel.packagingMaterials.map((packaging) => [
+        { name: packaging.name, weight: packaging.weight },
+        1,
+      ]),
+      materials: [
+        ...materials.materials.map((m) => [
+          {
+            name: m.name,
+            materialType: m.isPrimary ? 'primary' : 'secondary',
+          } as MaterialDto,
+          m.isRenewable,
+          m.isPrimary,
+        ]),
+      ],
     } as ProductDto;
+    return product;
   }
 }
