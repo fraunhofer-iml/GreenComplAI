@@ -10,6 +10,7 @@ import {
   AssetAdministrationShell,
   AssetInformation,
   AssetKind,
+  ISubmodelElement,
   LangStringNameType,
   Submodel,
 } from '@aas-core-works/aas-core3.0-typescript/types';
@@ -21,6 +22,15 @@ import {
   SubmodelRepositoryClient,
 } from 'basyx-typescript-sdk';
 import { Injectable, Logger } from '@nestjs/common';
+import {
+  CircularPropertiesSubmodule,
+  ESRSynergiesSubmodule,
+  LegalComplianceSubmodule,
+  MaterialCompositionSubmodule,
+  PackagingSubmodule,
+  ProductIdentificationSubmodule,
+  ProductImportService,
+} from './submodules';
 import { AasSubmoduleService } from './submodules/aas-submodule.service';
 import { SubmoduleCreationService } from './submodules/submodule-creation.service';
 
@@ -32,6 +42,7 @@ export class AppService {
   private configuration: Configuration;
   private submoduleCreationService: SubmoduleCreationService;
   private aasSubmoduleService: AasSubmoduleService;
+  privateProductImportService: ProductImportService;
 
   constructor(private readonly configurationService: ConfigurationService) {
     this.client = new AasRepositoryClient();
@@ -45,6 +56,8 @@ export class AppService {
       this.configuration,
       this.submodelRepositoryClient
     );
+
+    this.privateProductImportService = new ProductImportService();
   }
 
   async getDpp(
@@ -55,6 +68,7 @@ export class AppService {
       aasIdentifier: aasIdentifier,
     });
     if (!result.success) {
+      this.logger.debug(result);
       throw new Error('Failed to get DPP');
     }
 
@@ -124,5 +138,65 @@ export class AppService {
       throw new Error('Failed to create DPP');
     }
     return result.data;
+  }
+
+  async getProductFromDpp(id: string): Promise<ProductDto> {
+    const dpp = await this.getDpp(id);
+
+    const submodelMap = new Map<string, ISubmodelElement[]>();
+    dpp.connectedSubmodels.forEach((e) =>
+      submodelMap.set(e.idShort, e.submodelElements)
+    );
+
+    const product = { id: id } as ProductDto;
+
+    const productIdentificationSubmodel: ProductIdentificationSubmodule =
+      this.privateProductImportService.setIdentificationDetails(
+        submodelMap.get('product_identification')
+      );
+
+    const legalComplianceSubmodel: LegalComplianceSubmodule =
+      this.privateProductImportService.getLegalComplianceSubmodel(
+        submodelMap.get('legal_compliance')
+      );
+
+    const circiularProperties: CircularPropertiesSubmodule =
+      this.privateProductImportService.getCircularProperties(
+        submodelMap.get('circular_properties')
+      );
+
+    const ESRSynergies: ESRSynergiesSubmodule =
+      this.privateProductImportService.getESRSynergiesSubmodel(
+        submodelMap.get('esr_synergies')
+      );
+
+    const packagingSubmodel: PackagingSubmodule =
+      this.privateProductImportService.getPackagingSubmodule(
+        submodelMap.get('packaging')
+      );
+
+    const materials: MaterialCompositionSubmodule =
+      this.privateProductImportService.getMaterialCompositionSubmodel(
+        submodelMap.get('material_composition')
+      );
+
+    const usagePhase = this.privateProductImportService.getUsagPhaseSubmodel(
+      submodelMap.get('usage_phase')
+    );
+
+    this.logger.debug({
+      ...productIdentificationSubmodel,
+      ...legalComplianceSubmodel,
+      ...circiularProperties,
+      ...ESRSynergies,
+      ...packagingSubmodel,
+      ...materials,
+      ...usagePhase,
+    });
+
+    return {
+      productId: productIdentificationSubmodel.uniqueProductIdentifier,
+      supplier: productIdentificationSubmodel.supplier,
+    } as ProductDto;
   }
 }

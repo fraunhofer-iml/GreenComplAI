@@ -10,7 +10,7 @@ import {
   AssetAdministrationShell,
   Submodel,
 } from '@aas-core-works/aas-core3.0-typescript/types';
-import { AuthRoles, getRealmRole } from '@ap2/api-interfaces';
+import { AuthRoles, getRealmRole, ProductDto } from '@ap2/api-interfaces';
 import { Public, Roles } from 'nest-keycloak-connect';
 import { Body, Controller, Get, Logger, Param, Post } from '@nestjs/common';
 import {
@@ -66,5 +66,14 @@ export class DppController {
     @Param('aasIdentifier') aasIdentifier: string
   ): Promise<AssetAdministrationShell & { connectedSubmodels: Submodel[] }> {
     return this.dppService.getDpp(aasIdentifier);
+  }
+
+  @Get('product/:id')
+  @Public()
+  @ApiOkResponse({
+    description: 'Successfully got product for DPP',
+  })
+  getProductFromDpp(@Param('id') id: string): Promise<ProductDto> {
+    return this.dppService.getProduct(id);
   }
 }

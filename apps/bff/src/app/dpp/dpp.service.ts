@@ -11,6 +11,7 @@ import {
   Submodel,
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { AmqpClientEnum, DppMessagePatterns } from '@ap2/amqp';
+import { ProductDto } from '@ap2/api-interfaces';
 import { firstValueFrom } from 'rxjs';
 import {
   HttpException,
@@ -82,5 +83,15 @@ export class DppService {
     );
 
     return dpp;
+  }
+
+  async getProduct(id: string): Promise<ProductDto> {
+    const product = await firstValueFrom(
+      this.dppClient.send<ProductDto>(DppMessagePatterns.GET_PRODUCT, {
+        id,
+      })
+    );
+
+    return product;
   }
 }

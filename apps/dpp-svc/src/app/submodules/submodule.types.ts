@@ -30,6 +30,17 @@ export interface ProductIdentificationSubmodule extends BaseSubmodule {
     address?: string;
   };
 }
+export type ProductIdentificationSubmoduleKeys =
+  keyof ProductIdentificationSubmodule;
+export const PRODUCT_IDENTIFICATION_KEYS: ProductIdentificationSubmoduleKeys[] =
+  [
+    'uniqueProductIdentifier',
+    'gtin',
+    'taricCode',
+    'supplier',
+    'importerIsSupplier',
+    'importer',
+  ];
 
 export interface LegalComplianceSubmodule extends BaseSubmodule {
   technicalDocumentation: {
@@ -39,6 +50,11 @@ export interface LegalComplianceSubmodule extends BaseSubmodule {
   };
   safetyInformation?: string[];
 }
+
+export const LEGAL_COMPIANCE_KEYS: (keyof LegalComplianceSubmodule)[] = [
+  'technicalDocumentation',
+  'safetyInformation',
+];
 
 export interface MaterialCompositionSubmodule extends BaseSubmodule {
   totalWeight: number;
@@ -68,11 +84,23 @@ export interface CircularPropertiesSubmodule extends BaseSubmodule {
   repairabilityScore?: number;
 }
 
+export const CIRCILAR_PROPERTIES_KEYS: (keyof CircularPropertiesSubmodule)[] = [
+  'concerningSubstances',
+  'disassemblyInstructions',
+  'repairabilityScore',
+];
+
 export interface ESRSynergiesSubmodule extends BaseSubmodule {
   productCarbonFootprint?: number;
   waterFootprint?: number;
   socialAspects?: string[];
 }
+
+export const ESR_SYNERGIES_KEYS: (keyof ESRSynergiesSubmodule)[] = [
+  'productCarbonFootprint',
+  'waterFootprint',
+  'socialAspects',
+];
 
 export interface UsagePhaseSubmodule extends BaseSubmodule {
   usageInstructions?: string[];
