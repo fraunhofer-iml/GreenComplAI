@@ -16,4 +16,11 @@ export const dppRoutes: Route[] = [
         (m) => m.DppOverviewComponent
       ),
   },
+  {
+    path: ':id/data-import',
+    loadComponent: () =>
+      import('./import/dpp-data-import.component').then(
+        (m) => m.DppDataImportComponent
+      ),
+  },
 ];

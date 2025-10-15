@@ -85,32 +85,14 @@ export class DppService {
     return dpp;
   }
 
-  async getProduct(id: string): Promise<DppComparisonDto> {
+  async getProduct(id: string): Promise<ProductDto> {
     const productFromDpp = await firstValueFrom(
       this.dppClient.send<ProductDto>(DppMessagePatterns.GET_PRODUCT, {
         id,
       })
     );
+    this.logger.debug(productFromDpp);
 
-    const product = this.productsService.findOne({ id });
-
-    const dto: DppComparisonDto = [];
-    const keys: (keyof ProductDto)[] = [
-      'productId',
-      'supplier',
-      'gtin',
-      'name',
-    ];
-
-    keys.forEach((k) => {
-      dto.push({
-        key: k,
-        dppValue: productFromDpp[k],
-        oberride: false,
-        productValue: product[k],
-      });
-    });
-
-    return dto;
+    return productFromDpp;
   }
 }

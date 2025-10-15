@@ -23,9 +23,6 @@ import {
   LegalComplianceSubmodule,
   MaterialCompositionSubmodule,
   PackagingSubmodule,
-  PRODUCT_IDENTIFICATION_KEYS,
-  ProductIdentificationSubmodule,
-  ProductIdentificationSubmoduleKeys,
   UsagePhaseSubmodule,
 } from './submodule.types';
 
@@ -48,6 +45,7 @@ export class ProductImportService {
       taricCode: submodelMap.get('taricCode'),
       supplier: submodelMap.get('supplier'),
     };
+
     return submodelData;
   }
 
@@ -101,12 +99,18 @@ export class ProductImportService {
   getPackagingSubmodule(
     submodelElements: ISubmodelElement[]
   ): PackagingSubmodule {
+    if (!submodelElements || submodelElements.length === 0)
+      return {
+        totalWeight: 0,
+        packagingMaterials: [],
+      } as PackagingSubmodule;
+
     const submodelMap = new Map<string, any>();
     this.mapSubmodelsToMap(submodelMap, submodelElements);
 
     const materials = [];
     for (let index = 1; index < submodelElements.length; index++) {
-      const element = submodelMap.get(`material_${index - 1}`);
+      const element = submodelMap.get(`packagingMaterial_${index - 1}`);
       materials.push(
         Object.fromEntries([...(element as Map<string, unknown>)])
       );
@@ -175,7 +179,6 @@ export class ProductImportService {
   private submodelToCompany(map: Map<string, any>): CompanyDto {
     let address: AddressDto | undefined = undefined;
     const addressAsString = map.get('address');
-    console.log(addressAsString);
     if (addressAsString) {
       const [street, cityInformation, country] = map.get('address').split(',');
 

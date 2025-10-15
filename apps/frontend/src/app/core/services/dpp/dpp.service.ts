@@ -10,6 +10,7 @@ import {
   AssetAdministrationShell,
   Submodel,
 } from '@aas-core-works/aas-core3.0-typescript/types';
+import { DppComparisonDto, ProductDto } from '@ap2/api-interfaces';
 import { lastValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
@@ -34,6 +35,14 @@ export class DppService {
       this.http.get<
         AssetAdministrationShell & { connectedSubmodels: Submodel[] }
       >(`${this.url}${ApiUris.dpp}/${aasIdentifier}`)
+    );
+  }
+
+  importProductFRomDpp(aasIdentifier: string) {
+    return lastValueFrom(
+      this.http.get<ProductDto>(
+        `${this.url}${ApiUris.dpp}/product/${aasIdentifier}`
+      )
     );
   }
 }

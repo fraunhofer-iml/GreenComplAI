@@ -174,6 +174,8 @@ export class AppService {
         submodelMap.get('packaging')
       );
 
+    console.log(packagingSubmodel);
+
     const materials: MaterialCompositionSubmodule =
       this.privateProductImportService.getMaterialCompositionSubmodel(
         submodelMap.get('material_composition')
@@ -182,16 +184,6 @@ export class AppService {
     const usagePhase = this.privateProductImportService.getUsagPhaseSubmodel(
       submodelMap.get('usage_phase')
     );
-
-    this.logger.debug({
-      ...productIdentificationSubmodel,
-      ...legalComplianceSubmodel,
-      ...circiularProperties,
-      ...ESRSynergies,
-      ...packagingSubmodel,
-      ...materials,
-      ...usagePhase,
-    });
 
     product.supplier = {
       id: null,
@@ -228,6 +220,9 @@ export class AppService {
         ]),
       ],
     } as ProductDto;
+
+    this.logger.debug(product);
+
     return product;
   }
 }

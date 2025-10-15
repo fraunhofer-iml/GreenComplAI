@@ -78,7 +78,7 @@ export class DppController {
   @ApiOkResponse({
     description: 'Successfully got product for DPP',
   })
-  getProductFromDpp(@Param('id') id: string): Promise<DppComparisonDto> {
+  getProductFromDpp(@Param('id') id: string): Promise<ProductDto> {
     return this.dppService.getProduct(id);
   }
 }
