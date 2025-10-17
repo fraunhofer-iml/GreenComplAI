@@ -1,0 +1,30 @@
+<div class="grid w-full grid-cols-3">
+  <span>{{ title() }}</span>
+  @if (dppData()) {
+    @if (Array.isArray(dppData())) {
+      <div matListItemLine class="flex flex-col py-2">
+        @for (item of dppData(); track $index) {
+          <span>{{ item }}</span>
+        }
+      </div>
+    } @else {
+      <span> {{ dppData() }} </span>
+    }
+  } @else {
+    <span class="text-neutral-400">keine Werte gespeichert</span>
+  }
+
+  @if (productData()) {
+    @if (Array.isArray(productData())) {
+      <div class="flex flex-col py-2">
+        @for (item of productData(); track $index) {
+          <span>{{ item }}</span>
+        }
+      </div>
+    } @else {
+      <span> {{ productData() }} </span>
+    }
+  } @else {
+    <span class="text-neutral-400">keine Werte gespeichert</span>
+  }
+</div>

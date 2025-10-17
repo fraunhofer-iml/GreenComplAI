@@ -6,16 +6,18 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { ProductDto } from '@ap2/api-interfaces';
+import { MaterialDto, ProductDto } from '@ap2/api-interfaces';
 import { CommonModule } from '@angular/common';
-import { Component, inject, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
+import { MatListModule } from '@angular/material/list';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { DppService } from '../../../core/services/dpp/dpp.service';
 import { ProductsService } from '../../../core/services/products/products.service';
+import { ProductDppCompareComponent } from './comparison/product-dpp-compare.component';
 
 @Component({
   selector: 'app-dpp-data-import',
-  imports: [CommonModule],
+  imports: [CommonModule, MatListModule, ProductDppCompareComponent],
   providers: [DppService],
   templateUrl: './dpp-data-import.component.html',
 })
@@ -37,4 +39,26 @@ export class DppDataImportComponent {
       this.productService.getById(this.id() ?? ''),
     enabled: !!this.id(),
   }));
+
+  dppMaterials = computed(() => {
+    const res = {
+      materials: this.dppQuery
+        .data()
+        ?.materials?.map((mm) => `${mm[0].name}: ${mm[1]} `),
+      packagings: this.dppQuery.data()?.packagings?.map((p) => `${p[0].name}`),
+    };
+    return res;
+  });
+
+  productMaterials = computed(() => {
+    const res = {
+      materials: this.productQuery
+        .data()
+        ?.materials?.map((mm) => `${mm[0].name}: ${mm[1]} `),
+      packagings: this.productQuery
+        .data()
+        ?.packagings?.map((p) => `${p[0].name}`),
+    };
+    return res;
+  });
 }

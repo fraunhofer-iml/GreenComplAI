@@ -176,7 +176,7 @@ export class AppService {
 
     console.log(packagingSubmodel);
 
-    const materials: MaterialCompositionSubmodule =
+    const materials: [MaterialDto, number, boolean?, boolean?][] =
       this.privateProductImportService.getMaterialCompositionSubmodel(
         submodelMap.get('material_composition')
       );
@@ -209,16 +209,7 @@ export class AppService {
         { name: packaging.name, weight: packaging.weight },
         1,
       ]),
-      materials: [
-        ...materials.materials.map((m) => [
-          {
-            name: m.name,
-            materialType: m.isPrimary ? 'primary' : 'secondary',
-          } as MaterialDto,
-          m.isRenewable,
-          m.isPrimary,
-        ]),
-      ],
+      materials: materials,
     } as ProductDto;
 
     this.logger.debug(product);

@@ -12,7 +12,12 @@ import {
   Property,
   SubmodelElementCollection,
 } from '@aas-core-works/aas-core3.0-typescript/types';
-import { AddressDto, CompanyDto, ProductDto } from '@ap2/api-interfaces';
+import {
+  AddressDto,
+  CompanyDto,
+  MaterialDto,
+  ProductDto,
+} from '@ap2/api-interfaces';
 import { Injectable } from '@nestjs/common';
 import {
   CIRCILAR_PROPERTIES_KEYS,
@@ -33,18 +38,23 @@ export class ProductImportService {
   ): Partial<ProductDto> {
     const submodelMap = new Map<string, any>();
     this.mapSubmodelsToMap(submodelMap, submodelElements);
+    const supplier = this.submodelToCompany(submodelMap.get('supplier').value);
+    const importer = this.submodelToCompany(submodelMap.get('importer').value);
 
-    const supplier = this.submodelToCompany(submodelMap.get('supplier'));
-    submodelMap.set('supplier', supplier);
-
-    const importer = this.submodelToCompany(submodelMap.get('importer'));
-    submodelMap.set('importer', importer);
     const submodelData: Partial<ProductDto> = {
-      productId: submodelMap.get('uniqueProductIdentifier'),
-      gtin: submodelMap.get('gtin'),
-      taricCode: submodelMap.get('taricCode'),
-      supplier: submodelMap.get('supplier'),
+      productId: submodelMap.get('uniqueProductIdentifier').value,
+      gtin: submodelMap.get('gtin').value,
+      taricCode: submodelMap.get('taricCode').value,
+      supplier: supplier,
+      importerName: importer?.name,
+      importerAddress: importer
+        ? `${importer.addresses[0]?.street}, ${importer.addresses[0]?.postalCode} ${importer.addresses[0]?.city}, ${importer.addresses[0]?.country}`
+        : null,
+      importerEmail: importer?.email,
+      importerPhone: importer?.phone,
     };
+
+    console.log('setIdentificationDetails');
 
     return submodelData;
   }
@@ -52,11 +62,12 @@ export class ProductImportService {
   getLegalComplianceSubmodel(submodelElements: ISubmodelElement[]) {
     const submodelMap = new Map<string, any>();
     this.mapSubmodelsToMap(submodelMap, submodelElements ?? []);
+    console.log(submodelMap);
 
     submodelMap.set('technicalDocumentation', {
       certificates: submodelMap
         .get('technicalDocumentation')
-        .get('certificates'),
+        .value.get('certificates').value,
     });
 
     const submodel: LegalComplianceSubmodule = Object.fromEntries(
@@ -65,6 +76,7 @@ export class ProductImportService {
       )
     ) as LegalComplianceSubmodule;
 
+    console.log('getLegalComplianceSubmodel');
     return submodel;
   }
 
@@ -73,11 +85,13 @@ export class ProductImportService {
     this.mapSubmodelsToMap(submodelMap, submodelElements);
 
     const submodel: CircularPropertiesSubmodule = Object.fromEntries(
-      [...submodelMap].filter(([key]) =>
-        CIRCILAR_PROPERTIES_KEYS.includes(
-          key as keyof CircularPropertiesSubmodule
+      [...submodelMap]
+        .filter(([key]) =>
+          CIRCILAR_PROPERTIES_KEYS.includes(
+            key as keyof CircularPropertiesSubmodule
+          )
         )
-      )
+        .map((e) => [e[0], e[1].value])
     ) as CircularPropertiesSubmodule;
 
     return submodel;
@@ -88,9 +102,11 @@ export class ProductImportService {
     this.mapSubmodelsToMap(submodelMap, submodelElements);
 
     const submodel: ESRSynergiesSubmodule = Object.fromEntries(
-      [...submodelMap].filter(([key]) =>
-        ESR_SYNERGIES_KEYS.includes(key as keyof ESRSynergiesSubmodule)
-      )
+      [...submodelMap]
+        .filter(([key]) =>
+          ESR_SYNERGIES_KEYS.includes(key as keyof ESRSynergiesSubmodule)
+        )
+        .map((e) => [e[0], e[1].value])
     ) as CircularPropertiesSubmodule;
 
     return submodel;
@@ -110,38 +126,38 @@ export class ProductImportService {
 
     const materials = [];
     for (let index = 1; index < submodelElements.length; index++) {
-      const element = submodelMap.get(`packagingMaterial_${index - 1}`);
-      materials.push(
-        Object.fromEntries([...(element as Map<string, unknown>)])
+      const element = this.submodelToMaterial(
+        submodelMap.get(`packagingMaterial_${index - 1}`)
       );
+      console.log(element);
+      materials.push(element);
     }
 
     const submodel: PackagingSubmodule = {
-      totalWeight: submodelMap.get('totalWeight'),
+      totalWeight: submodelMap.get('totalWeight').value,
       packagingMaterials: materials,
     } as PackagingSubmodule;
-
+    console.log(submodel);
+    console.log('pack submodel');
     return submodel;
   }
 
-  getMaterialCompositionSubmodel(submodelElements: ISubmodelElement[]) {
+  getMaterialCompositionSubmodel(
+    submodelElements: ISubmodelElement[]
+  ): [MaterialDto, number, boolean?, boolean?][] {
     const submodelMap = new Map<string, any>();
     this.mapSubmodelsToMap(submodelMap, submodelElements);
 
-    const materials = [];
+    const materials: [MaterialDto, number, boolean?, boolean?][] = [];
     for (let index = 1; index < submodelElements.length; index++) {
-      const element = submodelMap.get(`material_${index - 1}`);
-      materials.push(
-        Object.fromEntries([...(element as Map<string, unknown>)])
+      const element = this.submodelToMaterial(
+        submodelMap.get(`material_${index - 1}`)
       );
+
+      materials.push(element);
     }
 
-    const submodel: MaterialCompositionSubmodule = {
-      totalWeight: submodelMap.get('totalWeight'),
-      materials: materials,
-    } as MaterialCompositionSubmodule;
-
-    return submodel;
+    return materials;
   }
 
   getUsagPhaseSubmodel(
@@ -163,7 +179,10 @@ export class ProductImportService {
       if (element.modelType() === ModelType.Property) {
         let value = (element as Property).value;
         value = this.parseStringValue(value);
-        map.set(element.idShort, value);
+        map.set(element.idShort, {
+          name: element.displayName[0].text,
+          value: value,
+        });
       }
       if (element.modelType() === ModelType.SubmodelElementCollection) {
         const nestedMap = new Map<string, unknown>();
@@ -171,16 +190,22 @@ export class ProductImportService {
           nestedMap,
           (element as SubmodelElementCollection).value
         );
-        map.set(element.idShort, nestedMap);
+        map.set(element.idShort, {
+          name: element.displayName[0].text,
+          value: nestedMap,
+        });
       }
     });
   }
 
   private submodelToCompany(map: Map<string, any>): CompanyDto {
+    if (!map.get('name').value) return null;
     let address: AddressDto | undefined = undefined;
     const addressAsString = map.get('address');
     if (addressAsString) {
-      const [street, cityInformation, country] = map.get('address').split(',');
+      const [street, cityInformation, country] = map
+        .get('address')
+        .value.split(',');
 
       const [postcode, city] = cityInformation.trim().split(' ');
       address = {
@@ -192,9 +217,9 @@ export class ProductImportService {
     }
 
     const company = {
-      name: map.get('name'),
-      email: map.get('email'),
-      phone: map.get('phone'),
+      name: map.get('name').value,
+      email: map.get('email').value,
+      phone: map.get('phone').value,
       addresses: [address],
     } as CompanyDto;
 
@@ -202,9 +227,24 @@ export class ProductImportService {
   }
 
   private parseStringValue(value: string) {
+    if (!value) return null;
     if (typeof value === 'string' && value.startsWith('["'))
       return JSON.parse(value);
+    if (value === 'true') return true;
+    if (value === 'false') return false;
     const num = Number(value);
     return Number.isNaN(num) ? value : num;
+  }
+
+  submodelToMaterial(data: {
+    name: string;
+    value: Map<string, { name: string; value: string | number | boolean }>;
+  }): [MaterialDto, number, boolean?, boolean?] {
+    return [
+      new MaterialDto(data.name),
+      +data.value.get('percentage')?.value,
+      !!data.value.get('isRenewable').value,
+      !!data.value.get('isPrimary').value,
+    ];
   }
 }
