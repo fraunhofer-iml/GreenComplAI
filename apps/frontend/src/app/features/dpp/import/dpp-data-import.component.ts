@@ -6,10 +6,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { MaterialDto, ProductDto } from '@ap2/api-interfaces';
+import { ProductDto } from '@ap2/api-interfaces';
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, input } from '@angular/core';
-import { MatListModule } from '@angular/material/list';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { DppService } from '../../../core/services/dpp/dpp.service';
 import { ProductsService } from '../../../core/services/products/products.service';
@@ -17,7 +23,13 @@ import { ProductDppCompareComponent } from './comparison/product-dpp-compare.com
 
 @Component({
   selector: 'app-dpp-data-import',
-  imports: [CommonModule, MatListModule, ProductDppCompareComponent],
+  imports: [
+    CommonModule,
+    ProductDppCompareComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    MatCheckboxModule,
+  ],
   providers: [DppService],
   templateUrl: './dpp-data-import.component.html',
 })
@@ -60,5 +72,18 @@ export class DppDataImportComponent {
         ?.packagings?.map((p) => `${p[0].name}`),
     };
     return res;
+  });
+
+  formGroup = new FormGroup({
+    productId: new FormControl<boolean>(false),
+    gtin: new FormControl<boolean>(false),
+    taricCode: new FormControl<boolean>(false),
+    supplier: new FormControl<boolean>(false),
+    importer: new FormControl<boolean>(false),
+    materials: new FormControl<boolean>(false),
+    criticalRawMaterials: new FormControl<boolean>(false),
+    packagings: new FormControl<boolean>(false),
+    waterUsed: new FormControl<boolean>(false),
+    productCarbonFootprint: new FormControl<boolean>(false),
   });
 }
