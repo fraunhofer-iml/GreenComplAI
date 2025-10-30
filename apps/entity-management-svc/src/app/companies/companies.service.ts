@@ -11,7 +11,7 @@ import {
   AddressDto,
   CompanyCreateDto,
   CompanyCreateResponse,
-  CompanyDto,
+  CompanyEntity,
   ErrorMessages,
   PaginatedData,
 } from '@ap2/api-interfaces';
@@ -35,7 +35,7 @@ export class CompaniesService {
   async createCompanyOfEmployee(
     dto: CompanyCreateDto,
     employeeId: string
-  ): Promise<CompanyDto> {
+  ): Promise<CompanyEntity> {
     const evaluationElement = new CompanyCreateDto(
       '',
       '',
@@ -73,7 +73,15 @@ export class CompaniesService {
           },
         },
       },
-      include: { addresses: true, employees: true },
+      include: {
+        addresses: true,
+        employees: true,
+        parentCompanies: {
+          include: {
+            associatedCompany: true,
+          },
+        },
+      },
     });
 
     return company;
@@ -116,7 +124,10 @@ export class CompaniesService {
           },
         },
       },
-      include: { addresses: true, parentCompanies: true },
+      include: {
+        addresses: true,
+        parentCompanies: { include: { associatedCompany: true } },
+      },
     });
 
     await this.prismaService.user.create({
@@ -131,14 +142,7 @@ export class CompaniesService {
     });
 
     return {
-      company: new CompanyDto(
-        company.id,
-        company.name,
-        company.email,
-        company.phone,
-        company.addresses,
-        []
-      ),
+      company: company,
       username: userCreationResult.username,
     };
   }
@@ -149,7 +153,7 @@ export class CompaniesService {
     sorting: string,
     page: number,
     size: number
-  ): Promise<PaginatedData<CompanyDto>> {
+  ): Promise<PaginatedData<CompanyEntity>> {
     const parentCompany = await this.getCompanyForEmployee(employeeId);
 
     if (!parentCompany) {
@@ -188,7 +192,15 @@ export class CompaniesService {
       skip: skip,
       take: size,
       where: whereCondition,
-      include: { addresses: true },
+      include: {
+        addresses: true,
+        employees: true,
+        parentCompanies: {
+          include: {
+            associatedCompany: true,
+          },
+        },
+      },
       orderBy: JSON.parse(sorting || '{}'),
     });
 
@@ -202,12 +214,20 @@ export class CompaniesService {
     };
   }
 
-  async findCompanyById(id: string): Promise<CompanyDto> {
+  async findCompanyById(id: string): Promise<CompanyEntity | null> {
     const company = await this.prismaService.company.findUnique({
       where: {
         id: id,
       },
-      include: { addresses: true },
+      include: {
+        addresses: true,
+        employees: true,
+        parentCompanies: {
+          include: {
+            associatedCompany: true,
+          },
+        },
+      },
     });
     return company;
   }
@@ -224,7 +244,10 @@ export class CompaniesService {
     });
   }
 
-  async updateCompany(id: string, dto: CompanyCreateDto): Promise<CompanyDto> {
+  async updateCompany(
+    id: string,
+    dto: CompanyCreateDto
+  ): Promise<CompanyEntity> {
     const company = await this.prismaService.company.update({
       where: {
         id,
@@ -239,7 +262,15 @@ export class CompaniesService {
           })),
         },
       },
-      include: { addresses: true },
+      include: {
+        addresses: true,
+        employees: true,
+        parentCompanies: {
+          include: {
+            associatedCompany: true,
+          },
+        },
+      },
     });
 
     return company;
@@ -247,12 +278,24 @@ export class CompaniesService {
 
   async getCompanyForEmployee(
     employeeId: string
-  ): Promise<CompanyDto | undefined> {
+  ): Promise<CompanyEntity | undefined> {
     const employee = await this.prismaService.user.findUnique({
       where: {
         id: employeeId,
       },
-      include: { company: { include: { addresses: true } } },
+      include: {
+        company: {
+          include: {
+            addresses: true,
+            employees: true,
+            parentCompanies: {
+              include: {
+                associatedCompany: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     return employee?.company;

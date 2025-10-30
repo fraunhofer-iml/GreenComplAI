@@ -7,10 +7,15 @@
  */
 
 import { AmqpClientEnum, MappingPatterns } from '@ap2/amqp';
-import { CreateMappingProps, MappingDto } from '@ap2/api-interfaces';
+import {
+  CreateMappingProps,
+  MappingDto,
+  MappingEntity,
+} from '@ap2/api-interfaces';
 import { firstValueFrom } from 'rxjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { toMappingDto } from './mapping.mapper';
 
 @Injectable()
 export class MappingsService {
@@ -20,20 +25,22 @@ export class MappingsService {
   ) {}
 
   async createMapping(props: CreateMappingProps): Promise<MappingDto> {
-    return firstValueFrom(
-      this.entityManagementService.send<MappingDto>(
+    const entity = await firstValueFrom(
+      this.entityManagementService.send<MappingEntity>(
         MappingPatterns.CREATE,
         props
       )
     );
+    return toMappingDto(entity);
   }
 
-  findOne(props: { id: string }): Promise<MappingDto> {
-    return firstValueFrom(
-      this.entityManagementService.send<MappingDto>(
+  async findOne(props: { id: string }): Promise<MappingDto | null> {
+    const entity = await firstValueFrom(
+      this.entityManagementService.send<MappingEntity | null>(
         MappingPatterns.READ_BY_ID,
         props
       )
     );
+    return toMappingDto(entity);
   }
 }

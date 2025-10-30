@@ -11,22 +11,24 @@ import {
   CreateReportDto,
   ErrorMessages,
   FinancialImpactCreateDto,
-  FinancialImpactDto,
   FindAllReportsForCompanyProps,
   GoalDto,
   GoalPlanningDto,
-  ImpactType,
   MeasureCreateDto,
-  MeasureDto,
-  MeasureStatus,
   PaginatedData,
-  ReportDto,
-  ReportOverviewDto,
+  ReportEntity,
+  ReportEntityOverview,
   StrategyDto,
 } from '@ap2/api-interfaces';
 import { PrismaService } from '@ap2/database';
 import { HttpStatus, Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import {
+  FinancialImpact,
+  GoalPlanning,
+  Measure,
+  Prisma,
+  Strategy,
+} from '@prisma/client';
 import { getFilterAsBool } from '../utils/filter-utils';
 import { getSorting } from '../utils/sorting.util';
 import { createUpdateGoalsPlanningQuery } from './queries/create-update-goals-planning.query';
@@ -39,7 +41,7 @@ import { upsertMeasures } from './queries/measure-upsert.query';
 export class ReportsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createReport(data: CreateReportDto): Promise<ReportDto> {
+  async createReport(data: CreateReportDto): Promise<ReportEntity> {
     try {
       const report = await this.prisma.report.create({
         data: {
@@ -56,29 +58,20 @@ export class ReportsService {
         include: {
           strategies: true,
           measures: {
-            include: { strategies: { include: { strategy: true } } },
+            include: {
+              strategies: { include: { strategy: true } },
+              previousReport: true,
+            },
           },
           financialImpacts: { include: { criticalAssumptions: true } },
+          goalPlanning: true,
+          goals: {
+            include: { strategies: { include: { strategy: true } } },
+          },
         },
       });
 
-      return {
-        ...report,
-        measures: report.measures.map((m) => ({
-          ...m,
-          strategies: m.strategies.map((s) => s.strategy),
-          status:
-            m.status === MeasureStatus.IN_PROGRESS
-              ? MeasureStatus.IN_PROGRESS
-              : MeasureStatus.PLANNED,
-        })),
-        financialImpacts: report.financialImpacts.map((f) => ({
-          ...f,
-          type:
-            f.type === ImpactType.CHANCE ? ImpactType.CHANCE : ImpactType.RISK,
-        })),
-        goals: [],
-      };
+      return report;
     } catch (error) {
       if (error.code === 'P2002') {
         throw new AmqpException(
@@ -95,7 +88,7 @@ export class ReportsService {
     size,
     sorting,
   }: FindAllReportsForCompanyProps): Promise<
-    PaginatedData<ReportOverviewDto | null>
+    PaginatedData<ReportEntityOverview>
   > {
     const skip: number = (page - 1) * size;
     const f = await this.getWhereCondition(filters);
@@ -124,19 +117,14 @@ export class ReportsService {
     });
 
     return {
-      data: reports.map((result) => ({
-        ...result,
-        numberOfGoals: result._count.goals,
-        numberOfMeasures: result._count.measures,
-        numberOfStrategies: result._count.strategies,
-      })),
+      data: reports,
       meta: { page: page, totalCount: totalCount, pageSize: size },
     };
   }
 
-  async updateReport(id: string, data: CreateReportDto): Promise<ReportDto> {
+  async updateReport(id: string, data: CreateReportDto): Promise<ReportEntity> {
     try {
-      const report = await this.prisma.report.update({
+      await this.prisma.report.update({
         where: { id: id, isFinalReport: false },
         data: {
           assetsBusinessActivitiesEvaluated:
@@ -148,36 +136,13 @@ export class ReportsService {
           evaluationYear: data.evaluationYear,
           isFinalReport: data.isFinalReport,
         },
-        include: {
-          strategies: true,
-          measures: {
-            include: { strategies: { include: { strategy: true } } },
-          },
-          financialImpacts: { include: { criticalAssumptions: true } },
-        },
       });
 
       if (data.isFinalReport) {
         await this.copyMeasures(id);
       }
 
-      return {
-        ...report,
-        measures: report.measures.map((m) => ({
-          ...m,
-          strategies: m.strategies.map((s) => s.strategy),
-          status:
-            m.status === MeasureStatus.IN_PROGRESS
-              ? MeasureStatus.IN_PROGRESS
-              : MeasureStatus.PLANNED,
-        })),
-        financialImpacts: report.financialImpacts.map((f) => ({
-          ...f,
-          type:
-            f.type === ImpactType.CHANCE ? ImpactType.CHANCE : ImpactType.RISK,
-        })),
-        goals: [],
-      };
+      return await this.getReportById(id);
     } catch (error) {
       if (error.code === 'P2002') {
         throw new AmqpException(
@@ -191,9 +156,9 @@ export class ReportsService {
   async updateStrategies(
     strategies: StrategyDto[],
     reportId: string
-  ): Promise<StrategyDto[]> {
+  ): Promise<Strategy[]> {
     const report = await this.getReportById(reportId);
-    if (report.isFinalReport) return;
+    if (!report || report.isFinalReport) return [];
 
     await this.prisma.strategy.deleteMany({
       where: {
@@ -232,9 +197,9 @@ export class ReportsService {
   async updateMeasures(
     measures: MeasureCreateDto[],
     reportId: string
-  ): Promise<MeasureDto[]> {
+  ): Promise<Measure[]> {
     const report = await this.getReportById(reportId);
-    if (report.isFinalReport) return;
+    if (!report || report.isFinalReport) return [];
 
     await this.prisma.measure.deleteMany({
       where: {
@@ -255,8 +220,8 @@ export class ReportsService {
     return await Promise.all(updateCalls);
   }
 
-  async getReportById(id: string): Promise<ReportDto> {
-    const res = await this.prisma.report.findUnique({
+  async getReportById(id: string): Promise<ReportEntity | null> {
+    return await this.prisma.report.findUnique({
       where: {
         id,
       },
@@ -270,45 +235,15 @@ export class ReportsService {
         },
         financialImpacts: {
           include: {
-            criticalAssumptions: { orderBy: { title: 'asc' } },
+            criticalAssumptions: true,
           },
-          orderBy: { title: 'asc' },
         },
         goalPlanning: true,
         goals: {
           include: { strategies: { include: { strategy: true } } },
-          orderBy: { title: 'asc' },
         },
       },
     });
-
-    return {
-      ...res,
-      financialImpacts: res.financialImpacts.map((f) => ({
-        ...f,
-        type:
-          f.type === ImpactType.CHANCE ? ImpactType.CHANCE : ImpactType.RISK,
-      })),
-      measures: res.measures.map((m) => ({
-        ...m,
-        strategies: m.strategies.map((s) => s.strategy),
-        status:
-          m.status === MeasureStatus.IN_PROGRESS
-            ? MeasureStatus.IN_PROGRESS
-            : MeasureStatus.PLANNED,
-        previousReport: m.previousReport?.evaluationYear,
-      })),
-      goalPlanning: {
-        ...res.goalPlanning,
-      },
-      goals: res.goals.map((goal) => ({
-        ...goal,
-        strategies: goal.strategies.map((goalStrategy) => ({
-          id: goalStrategy.strategy.id,
-          connection: goalStrategy.connection,
-        })),
-      })),
-    };
   }
 
   private async getWhereCondition(
@@ -354,7 +289,7 @@ export class ReportsService {
     );
 
     if (measuresToCopy.length > 0) {
-      let nextReport: Partial<ReportDto> = await this.prisma.report.findUnique({
+      let nextReport = await this.prisma.report.findUnique({
         where: { evaluationYear: currentReport.evaluationYear + 1 },
       });
 
@@ -413,9 +348,9 @@ export class ReportsService {
   async updateFinancialImpacts(
     impacts: FinancialImpactCreateDto[],
     reportId: string
-  ): Promise<FinancialImpactDto[]> {
+  ): Promise<FinancialImpact[]> {
     const report = await this.getReportById(reportId);
-    if (report.isFinalReport) return;
+    if (!report || report.isFinalReport) return [];
 
     await this.prisma.financialImpact.deleteMany({
       where: {
@@ -428,18 +363,16 @@ export class ReportsService {
 
     const updateCalls = [];
     for (const impact of impacts) {
-      updateCalls.push(
-        this.prisma.criticalAssumption.deleteMany({
-          where: {
-            id: {
-              notIn: impacts.flatMap((i) =>
-                i.criticalAssumptions.map((a) => a.id)
-              ),
-            },
-            financialImpactId: impact.id,
+      await this.prisma.criticalAssumption.deleteMany({
+        where: {
+          id: {
+            notIn: impacts.flatMap((i) =>
+              i.criticalAssumptions.map((a) => a.id)
+            ),
           },
-        })
-      );
+          financialImpactId: impact.id,
+        },
+      });
 
       updateCalls.push(
         this.prisma.financialImpact.upsert(
@@ -454,9 +387,9 @@ export class ReportsService {
   async updateGoalPlanning(
     reportId: string,
     planning: GoalPlanningDto
-  ): Promise<GoalPlanningDto> {
+  ): Promise<GoalPlanning | null> {
     const report = await this.getReportById(reportId);
-    if (report.isFinalReport) return;
+    if (!report || report.isFinalReport) return null;
 
     const result = await this.prisma.goalPlanning.upsert({
       where: { id: planning.id ?? '' },
@@ -471,12 +404,23 @@ export class ReportsService {
 
     await this.prisma.goal.deleteMany({ where: { reportId: reportId } });
 
-    return { ...result };
+    return result;
   }
 
-  async createOrUpdateGoals(reportId: string, goals: GoalDto[]) {
+  async createOrUpdateGoals(
+    reportId: string,
+    goals: GoalDto[]
+  ): Promise<ReportEntity> {
     const report = await this.getReportById(reportId);
-    if (report.isFinalReport) return;
+    if (!report) {
+      throw new AmqpException('Report not found', HttpStatus.NOT_FOUND);
+    }
+    if (report.isFinalReport) {
+      throw new AmqpException(
+        'Report is final and cannot be modified',
+        HttpStatus.BAD_REQUEST
+      );
+    }
 
     await this.prisma.goal.deleteMany({
       where: {
@@ -499,7 +443,7 @@ export class ReportsService {
 
     await Promise.all(updateCalls);
 
-    return { ...report, goals: [] };
+    return await this.getReportById(reportId);
   }
 
   private async getIdsForAmountOfRelations(

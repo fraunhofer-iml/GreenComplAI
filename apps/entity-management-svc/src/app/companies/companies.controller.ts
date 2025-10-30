@@ -9,7 +9,7 @@
 import { AmqpException, CompanyMessagePatterns } from '@ap2/amqp';
 import {
   CompanyCreateResponse,
-  CompanyDto,
+  CompanyEntity,
   CreateCompanyProps,
   DeleteCompanyProps,
   ErrorMessages,
@@ -41,7 +41,7 @@ export class CompaniesController {
   @MessagePattern(CompanyMessagePatterns.CREATE)
   async createCompany(
     @Payload() payload: CreateCompanyProps
-  ): Promise<CompanyDto> {
+  ): Promise<CompanyEntity> {
     return await this.companyService.createCompanyOfEmployee(
       payload.dto,
       payload.userId
@@ -52,7 +52,7 @@ export class CompaniesController {
   async findAll(
     @Payload()
     payload: FindAssociatedCompaniesProps
-  ): Promise<PaginatedData<CompanyDto>> {
+  ): Promise<PaginatedData<CompanyEntity>> {
     return await this.companyService.findAssociatedCompanies(
       payload.userId,
       payload.filters,
@@ -63,22 +63,28 @@ export class CompaniesController {
   }
 
   @MessagePattern(CompanyMessagePatterns.READ_BY_ID)
-  async findCompanyById(@Payload() payload: FindCompanyByIdProps) {
+  async findCompanyById(
+    @Payload() payload: FindCompanyByIdProps
+  ): Promise<CompanyEntity | null> {
     return await this.companyService.findCompanyById(payload.id);
   }
 
   @MessagePattern(CompanyMessagePatterns.DELETE)
-  async removeCompany(@Payload() payload: DeleteCompanyProps) {
+  async removeCompany(@Payload() payload: DeleteCompanyProps): Promise<void> {
     return await this.companyService.removeCompany(payload.id);
   }
 
   @MessagePattern(CompanyMessagePatterns.UPDATE)
-  async updateCompany(@Payload() payload: UpdateCompanyProps) {
+  async updateCompany(
+    @Payload() payload: UpdateCompanyProps
+  ): Promise<CompanyEntity> {
     return await this.companyService.updateCompany(payload.id, payload.dto);
   }
 
   @MessagePattern(CompanyMessagePatterns.READ_BY_USER_ID)
-  async findCompanyByEmployeeId(@Payload() payload: FindCompanyByIdProps) {
+  async findCompanyByEmployeeId(
+    @Payload() payload: FindCompanyByIdProps
+  ): Promise<CompanyEntity> {
     const company = await this.companyService.getCompanyForEmployee(payload.id);
     if (!company)
       throw new AmqpException(

@@ -10,7 +10,8 @@ import { PackagingMessagePatterns } from '@ap2/amqp';
 import {
   CreatePackagingProps,
   FindAllPackagingProps,
-  PackagingDto,
+  PackagingEntity,
+  PackagingEntityList,
   PackagingIdProps,
   PaginatedData,
   UpdatePackagingProps,
@@ -28,30 +29,32 @@ export class PackagingController {
   @MessagePattern(PackagingMessagePatterns.CREATE)
   create(
     @Payload() createPackagingDto: CreatePackagingProps
-  ): Promise<PackagingDto> {
+  ): Promise<PackagingEntity> {
     return this.packagingService.create(createPackagingDto);
   }
 
   @MessagePattern(PackagingMessagePatterns.READ)
   findAll(
     @Payload() payload: FindAllPackagingProps
-  ): Promise<PaginatedData<PackagingDto>> {
+  ): Promise<PaginatedData<PackagingEntityList>> {
     return this.packagingService.findAll(payload);
   }
 
   @MessagePattern(PackagingMessagePatterns.READ_BY_ID)
-  async findOne(@Payload() payload: PackagingIdProps): Promise<PackagingDto> {
+  async findOne(
+    @Payload() payload: PackagingIdProps
+  ): Promise<PackagingEntity | null> {
     return this.packagingService.findOne(payload);
   }
 
   @MessagePattern(PackagingMessagePatterns.PRELIMINARY)
   async findPartPackagings(
     @Payload() payload: PackagingIdProps
-  ): Promise<[PackagingDto, number][]> {
+  ): Promise<[PackagingEntity, number][]> {
     return this.packagingService.findPartPackagings(payload);
   }
   @MessagePattern(PackagingMessagePatterns.UPDATE)
-  update(@Payload() payload: UpdatePackagingProps): Promise<PackagingDto> {
+  update(@Payload() payload: UpdatePackagingProps): Promise<PackagingEntity> {
     return this.packagingService.update(payload);
   }
 

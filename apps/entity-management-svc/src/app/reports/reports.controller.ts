@@ -9,14 +9,10 @@
 import { ReportMessagePatterns } from '@ap2/amqp';
 import {
   CreateReportProps,
-  FinancialImpactDto,
   FindAllReportsForCompanyProps,
-  GoalPlanningDto,
-  MeasureDto,
   PaginatedData,
-  ReportDto,
-  ReportOverviewDto,
-  StrategyDto,
+  ReportEntity,
+  ReportEntityOverview,
   UpdateFinancialImpactsProps,
   UpdateGoalsPlanningProps,
   UpdateGoalsProps,
@@ -26,6 +22,12 @@ import {
 } from '@ap2/api-interfaces';
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
+import {
+  FinancialImpact,
+  GoalPlanning,
+  Measure,
+  Strategy,
+} from '@prisma/client';
 import { ReportsService } from './reports.service';
 
 @Controller()
@@ -35,61 +37,61 @@ export class ReportsController {
   @MessagePattern(ReportMessagePatterns.CREATE)
   async createReport(
     @Payload() reportDto: CreateReportProps
-  ): Promise<ReportDto> {
+  ): Promise<ReportEntity> {
     return this.reportsService.createReport(reportDto.dto);
   }
 
   @MessagePattern(ReportMessagePatterns.GET_ALL_REPORTS)
   async getAllReports(
     @Payload() reportDto: FindAllReportsForCompanyProps
-  ): Promise<PaginatedData<ReportOverviewDto | null>> {
+  ): Promise<PaginatedData<ReportEntityOverview>> {
     return this.reportsService.getAllReports(reportDto);
   }
 
   @MessagePattern(ReportMessagePatterns.UPDATE)
   async updateReport(
     @Payload() reportDto: UpdateReportProps
-  ): Promise<ReportDto> {
+  ): Promise<ReportEntity> {
     return this.reportsService.updateReport(reportDto.id, reportDto.dto);
   }
 
   @MessagePattern(ReportMessagePatterns.UPDATE_STRATEGIES)
   async updateStrategies(
     @Payload() reportDto: UpdateStrategiesProps
-  ): Promise<StrategyDto[]> {
+  ): Promise<Strategy[]> {
     return this.reportsService.updateStrategies(reportDto.dtos, reportDto.id);
   }
 
   @MessagePattern(ReportMessagePatterns.UPDATE_MEASURES)
   async updateMeasures(
     @Payload() reportDto: UpdateMeasuresProps
-  ): Promise<MeasureDto[]> {
+  ): Promise<Measure[]> {
     return this.reportsService.updateMeasures(reportDto.dtos, reportDto.id);
   }
 
   @MessagePattern(ReportMessagePatterns.UPDATE_FINANCIAL_IMPACTS)
   async updateFinancialImpacts(
     @Payload() props: UpdateFinancialImpactsProps
-  ): Promise<FinancialImpactDto[]> {
+  ): Promise<FinancialImpact[]> {
     return this.reportsService.updateFinancialImpacts(props.dtos, props.id);
   }
 
   @MessagePattern(ReportMessagePatterns.UPDATE_GOALS)
-  async updateGoals(
-    @Payload() props: UpdateGoalsProps
-  ): Promise<GoalPlanningDto> {
+  async updateGoals(@Payload() props: UpdateGoalsProps): Promise<ReportEntity> {
     return this.reportsService.createOrUpdateGoals(props.id, props.dto);
   }
 
   @MessagePattern(ReportMessagePatterns.UPDATE_GOAL_PLANNING)
   async updateGoalPlanning(
     @Payload() props: UpdateGoalsPlanningProps
-  ): Promise<GoalPlanningDto> {
+  ): Promise<GoalPlanning | null> {
     return this.reportsService.updateGoalPlanning(props.id, props.dto);
   }
 
   @MessagePattern(ReportMessagePatterns.GET_REPORT_BY_ID)
-  async getReportById(@Payload() payload: { id: string }): Promise<ReportDto> {
+  async getReportById(
+    @Payload() payload: { id: string }
+  ): Promise<ReportEntity | null> {
     return this.reportsService.getReportById(payload.id);
   }
 }

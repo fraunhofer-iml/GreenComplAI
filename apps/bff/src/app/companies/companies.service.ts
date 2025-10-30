@@ -10,6 +10,7 @@ import { AmqpClientEnum, CompanyMessagePatterns } from '@ap2/amqp';
 import {
   CompanyCreateResponse,
   CompanyDto,
+  CompanyEntity,
   CreateCompanyProps,
   DeleteCompanyProps,
   FindAssociatedCompaniesProps,
@@ -20,6 +21,7 @@ import {
 import { firstValueFrom } from 'rxjs';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { toCompanyDto } from './company.mapper';
 
 @Injectable()
 export class CompaniesService {
@@ -30,53 +32,66 @@ export class CompaniesService {
     private readonly entityManagementService: ClientProxy
   ) {}
 
-  createCompany(props: CreateCompanyProps): Promise<CompanyDto> {
-    return firstValueFrom(
-      this.entityManagementService.send<CompanyDto>(
+  async createCompany(props: CreateCompanyProps): Promise<CompanyDto> {
+    const entity = await firstValueFrom(
+      this.entityManagementService.send<CompanyEntity>(
         CompanyMessagePatterns.CREATE,
         props
       )
     );
+    return toCompanyDto(entity);
   }
 
-  createAssociatedCompany(
+  async createAssociatedCompany(
     props: CreateCompanyProps
   ): Promise<CompanyCreateResponse> {
-    return firstValueFrom(
-      this.entityManagementService.send<CompanyCreateResponse>(
-        CompanyMessagePatterns.CREATE_ASSOCIATE_COMPANY,
-        props
-      )
+    const result = await firstValueFrom(
+      this.entityManagementService.send<{
+        company: CompanyEntity;
+        username: string;
+      }>(CompanyMessagePatterns.CREATE_ASSOCIATE_COMPANY, props)
+    );
+    return new CompanyCreateResponse(
+      toCompanyDto(result.company),
+      result.username
     );
   }
 
-  findAllAssociatedCompanies(
+  async findAllAssociatedCompanies(
     props: FindAssociatedCompaniesProps
-  ): Promise<PaginatedData<CompanyDto[]>> {
-    return firstValueFrom(
-      this.entityManagementService.send<PaginatedData<CompanyDto[]>>(
+  ): Promise<PaginatedData<CompanyDto>> {
+    const result = await firstValueFrom(
+      this.entityManagementService.send<PaginatedData<CompanyEntity>>(
         CompanyMessagePatterns.READ_COMPANIES,
         props
       )
     );
+    return {
+      data: result.data
+        ?.map((entity) => toCompanyDto(entity))
+        .filter((c): c is CompanyDto => c !== null),
+      meta: result.meta,
+    };
   }
 
-  findOne(props: FindCompanyByIdProps): Promise<CompanyDto> {
-    return firstValueFrom(
-      this.entityManagementService.send<CompanyDto>(
+  async findOne(props: FindCompanyByIdProps): Promise<CompanyDto | null> {
+    const entity = await firstValueFrom(
+      this.entityManagementService.send<CompanyEntity | null>(
         CompanyMessagePatterns.READ_BY_ID,
         props
       )
     );
+    return toCompanyDto(entity);
   }
 
-  update(props: UpdateCompanyProps): Promise<CompanyDto> {
-    return firstValueFrom(
-      this.entityManagementService.send<CompanyDto>(
+  async update(props: UpdateCompanyProps): Promise<CompanyDto> {
+    const entity = await firstValueFrom(
+      this.entityManagementService.send<CompanyEntity>(
         CompanyMessagePatterns.UPDATE,
         props
       )
     );
+    return toCompanyDto(entity);
   }
 
   remove(props: DeleteCompanyProps): Promise<void> {
@@ -85,12 +100,15 @@ export class CompaniesService {
     );
   }
 
-  findOneByUserId(props: FindCompanyByIdProps): Promise<CompanyDto> {
-    return firstValueFrom(
-      this.entityManagementService.send<CompanyDto>(
+  async findOneByUserId(
+    props: FindCompanyByIdProps
+  ): Promise<CompanyDto | null> {
+    const entity = await firstValueFrom(
+      this.entityManagementService.send<CompanyEntity | null>(
         CompanyMessagePatterns.READ_BY_USER_ID,
         props
       )
     );
+    return toCompanyDto(entity);
   }
 }

@@ -11,7 +11,8 @@ import {
   GenerateAnalysisProp,
   OutlierDetectionAnalysisDto,
   PackagingDto,
-  ProductDto,
+  PackagingEntity,
+  ProductEntity,
 } from '@ap2/api-interfaces';
 import { PrismaService } from '@ap2/database';
 import { Injectable } from '@nestjs/common';
@@ -33,16 +34,38 @@ export class ProductAnalysisService {
   public async getAnalysis(
     createAnalysisDto: GenerateAnalysisProp
   ): Promise<AnalysisDto> {
-    const product: ProductDto = await this.productService.findOne({
+    const product: ProductEntity | null = await this.productService.findOne({
       id: createAnalysisDto.productId,
     });
 
-    const preliminaryProducts: [ProductDto, number][] =
+    if (!product) {
+      throw new Error('Product not found');
+    }
+
+    const preliminaryProducts: [ProductEntity, number][] =
       await this.productService.findPreliminaryProducts({
         id: createAnalysisDto.productId,
       });
 
-    const packagingOfProduct: [PackagingDto, number][] = product.packagings;
+    const packagingEntities: [PackagingEntity, number][] =
+      await this.productService.findProductPackaging({
+        id: createAnalysisDto.productId,
+      });
+
+    const packagingOfProduct: [PackagingDto, number][] = packagingEntities.map(
+      ([pkg, amount]) => [
+        {
+          id: pkg.id,
+          name: pkg.name,
+          weight: pkg.weight,
+          percentageOfRenewableMaterial: pkg.percentageOfRenewableMaterial ?? 0,
+          percentageOfRecycledMaterial: pkg.percentageOfRecycledMaterial ?? 0,
+          percentageOfRStrategies: pkg.percentageOfRStrategies ?? 0,
+          flags: pkg.flags ?? [],
+        } as PackagingDto,
+        amount,
+      ]
+    );
     const weightOfProduct: number = product.weight;
     const weightOfPackaging: number =
       this.getWeightOfPackaging(packagingOfProduct);
@@ -102,20 +125,20 @@ export class ProductAnalysisService {
   }
 
   private async getWeightOfRecycledWasteOfPreProducts(
-    product: ProductDto,
-    preliminaryProducts: [ProductDto, number][]
+    product: ProductEntity,
+    preliminaryProducts: [ProductEntity, number][]
   ): Promise<number> {
     let weightOfRecycledWaste = 0;
 
-    for (const preliminaryProductDto of preliminaryProducts) {
+    for (const preliminaryProductEntity of preliminaryProducts) {
       weightOfRecycledWaste +=
-        this.getWeightOfRecycledWaste(preliminaryProductDto[0]) *
-        preliminaryProductDto[1];
+        this.getWeightOfRecycledWaste(preliminaryProductEntity[0]) *
+        preliminaryProductEntity[1];
     }
     return weightOfRecycledWaste;
   }
 
-  private getWeightOfRecycledWaste(product: ProductDto): number {
+  private getWeightOfRecycledWaste(product: ProductEntity): number {
     return product.waste == null
       ? 0
       : getTotalWeightOfWaste(product.waste) *
@@ -159,8 +182,8 @@ export class ProductAnalysisService {
   }
 
   async getWaterConsumption(
-    product: ProductDto,
-    preliminaryProducts: [ProductDto, number][],
+    product: ProductEntity,
+    preliminaryProducts: [ProductEntity, number][],
     userId: string
   ): Promise<{ upstreamWater: number; productionWater: number }> {
     const user = await this.prismaService.user.findUnique({
@@ -170,12 +193,12 @@ export class ProductAnalysisService {
     let productionWater = 0;
 
     let preliminaryWater = preliminaryProducts.reduce(
-      (acc, curr: [ProductDto, number]) =>
+      (acc, curr: [ProductEntity, number]) =>
         acc + (curr[0].waterUsed ?? 0) * curr[1],
       0
     );
 
-    if (product.manufacturer.id === user.companyId)
+    if (product.manufacturer?.id === user?.companyId)
       productionWater = product.waterUsed ?? 0;
     else preliminaryWater += product.waterUsed ?? 0;
 

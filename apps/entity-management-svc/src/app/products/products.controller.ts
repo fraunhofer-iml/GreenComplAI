@@ -15,9 +15,10 @@ import {
   FindAllProductsProps,
   FindProductByIdProps,
   GenerateAnalysisProp,
-  PackagingDto,
+  PackagingEntity,
   PaginatedData,
-  ProductDto,
+  ProductEntity,
+  ProductEntityList,
   ProductOutlierDto,
   SearchProductsProps,
   UpdateFlagProductProps,
@@ -28,7 +29,7 @@ import {
 } from '@ap2/api-interfaces';
 import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { DocumentType, GCFile } from '@prisma/client';
+import { GCFile } from '@prisma/client';
 import { ProductAnalysisService } from './analysis.service';
 import { ProductService } from './products.service';
 
@@ -42,7 +43,7 @@ export class ProductController {
   ) {}
 
   @MessagePattern(ProductMessagePatterns.CREATE)
-  create(@Payload() payload: CreateProductProps): Promise<ProductDto> {
+  create(@Payload() payload: CreateProductProps): Promise<ProductEntity> {
     return this.productService.create(payload);
   }
 
@@ -50,7 +51,7 @@ export class ProductController {
   findAll(
     @Payload()
     payload: FindAllProductsProps
-  ): Promise<PaginatedData<ProductDto>> {
+  ): Promise<PaginatedData<ProductEntityList>> {
     return this.productService.findAll(payload);
   }
 
@@ -58,7 +59,7 @@ export class ProductController {
   findAllOfSupplier(
     @Payload()
     payload: FindAllProductsOfSupplierProps
-  ): Promise<PaginatedData<Partial<ProductDto>>> {
+  ): Promise<PaginatedData<ProductEntityList>> {
     return this.productService.findAllOfSupplier(payload);
   }
 
@@ -68,83 +69,87 @@ export class ProductController {
   }
 
   @MessagePattern(ProductMessagePatterns.GET_FOR_OUTLIER_DETECTION)
-  getForOutlierDetection(): Promise<Partial<ProductDto>[]> {
+  getForOutlierDetection(): Promise<ProductEntityList[]> {
     return this.productService.getForOutlierDetection();
   }
 
   @MessagePattern(ProductMessagePatterns.READ_BY_ID)
-  findOne(@Payload() payload: FindProductByIdProps): Promise<ProductDto> {
+  findOne(
+    @Payload() payload: FindProductByIdProps
+  ): Promise<ProductEntity | null> {
     return this.productService.findOne(payload);
   }
 
   @MessagePattern(ProductMessagePatterns.READ_OF_SUPPLIER_BY_ID)
   findOneOfSupplier(
     @Payload() payload: FindProductByIdProps & { supplierCompanyId: string }
-  ): Promise<Partial<ProductDto>> {
+  ): Promise<ProductEntityList> {
     return this.productService.findOneOfSupplier(payload);
   }
 
   @MessagePattern(ProductMessagePatterns.PRELIMINARY)
   async findPreliminaryProducts(
     @Payload() payload: FindProductByIdProps
-  ): Promise<[ProductDto, number][]> {
+  ): Promise<[ProductEntity, number][]> {
     return this.productService.findPreliminaryProducts(payload);
   }
 
   @MessagePattern(ProductMessagePatterns.PACKAGING)
   async findPackaging(
     @Payload() payload: FindProductByIdProps
-  ): Promise<[PackagingDto, number][]> {
+  ): Promise<[PackagingEntity, number][]> {
     return this.productService.findProductPackaging(payload);
   }
 
   @MessagePattern(ProductMessagePatterns.UPDATE)
-  update(@Payload() payload: UpdateProductProps): Promise<ProductDto> {
+  update(@Payload() payload: UpdateProductProps): Promise<ProductEntity> {
     return this.productService.update(payload);
   }
 
   @MessagePattern(ProductMessagePatterns.UPDATE_OF_SUPPLIER)
   updateSupplier(
     @Payload() payload: UpdateProductProps & { supplierCompanyId: string }
-  ): Promise<ProductDto> {
+  ): Promise<ProductEntity> {
     return this.productService.updateSupplier(payload);
   }
 
   @MessagePattern(ProductMessagePatterns.UPDATE_BOM)
   updateBOM(
     @Payload() payload: UpdateProductDependenciesProps
-  ): Promise<ProductDto> {
+  ): Promise<ProductEntity> {
     return this.productService.updateBillOfMaterial(payload);
   }
 
   @MessagePattern(ProductMessagePatterns.UPDATE_PACKAGING)
   updatePackaging(
     @Payload() payload: UpdateProductDependenciesProps
-  ): Promise<ProductDto> {
+  ): Promise<ProductEntity> {
     return this.productService.updatePackaging(payload);
   }
 
   @MessagePattern(ProductMessagePatterns.UPDATE_WASTE)
   updateWaste(
     @Payload() payload: UpdateProductWasteProps
-  ): Promise<Partial<ProductDto>> {
+  ): Promise<ProductEntity> {
     return this.productService.updateWaste(payload);
   }
 
   @MessagePattern(ProductMessagePatterns.UPDATE_HISTORY)
   updateProductionHistory(
     @Payload() payload: UpdateProductionHistoryProps
-  ): Promise<ProductDto> {
+  ): Promise<ProductEntity> {
     return this.productService.updateProductionHistory(payload);
   }
 
   @MessagePattern(ProductMessagePatterns.DELETE)
-  delete(@Payload() payload: DeleteProductProps): Promise<ProductDto> {
+  delete(@Payload() payload: DeleteProductProps): Promise<ProductEntity> {
     return this.productService.delete(payload);
   }
 
   @MessagePattern(ProductMessagePatterns.SEARCH)
-  search(@Payload() payload: SearchProductsProps): Promise<ProductDto[]> {
+  search(
+    @Payload() payload: SearchProductsProps
+  ): Promise<ProductEntityList[]> {
     return this.productService.search(payload);
   }
 
@@ -156,12 +161,14 @@ export class ProductController {
   }
 
   @MessagePattern(ProductMessagePatterns.UPDATE_FLAGS)
-  updateFlags(@Payload() payload: UpdateFlagProductProps): Promise<ProductDto> {
+  updateFlags(
+    @Payload() payload: UpdateFlagProductProps
+  ): Promise<ProductEntity> {
     return this.productService.updateFlags(payload);
   }
 
   @MessagePattern(ProductMessagePatterns.OUTLIERS_VALIDATE)
-  validate(@Payload() payload: UpdateFlagProductProps): Promise<ProductDto> {
+  validate(@Payload() payload: UpdateFlagProductProps): Promise<ProductEntity> {
     return this.productService.validateOutlier(payload);
   }
 

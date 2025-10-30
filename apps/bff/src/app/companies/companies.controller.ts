@@ -122,7 +122,7 @@ export class CompaniesController {
   @ApiOkResponse({
     description:
       'Successfull Request: Return Paginated Companies associated to the user',
-    type: PaginatedData<CompanyDto[]>,
+    type: PaginatedData<CompanyDto>,
   })
   async findAll(
     @KeycloakUser() user: AuthenticatedKCUser,
@@ -130,7 +130,7 @@ export class CompaniesController {
     @Query('sorting') sorting: string,
     @Query('page') page: number,
     @Query('pageSize') pageSize: number
-  ): Promise<PaginatedData<CompanyDto[]>> {
+  ): Promise<PaginatedData<CompanyDto>> {
     return await this.companyService.findAllAssociatedCompanies({
       userId: user.sub,
       filters: filters,
