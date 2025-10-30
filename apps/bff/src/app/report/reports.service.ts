@@ -17,12 +17,15 @@ import {
   MeasureDto,
   PaginatedData,
   ReportDto,
+  ReportEntity,
+  ReportEntityOverview,
   ReportOverviewDto,
   StrategyDto,
 } from '@ap2/api-interfaces';
 import { firstValueFrom } from 'rxjs';
 import { Inject, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { toReportDto, toReportOverviewDto } from './report.mapper';
 
 export class ReportsService {
   private readonly logger: Logger;
@@ -35,30 +38,35 @@ export class ReportsService {
   }
 
   async create(props: CreateReportDto): Promise<ReportDto> {
-    return firstValueFrom(
-      this.entityManagementService.send<ReportDto>(
+    const entity = await firstValueFrom(
+      this.entityManagementService.send<ReportEntity>(
         ReportMessagePatterns.CREATE,
         {
           dto: props,
         }
       )
     );
+    return toReportDto(entity);
   }
 
   async findAll(
     props: FindAllReportsForCompanyProps
   ): Promise<PaginatedData<ReportOverviewDto>> {
-    return firstValueFrom(
-      this.entityManagementService.send<PaginatedData<ReportOverviewDto>>(
+    const result = await firstValueFrom(
+      this.entityManagementService.send<PaginatedData<ReportEntityOverview>>(
         ReportMessagePatterns.GET_ALL_REPORTS,
         props
       )
     );
+    return {
+      data: result.data.map((entity) => toReportOverviewDto(entity)),
+      meta: result.meta,
+    };
   }
 
-  async update(id: string, dto: ReportDto): Promise<ReportDto> {
-    return firstValueFrom(
-      this.entityManagementService.send<ReportDto>(
+  async update(id: string, dto: CreateReportDto): Promise<ReportDto> {
+    const entity = await firstValueFrom(
+      this.entityManagementService.send<ReportEntity>(
         ReportMessagePatterns.UPDATE,
         {
           id,
@@ -66,6 +74,7 @@ export class ReportsService {
         }
       )
     );
+    return toReportDto(entity);
   }
 
   async updateStrategies(
@@ -111,8 +120,8 @@ export class ReportsService {
   }
 
   async updateGoals(id: string, dto: GoalDto[]): Promise<ReportDto> {
-    return firstValueFrom(
-      this.entityManagementService.send<ReportDto>(
+    const entity = await firstValueFrom(
+      this.entityManagementService.send<ReportEntity>(
         ReportMessagePatterns.UPDATE_GOALS,
         {
           id,
@@ -120,13 +129,14 @@ export class ReportsService {
         }
       )
     );
+    return toReportDto(entity);
   }
   async updateGoalPlanning(
     id: string,
     dto: GoalPlanningDto
   ): Promise<ReportDto> {
-    return firstValueFrom(
-      this.entityManagementService.send<ReportDto>(
+    const entity = await firstValueFrom(
+      this.entityManagementService.send<ReportEntity>(
         ReportMessagePatterns.UPDATE_GOAL_PLANNING,
         {
           id,
@@ -134,14 +144,16 @@ export class ReportsService {
         }
       )
     );
+    return toReportDto(entity);
   }
 
-  getById(id: string): Promise<ReportDto> {
-    return firstValueFrom(
-      this.entityManagementService.send<ReportDto>(
+  async getById(id: string): Promise<ReportDto | null> {
+    const entity = await firstValueFrom(
+      this.entityManagementService.send<ReportEntity | null>(
         ReportMessagePatterns.GET_REPORT_BY_ID,
         { id }
       )
     );
+    return toReportDto(entity);
   }
 }

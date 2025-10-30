@@ -13,11 +13,17 @@ import {
   FindProductGroupByIdProps,
   PaginatedData,
   ProductGroupDto,
+  ProductGroupEntity,
+  ProductGroupEntityList,
   UpdateProductGroupProps,
 } from '@ap2/api-interfaces';
 import { firstValueFrom } from 'rxjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import {
+  toProductGroupDto,
+  toProductGroupDtoList,
+} from './product-group.mapper';
 
 @Injectable()
 export class ProductGroupService {
@@ -26,41 +32,50 @@ export class ProductGroupService {
     private readonly entityManagementService: ClientProxy
   ) {}
 
-  create(props: CreateProductGroupProps): Promise<ProductGroupDto> {
-    return firstValueFrom(
-      this.entityManagementService.send<ProductGroupDto>(
+  async create(props: CreateProductGroupProps): Promise<ProductGroupDto> {
+    const entity = await firstValueFrom(
+      this.entityManagementService.send<ProductGroupEntity>(
         ProductGroupMessagePatterns.CREATE,
         props
       )
     );
+    return toProductGroupDto(entity);
   }
 
-  findAll(
+  async findAll(
     props: FindAllProductGroupsProps
   ): Promise<PaginatedData<ProductGroupDto>> {
-    return firstValueFrom(
-      this.entityManagementService.send<PaginatedData<ProductGroupDto>>(
+    const result = await firstValueFrom(
+      this.entityManagementService.send<PaginatedData<ProductGroupEntityList>>(
         ProductGroupMessagePatterns.READ_ALL,
         props
       )
     );
+    return {
+      data: result.data.map((entity) => toProductGroupDtoList(entity)),
+      meta: result.meta,
+    };
   }
 
-  findOne(props: FindProductGroupByIdProps): Promise<ProductGroupDto> {
-    return firstValueFrom(
-      this.entityManagementService.send<ProductGroupDto>(
+  async findOne(
+    props: FindProductGroupByIdProps
+  ): Promise<ProductGroupDto | null> {
+    const entity = await firstValueFrom(
+      this.entityManagementService.send<ProductGroupEntity | null>(
         ProductGroupMessagePatterns.READ_BY_ID,
         props
       )
     );
+    return toProductGroupDto(entity);
   }
 
-  update(props: UpdateProductGroupProps): Promise<ProductGroupDto> {
-    return firstValueFrom(
-      this.entityManagementService.send<ProductGroupDto>(
+  async update(props: UpdateProductGroupProps): Promise<ProductGroupDto> {
+    const entity = await firstValueFrom(
+      this.entityManagementService.send<ProductGroupEntity>(
         ProductGroupMessagePatterns.UPDATE,
         props
       )
     );
+    return toProductGroupDto(entity);
   }
 }

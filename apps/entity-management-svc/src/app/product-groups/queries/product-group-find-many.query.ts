@@ -28,7 +28,11 @@ export const productGroupFindManyQuery = ({
       _count: {
         select: { products: true },
       },
-      products: true,
+      products: {
+        include: {
+          waste: true,
+        },
+      },
       wasteFlow: true,
       variants: true,
     },

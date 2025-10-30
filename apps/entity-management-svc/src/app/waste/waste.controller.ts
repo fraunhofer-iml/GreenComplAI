@@ -7,7 +7,7 @@
  */
 
 import { WastePattern } from '@ap2/amqp';
-import { WasteMaterialDto } from '@ap2/api-interfaces';
+import { WasteMaterialEntity } from '@ap2/api-interfaces';
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { WasteService } from './waste.service';
@@ -17,7 +17,7 @@ export class WasteController {
   constructor(private readonly wasteService: WasteService) {}
 
   @MessagePattern(WastePattern.GET_WASTE_MATERIAL)
-  getWasteMaterial(@Payload() wasteId: string): Promise<WasteMaterialDto[]> {
+  getWasteMaterial(@Payload() wasteId: string): Promise<WasteMaterialEntity[]> {
     return this.wasteService.findWasteMaterial(wasteId);
   }
 }

@@ -11,7 +11,8 @@ import {
   FindAllPackagingProps,
   MaterialDto,
   PackagingCreateDto,
-  PackagingDto,
+  PackagingEntity,
+  PackagingEntityList,
   PackagingIdProps,
   PaginatedData,
   UpdatePackagingProps,
@@ -23,7 +24,6 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { FlagsService } from '../flags/flags.service';
 import { createUtilizableAndNonUtilizableWaste } from '../utils/waste-queries';
-import { getTotalWeightOfWaste } from '../utils/weight.utils';
 import { WasteService } from '../waste/waste.service';
 import { packagingCreateQuery } from './queries/packaging-create.query';
 import { packagingFindManyQuery } from './queries/packaging-find-many.query';
@@ -40,7 +40,7 @@ export class PackagingService {
     private readonly flagService: FlagsService
   ) {}
 
-  async create({ dto }: CreatePackagingProps): Promise<PackagingDto> {
+  async create({ dto }: CreatePackagingProps): Promise<PackagingEntity> {
     dto.flags = this.flagService.evaluateFlag(
       dto,
       new PackagingCreateDto(0, '', 0, 0, 0, '', '', [], []),
@@ -66,12 +66,9 @@ export class PackagingService {
         dto.materials
       );
 
-    // Transform materials to expected format and add missing fields
-    return {
-      ...packaging,
-      materials: PackagingService.transformMaterialsToDto(packaging.materials),
-      products: [],
-    };
+    return await this.prismaService.packaging.findUnique(
+      packagingFindUniqueQuery(packaging.id)
+    );
   }
 
   async findAll({
@@ -79,7 +76,7 @@ export class PackagingService {
     size,
     filters,
     sorting,
-  }: FindAllPackagingProps): Promise<PaginatedData<PackagingDto>> {
+  }: FindAllPackagingProps): Promise<PaginatedData<PackagingEntityList>> {
     const skip: number = ((page || 1) - 1) * (size || 10);
     const where = this.getWhereCondition(filters);
 
@@ -87,53 +84,24 @@ export class PackagingService {
       packagingFindManyQuery(where, skip, size, sorting)
     );
 
-    const retVal: PackagingDto[] = [];
-    packagings.forEach((packaging) => {
-      const p: PackagingDto = {
-        ...packaging,
-        supplierName: packaging.supplier.name,
-        materials: PackagingService.transformMaterialsToDto(
-          packaging.materials
-        ),
-        products: [],
-      };
-      retVal.push(p);
-    });
     const totalCount = await this.prismaService.packaging.count({
       where: where,
     });
 
     return {
-      data: retVal,
+      data: packagings,
       meta: { page: page, pageSize: size, totalCount: totalCount },
     };
   }
 
-  async findOne({ id }: PackagingIdProps): Promise<PackagingDto> {
-    const packaging = await this.prismaService.packaging.findUnique(
+  async findOne({ id }: PackagingIdProps): Promise<PackagingEntity | null> {
+    return await this.prismaService.packaging.findUnique(
       packagingFindUniqueQuery(id)
     );
-    const totalWasteWeight = getTotalWeightOfWaste(packaging.waste);
-    return {
-      ...packaging,
-      materials: PackagingService.transformMaterialsToDto(packaging.materials),
-      products: [],
-      waste: packaging.waste
-        ? {
-            ...packaging.waste,
-            wasteMaterials: packaging.waste
-              ? packaging.waste.wasteMaterials.map((mat) => ({
-                  ...mat,
-                  weightInKg: mat.percentage * totalWasteWeight,
-                }))
-              : [],
-          }
-        : undefined,
-    };
   }
 
-  async update({ id, dto }: UpdatePackagingProps): Promise<PackagingDto> {
-    const packaging = await this.prismaService.packaging.update({
+  async update({ id, dto }: UpdatePackagingProps): Promise<PackagingEntity> {
+    await this.prismaService.packaging.update({
       where: {
         id: id,
       },
@@ -153,26 +121,15 @@ export class PackagingService {
           },
         },
       },
-      include: {
-        materials: { include: { material: true } },
-        supplier: { include: { addresses: true } },
-      },
     });
 
     if (dto.materials) {
       await this.updatePackagingMaterials(id, dto.materials);
     }
 
-    return {
-      ...packaging,
-      materials:
-        packaging.materials?.map((mat) => [
-          mat.material,
-          mat.percentage,
-          mat.renewable,
-          mat.primary,
-        ]) || [],
-    };
+    return await this.prismaService.packaging.findUnique(
+      packagingFindUniqueQuery(id)
+    );
   }
 
   async updatePartPackaging({
@@ -285,15 +242,30 @@ export class PackagingService {
 
   async findPartPackagings({
     id,
-  }: PackagingIdProps): Promise<[PackagingDto, number][]> {
+  }: PackagingIdProps): Promise<[PackagingEntity, number][]> {
     const products = await this.prismaService.packagingPartPackaging.findMany({
       where: { packagingId: id },
       include: {
         partPackaging: {
           include: {
+            products: { include: { product: true } },
             supplier: { include: { addresses: true } },
             waste: {
-              include: { wasteMaterials: { include: { material: true } } },
+              include: {
+                hazardousWaste: {
+                  include: {
+                    utilizableWaste: true,
+                    nonUtilizableWaste: true,
+                  },
+                },
+                normalWaste: {
+                  include: {
+                    utilizableWaste: true,
+                    nonUtilizableWaste: true,
+                  },
+                },
+                wasteMaterials: { include: { material: true } },
+              },
             },
             materials: { include: { material: true } },
           },
@@ -301,18 +273,7 @@ export class PackagingService {
       },
     });
 
-    return products.map(
-      (p) =>
-        [
-          {
-            ...p.partPackaging,
-            materials: PackagingService.transformMaterialsToDto(
-              p.partPackaging.materials
-            ),
-          },
-          p.amount,
-        ] as const
-    );
+    return products.map((p) => [p.partPackaging, p.amount] as const);
   }
 
   private getWhereCondition(

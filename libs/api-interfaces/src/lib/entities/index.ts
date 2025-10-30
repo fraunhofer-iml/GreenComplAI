@@ -6,7 +6,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export * from './lib/dtos';
-export * from './lib/types';
-export * from './lib/enums';
-export * from './lib/entities';
+export * from './mapping.entity';
+export * from './product.entity';
+export * from './company.entity';
+export * from './packaging.entity';
+export * from './product-group.entity';
+export * from './report.entity';
+export * from './waste.entity';
