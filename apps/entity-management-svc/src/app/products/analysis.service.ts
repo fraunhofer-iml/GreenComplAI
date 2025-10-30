@@ -6,6 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { AmqpException } from '@ap2/amqp';
 import {
   AnalysisDto,
   GenerateAnalysisProp,
@@ -14,7 +15,6 @@ import {
   PackagingEntity,
   ProductEntity,
 } from '@ap2/api-interfaces';
-import { AmqpException } from '@ap2/amqp';
 import { PrismaService } from '@ap2/database';
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';

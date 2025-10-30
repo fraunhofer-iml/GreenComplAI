@@ -6,6 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { AmqpException } from '@ap2/amqp';
 import {
   CreateProductProps,
   DeleteProductProps,
@@ -18,7 +19,6 @@ import {
   SearchProductsProps,
   UpdateProductProps,
 } from '@ap2/api-interfaces';
-import { AmqpException } from '@ap2/amqp';
 import { PrismaService } from '@ap2/database';
 import { HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { FlagsService } from '../flags/flags.service';

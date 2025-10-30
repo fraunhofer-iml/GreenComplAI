@@ -37,8 +37,10 @@ export function toWasteDto(entity: WasteEntity | null): WasteDto | null {
             utilizableWaste: {
               id: entity.normalWaste.utilizableWaste.id,
               preparationForRecyclingWeight:
-                entity.normalWaste.utilizableWaste.preparationForRecyclingWeight,
-              recyclingWeight: entity.normalWaste.utilizableWaste.recyclingWeight,
+                entity.normalWaste.utilizableWaste
+                  .preparationForRecyclingWeight,
+              recyclingWeight:
+                entity.normalWaste.utilizableWaste.recyclingWeight,
               miscellaneousWeight:
                 entity.normalWaste.utilizableWaste.miscellaneousWeight,
             },
