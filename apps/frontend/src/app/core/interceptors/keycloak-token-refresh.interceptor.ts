@@ -19,13 +19,9 @@ export const keycloakTokenRefreshInterceptor: HttpInterceptorFn = (
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      // Prüfe ob es ein 401 Unauthorized Fehler ist
       if (error.status === 401 && keycloakService.isLoggedIn()) {
-        // Versuche den Token zu erneuern
         return from(keycloakService.updateToken(30)).pipe(
           switchMap(() => {
-            // Token wurde erfolgreich erneuert, wiederhole die ursprüngliche Anfrage
-            // Erstelle eine neue Anfrage mit dem aktualisierten Token
             const token = keycloakService.getKeycloakInstance().token;
             const clonedRequest = req.clone({
               setHeaders: {
@@ -35,15 +31,12 @@ export const keycloakTokenRefreshInterceptor: HttpInterceptorFn = (
             return next(clonedRequest);
           }),
           catchError((refreshError) => {
-            // Token-Erneuerung fehlgeschlagen, nutzer muss sich neu einloggen
             console.error('Failed to refresh token:', refreshError);
             keycloakService.logout();
             return throwError(() => error);
           })
         );
       }
-
-      // Wenn es kein 401 Fehler ist oder der Nutzer nicht eingeloggt ist, weiterleiten
       return throwError(() => error);
     })
   );
