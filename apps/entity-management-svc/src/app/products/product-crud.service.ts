@@ -6,6 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { AmqpException } from '@ap2/amqp';
 import {
   CreateProductProps,
   DeleteProductProps,
@@ -19,7 +20,7 @@ import {
   UpdateProductProps,
 } from '@ap2/api-interfaces';
 import { PrismaService } from '@ap2/database';
-import { Injectable, Logger } from '@nestjs/common';
+import { HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { FlagsService } from '../flags/flags.service';
 import { WasteService } from '../waste/waste.service';
 import { ProductRelationsService } from './product-relations.service';
@@ -147,6 +148,9 @@ export class ProductCrudService {
     const product = await this.prismaService.product.findUnique(
       productFindUniqueQuery(id)
     );
+    if (!product) {
+      throw new AmqpException('Product not found', HttpStatus.NOT_FOUND);
+    }
     await this.prismaService.product.delete({
       where: {
         id,

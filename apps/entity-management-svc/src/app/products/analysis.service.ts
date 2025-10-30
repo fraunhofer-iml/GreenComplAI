@@ -6,6 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { AmqpException } from '@ap2/amqp';
 import {
   AnalysisDto,
   GenerateAnalysisProp,
@@ -15,7 +16,7 @@ import {
   ProductEntity,
 } from '@ap2/api-interfaces';
 import { PrismaService } from '@ap2/database';
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import {
   getTotalWeightOfHazardousWaste,
@@ -190,6 +191,13 @@ export class ProductAnalysisService {
       where: { id: userId },
     });
 
+    if (!user) {
+      throw new AmqpException(
+        `User with id ${userId} not found`,
+        HttpStatus.NOT_FOUND
+      );
+    }
+
     let productionWater = 0;
 
     let preliminaryWater = preliminaryProducts.reduce(
@@ -198,7 +206,7 @@ export class ProductAnalysisService {
       0
     );
 
-    if (product.manufacturer?.id === user?.companyId)
+    if (product.manufacturer?.id === user.companyId)
       productionWater = product.waterUsed ?? 0;
     else preliminaryWater += product.waterUsed ?? 0;
 

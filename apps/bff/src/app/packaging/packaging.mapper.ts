@@ -73,7 +73,7 @@ export function toPackagingDto(
   }
 
   if (!entity.supplier) {
-    throw new Error('Packaging must have a supplier');
+    throw new Error(`Packaging with id '${entity.id}' must have a supplier`);
   }
 
   const supplier = toCompanyDtoFromSupplier(entity.supplier);
@@ -96,7 +96,7 @@ export function toPackagingDto(
 
 export function toPackagingDtoList(entity: PackagingEntityList): PackagingDto {
   if (!entity.supplier) {
-    throw new Error('Packaging must have a supplier');
+    throw new Error(`Packaging with id '${entity.id}' must have a supplier`);
   }
 
   const supplier = toCompanyDtoFromSupplier(entity.supplier);

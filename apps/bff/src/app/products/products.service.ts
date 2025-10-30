@@ -239,8 +239,8 @@ export class ProductsService {
       )
     );
 
-    const packagings = await this.findPackaging({ id: entity.id });
-    return toProductDto(entity, packagings);
+    // After deletion, packagings are not available; pass an empty array.
+    return toProductDto(entity, []);
   }
 
   async search(props: SearchProductsProps): Promise<ProductDto[]> {
