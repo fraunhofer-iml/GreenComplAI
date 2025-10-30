@@ -190,6 +190,10 @@ export class ProductAnalysisService {
       where: { id: userId },
     });
 
+    if (!user) {
+      throw new Error(`User with id ${userId} not found`);
+    }
+
     let productionWater = 0;
 
     let preliminaryWater = preliminaryProducts.reduce(
@@ -198,7 +202,7 @@ export class ProductAnalysisService {
       0
     );
 
-    if (product.manufacturer?.id === user?.companyId)
+    if (product.manufacturer?.id === user.companyId)
       productionWater = product.waterUsed ?? 0;
     else preliminaryWater += product.waterUsed ?? 0;
 

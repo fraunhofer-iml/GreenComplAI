@@ -158,7 +158,10 @@ export class ReportsService {
     reportId: string
   ): Promise<Strategy[]> {
     const report = await this.getReportById(reportId);
-    if (!report || report.isFinalReport) return [];
+    if (!report) {
+      throw new AmqpException('Report not found', HttpStatus.NOT_FOUND);
+    }
+    if (report.isFinalReport) return [];
 
     await this.prisma.strategy.deleteMany({
       where: {
@@ -199,7 +202,10 @@ export class ReportsService {
     reportId: string
   ): Promise<Measure[]> {
     const report = await this.getReportById(reportId);
-    if (!report || report.isFinalReport) return [];
+    if (!report) {
+      throw new AmqpException('Report not found', HttpStatus.NOT_FOUND);
+    }
+    if (report.isFinalReport) return [];
 
     await this.prisma.measure.deleteMany({
       where: {
@@ -350,7 +356,10 @@ export class ReportsService {
     reportId: string
   ): Promise<FinancialImpact[]> {
     const report = await this.getReportById(reportId);
-    if (!report || report.isFinalReport) return [];
+    if (!report) {
+      throw new AmqpException('Report not found', HttpStatus.NOT_FOUND);
+    }
+    if (report.isFinalReport) return [];
 
     await this.prisma.financialImpact.deleteMany({
       where: {

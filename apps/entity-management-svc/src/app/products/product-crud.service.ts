@@ -147,6 +147,9 @@ export class ProductCrudService {
     const product = await this.prismaService.product.findUnique(
       productFindUniqueQuery(id)
     );
+    if (!product) {
+      throw new Error('Product not found');
+    }
     await this.prismaService.product.delete({
       where: {
         id,

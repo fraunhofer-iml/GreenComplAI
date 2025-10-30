@@ -28,52 +28,58 @@ export function toWasteDto(entity: WasteEntity | null): WasteDto | null {
         material: wm.material ? new MaterialDto(wm.material.name) : undefined,
         percentage: wm.percentage,
       })) ?? [],
-    normalWaste: entity.normalWaste
-      ? {
-          id: entity.normalWaste.id,
-          utilizableWaste: {
-            id: entity.normalWaste.utilizableWaste.id,
-            preparationForRecyclingWeight:
-              entity.normalWaste.utilizableWaste.preparationForRecyclingWeight,
-            recyclingWeight: entity.normalWaste.utilizableWaste.recyclingWeight,
-            miscellaneousWeight:
-              entity.normalWaste.utilizableWaste.miscellaneousWeight,
-          },
-          nonUtilizableWaste: {
-            id: entity.normalWaste.nonUtilizableWaste.id,
-            landfillWeight:
-              entity.normalWaste.nonUtilizableWaste.landfillWeight,
-            combustionWeight:
-              entity.normalWaste.nonUtilizableWaste.combustionWeight,
-            miscellaneousWeight:
-              entity.normalWaste.nonUtilizableWaste.miscellaneousWeight,
-          },
-        }
-      : undefined,
-    hazardousWaste: entity.hazardousWaste
-      ? {
-          id: entity.hazardousWaste.id,
-          utilizableWaste: {
-            id: entity.hazardousWaste.utilizableWaste.id,
-            preparationForRecyclingWeight:
-              entity.hazardousWaste.utilizableWaste
-                .preparationForRecyclingWeight,
-            recyclingWeight:
-              entity.hazardousWaste.utilizableWaste.recyclingWeight,
-            miscellaneousWeight:
-              entity.hazardousWaste.utilizableWaste.miscellaneousWeight,
-          },
-          nonUtilizableWaste: {
-            id: entity.hazardousWaste.nonUtilizableWaste.id,
-            landfillWeight:
-              entity.hazardousWaste.nonUtilizableWaste.landfillWeight,
-            combustionWeight:
-              entity.hazardousWaste.nonUtilizableWaste.combustionWeight,
-            miscellaneousWeight:
-              entity.hazardousWaste.nonUtilizableWaste.miscellaneousWeight,
-          },
-        }
-      : undefined,
+    normalWaste:
+      entity.normalWaste &&
+      entity.normalWaste.utilizableWaste &&
+      entity.normalWaste.nonUtilizableWaste
+        ? {
+            id: entity.normalWaste.id,
+            utilizableWaste: {
+              id: entity.normalWaste.utilizableWaste.id,
+              preparationForRecyclingWeight:
+                entity.normalWaste.utilizableWaste.preparationForRecyclingWeight,
+              recyclingWeight: entity.normalWaste.utilizableWaste.recyclingWeight,
+              miscellaneousWeight:
+                entity.normalWaste.utilizableWaste.miscellaneousWeight,
+            },
+            nonUtilizableWaste: {
+              id: entity.normalWaste.nonUtilizableWaste.id,
+              landfillWeight:
+                entity.normalWaste.nonUtilizableWaste.landfillWeight,
+              combustionWeight:
+                entity.normalWaste.nonUtilizableWaste.combustionWeight,
+              miscellaneousWeight:
+                entity.normalWaste.nonUtilizableWaste.miscellaneousWeight,
+            },
+          }
+        : undefined,
+    hazardousWaste:
+      entity.hazardousWaste &&
+      entity.hazardousWaste.utilizableWaste &&
+      entity.hazardousWaste.nonUtilizableWaste
+        ? {
+            id: entity.hazardousWaste.id,
+            utilizableWaste: {
+              id: entity.hazardousWaste.utilizableWaste.id,
+              preparationForRecyclingWeight:
+                entity.hazardousWaste.utilizableWaste
+                  .preparationForRecyclingWeight,
+              recyclingWeight:
+                entity.hazardousWaste.utilizableWaste.recyclingWeight,
+              miscellaneousWeight:
+                entity.hazardousWaste.utilizableWaste.miscellaneousWeight,
+            },
+            nonUtilizableWaste: {
+              id: entity.hazardousWaste.nonUtilizableWaste.id,
+              landfillWeight:
+                entity.hazardousWaste.nonUtilizableWaste.landfillWeight,
+              combustionWeight:
+                entity.hazardousWaste.nonUtilizableWaste.combustionWeight,
+              miscellaneousWeight:
+                entity.hazardousWaste.nonUtilizableWaste.miscellaneousWeight,
+            },
+          }
+        : undefined,
   };
 }
 
