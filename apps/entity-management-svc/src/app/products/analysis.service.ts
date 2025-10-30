@@ -14,8 +14,9 @@ import {
   PackagingEntity,
   ProductEntity,
 } from '@ap2/api-interfaces';
+import { AmqpException } from '@ap2/amqp';
 import { PrismaService } from '@ap2/database';
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import {
   getTotalWeightOfHazardousWaste,
@@ -191,7 +192,10 @@ export class ProductAnalysisService {
     });
 
     if (!user) {
-      throw new Error(`User with id ${userId} not found`);
+      throw new AmqpException(
+        `User with id ${userId} not found`,
+        HttpStatus.NOT_FOUND
+      );
     }
 
     let productionWater = 0;
