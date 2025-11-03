@@ -181,10 +181,17 @@
       ></textarea>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="col-span-2">
+        <mat-form-field appearance="outline" class="col-span-2">
       <mat-label>Digitale Produktpass-URL</mat-label>
       <input matInput formControlName="digitalProductPassportUrl" />
-    </mat-form-field>
+      @if (dppUrl.value) {
+        <button matIconButton matSuffix class="mr-2" matTooltip="Daten aus dem Produktpass übernehmen" [routerLink]=" [ `/${dppUrl.value}/data-import`]   " >
+ <span class="material-symbols-outlined text-primary-700"  >add_task</span>
+        </button> 
+      }
+        
+    </mat-form-field> 
+  
 
     <div class="col-span-4 my-2 h-[1px] bg-neutral-300"></div>
 

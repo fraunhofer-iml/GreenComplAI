@@ -6,16 +6,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {
-  AddressDto,
-  AuthRoles,
-  CompanyDto,
-  PackagingDto,
-  ProductCreateDto,
-  ProductDto,
-  ProductGroupDto,
-} from '@ap2/api-interfaces';
-import { toast } from 'ngx-sonner';
 import { Component, inject, input, signal } from '@angular/core';
 import {
   FormArray,
@@ -34,7 +24,19 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
+import {
+  AddressDto,
+  AuthRoles,
+  CompanyDto,
+  CRITICAL_RAW_MATERIALS,
+  PackagingDto,
+  ProductCreateDto,
+  ProductDto,
+  ProductGroupDto,
+  RARE_EARTHS,
+} from '@ap2/api-interfaces';
 import { injectMutation } from '@tanstack/angular-query-experimental';
+import { toast } from 'ngx-sonner';
 import { AuthenticationService } from '../../../core/services/authentication/authentication.service';
 import { DataService } from '../../../core/services/data-service/data.service';
 import { ProductsService } from '../../../core/services/products/products.service';
@@ -47,21 +49,15 @@ import { ProductsSheetComponent } from '../../../shared/components/sheet/product
 import { WasteCreateComponent } from '../../../shared/components/waste-create/waste-create.component';
 import { WasteFormGroup } from '../../../shared/components/waste-create/waste-form';
 import { wasteFormGroup } from '../../../shared/components/waste-create/waste.form-group';
-import {
-  CRITICAL_RAW_MATERIAL,
-  RARE_EARTHS,
-} from '../../../shared/constants/inflows';
 import { SelectMaterialsComponent } from '../../materials/select-materials/select-materials.component';
 import { ProductConstructionService } from './form-construction/product-construction.service';
 import {
   addBasicMaterialFormGroup,
-  addMaterialFormGroup,
   addRegularMaterialFormGroup,
   materialFormArrayGroup,
   regularMaterialFormArrayGroup,
   removeBasicMaterialFormGroup,
-  removeMaterialFormGroup,
-  removeRegularMaterialFormGroup,
+  removeRegularMaterialFormGroup
 } from './material.form-group';
 import {
   BillOfMaterialFormGroup,
@@ -72,6 +68,7 @@ import {
 import { producedItemsFormGroup } from './produced-items.form-group';
 import { masterDataFormGroup } from './product.form-group';
 import { ProductionHistoryComponent } from './production-history/production-history.component';
+;
 
 @Component({
   selector: 'app-product-create',
@@ -158,7 +155,7 @@ export class ProductCreateComponent {
 
   addresses: AddressDto[] = [];
   RARE_EARTHS = RARE_EARTHS;
-  CRITICAL_RAW_MATERIAL = CRITICAL_RAW_MATERIAL;
+  CRITICAL_RAW_MATERIAL = CRITICAL_RAW_MATERIALS;
 
   addMaterialFormGroup = addRegularMaterialFormGroup;
   removeMaterialFormGroup = removeRegularMaterialFormGroup;

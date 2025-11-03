@@ -8,6 +8,7 @@
 
 import { CommonModule } from '@angular/common';
 import { Component, input } from '@angular/core';
+import { flush } from '@angular/core/testing';
 
 @Component({
   selector: 'app-product-dpp-compare',
@@ -17,7 +18,6 @@ import { Component, input } from '@angular/core';
 export class ProductDppCompareComponent {
   protected readonly Array = Array;
 
-  dppData = input<string | string[]>();
-  productData = input<string | string[]>();
-  title = input<string>();
+  isData = input<boolean>(false);
+
 }

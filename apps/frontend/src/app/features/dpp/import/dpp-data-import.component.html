@@ -11,68 +11,20 @@
   </div>
 
   @if (dppQuery.data() && productQuery.data()) {
-    <div class="rounded-lg bg-neutral-200 p-4">
-      <div [formGroup]="formGroup">
-        <app-product-dpp-compare
-          [title]="'Id'"
-          [dppData]="dppQuery.data()?.productId"
-          [productData]="productQuery.data()?.productId"
-          ><mat-checkbox #productId formControlName="productId"></mat-checkbox
-        ></app-product-dpp-compare>
-        <app-product-dpp-compare
-          [title]="'GTIN'"
-          [dppData]="dppQuery.data()?.gtin"
-          [productData]="productQuery.data()?.gtin"
-          ><mat-checkbox #gtin formControlName="gtin"></mat-checkbox
-        ></app-product-dpp-compare>
+    <div class="rounded-lg bg-neutral-200 p-4 grid grid-cols-2"  [formGroup]="formGroup">
+       
+        
+        <div  class="hover:bg-neutral-250 flex flex-row items-center gap-2 rounded-md px-4 py-2 w-full">
 
-        <app-product-dpp-compare
-          [title]="'Supplier'"
-          [dppData]="dppQuery.data()?.supplier?.name"
-          [productData]="productQuery.data()?.supplier?.name"
-          ><mat-checkbox formControlName="supplier"></mat-checkbox
-        ></app-product-dpp-compare>
-        <app-product-dpp-compare
-          [title]="'Importeur'"
-          [dppData]="dppQuery.data()?.importerName"
-          [productData]="productQuery.data()?.importerName"
-          ><mat-checkbox
-            formControlName="importer"
-          ></mat-checkbox></app-product-dpp-compare
-        ><app-product-dpp-compare
-          [title]="'Materialien'"
-          [dppData]="dppMaterials().materials"
-          [productData]="productMaterials().materials"
-          ><mat-checkbox
-            formControlName="materials"
-          ></mat-checkbox></app-product-dpp-compare
-        ><app-product-dpp-compare
-          [title]="'Kritische Rohstoffe'"
-          [dppData]="dppMaterials().materials"
-          [productData]="productMaterials().materials"
-          ><mat-checkbox
-            formControlName="criticalRawMaterials"
-          ></mat-checkbox></app-product-dpp-compare
-        ><app-product-dpp-compare
-          [title]="'Verpackung'"
-          [dppData]="dppMaterials().packagings"
-          [productData]="productMaterials().packagings"
-          ><mat-checkbox formControlName="packagings"></mat-checkbox
-        ></app-product-dpp-compare>
-        <app-product-dpp-compare
-          [title]="'Wasser'"
-          [dppData]="dppQuery.data()?.waterUsed?.toString()"
-          [productData]="productQuery.data()?.waterUsed?.toString()"
-          ><mat-checkbox
-            formControlName="packagings"
-          ></mat-checkbox></app-product-dpp-compare
-        ><app-product-dpp-compare
-          [title]="'CO2 Fusßabdruck'"
-          [dppData]="dppQuery.data()?.waterUsed?.toString()"
-          [productData]="productQuery.data()?.waterUsed?.toString()"
-          ><mat-checkbox formControlName="productCarbonFootprint"></mat-checkbox
-        ></app-product-dpp-compare>
-      </div>
+          <span class=" min-w-1/8  w-1/8" >Id</span>
+           <span class="w-3/8" >{{dppQuery.data()?.productId}} </span>
+           <span class="w-3/8" >{{productQuery.data()?.productId}} </span>
+           <mat-checkbox class="w-1/8" #productId formControlName="productId"></mat-checkbox
+        >
+
+        </div>
+       
+     
     </div>
   }
 </div>

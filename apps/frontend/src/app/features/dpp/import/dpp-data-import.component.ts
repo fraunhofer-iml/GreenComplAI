@@ -57,7 +57,9 @@ export class DppDataImportComponent {
       materials: this.dppQuery
         .data()
         ?.materials?.map((mm) => `${mm[0].name}: ${mm[1]} `),
-      packagings: this.dppQuery.data()?.packagings?.map((p) => `${p[0].name}`),
+      packagings: this.dppQuery.data()?.packagings?.map((p) => `${p[0].name}`), criticalRawMaterials : this.dppQuery
+        .data()
+        ?.criticalRawMaterials?.map((m) => `${m[0].name}: ${m[1]} `)
     };
     return res;
   });
@@ -66,10 +68,13 @@ export class DppDataImportComponent {
     const res = {
       materials: this.productQuery
         .data()
-        ?.materials?.map((mm) => `${mm[0].name}: ${mm[1]} `),
+        ?.materials?.map((m) => `${m[0].name}: ${m[1]} `),
       packagings: this.productQuery
         .data()
         ?.packagings?.map((p) => `${p[0].name}`),
+      criticalRawMaterials : this.productQuery
+        .data()
+        ?.criticalRawMaterials?.map((m) => `${m[0].name}: ${m[1]} `)
     };
     return res;
   });

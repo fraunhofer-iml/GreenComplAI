@@ -1,37 +1,3 @@
-<div
-  class="hover:bg-neutral-250 grid w-full grid-cols-6 items-center gap-1 rounded-md p-2"
->
-  <span class="px-2">{{ title() }}</span>
-  <div class="col-span-2">
-    @if (dppData()) {
-      @if (Array.isArray(dppData())) {
-        <div matListItemLine class="flex flex-col py-2">
-          @for (item of dppData(); track $index) {
-            <span>{{ item }}</span>
-          }
-        </div>
-      } @else {
-        <span> {{ dppData() }} </span>
-      }
-    } @else {
-      <span class="text-neutral-400">keine Werte gespeichert</span>
-    }
-  </div>
-  <div class="col-span-2">
-    @if (productData()) {
-      @if (Array.isArray(productData())) {
-        <div class="flex flex-col py-2">
-          @for (item of productData(); track $index) {
-            <span>{{ item }}</span>
-          }
-        </div>
-      } @else {
-        <span> {{ productData() }} </span>
-      }
-    } @else {
-      <span class="text-neutral-500">keine Werte gespeichert</span>
-    }
-  </div>
-
-  <div class="flex justify-end"><ng-content></ng-content></div>
+<div>
+  @if(isData()){<ng-content></ng-content>} @else  { <span class="text-neutral-400">keine Werte gespeichert</span>}
 </div>

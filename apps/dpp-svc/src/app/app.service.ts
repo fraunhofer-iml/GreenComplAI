@@ -169,14 +169,14 @@ export class AppService {
         submodelMap.get('esr_synergies')
       );
 
-    const packagingSubmodel: PackagingSubmodule =
+    const packagingSubmodel: MaterialDto[] =
       this.privateProductImportService.getPackagingSubmodule(
         submodelMap.get('packaging')
       );
 
     console.log(packagingSubmodel);
 
-    const materials: [MaterialDto, number, boolean?, boolean?][] =
+    const materialComposition : { materials: [MaterialDto, number, boolean?, boolean?][], criticalRawMaterials: [MaterialDto, number][] } =
       this.privateProductImportService.getMaterialCompositionSubmodel(
         submodelMap.get('material_composition')
       );
@@ -199,17 +199,16 @@ export class AppService {
         ...productIdentificationSubmodel.supplier,
         flags: [],
       },
-      criticalRawMaterials: circiularProperties.concerningSubstances.map(
-        (substance) => [{ name: substance }, 0]
-      ),
+     
       reparability: circiularProperties.repairabilityScore,
       productCarbonFootprint: ESRSynergies.productCarbonFootprint,
       waterUsed: ESRSynergies.waterFootprint,
-      packagings: packagingSubmodel.packagingMaterials.map((packaging) => [
-        { name: packaging.name, weight: packaging.weight },
-        1,
+      packagings: packagingSubmodel.map((packaging) => [
+       packaging,
+        0,
       ]),
-      materials: materials,
+      materials: materialComposition.materials, 
+      criticalRawMaterials: materialComposition.criticalRawMaterials
     } as ProductDto;
 
     this.logger.debug(product);

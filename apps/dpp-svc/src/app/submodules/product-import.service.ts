@@ -15,7 +15,10 @@ import {
 import {
   AddressDto,
   CompanyDto,
+  CRITICAL_RAW_MATERIALS,
+  CriticalRawMaterials,
   MaterialDto,
+  PackagingDto,
   ProductDto,
 } from '@ap2/api-interfaces';
 import { Injectable } from '@nestjs/common';
@@ -26,8 +29,6 @@ import {
   ESRSynergiesSubmodule,
   LEGAL_COMPIANCE_KEYS,
   LegalComplianceSubmodule,
-  MaterialCompositionSubmodule,
-  PackagingSubmodule,
   UsagePhaseSubmodule,
 } from './submodule.types';
 
@@ -112,52 +113,55 @@ export class ProductImportService {
     return submodel;
   }
 
-  getPackagingSubmodule(
-    submodelElements: ISubmodelElement[]
-  ): PackagingSubmodule {
-    if (!submodelElements || submodelElements.length === 0)
-      return {
-        totalWeight: 0,
-        packagingMaterials: [],
-      } as PackagingSubmodule;
+  getPackagingSubmodule(submodelElements: ISubmodelElement[]): PackagingDto[] {
+    if (!submodelElements || submodelElements.length === 0) return [];
 
     const submodelMap = new Map<string, any>();
     this.mapSubmodelsToMap(submodelMap, submodelElements);
 
-    const materials = [];
+    const materials: PackagingDto[] = [];
     for (let index = 1; index < submodelElements.length; index++) {
-      const element = this.submodelToMaterial(
-        submodelMap.get(`packagingMaterial_${index - 1}`)
-      );
+      const element = submodelMap.get(`packagingMaterial_${index - 1}`);
+
+      const packaging: PackagingDto = {
+        name: element.value.get('name'),
+        weight: element.value.get('weight'),
+      } as PackagingDto;
+
       console.log(element);
-      materials.push(element);
-    }
-
-    const submodel: PackagingSubmodule = {
-      totalWeight: submodelMap.get('totalWeight').value,
-      packagingMaterials: materials,
-    } as PackagingSubmodule;
-    console.log(submodel);
-    console.log('pack submodel');
-    return submodel;
-  }
-
-  getMaterialCompositionSubmodel(
-    submodelElements: ISubmodelElement[]
-  ): [MaterialDto, number, boolean?, boolean?][] {
-    const submodelMap = new Map<string, any>();
-    this.mapSubmodelsToMap(submodelMap, submodelElements);
-
-    const materials: [MaterialDto, number, boolean?, boolean?][] = [];
-    for (let index = 1; index < submodelElements.length; index++) {
-      const element = this.submodelToMaterial(
-        submodelMap.get(`material_${index - 1}`)
-      );
 
       materials.push(element);
     }
 
     return materials;
+  }
+
+  getMaterialCompositionSubmodel(submodelElements: ISubmodelElement[]): {
+    criticalRawMaterials: [MaterialDto, number][];
+    materials: [MaterialDto, number, boolean?, boolean?][];
+  } {
+    const submodelMap = new Map<string, any>();
+    this.mapSubmodelsToMap(submodelMap, submodelElements);
+
+    const items: [MaterialDto, number, boolean?, boolean?][] = [];
+    for (let index = 1; index < submodelElements.length; index++) {
+      const element = this.submodelToMaterial(
+        submodelMap.get(`material_${index - 1}`)
+      );
+
+      items.push(element);
+    }
+
+    const materials: [MaterialDto, number, boolean?, boolean?][] = [];
+
+    const criticalRawMaterials: [MaterialDto, number][] = [];
+    items.forEach((m) =>
+      CRITICAL_RAW_MATERIALS.includes(m[0].name as CriticalRawMaterials)
+        ? criticalRawMaterials.push([m[0], m[1]])
+        : materials.push(m)
+    );
+
+    return { criticalRawMaterials, materials };
   }
 
   getUsagPhaseSubmodel(

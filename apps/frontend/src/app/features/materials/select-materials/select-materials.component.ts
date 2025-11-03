@@ -26,14 +26,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import {
-  CRITICAL_RAW_MATERIAL,
-  RARE_EARTHS,
-} from '../../../shared/constants/inflows';
+
 import {
   MaterialsFormGroup,
   RegularMaterialsFormGroup,
 } from './materials-form.model';
+import { CRITICAL_RAW_MATERIALS, RARE_EARTHS } from '@ap2/api-interfaces';
 
 @Component({
   selector: 'app-select-materials',
@@ -74,7 +72,7 @@ export class SelectMaterialsComponent {
     RARE_EARTHS.filter((re) => re.includes(this.earthFilter()))
   );
   criticalRawMaterials$ = computed(() =>
-    CRITICAL_RAW_MATERIAL.filter((re) =>
+    CRITICAL_RAW_MATERIALS.filter((re) =>
       re.includes(this.criticalMaterialsFilter())
     )
   );
