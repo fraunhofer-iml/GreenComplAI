@@ -11,20 +11,17 @@
   </div>
 
   @if (dppQuery.data() && productQuery.data()) {
-    <div class="rounded-lg bg-neutral-200 p-4 grid grid-cols-2"  [formGroup]="formGroup">
-       
-        
-        <div  class="hover:bg-neutral-250 flex flex-row items-center gap-2 rounded-md px-4 py-2 w-full">
+    <div class="grid grid-cols-2 gap-2" [formGroup]="formGroup">
+      <app-product-card [title]="'Id'">
+        <span>{{ dppQuery.data()?.productId }} </span>
+      </app-product-card>
 
-          <span class=" min-w-1/8  w-1/8" >Id</span>
-           <span class="w-3/8" >{{dppQuery.data()?.productId}} </span>
-           <span class="w-3/8" >{{productQuery.data()?.productId}} </span>
-           <mat-checkbox class="w-1/8" #productId formControlName="productId"></mat-checkbox
-        >
-
+      <app-dpp-card [title]="'Id'" [formControl]="formGroup.controls.productId"
+        ><div class="flex flex-row gap-2">
+          <span>{{ dppQuery.data()?.productId }} </span>
+         
         </div>
-       
-     
+      </app-dpp-card>
     </div>
   }
 </div>

@@ -8,16 +8,14 @@
 
 import { CommonModule } from '@angular/common';
 import { Component, input } from '@angular/core';
-import { flush } from '@angular/core/testing';
 
 @Component({
-  selector: 'app-product-dpp-compare',
+  selector: 'app-product-card',
   imports: [CommonModule],
-  templateUrl: './product-dpp-compare.component.html',
+  templateUrl: './product-card.component.html',
 })
-export class ProductDppCompareComponent {
-  protected readonly Array = Array;
-
-  isData = input<boolean>(false);
+export class ProductCardComponent {
+ 
+  title = input<string>('');
 
 }

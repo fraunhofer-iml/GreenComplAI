@@ -19,7 +19,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { DppService } from '../../../core/services/dpp/dpp.service';
 import { ProductsService } from '../../../core/services/products/products.service';
-import { ProductDppCompareComponent } from './comparison/product-dpp-compare.component';
+import { ProductDppCompareComponent } from './comparison/dpp-card.component';
+import { ProductCardComponent } from "./comparison/product-card.component";
 
 @Component({
   selector: 'app-dpp-data-import',
@@ -29,7 +30,8 @@ import { ProductDppCompareComponent } from './comparison/product-dpp-compare.com
     FormsModule,
     ReactiveFormsModule,
     MatCheckboxModule,
-  ],
+    ProductCardComponent
+],
   providers: [DppService],
   templateUrl: './dpp-data-import.component.html',
 })
@@ -53,6 +55,7 @@ export class DppDataImportComponent {
   }));
 
   dppMaterials = computed(() => {
+    console.log( this.dppQuery.data());
     const res = {
       materials: this.dppQuery
         .data()
@@ -65,6 +68,9 @@ export class DppDataImportComponent {
   });
 
   productMaterials = computed(() => {
+
+    console.log(this.productQuery
+        .data());
     const res = {
       materials: this.productQuery
         .data()
@@ -91,4 +97,10 @@ export class DppDataImportComponent {
     waterUsed: new FormControl<boolean>(false),
     productCarbonFootprint: new FormControl<boolean>(false),
   });
+
+
+
+  get control() {
+    return this.formGroup.controls.productId
+  }
 }
