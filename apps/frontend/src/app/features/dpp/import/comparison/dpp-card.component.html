@@ -1,6 +1,11 @@
- <div class="w-full flex flex-row gap-2 rounded-lg bg-neutral-200 p-4 justify-between items-center border-2 border-neutral-200 hover:cursor-pointer hover:border-primary-600"  [ngClass]="formControl().value ? 'border-primary-800' : ''">
-       
-   <div class="flex flex-col gap-2" > <span class="text-sm text-neutral-700">{{title()}}</span>
-<ng-content class="text-sm" ></ng-content>
-      
-      </div>  <mat-checkbox [formControl]="formControl()"></mat-checkbox></div>
+<div
+  class="hover:border-primary-600 border-neutral-250 bg-neutral-250 flex min-h-full w-full flex-row items-center justify-between gap-2 rounded-md border-2 p-4 hover:cursor-pointer"
+  [ngClass]="{ 'border-primary-700': !!form().value }"
+>
+  <div class="flex h-full flex-col gap-2">
+    <span class="text-sm text-neutral-700">{{ title() }}</span>
+    <ng-content class="text-sm"></ng-content>
+  </div>
+
+  <mat-checkbox [formControl]="form()"></mat-checkbox>
+</div>

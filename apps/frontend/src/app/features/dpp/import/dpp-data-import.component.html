@@ -11,15 +11,210 @@
   </div>
 
   @if (dppQuery.data() && productQuery.data()) {
-    <div class="grid grid-cols-2 gap-2" [formGroup]="formGroup">
-      <app-product-card [title]="'Id'">
+    <div
+      class="grid grid-cols-2 items-stretch gap-2 rounded-lg bg-neutral-200 p-4"
+      [formGroup]="formGroup"
+    >
+      <span class="text-neutral-600">Daten aus GreenComplAI</span>
+      <span class="text-neutral-600">Daten aus dem DPP</span>
+
+      <app-product-card class="grow" [title]="'Id'">
         <span>{{ dppQuery.data()?.productId }} </span>
       </app-product-card>
-
-      <app-dpp-card [title]="'Id'" [formControl]="formGroup.controls.productId"
+      <app-dpp-card [title]="'Id'" [form]="formGroup.controls.productId"
         ><div class="flex flex-row gap-2">
           <span>{{ dppQuery.data()?.productId }} </span>
-         
+        </div>
+      </app-dpp-card>
+
+      <app-product-card [title]="'Name'">
+        <span>{{ dppQuery.data()?.name ?? 'keine Angabe' }} </span>
+      </app-product-card>
+      <app-dpp-card [title]="'Name'" [form]="formGroup.controls.name"
+        ><div class="flex flex-row gap-2">
+          <span>{{ dppQuery.data()?.name ?? 'keine Angabe' }} </span>
+        </div>
+      </app-dpp-card>
+
+      <app-product-card [title]="'TARIC-Code'">
+        <span>{{ dppQuery.data()?.taricCode ?? 'keine Angabe' }} </span>
+      </app-product-card>
+      <app-dpp-card [title]="'TARIC-Code'" [form]="formGroup.controls.taricCode"
+        ><div class="flex flex-row gap-2">
+          <span>{{ dppQuery.data()?.taricCode ?? 'keine Angabe' }} </span>
+        </div>
+      </app-dpp-card>
+
+      <app-product-card [title]="'Global Trade Item Number (GTIN)'">
+        <span>{{ dppQuery.data()?.gtin ?? 'keine Angabe' }} </span>
+      </app-product-card>
+      <app-dpp-card
+        [title]="'Global Trade Item Number (GTIN)'"
+        [form]="formGroup.controls.gtin"
+        ><div class="flex flex-row gap-2">
+          <span>{{ dppQuery.data()?.gtin ?? 'keine Angabe' }} </span>
+        </div>
+      </app-dpp-card>
+
+      <app-product-card [title]="'Lieferant'">
+        @if (!productQuery.data()?.supplier) {
+          keine Angabe
+        }
+        <div class="flex flex-col gap-2">
+          <span>{{ dppQuery.data()?.supplier?.name }} </span>
+          <span
+            >{{ dppQuery.data()?.supplier?.phone }} |
+            {{ dppQuery.data()?.supplier?.email }}
+          </span>
+
+          @for (address of dppQuery.data()?.supplier?.addresses; track $index) {
+            <span
+              >{{ address.street }} {{ address.postalCode }},
+              {{ address.city }} ({{ address.country }})</span
+            >
+          }
+        </div>
+      </app-product-card>
+      <app-dpp-card [title]="'Lieferant'" [form]="formGroup.controls.supplier">
+        @if (!dppQuery.data()?.supplier) {
+          keine Angabe
+        }
+        <div class="flex flex-col gap-2">
+          <span>{{ dppQuery.data()?.supplier?.name }} </span>
+          <span
+            >{{ dppQuery.data()?.supplier?.phone }} |
+            {{ dppQuery.data()?.supplier?.email }}
+          </span>
+          @for (address of dppQuery.data()?.supplier?.addresses; track $index) {
+            <span
+              >{{ address.street }} {{ address.postalCode }},
+              {{ address.city }} ({{ address.country }})</span
+            >
+          }
+        </div>
+      </app-dpp-card>
+
+      <app-product-card [title]="'Importeur'">
+        @if (!productQuery.data()?.importerName) {
+          keine Angabe
+        } @else {
+          <div class="flex flex-col gap-2">
+            <span>{{ productQuery.data()?.importerName }} </span>
+            <span
+              >{{ productQuery.data()?.importerPhone }} |
+              {{ productQuery.data()?.importerEmail }}
+            </span>
+
+            <span>{{ productQuery.data()?.importerAddress }} </span>
+          </div>
+        }
+      </app-product-card>
+      <app-dpp-card [title]="'Importeur'" [form]="formGroup.controls.importer">
+        @if (!dppQuery.data()?.importerName) {
+          keine Angabe
+        } @else {
+          <div class="flex flex-col gap-2">
+            <span>{{ dppQuery.data()?.importerName }} </span>
+            <span
+              >{{ dppQuery.data()?.importerPhone }} |
+              {{ dppQuery.data()?.importerEmail }}
+            </span>
+            <span>{{ dppQuery.data()?.importerAddress }} </span>
+          </div>
+        }
+      </app-dpp-card>
+
+      <app-product-card [title]="'Materialien'">
+        @if (productMaterials().materials?.length === 0) {
+          keine Angabe
+        } @else {
+          @for (item of productMaterials().materials; track $index) {
+            <span>{{ item }} </span>
+          }
+          <div class="flex flex-col gap-2"></div>
+        }
+      </app-product-card>
+      <app-dpp-card
+        [title]="'Materialien'"
+        [form]="formGroup.controls.materials"
+      >
+        @if (productMaterials().materials?.length === 0) {
+          keine Angabe
+        } @else {
+          @for (item of dppMaterials().materials; track $index) {
+            <span>{{ item }} </span>
+          }
+          <div class="flex flex-col gap-2"></div>
+        }
+      </app-dpp-card>
+
+      <app-product-card [title]="'Verpackung'">
+        @if (productMaterials().packagings?.length === 0) {
+          keine Angabe
+        } @else {
+          @for (item of productMaterials().packagings; track $index) {
+            <span>{{ item }} </span>
+          }
+          <div class="flex flex-col gap-2"></div>
+        }
+      </app-product-card>
+      <app-dpp-card
+        [title]="'Verpackung'"
+        [form]="formGroup.controls.packagings"
+      >
+        @if (productMaterials().packagings?.length === 0) {
+          keine Angabe
+        } @else {
+          @for (item of dppMaterials().packagings; track $index) {
+            <span>{{ item }} </span>
+          }
+          <div class="flex flex-col gap-2"></div>
+        }
+      </app-dpp-card>
+
+      <app-product-card [title]="'Verwendetes Wasser'">
+        <span
+          >{{
+            dppQuery.data()?.waterUsed
+              ? dppQuery.data()?.waterUsed + ' l'
+              : 'keine Angabe'
+          }}
+        </span>
+      </app-product-card>
+      <app-dpp-card
+        [title]="'Verwendetes Wasser'"
+        [form]="formGroup.controls.waterUsed"
+        ><div class="flex flex-row gap-2">
+          <span
+            >{{
+              dppQuery.data()?.waterUsed
+                ? dppQuery.data()?.waterUsed + ' l'
+                : 'keine Angabe'
+            }}
+          </span>
+        </div>
+      </app-dpp-card>
+
+      <app-product-card [title]="'CO2-Fußabdruck'">
+        <span
+          >{{
+            productQuery.data()?.productCarbonFootprint
+              ? productQuery.data()?.productCarbonFootprint + ''
+              : 'keine Angabe'
+          }}
+        </span>
+      </app-product-card>
+      <app-dpp-card
+        [title]="'CO2-Fußabdruck'"
+        [form]="formGroup.controls.waterUsed"
+        ><div class="flex flex-row gap-2">
+          <span
+            >{{
+              dppQuery.data()?.productCarbonFootprint
+                ? dppQuery.data()?.productCarbonFootprint
+                : 'keine Angabe'
+            }}
+          </span>
         </div>
       </app-dpp-card>
     </div>

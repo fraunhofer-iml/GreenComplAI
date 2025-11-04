@@ -20,7 +20,7 @@ import { injectQuery } from '@tanstack/angular-query-experimental';
 import { DppService } from '../../../core/services/dpp/dpp.service';
 import { ProductsService } from '../../../core/services/products/products.service';
 import { ProductDppCompareComponent } from './comparison/dpp-card.component';
-import { ProductCardComponent } from "./comparison/product-card.component";
+import { ProductCardComponent } from './comparison/product-card.component';
 
 @Component({
   selector: 'app-dpp-data-import',
@@ -30,8 +30,8 @@ import { ProductCardComponent } from "./comparison/product-card.component";
     FormsModule,
     ReactiveFormsModule,
     MatCheckboxModule,
-    ProductCardComponent
-],
+    ProductCardComponent,
+  ],
   providers: [DppService],
   templateUrl: './dpp-data-import.component.html',
 })
@@ -55,37 +55,37 @@ export class DppDataImportComponent {
   }));
 
   dppMaterials = computed(() => {
-    console.log( this.dppQuery.data());
+    console.log(this.dppQuery.data());
     const res = {
       materials: this.dppQuery
         .data()
-        ?.materials?.map((mm) => `${mm[0].name}: ${mm[1]} `),
-      packagings: this.dppQuery.data()?.packagings?.map((p) => `${p[0].name}`), criticalRawMaterials : this.dppQuery
+        ?.materials?.map((mm) => `${mm[0].name}: ${mm[1]} %`),
+      packagings: this.dppQuery.data()?.packagings?.map((p) => `${p[0].name}`),
+      criticalRawMaterials: this.dppQuery
         .data()
-        ?.criticalRawMaterials?.map((m) => `${m[0].name}: ${m[1]} `)
+        ?.criticalRawMaterials?.map((m) => `${m[0].name}: ${m[1]} `),
     };
     return res;
   });
 
   productMaterials = computed(() => {
-
-    console.log(this.productQuery
-        .data());
+    console.log(this.productQuery.data());
     const res = {
       materials: this.productQuery
         .data()
-        ?.materials?.map((m) => `${m[0].name}: ${m[1]} `),
+        ?.materials?.map((m) => `${m[0].name}: ${m[1]} %`),
       packagings: this.productQuery
         .data()
         ?.packagings?.map((p) => `${p[0].name}`),
-      criticalRawMaterials : this.productQuery
+      criticalRawMaterials: this.productQuery
         .data()
-        ?.criticalRawMaterials?.map((m) => `${m[0].name}: ${m[1]} `)
+        ?.criticalRawMaterials?.map((m) => `${m[0].name}: ${m[1]}`),
     };
     return res;
   });
 
   formGroup = new FormGroup({
+    name: new FormControl<boolean>(false),
     productId: new FormControl<boolean>(false),
     gtin: new FormControl<boolean>(false),
     taricCode: new FormControl<boolean>(false),
@@ -98,9 +98,7 @@ export class DppDataImportComponent {
     productCarbonFootprint: new FormControl<boolean>(false),
   });
 
-
-
-  get control() {
-    return this.formGroup.controls.productId
+  constructor() {
+    this.formGroup.valueChanges.subscribe((val) => console.log(val));
   }
 }

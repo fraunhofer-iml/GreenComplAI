@@ -9,7 +9,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, input } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-dpp-card',
@@ -18,6 +18,5 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
 })
 export class ProductDppCompareComponent {
   title = input<string>('');
- formControl = input.required<FormControl<boolean | null>>()
-
+  form = input.required<FormControl<boolean | null>>();
 }
