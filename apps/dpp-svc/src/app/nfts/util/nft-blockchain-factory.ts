@@ -9,7 +9,7 @@
 import { TokenReadDto } from 'nft-folder-blockchain-connector-besu';
 import { Injectable } from '@nestjs/common';
 import { NftFactory } from './nft-factory';
-import { BlockchainConnectorService } from '../../../../../../libs/blockchain-connector/src';
+import { BlockchainConnectorService } from '@ap2/blockchain-connector';
 
 @Injectable()
 export class NftBlockchainFactory extends NftFactory {
