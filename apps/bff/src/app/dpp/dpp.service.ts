@@ -21,6 +21,7 @@ import {
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { ProductsService } from '../products/products.service';
+import { TokenReadDto } from 'nft-folder-blockchain-connector-besu';
 
 @Injectable()
 export class DppService {
@@ -82,5 +83,15 @@ export class DppService {
     );
 
     return dpp;
+  }
+
+  async getDppNft(
+    dppId: string
+  ): Promise<TokenReadDto> {
+    return firstValueFrom(
+      this.dppClient.send<TokenReadDto>(DppMessagePatterns.GET_NFT, {
+        dppId,
+      })
+    );
   }
 }

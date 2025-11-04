@@ -6,20 +6,20 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {
-  AssetAdministrationShell,
-  Submodel,
-} from '@aas-core-works/aas-core3.0-typescript/types';
+import { AssetAdministrationShell, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { AuthRoles, getRealmRole } from '@ap2/api-interfaces';
 import { Public, Roles } from 'nest-keycloak-connect';
-import { Body, Controller, Get, Logger, Param, Post } from '@nestjs/common';
+import { TokenReadDto } from 'nft-folder-blockchain-connector-besu';
 import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiOkResponse,
-  ApiOperation,
-  ApiTags,
-} from '@nestjs/swagger';
+  Body,
+  Controller,
+  Get,
+  Logger,
+  NotFoundException,
+  Param,
+  Post,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DppService } from './dpp.service';
 
 @ApiTags('DPP')
@@ -66,5 +66,25 @@ export class DppController {
     @Param('aasIdentifier') aasIdentifier: string
   ): Promise<AssetAdministrationShell & { connectedSubmodels: Submodel[] }> {
     return this.dppService.getDpp(aasIdentifier);
+  }
+
+  @Get('nft/:dppId')
+  @Public()
+  @ApiOperation({
+    description: 'Get NFT for DPP.',
+  })
+  @ApiOkResponse({
+    description: 'Successfully got NFT',
+  })
+  getDppNft(
+    @Param('dppId') dppId: string
+  ): Promise<TokenReadDto> {
+    console.log("Fine NFT for remoteId: ", dppId);
+    return this.dppService.getDppNft(dppId).then(foundToken => {
+      if (!foundToken) {
+        throw new NotFoundException('Nft not found');
+      }
+      return foundToken;
+    });
   }
 }

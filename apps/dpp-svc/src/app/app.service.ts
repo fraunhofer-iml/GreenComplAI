@@ -23,6 +23,8 @@ import {
 import { Injectable, Logger } from '@nestjs/common';
 import { AasSubmoduleService } from './submodules/aas-submodule.service';
 import { SubmoduleCreationService } from './submodules/submodule-creation.service';
+import { NftsService } from './nfts/nfts.service';
+import { TokenReadDto } from 'nft-folder-blockchain-connector-besu';
 
 @Injectable()
 export class AppService {
@@ -33,7 +35,10 @@ export class AppService {
   private submoduleCreationService: SubmoduleCreationService;
   private aasSubmoduleService: AasSubmoduleService;
 
-  constructor(private readonly configurationService: ConfigurationService) {
+  constructor(
+    private readonly configurationService: ConfigurationService,
+    private readonly nftService: NftsService
+    ) {
     this.client = new AasRepositoryClient();
     this.submodelRepositoryClient = new SubmodelRepositoryClient();
     this.configuration = new Configuration({
@@ -45,6 +50,10 @@ export class AppService {
       this.configuration,
       this.submodelRepositoryClient
     );
+  }
+
+  async getDPPNft(dppId: string): Promise<TokenReadDto>{
+    return this.nftService.getNft(dppId);
   }
 
   async getDpp(
@@ -122,6 +131,15 @@ export class AppService {
 
     if (!result.success) {
       throw new Error('Failed to create DPP');
+    }
+
+    try {
+      const createdDppData = this.getDpp(assetAdministrationShell.id);
+      const dppUrl = `${process.env['BCC_DPP_TOKEN_BASE_URL']}/${assetAdministrationShell.id}`
+      await this.nftService.createNft(product.id, createdDppData, dppUrl);
+    }
+    catch(error){
+      this.logger.error('Failed to create NFT:', error);
     }
     return result.data;
   }

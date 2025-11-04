@@ -14,10 +14,13 @@ import {
   TokenReadDto,
   TokenReadService,
 } from 'nft-folder-blockchain-connector-besu';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class BlockchainConnectorService {
+
+  private logger = new Logger(BlockchainConnectorService.name);
+
   constructor(
     private readonly dataIntegrityService: DataIntegrityService,
     private readonly tokenMintService: TokenMintService,
@@ -26,20 +29,22 @@ export class BlockchainConnectorService {
 
   /**
    * Creates a new NFT from the information in a DPP.
-   * @param productId The ID of the product or the DPP.
+   * @param dppId The ID of the DPP.
    * @param dpp The dpp data as a JSON string representation.
    * @param dppURL The URL where the dpp can be found.
    */
   public async mintNFT(
-    productId: string,
+    dppId: string,
     dpp: any,
     dppURL: string
   ): Promise<TokenReadDto> {
-    const dppHash: string = this.dataIntegrityService.hashData(Buffer.from(JSON.stringify(dpp)));
+    const dppHash: string = this.dataIntegrityService.hashData(
+      Buffer.from(JSON.stringify(dpp))
+    );
 
     return this.tokenMintService.mintToken(
       {
-        remoteId: productId,
+        remoteId: dppId,
         asset: new TokenAssetDto(dppURL, dppHash),
         metadata: new TokenMetadataDto('', ''),
         additionalData: '',
@@ -51,9 +56,18 @@ export class BlockchainConnectorService {
 
   /**
    * Returns the NFT with the specified product id.
-   * @param productId The product id of the NFT to be returned.
+   * @param dppId The dpp id of the NFT to be returned.
    */
-  public async readNFT(productId: string): Promise<TokenReadDto> {
-    return (await this.tokenReadService.getTokens(productId))[0];
+  public async readNFT(dppId: string): Promise<TokenReadDto | null> {
+    try {
+      const foundTokens = await this.tokenReadService.getTokens(dppId);
+      if(foundTokens.length < 1) {
+        return null;
+      }
+      return foundTokens[0];
+    } catch (error) {
+      this.logger.error(error);
+      return null;
+    }
   }
 }

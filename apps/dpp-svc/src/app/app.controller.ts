@@ -25,4 +25,9 @@ export class AppController {
   getDpp(data: { aasIdentifier: string }) {
     return this.appService.getDpp(data.aasIdentifier);
   }
+
+  @MessagePattern(DppMessagePatterns.GET_NFT)
+  getDppNft(data: { dppId: string }) {
+    return this.appService.getDPPNft(data.dppId);
+  }
 }
