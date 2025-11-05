@@ -7,7 +7,7 @@
  */
 
 import { MappingPatterns } from '@ap2/amqp';
-import { CreateMappingProps, MappingDto } from '@ap2/api-interfaces';
+import { CreateMappingProps, MappingEntity } from '@ap2/api-interfaces';
 import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { MappingService } from './mapping.service';
@@ -20,12 +20,14 @@ export class MappingController {
 
   @MessagePattern(MappingPatterns.CREATE) async createMapping(
     @Payload() payload: CreateMappingProps
-  ): Promise<MappingDto> {
+  ): Promise<MappingEntity> {
     return await this.mappingService.createMapping(payload.dto);
   }
 
   @MessagePattern(MappingPatterns.READ_BY_ID)
-  async findOne(@Payload() payload: { id: string }): Promise<MappingDto> {
+  async findOne(
+    @Payload() payload: { id: string }
+  ): Promise<MappingEntity | null> {
     return await this.mappingService.findOne(payload.id);
   }
 }

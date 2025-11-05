@@ -6,7 +6,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export * from './lib/dtos';
-export * from './lib/types';
-export * from './lib/enums';
-export * from './lib/entities';
+import { Prisma } from '@prisma/client';
+
+export type MappingEntity = Prisma.GCMappingGetPayload<{
+  include: {
+    mappingElements: true;
+  };
+}>;

@@ -39,7 +39,7 @@ export interface AasDto {
   displayName?: string[];
   category?: string;
   tags?: string[];
-  extensions?: any[];
+  extensions?: unknown[];
   derivedFrom?: string;
   asset?: string;
   submodel?: string[];

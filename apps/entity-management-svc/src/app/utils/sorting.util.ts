@@ -75,7 +75,7 @@ const parseSorting = (
     }
 
     return { key, direction };
-  } catch (error) {
+  } catch {
     // Return safe defaults if parsing fails
     return { key: '', direction: 'asc' };
   }

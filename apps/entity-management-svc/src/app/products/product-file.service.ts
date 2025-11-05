@@ -6,9 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import internal from 'stream';
 import { PrismaService } from '@ap2/database';
-import { v4 as uuid } from 'uuid';
 import { IStorageService, STORAGE_SERVICE_TOKEN } from '@greencomplai/storage';
 import { Inject, Injectable } from '@nestjs/common';
 import { DocumentType, GCFile } from '@prisma/client';

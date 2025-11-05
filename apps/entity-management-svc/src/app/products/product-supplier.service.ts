@@ -10,12 +10,14 @@ import {
   FindAllProductsOfSupplierProps,
   FindProductOfSupplierByIdProps,
   PaginatedData,
-  ProductDto,
+  ProductEntity,
+  ProductEntityList,
   UpdateProductOfSupplierProps,
 } from '@ap2/api-interfaces';
 import { PrismaService } from '@ap2/database';
 import { Injectable } from '@nestjs/common';
 import { getWhereCondition } from './product-utils';
+import { productFindUniqueQuery } from './queries/product-find-unique.query';
 import {
   productFindManyOfSupplierQuery,
   productFindUniqueOfSupplierQuery,
@@ -34,7 +36,7 @@ export class ProductSupplierService {
     isSellable,
     supplierCompanyId,
   }: FindAllProductsOfSupplierProps): Promise<
-    PaginatedData<Partial<ProductDto>>
+    PaginatedData<ProductEntityList>
   > {
     const skip: number = (page - 1) * size;
 
@@ -58,18 +60,7 @@ export class ProductSupplierService {
     });
 
     return {
-      data: products.map((p) => ({
-        ...p,
-        materials: p.materials.map((m) => [m.material, m.percentage] as const),
-        wasteFlow: p.wasteFlow?.name,
-
-        rareEarths: p.rareEarths.map(
-          (m) => [m.material, m.percentage] as const
-        ),
-        criticalRawMaterials: p.criticalRawMaterials.map(
-          (m) => [m.material, m.percentage] as const
-        ),
-      })),
+      data: products,
       meta: { page: page, pageSize: size, totalCount: totalCount },
     };
   }
@@ -77,31 +68,17 @@ export class ProductSupplierService {
   async findOne({
     id,
     supplierCompanyId,
-  }: FindProductOfSupplierByIdProps): Promise<Partial<ProductDto>> {
-    const product = await this.prismaService.product.findUnique(
+  }: FindProductOfSupplierByIdProps): Promise<ProductEntityList | null> {
+    return await this.prismaService.product.findUnique(
       productFindUniqueOfSupplierQuery(id, supplierCompanyId)
     );
-
-    return {
-      ...product,
-      materials: product.materials.map(
-        (m) => [m.material, m.percentage] as const
-      ),
-      wasteFlow: product.wasteFlow?.name ? product.wasteFlow.name : 'N/A',
-      rareEarths: product.rareEarths.map(
-        (m) => [m.material, m.percentage] as const
-      ),
-      criticalRawMaterials: product.criticalRawMaterials.map(
-        (m) => [m.material, m.percentage] as const
-      ),
-    };
   }
 
   async update({
     dto,
     id,
     supplierCompanyId,
-  }: UpdateProductOfSupplierProps): Promise<ProductDto> {
+  }: UpdateProductOfSupplierProps): Promise<ProductEntity> {
     const productExists = await this.findOne({ id, supplierCompanyId });
 
     if (!productExists) {
@@ -133,13 +110,15 @@ export class ProductSupplierService {
       },
     });
 
-    const product = await this.prismaService.product.update({
+    await this.prismaService.product.update({
       where: {
         id,
       },
       ...updateProductOfSupplier(dto, id),
     });
 
-    return product;
+    return await this.prismaService.product.findUnique(
+      productFindUniqueQuery(id)
+    );
   }
 }

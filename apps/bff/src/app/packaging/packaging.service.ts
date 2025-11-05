@@ -11,6 +11,8 @@ import {
   CreatePackagingProps,
   FindAllPackagingProps,
   PackagingDto,
+  PackagingEntity,
+  PackagingEntityList,
   PackagingIdProps,
   PaginatedData,
   UpdatePackagingProps,
@@ -18,6 +20,7 @@ import {
 import { firstValueFrom } from 'rxjs';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { toPackagingDto, toPackagingDtoList } from './packaging.mapper';
 
 @Injectable()
 export class PackagingService {
@@ -28,48 +31,63 @@ export class PackagingService {
     private readonly entityManagementService: ClientProxy
   ) {}
 
-  createPackaging(props: CreatePackagingProps): Promise<PackagingDto> {
-    return firstValueFrom(
-      this.entityManagementService.send<PackagingDto>(
+  async createPackaging(props: CreatePackagingProps): Promise<PackagingDto> {
+    const entity = await firstValueFrom(
+      this.entityManagementService.send<PackagingEntity>(
         PackagingMessagePatterns.CREATE,
         props
       )
     );
+    return toPackagingDto(entity);
   }
 
-  findOne(props: PackagingIdProps): Promise<PackagingDto> {
-    return firstValueFrom(
-      this.entityManagementService.send<PackagingDto>(
+  async findOne(props: PackagingIdProps): Promise<PackagingDto | null> {
+    const entity = await firstValueFrom(
+      this.entityManagementService.send<PackagingEntity | null>(
         PackagingMessagePatterns.READ_BY_ID,
         props
       )
     );
+    return toPackagingDto(entity);
   }
-  findPreliminary(props: PackagingIdProps): Promise<[PackagingDto, number][]> {
-    return firstValueFrom(
-      this.entityManagementService.send<[PackagingDto, number][]>(
+  async findPreliminary(
+    props: PackagingIdProps
+  ): Promise<[PackagingDto, number][]> {
+    const entities = await firstValueFrom(
+      this.entityManagementService.send<[PackagingEntity, number][]>(
         PackagingMessagePatterns.PRELIMINARY,
         props
       )
     );
+    return entities.map(([entity, amount]) => [
+      toPackagingDto(entity) as PackagingDto,
+      amount,
+    ]);
   }
 
-  findAll(props: FindAllPackagingProps): Promise<PaginatedData<PackagingDto>> {
-    return firstValueFrom(
-      this.entityManagementService.send<PaginatedData<PackagingDto>>(
+  async findAll(
+    props: FindAllPackagingProps
+  ): Promise<PaginatedData<PackagingDto>> {
+    const result = await firstValueFrom(
+      this.entityManagementService.send<PaginatedData<PackagingEntityList>>(
         PackagingMessagePatterns.READ,
         props
       )
     );
+    return {
+      data: result.data.map((entity) => toPackagingDtoList(entity)),
+      meta: result.meta,
+    };
   }
 
-  update(props: UpdatePackagingProps): Promise<PackagingDto> {
-    return firstValueFrom(
-      this.entityManagementService.send<PackagingDto>(
+  async update(props: UpdatePackagingProps): Promise<PackagingDto> {
+    const entity = await firstValueFrom(
+      this.entityManagementService.send<PackagingEntity>(
         PackagingMessagePatterns.UPDATE,
         props
       )
     );
+    return toPackagingDto(entity);
   }
 
   updatePartPackagigns(props: UpdatePackagingProps): Promise<void> {

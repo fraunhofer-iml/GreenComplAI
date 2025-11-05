@@ -36,5 +36,10 @@ export const productGroupFindUniqueQuery = (id: string) => ({
     },
     variants: true,
     wasteFlow: true,
+    _count: {
+      select: {
+        products: true,
+      },
+    },
   },
 });

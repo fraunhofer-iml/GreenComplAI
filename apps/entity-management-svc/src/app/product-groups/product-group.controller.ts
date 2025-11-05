@@ -12,7 +12,8 @@ import {
   FindAllProductGroupsProps,
   FindProductGroupByIdProps,
   PaginatedData,
-  ProductGroupDto,
+  ProductGroupEntity,
+  ProductGroupEntityList,
   UpdateProductGroupProps,
 } from '@ap2/api-interfaces';
 import { Controller } from '@nestjs/common';
@@ -26,28 +27,28 @@ export class ProductGroupController {
   @MessagePattern(ProductGroupMessagePatterns.CREATE)
   create(
     @Payload() payload: CreateProductGroupProps
-  ): Promise<ProductGroupDto> {
+  ): Promise<ProductGroupEntity> {
     return this.productGroupService.create(payload);
   }
 
   @MessagePattern(ProductGroupMessagePatterns.READ_ALL)
   findAll(
     @Payload() payload: FindAllProductGroupsProps
-  ): Promise<PaginatedData<ProductGroupDto>> {
+  ): Promise<PaginatedData<ProductGroupEntityList>> {
     return this.productGroupService.findAll(payload);
   }
 
   @MessagePattern(ProductGroupMessagePatterns.READ_BY_ID)
   async findOne(
     @Payload() payload: FindProductGroupByIdProps
-  ): Promise<ProductGroupDto> {
+  ): Promise<ProductGroupEntity | null> {
     return this.productGroupService.findOne(payload);
   }
 
   @MessagePattern(ProductGroupMessagePatterns.UPDATE)
   async update(
     @Payload() payload: UpdateProductGroupProps
-  ): Promise<ProductGroupDto> {
+  ): Promise<ProductGroupEntity> {
     return this.productGroupService.update(payload.id, payload.dto);
   }
 }

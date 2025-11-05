@@ -6,7 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { MappingDto } from '@ap2/api-interfaces';
+import { MappingDto, MappingEntity } from '@ap2/api-interfaces';
 import { PrismaService } from '@ap2/database';
 import { Injectable } from '@nestjs/common';
 
@@ -14,7 +14,7 @@ import { Injectable } from '@nestjs/common';
 export class MappingService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async createMapping(dto: MappingDto): Promise<MappingDto> {
+  async createMapping(dto: MappingDto): Promise<MappingEntity> {
     const existingMapping = await this.prismaService.gCMapping.findUnique({
       where: { key: dto.key },
     });
@@ -28,14 +28,8 @@ export class MappingService {
             createMany: { data: dto.mappingElements },
           },
         },
-        select: {
-          key: true,
-          mappingElements: {
-            select: {
-              key: true,
-              value: true,
-            },
-          },
+        include: {
+          mappingElements: true,
         },
       });
     }
@@ -47,31 +41,19 @@ export class MappingService {
           createMany: { data: dto.mappingElements },
         },
       },
-      select: {
-        key: true,
-        mappingElements: {
-          select: {
-            key: true,
-            value: true,
-          },
-        },
+      include: {
+        mappingElements: true,
       },
     });
   }
 
-  async findOne(id: string): Promise<MappingDto> {
+  async findOne(id: string): Promise<MappingEntity | null> {
     return this.prismaService.gCMapping.findFirst({
       where: {
         OR: [{ id: id }, { key: id }],
       },
-      select: {
-        key: true,
-        mappingElements: {
-          select: {
-            key: true,
-            value: true,
-          },
-        },
+      include: {
+        mappingElements: true,
       },
     });
   }

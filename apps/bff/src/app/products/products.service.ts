@@ -21,9 +21,12 @@ import {
   FindProductByIdProps,
   GenerateAnalysisProp,
   PackagingDto,
+  PackagingEntity,
   PaginatedData,
   ProductCreateDto,
   ProductDto,
+  ProductEntity,
+  ProductEntityList,
   ProductOutlierDto,
   ProductUpdateFlagsDto,
   SearchProductsProps,
@@ -44,6 +47,8 @@ import {
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { GCFile } from '@prisma/client';
+import { toPackagingDto } from '../packaging/packaging.mapper';
+import { toProductDto, toProductDtoList } from './product.mapper';
 
 @Injectable()
 export class ProductsService {
@@ -63,24 +68,37 @@ export class ProductsService {
         outlierDetectionResult = await this.runOutlierDetection(dto);
       }
 
-      return firstValueFrom(
-        this.entityManagementService.send(ProductMessagePatterns.CREATE, {
-          dto,
-          outlierDetectionResult,
-        })
+      const entity = await firstValueFrom(
+        this.entityManagementService.send<ProductEntity>(
+          ProductMessagePatterns.CREATE,
+          {
+            dto,
+            outlierDetectionResult,
+          }
+        )
       );
+
+      const packagings = await this.findPackaging({ id: entity.id });
+      return toProductDto(entity, packagings);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
-  findAll(props: FindAllProductsProps): Promise<PaginatedData<ProductDto>> {
-    return firstValueFrom(
-      this.entityManagementService.send<PaginatedData<ProductDto>>(
+  async findAll(
+    props: FindAllProductsProps
+  ): Promise<PaginatedData<ProductDto>> {
+    const result = await firstValueFrom(
+      this.entityManagementService.send<PaginatedData<ProductEntityList>>(
         ProductMessagePatterns.READ_ALL,
         props
       )
     );
+
+    return {
+      data: result.data.map((entity) => toProductDtoList(entity)),
+      meta: result.meta,
+    };
   }
 
   findOutliers(): Promise<ProductOutlierDto[]> {
@@ -89,78 +107,109 @@ export class ProductsService {
     );
   }
 
-  findOne(props: FindProductByIdProps): Promise<ProductDto> {
-    return firstValueFrom(
-      this.entityManagementService.send<ProductDto>(
+  async findOne(props: FindProductByIdProps): Promise<ProductDto | null> {
+    const entity = await firstValueFrom(
+      this.entityManagementService.send<ProductEntity | null>(
         ProductMessagePatterns.READ_BY_ID,
         props
       )
     );
+
+    if (!entity) {
+      return null;
+    }
+
+    const packagings = await this.findPackaging({ id: entity.id });
+    return toProductDto(entity, packagings);
   }
 
-  findPreliminary(
+  async findPreliminary(
     props: FindProductByIdProps
   ): Promise<[ProductDto, number][]> {
-    return firstValueFrom(
-      this.entityManagementService.send<[ProductDto, number][]>(
+    const entities = await firstValueFrom(
+      this.entityManagementService.send<[ProductEntity, number][]>(
         ProductMessagePatterns.PRELIMINARY,
         props
       )
     );
+
+    return entities.map(([entity, amount]) => [
+      toProductDto(entity) as ProductDto,
+      amount,
+    ]);
   }
 
-  findPackaging(
+  async findPackaging(
     props: FindProductByIdProps
   ): Promise<[PackagingDto, number][]> {
-    return firstValueFrom(
-      this.entityManagementService.send<[PackagingDto, number][]>(
+    const entities = await firstValueFrom(
+      this.entityManagementService.send<[PackagingEntity, number][]>(
         ProductMessagePatterns.PACKAGING,
         props
       )
     );
+
+    return entities.map(([entity, amount]) => [
+      toPackagingDto(entity) as PackagingDto,
+      amount,
+    ]);
   }
 
-  update(props: UpdateProductProps): Promise<ProductDto> {
-    return firstValueFrom(
-      this.entityManagementService.send<ProductDto>(
+  async update(props: UpdateProductProps): Promise<ProductDto> {
+    const entity = await firstValueFrom(
+      this.entityManagementService.send<ProductEntity>(
         ProductMessagePatterns.UPDATE,
         props
       )
     );
+
+    const packagings = await this.findPackaging({ id: entity.id });
+    return toProductDto(entity, packagings);
   }
 
-  updateBOM(props: UpdateProductDependenciesProps): Promise<ProductDto> {
-    return firstValueFrom(
-      this.entityManagementService.send<ProductDto>(
+  async updateBOM(props: UpdateProductDependenciesProps): Promise<ProductDto> {
+    const entity = await firstValueFrom(
+      this.entityManagementService.send<ProductEntity>(
         ProductMessagePatterns.UPDATE_BOM,
         props
       )
     );
+
+    const packagings = await this.findPackaging({ id: entity.id });
+    return toProductDto(entity, packagings);
   }
 
-  updatePackaging(props: UpdateProductDependenciesProps): Promise<ProductDto> {
-    return firstValueFrom(
-      this.entityManagementService.send<ProductDto>(
+  async updatePackaging(
+    props: UpdateProductDependenciesProps
+  ): Promise<ProductDto> {
+    const entity = await firstValueFrom(
+      this.entityManagementService.send<ProductEntity>(
         ProductMessagePatterns.UPDATE_PACKAGING,
         props
       )
     );
+
+    const packagings = await this.findPackaging({ id: entity.id });
+    return toProductDto(entity, packagings);
   }
 
-  updateProductionHistory(
+  async updateProductionHistory(
     props: UpdateProductionHistoryProps
   ): Promise<ProductDto> {
-    return firstValueFrom(
-      this.entityManagementService.send<ProductDto>(
+    const entity = await firstValueFrom(
+      this.entityManagementService.send<ProductEntity>(
         ProductMessagePatterns.UPDATE_HISTORY,
         props
       )
     );
+
+    const packagings = await this.findPackaging({ id: entity.id });
+    return toProductDto(entity, packagings);
   }
 
-  async updateWaste(props: UpdateProductWasteProps) {
-    await firstValueFrom(
-      this.entityManagementService.send(
+  async updateWaste(props: UpdateProductWasteProps): Promise<ProductDto> {
+    const entity = await firstValueFrom(
+      this.entityManagementService.send<ProductEntity>(
         ProductMessagePatterns.UPDATE_WASTE,
         props
       )
@@ -171,30 +220,38 @@ export class ProductsService {
       dto: { flags: props.dto.fieldsToValidate },
     };
 
-    return firstValueFrom(
+    await firstValueFrom(
       this.entityManagementService.send(
         ProductMessagePatterns.OUTLIERS_VALIDATE,
         validateProps
       )
     );
+
+    const packagings = await this.findPackaging({ id: entity.id });
+    return toProductDto(entity, packagings);
   }
 
-  remove(props: DeleteProductProps): Promise<ProductDto> {
-    return firstValueFrom(
-      this.entityManagementService.send<ProductDto>(
+  async remove(props: DeleteProductProps): Promise<ProductDto> {
+    const entity = await firstValueFrom(
+      this.entityManagementService.send<ProductEntity>(
         ProductMessagePatterns.DELETE,
         props
       )
     );
+
+    // After deletion, packagings are not available; pass an empty array.
+    return toProductDto(entity, []);
   }
 
-  search(props: SearchProductsProps): Promise<ProductDto[]> {
-    return firstValueFrom(
-      this.entityManagementService.send<ProductDto[]>(
+  async search(props: SearchProductsProps): Promise<ProductDto[]> {
+    const entities = await firstValueFrom(
+      this.entityManagementService.send<ProductEntityList[]>(
         ProductMessagePatterns.SEARCH,
         props
       )
     );
+
+    return entities.map((entity) => toProductDtoList(entity));
   }
 
   getAnalysis(props: GenerateAnalysisProp): Promise<AnalysisDto> {
@@ -206,13 +263,19 @@ export class ProductsService {
     );
   }
 
-  updateFlags(props: { id: string; dto: ProductUpdateFlagsDto }) {
-    return firstValueFrom(
-      this.entityManagementService.send<ProductDto>(
+  async updateFlags(props: {
+    id: string;
+    dto: ProductUpdateFlagsDto;
+  }): Promise<ProductDto> {
+    const entity = await firstValueFrom(
+      this.entityManagementService.send<ProductEntity>(
         ProductMessagePatterns.UPDATE_FLAGS,
         props
       )
     );
+
+    const packagings = await this.findPackaging({ id: entity.id });
+    return toProductDto(entity, packagings);
   }
 
   validate(props: UpdateFlagProductProps): Promise<ProductOutlierDto> {

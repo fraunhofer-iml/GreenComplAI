@@ -6,7 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { WasteCreateDto, WasteMaterialDto } from '@ap2/api-interfaces';
+import { WasteCreateDto, WasteMaterialEntity } from '@ap2/api-interfaces';
 import { PrismaService } from '@ap2/database';
 import { Injectable } from '@nestjs/common';
 
@@ -14,7 +14,9 @@ import { Injectable } from '@nestjs/common';
 export class WasteService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  public async findWasteMaterial(wasteId: string): Promise<WasteMaterialDto[]> {
+  public async findWasteMaterial(
+    wasteId: string
+  ): Promise<WasteMaterialEntity[]> {
     return this.prismaService.wasteMaterial.findMany({
       where: { wasteId: wasteId },
       include: {

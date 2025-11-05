@@ -30,9 +30,12 @@ export const productFindManyOfSupplierQuery = ({
     skip: skip,
     take: size,
     where: { ...filters, supplierId },
-    select: {
-      rareEarths: { include: { material: true } },
-      criticalRawMaterials: { include: { material: true } },
+    include: {
+      manufacturer: {
+        include: {
+          addresses: true,
+        },
+      },
       materials: {
         include: {
           material: true,
@@ -43,26 +46,19 @@ export const productFindManyOfSupplierQuery = ({
           addresses: true,
         },
       },
-
-      manufacturer: {
+      waste: {
         include: {
-          addresses: true,
+          wasteMaterials: {
+            include: {
+              material: true,
+            },
+          },
         },
       },
-      digitalProductPassportUrl: true,
       wasteFlow: true,
-      waterUsed: true,
-      productCarbonFootprint: true,
-      name: true,
-      id: true,
-      description: true,
-      unit: true,
-      dimensions: true,
-      cascadePrinciple: true,
-      circularPrinciple: true,
-      weight: true,
-      percentageOfBiologicalMaterials: true,
-      certificationSystem: true,
+      productGroup: true,
+      rareEarths: { include: { material: true } },
+      criticalRawMaterials: { include: { material: true } },
     },
     orderBy: JSON.parse(sorting || '{}'),
   }) satisfies Prisma.ProductFindManyArgs;
@@ -76,33 +72,35 @@ export const productFindUniqueOfSupplierQuery = (
       id,
       supplierId,
     },
-    select: {
-      rareEarths: { include: { material: true } },
-      criticalRawMaterials: { include: { material: true } },
-      materials: {
-        include: {
-          material: true,
-        },
-      },
+    include: {
       manufacturer: {
         include: {
           addresses: true,
         },
       },
-      digitalProductPassportUrl: true,
+      materials: {
+        include: {
+          material: true,
+        },
+      },
+      supplier: {
+        include: {
+          addresses: true,
+        },
+      },
+      waste: {
+        include: {
+          wasteMaterials: {
+            include: {
+              material: true,
+            },
+          },
+        },
+      },
       wasteFlow: true,
-      waterUsed: true,
-      productCarbonFootprint: true,
-      name: true,
-      id: true,
-      description: true,
-      unit: true,
-      dimensions: true,
-      cascadePrinciple: true,
-      circularPrinciple: true,
-      weight: true,
-      percentageOfBiologicalMaterials: true,
-      certificationSystem: true,
+      productGroup: true,
+      rareEarths: { include: { material: true } },
+      criticalRawMaterials: { include: { material: true } },
     },
   }) satisfies Prisma.ProductFindUniqueArgs;
 
