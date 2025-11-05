@@ -82,7 +82,7 @@ export class ProductMasterDataFormComponent implements OnInit {
   readonly authService = inject(AuthenticationService);
 
   productGroupId = input<string>();
-  id = input<string>();
+  id = input<string | null>();
   form = input.required<FormGroup<MasterDataFormGroup>>();
 
   materialsForm = input.required<FormGroup<RegularMaterialsFormGroup>>();

@@ -14,7 +14,7 @@ import {
 } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -23,6 +23,8 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import {
   injectMutation,
@@ -43,6 +45,9 @@ import { ProductCardComponent } from './comparison/product-card.component';
     MatCheckboxModule,
     ProductCardComponent,
     MatButtonModule,
+    MatFormFieldModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   providers: [DppService],
   templateUrl: './dpp-data-import.component.html',
@@ -52,20 +57,28 @@ export class DppDataImportComponent {
   private readonly productService = inject(ProductsService);
   private readonly router = inject(Router);
 
-  id = input<string>('id');
+  id = input<string>();
+  productId = input<string>();
+
+  urlInput = signal<string>('');
+
+  aasIdentifier = computed(() => {
+    console.log(this.productId());
+    return this.id() ?? this.urlInput();
+  });
 
   dppQuery = injectQuery(() => ({
-    queryKey: ['dpp', this.id()],
+    queryKey: ['dpp', this.aasIdentifier()],
     queryFn: async (): Promise<ProductDto> =>
-      this.dppService.importProductFRomDpp(this.id() ?? ''),
-    enabled: !!this.id(),
+      this.dppService.importProductFRomDpp(this.aasIdentifier() ?? ''),
+    enabled: !!this.aasIdentifier(),
   }));
 
   productQuery = injectQuery(() => ({
-    queryKey: ['product', this.id()],
+    queryKey: ['product', this.productId()],
     queryFn: async (): Promise<ProductDto> =>
-      this.productService.getById(this.id() ?? ''),
-    enabled: !!this.id(),
+      this.productService.getById(this.productId() ?? ''),
+    enabled: !!this.productId(),
   }));
 
   dppMaterials = computed(() => {

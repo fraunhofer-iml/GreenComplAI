@@ -16,8 +16,10 @@
     <div class="flex justify-end">
       <button
         mat-stroked-button
-        [routerLink]="[`/${dppUrl.value}/data-import`]"
-        [queryParams]="{ productId: `${id()}` }"
+        [routerLink]="[
+          dppUrl.value ? `/${dppUrl.value}/data-import` : '/dpp/data-import',
+        ]"
+        [queryParams]="id() ? { productId: `${id()}` } : {}"
       >
         Aus DPP importieren
       </button>
