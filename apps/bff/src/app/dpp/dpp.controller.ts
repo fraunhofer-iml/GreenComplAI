@@ -10,12 +10,7 @@ import {
   AssetAdministrationShell,
   Submodel,
 } from '@aas-core-works/aas-core3.0-typescript/types';
-import {
-  AuthRoles,
-  DppComparisonDto,
-  getRealmRole,
-  ProductDto,
-} from '@ap2/api-interfaces';
+import { AuthRoles, getRealmRole, ProductDto } from '@ap2/api-interfaces';
 import { Public, Roles } from 'nest-keycloak-connect';
 import { Body, Controller, Get, Logger, Param, Post } from '@nestjs/common';
 import {

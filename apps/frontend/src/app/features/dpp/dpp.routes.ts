@@ -10,10 +10,10 @@ import { Route } from '@angular/router';
 
 export const dppRoutes: Route[] = [
   {
-    path: ':id',
+    path: 'data-import',
     loadComponent: () =>
-      import('./overview/dpp-overview.component').then(
-        (m) => m.DppOverviewComponent
+      import('./import/dpp-data-import.component').then(
+        (m) => m.DppDataImportComponent
       ),
   },
   {
@@ -22,11 +22,12 @@ export const dppRoutes: Route[] = [
       import('./import/dpp-data-import.component').then(
         (m) => m.DppDataImportComponent
       ),
-  }, {
-    path: 'data-import',
+  },
+  {
+    path: ':id',
     loadComponent: () =>
-      import('./import/dpp-data-import.component').then(
-        (m) => m.DppDataImportComponent
+      import('./overview/dpp-overview.component').then(
+        (m) => m.DppOverviewComponent
       ),
   },
 ];

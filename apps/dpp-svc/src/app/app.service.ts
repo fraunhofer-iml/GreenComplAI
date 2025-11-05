@@ -26,8 +26,6 @@ import {
   CircularPropertiesSubmodule,
   ESRSynergiesSubmodule,
   LegalComplianceSubmodule,
-  MaterialCompositionSubmodule,
-  PackagingSubmodule,
   ProductImportService,
 } from './submodules';
 import { AasSubmoduleService } from './submodules/aas-submodule.service';
@@ -176,10 +174,12 @@ export class AppService {
 
     console.log(packagingSubmodel);
 
-    const materialComposition : { materials: [MaterialDto, number, boolean?, boolean?][], criticalRawMaterials: [MaterialDto, number][] } =
-      this.privateProductImportService.getMaterialCompositionSubmodel(
-        submodelMap.get('material_composition')
-      );
+    const materialComposition: {
+      materials: [MaterialDto, number, boolean?, boolean?][];
+      criticalRawMaterials: [MaterialDto, number][];
+    } = this.privateProductImportService.getMaterialCompositionSubmodel(
+      submodelMap.get('material_composition')
+    );
 
     const usagePhase = this.privateProductImportService.getUsagPhaseSubmodel(
       submodelMap.get('usage_phase')
@@ -199,16 +199,13 @@ export class AppService {
         ...productIdentificationSubmodel.supplier,
         flags: [],
       },
-     
+
       reparability: circiularProperties.repairabilityScore,
       productCarbonFootprint: ESRSynergies.productCarbonFootprint,
       waterUsed: ESRSynergies.waterFootprint,
-      packagings: packagingSubmodel.map((packaging) => [
-       packaging,
-        0,
-      ]),
-      materials: materialComposition.materials, 
-      criticalRawMaterials: materialComposition.criticalRawMaterials
+      packagings: packagingSubmodel.map((packaging) => [packaging, 0]),
+      materials: materialComposition.materials,
+      criticalRawMaterials: materialComposition.criticalRawMaterials,
     } as ProductDto;
 
     this.logger.debug(product);

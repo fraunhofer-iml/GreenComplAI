@@ -6,6 +6,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import {
+  AddressDto,
+  AuthRoles,
+  CompanyDto,
+  CRITICAL_RAW_MATERIALS,
+  ProductDto,
+  ProductGroupDto,
+  RARE_EARTHS,
+  VariantDto,
+} from '@ap2/api-interfaces';
 import { Component, inject, input, OnInit, signal } from '@angular/core';
 import {
   FormArray,
@@ -24,17 +34,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { MatTooltipModule } from "@angular/material/tooltip";
-import {
-  AddressDto,
-  AuthRoles,
-  CompanyDto,
-  CRITICAL_RAW_MATERIALS,
-  ProductDto,
-  ProductGroupDto,
-  RARE_EARTHS,
-  VariantDto,
-} from '@ap2/api-interfaces';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { AuthenticationService } from '../../../core/services/authentication/authentication.service';
 import { CompaniesService } from '../../../core/services/companies/companies.service';
@@ -51,7 +52,6 @@ import {
 import { MasterDataFormGroup } from '../../../features/products/create/model/product-form.model';
 import { UNITS } from '../../constants/available-units';
 import { BaseSheetComponent } from '../sheet/base/sheet.component';
-import { RouterLink, RouterModule } from "@angular/router";
 
 @Component({
   selector: 'app-product-master-data-form',
@@ -69,10 +69,11 @@ import { RouterLink, RouterModule } from "@angular/router";
     ProductGroupCreateComponent,
     SelectMaterialsComponent,
     MatCheckboxModule,
-    MatRadioModule, MatButtonModule,
+    MatRadioModule,
+    MatButtonModule,
     MatTooltipModule,
-    RouterModule 
-],
+    RouterModule,
+  ],
   templateUrl: './product-master-data-form.component.html',
 })
 export class ProductMasterDataFormComponent implements OnInit {
@@ -81,6 +82,7 @@ export class ProductMasterDataFormComponent implements OnInit {
   readonly authService = inject(AuthenticationService);
 
   productGroupId = input<string>();
+  id = input<string>();
   form = input.required<FormGroup<MasterDataFormGroup>>();
 
   materialsForm = input.required<FormGroup<RegularMaterialsFormGroup>>();
@@ -367,6 +369,7 @@ export class ProductMasterDataFormComponent implements OnInit {
   }
 
   get dppUrl() {
-    return this.form().controls.digitalProductPassportUrl as FormControl<string>
+    return this.form().controls
+      .digitalProductPassportUrl as FormControl<string>;
   }
 }

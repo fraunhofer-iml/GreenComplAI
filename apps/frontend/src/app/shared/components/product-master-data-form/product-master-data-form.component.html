@@ -3,7 +3,7 @@
     class="grid w-full grid-cols-1 gap-4 rounded-lg bg-neutral-200 p-8 md:grid-cols-4"
   >
     <div i18n class="col-span-1">Allgemeine Informationen</div>
-    <div class="col-span-3 flex gap-4">
+    <div class="col-span-2 flex gap-4">
       @if (!authService.isSupplier()) {
         <section>
           <mat-checkbox formControlName="isSellable"
@@ -11,6 +11,16 @@
           </mat-checkbox>
         </section>
       }
+    </div>
+
+    <div class="flex justify-end">
+      <button
+        mat-stroked-button
+        [routerLink]="[`/${dppUrl.value}/data-import`]"
+        [queryParams]="{ productId: `${id()}` }"
+      >
+        Aus DPP importieren
+      </button>
     </div>
 
     <mat-form-field appearance="outline">
@@ -181,17 +191,23 @@
       ></textarea>
     </mat-form-field>
 
-        <mat-form-field appearance="outline" class="col-span-2">
+    <mat-form-field appearance="outline" class="col-span-2">
       <mat-label>Digitale Produktpass-URL</mat-label>
       <input matInput formControlName="digitalProductPassportUrl" />
-      @if (dppUrl.value) {
-        <button matIconButton matSuffix class="mr-2" matTooltip="Daten aus dem Produktpass übernehmen" [routerLink]=" [ `/${dppUrl.value}/data-import`]   " >
- <span class="material-symbols-outlined text-primary-700"  >add_task</span>
-        </button> 
-      }
-        
-    </mat-form-field> 
-  
+      <!-- @if (dppUrl.value) {
+        <button
+          matIconButton
+          matSuffix
+          class="mr-2"
+          matTooltip="Daten aus dem Produktpass übernehmen"
+          [routerLink]="[`/${dppUrl.value}/data-import`]"
+        >
+          <span class="material-symbols-outlined text-primary-700"
+            >add_task</span
+          >
+        </button>
+      } -->
+    </mat-form-field>
 
     <div class="col-span-4 my-2 h-[1px] bg-neutral-300"></div>
 

@@ -10,7 +10,7 @@ import {
   AssetAdministrationShell,
   Submodel,
 } from '@aas-core-works/aas-core3.0-typescript/types';
-import { DppComparisonDto, ProductDto } from '@ap2/api-interfaces';
+import { ProductDto } from '@ap2/api-interfaces';
 import { lastValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';

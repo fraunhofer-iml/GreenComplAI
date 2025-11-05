@@ -11,7 +11,7 @@ import {
   Submodel,
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { AmqpClientEnum, DppMessagePatterns } from '@ap2/amqp';
-import { DppComparisonDto, ProductDto } from '@ap2/api-interfaces';
+import { ProductDto } from '@ap2/api-interfaces';
 import { firstValueFrom } from 'rxjs';
 import {
   HttpException,
