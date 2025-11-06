@@ -68,12 +68,12 @@ export class DppController {
     return this.dppService.getDpp(aasIdentifier);
   }
 
-  @Get('product/:id')
+  @Get(':aasIdentifier/product')
   @Public()
   @ApiOkResponse({
     description: 'Successfully got product for DPP',
   })
-  getProductFromDpp(@Param('id') id: string): Promise<ProductDto> {
+  getProductFromDpp(@Param('aasIdentifier') id: string): Promise<ProductDto> {
     return this.dppService.getProduct(id);
   }
 }

@@ -91,7 +91,6 @@ export class DppService {
         id,
       })
     );
-    this.logger.debug(productFromDpp);
 
     return productFromDpp;
   }
