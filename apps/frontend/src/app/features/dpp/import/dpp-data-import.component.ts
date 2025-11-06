@@ -8,9 +8,8 @@
 
 import {
   CriticalRawMaterials,
+  ImportDppDto,
   ProductDto,
-  ProductMasterDataDto,
-  ProductUpdateDto,
 } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
 import { CommonModule } from '@angular/common';
@@ -125,9 +124,9 @@ export class DppDataImportComponent {
     productCarbonFootprint: new FormControl<boolean>(false),
   });
 
-  updateMutation = injectMutation(() => ({
-    mutationFn: (dto: ProductUpdateDto) => {
-      return this.productService.update(dto, this.id() ?? '');
+  mutation = injectMutation(() => ({
+    mutationFn: (dto: ImportDppDto) => {
+      return this.productService.importDpp(dto);
     },
     onSuccess: () => this.router.navigate(['/products', this.id()]),
     onError: () => toast.error('Speichern fehlgeschlagen'),
@@ -143,33 +142,33 @@ export class DppDataImportComponent {
     console.log(this.formGroup.value);
     const formValue = this.formGroup.value;
 
-    const dto = {} as ProductUpdateDto;
-    const masterData = {} as ProductMasterDataDto;
+    const dto = {} as ImportDppDto;
 
-    if (formValue.name) masterData.name = data.name;
+    dto.aasIdentifier = this.aasIdentifier();
 
-    if (formValue.taricCode) masterData.taricCode = data.taricCode;
+    if (formValue.name) dto.name = data.name;
 
-    if (formValue.gtin) masterData.gtin = data.gtin;
+    if (formValue.taricCode) dto.taricCode = data.taricCode;
 
-    if (formValue.waterUsed) masterData.waterUsed = data.waterUsed;
+    if (formValue.gtin) dto.gtin = data.gtin;
 
-    if (formValue.productId) masterData.productId = data.productId;
+    if (formValue.waterUsed) dto.waterUsed = data.waterUsed;
+
+    if (formValue.productId) dto.productId = data.productId;
     if (formValue.productCarbonFootprint)
-      masterData.productCarbonFootprint = data.productCarbonFootprint;
+      dto.productCarbonFootprint = data.productCarbonFootprint;
 
     if (formValue.supplier) {
       // TODO:  create company
+      dto.supplier = data.supplier;
     }
 
     if (formValue.importer) {
-      masterData.importerName = data.importerName;
-      masterData.importerPhone = data.importerPhone;
-      masterData.importerEmail = data.importerEmail;
-      masterData.importerAddress = data.importerAddress;
+      dto.importerName = data.importerName;
+      dto.importerPhone = data.importerPhone;
+      dto.importerEmail = data.importerEmail;
+      dto.importerAddress = data.importerAddress;
     }
-
-    dto.masterData = masterData;
 
     if (formValue.materials)
       dto.materials = (data.materials ?? []).map((m) => ({
@@ -182,7 +181,7 @@ export class DppDataImportComponent {
     if (formValue.criticalRawMaterials) {
       dto.criticalRawMaterials = [];
       (data.criticalRawMaterials ?? []).forEach((m) => {
-        dto.criticalRawMaterials.push({
+        dto.criticalRawMaterials?.push({
           material: m[0].name as CriticalRawMaterials,
           percentage: m[1],
         });
@@ -191,6 +190,6 @@ export class DppDataImportComponent {
 
     console.log(dto);
 
-    this.updateMutation.mutate(dto);
+    this.mutation.mutate(dto);
   }
 }

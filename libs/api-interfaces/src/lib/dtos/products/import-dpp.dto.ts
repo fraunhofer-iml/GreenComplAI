@@ -10,26 +10,30 @@ import { CriticalRawMaterials } from '../../types/custom-types';
 import { CompanyCreateDto } from '../companies';
 
 export class ImportDppDto {
-  materials: {
+  id?: string;
+  aasIdentifier: string;
+  productId?: string;
+  name?: string;
+  gtin?: string;
+  taricCode?: string;
+  supplier?: CompanyCreateDto;
+  importerName?: string;
+  importerPhone?: string;
+  importerAddress?: string;
+  importerEmail?: string;
+  waterUsed?: number;
+  productCarbonFootprint?: number;
+
+  materials?: {
     material: string;
     percentage: number;
     renewable?: boolean;
     primary?: boolean;
   }[];
-  criticalRawMaterials: {
+  criticalRawMaterials?: {
     material: CriticalRawMaterials;
     percentage: number;
   }[];
-
-  productId: string;
-  name: string;
-  gtin: string;
-  taricCode: string;
-  supplier: CompanyCreateDto;
-  importerName: string;
-  importerPhone: string;
-  importerAddress: string;
-  importerEmail: string;
 
   constructor(
     materials: {
@@ -43,6 +47,7 @@ export class ImportDppDto {
       percentage: number;
     }[],
 
+    aasIdentifier: string,
     productId: string,
     name: string,
     gtin: string,
@@ -51,11 +56,16 @@ export class ImportDppDto {
     importerName: string,
     importerPhone: string,
     importerAddress: string,
-    importerEmail: string
+    importerEmail: string,
+    waterUsed: number,
+    productCarbonFootprint: number,
+    id?: string
   ) {
     this.materials = materials;
     this.criticalRawMaterials = criticalRawMaterials;
 
+    this.id = id;
+    this.aasIdentifier = aasIdentifier;
     this.productId = productId;
     this.name = name;
     this.gtin = gtin;
@@ -65,5 +75,7 @@ export class ImportDppDto {
     this.importerAddress = importerAddress;
     this.importerEmail = importerEmail;
     this.importerPhone = importerPhone;
+    this.waterUsed = waterUsed;
+    this.productCarbonFootprint = productCarbonFootprint;
   }
 }

@@ -17,7 +17,9 @@
       <button
         mat-stroked-button
         [routerLink]="[
-          dppUrl.value ? `/${dppUrl.value}/data-import` : '/dpp/data-import',
+          dppUrl.value
+            ? `/dpp/${dppUrl.value}/data-import`
+            : '/dpp/data-import',
         ]"
         [queryParams]="id() ? { productId: `${id()}` } : {}"
       >

@@ -13,6 +13,7 @@ import {
   DocumentType,
   FileDto,
   getRealmRole,
+  ImportDppDto,
   PackagingDto,
   PaginatedData,
   ProductCreateDto,
@@ -527,5 +528,17 @@ export class ProductsController {
       amount: amount,
       userId: user.sub,
     });
+  }
+  @Roles(
+    getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
+    getRealmRole(AuthRoles.BUYER)
+  )
+  @Post('import-dpp')
+  importFromDpp(
+    @Body() dto: ImportDppDto,
+    @KeycloakUser() user: AuthenticatedKCUser
+  ) {
+    this.logger.debug(dto);
+    return this.productsService.importFromDpp(dto, user);
   }
 }
