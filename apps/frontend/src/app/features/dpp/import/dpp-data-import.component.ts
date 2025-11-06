@@ -56,20 +56,20 @@ export class DppDataImportComponent {
   private readonly productService = inject(ProductsService);
   private readonly router = inject(Router);
 
-  id = input<string>();
+  aasIdentifier = input<string>();
   productId = input<string>();
 
-  urlInput = signal<string>('');
+  aasIdentifierInput = signal<string>('');
 
-  aasIdentifier = computed(() => {
-    return this.id() ?? this.urlInput();
+  aasIdentifier$ = computed(() => {
+    return this.aasIdentifier() ?? this.aasIdentifierInput();
   });
 
   dppQuery = injectQuery(() => ({
-    queryKey: ['dpp', this.aasIdentifier()],
+    queryKey: ['dpp', this.aasIdentifier$()],
     queryFn: async (): Promise<ProductDto> =>
-      this.dppService.importProductFRomDpp(this.aasIdentifier() ?? ''),
-    enabled: !!this.aasIdentifier(),
+      this.dppService.importProductFRomDpp(this.aasIdentifier$() ?? ''),
+    enabled: !!this.aasIdentifier$(),
   }));
 
   productQuery = injectQuery(() => ({
@@ -146,8 +146,9 @@ export class DppDataImportComponent {
 
     const dto = {} as ImportDppDto;
 
-    dto.aasIdentifier = this.aasIdentifier();
-    dto.productId = data.productId;
+    dto.aasIdentifier = this.aasIdentifier$();
+
+    if (formValue.productId) dto.productId = data.productId;
 
     if (this.productId()) dto.id = this.productId();
 
@@ -163,7 +164,6 @@ export class DppDataImportComponent {
       dto.productCarbonFootprint = data.productCarbonFootprint;
 
     if (formValue.supplier) {
-      // TODO:  create company
       dto.supplier = data.supplier;
     }
 

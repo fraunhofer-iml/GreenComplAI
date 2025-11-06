@@ -391,6 +391,7 @@ export class ProductsService {
 
   updateFromDpp(dto: ImportDppDto, supplier: CompanyDto) {
     const masterData: Partial<ProductMasterDataDto> = {
+      productId: dto.productId ?? `aas-id-${dto.aasIdentifier}`,
       gtin: dto.gtin,
       taricCode: dto.taricCode,
       supplier: supplier?.id,
@@ -399,8 +400,7 @@ export class ProductsService {
       digitalProductPassportUrl: `dpp/${dto.aasIdentifier}`,
       reparability: dto.reparability,
     };
-    this.logger.debug(dto.materials);
-    console.log('materials');
+
     const productUpdateDto: ProductUpdateDto = {
       masterData: masterData,
       criticalRawMaterials: dto.criticalRawMaterials,
@@ -408,7 +408,6 @@ export class ProductsService {
       rareEarths: undefined,
     };
 
-    this.logger.debug(dto.id);
     return this.update({ id: dto.id, dto: productUpdateDto });
   }
 
@@ -431,7 +430,6 @@ export class ProductsService {
       productCreateDto.name = productCreateDto.productId;
       productCreateDto.flags.push('name');
     }
-    console.log(productCreateDto);
 
     return this.create({ dto: productCreateDto });
   }

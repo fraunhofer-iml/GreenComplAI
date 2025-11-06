@@ -17,7 +17,7 @@ export const dppRoutes: Route[] = [
       ),
   },
   {
-    path: ':id/data-import',
+    path: ':aasIdentifier/data-import',
     loadComponent: () =>
       import('./import/dpp-data-import.component').then(
         (m) => m.DppDataImportComponent

@@ -6,19 +6,19 @@
         Digital Product Passport
       </a>
       <span class="material-symbols-outlined text-lg">chevron_right</span>
-      <span class="font-medium">{{ id() ?? 'Import' }}</span>
+      <span class="font-medium">{{ aasIdentifier() ?? 'Import' }}</span>
     </div>
   </div>
 
-  @if (!id()) {
+  @if (!aasIdentifier()) {
     <div
       class="flex-ror mb-4 flex items-center gap-2 rounded-lg bg-neutral-200 p-4"
     >
       <mat-form-field appearance="outline" class="grow">
-        <mat-label>DPP-Url</mat-label>
+        <mat-label>Produktpass-Id</mat-label>
         <input matInput type="text" #url />
       </mat-form-field>
-      <button mat-flat-button (click)="urlInput.set(url.value)">
+      <button mat-flat-button (click)="aasIdentifierInput.set(url.value)">
         DPP importieren
       </button>
     </div>
