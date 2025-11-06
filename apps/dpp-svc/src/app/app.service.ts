@@ -189,9 +189,9 @@ export class AppService {
       packagings: packagingSubmodel.map((packaging) => [packaging, 0]),
       materials: materialComposition.materials,
       criticalRawMaterials: materialComposition.criticalRawMaterials,
+      taricCode: productIdentificationSubmodel.taricCode,
+      gtin: productIdentificationSubmodel.gtin,
     } as ProductDto;
-
-    this.logger.debug(product);
 
     return product;
   }
