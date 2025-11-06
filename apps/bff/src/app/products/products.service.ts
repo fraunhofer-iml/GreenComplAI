@@ -408,7 +408,7 @@ export class ProductsService {
   createFromDpp(dto: ImportDppDto, supplier?: CompanyDto) {
     console.log(supplier);
     const productCreateDto: ProductCreateDto = {
-      productId: dto.productId ?? `aas-${dto.aasIdentifier}`,
+      productId: dto.productId ?? `aas-id-${dto.aasIdentifier}`,
       gtin: dto.gtin,
       taricCode: dto.taricCode,
       supplier: supplier?.id ?? null,
@@ -416,7 +416,8 @@ export class ProductsService {
       waterUsed: dto.waterUsed,
       materials: dto.materials,
       criticalRawMaterials: dto.criticalRawMaterials,
-      digitalProductPassportUrl: dto.aasIdentifier,
+      digitalProductPassportUrl: `dpp/${dto.aasIdentifier}`,
+      reparability: dto.reparability,
       flags: [],
     };
 

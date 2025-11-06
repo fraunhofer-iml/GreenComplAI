@@ -23,6 +23,7 @@ export class ImportDppDto {
   importerEmail?: string;
   waterUsed?: number;
   productCarbonFootprint?: number;
+  reparability?: number;
 
   materials?: {
     material: string;
@@ -59,6 +60,7 @@ export class ImportDppDto {
     importerEmail: string,
     waterUsed: number,
     productCarbonFootprint: number,
+    reparability: number,
     id?: string
   ) {
     this.materials = materials;

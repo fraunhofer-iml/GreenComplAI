@@ -122,6 +122,7 @@ export class DppDataImportComponent {
     packagings: new FormControl<boolean>(false),
     waterUsed: new FormControl<boolean>(false),
     productCarbonFootprint: new FormControl<boolean>(false),
+    reparability: new FormControl<boolean>(false),
   });
 
   mutation = injectMutation(() => ({
@@ -129,7 +130,10 @@ export class DppDataImportComponent {
       return this.productService.importDpp(dto);
     },
     onSuccess: () => this.router.navigate(['/products', this.id()]),
-    onError: () => toast.error('Speichern fehlgeschlagen'),
+    onError: (error) => {
+      console.error(error);
+      toast.error('Speichern fehlgeschlagen');
+    },
   }));
 
   constructor() {
@@ -161,6 +165,10 @@ export class DppDataImportComponent {
     if (formValue.supplier) {
       // TODO:  create company
       dto.supplier = data.supplier;
+    }
+
+    if (formValue.reparability) {
+      dto.reparability = data.reparability;
     }
 
     if (formValue.importer) {

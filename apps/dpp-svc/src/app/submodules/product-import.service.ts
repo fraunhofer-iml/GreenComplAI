@@ -39,13 +39,13 @@ export class ProductImportService {
   ): Partial<ProductDto> {
     const submodelMap = new Map<string, any>();
     this.mapSubmodelsToMap(submodelMap, submodelElements);
-    const supplier = this.submodelToCompany(submodelMap.get('supplier').value);
-    const importer = this.submodelToCompany(submodelMap.get('importer').value);
+    const supplier = this.submodelToCompany(submodelMap.get('supplier')?.value);
+    const importer = this.submodelToCompany(submodelMap.get('importer')?.value);
 
     const submodelData: Partial<ProductDto> = {
       productId: submodelMap.get('uniqueProductIdentifier').value,
-      gtin: submodelMap.get('gtin').value,
-      taricCode: submodelMap.get('taricCode').value,
+      gtin: submodelMap.get('gtin')?.value,
+      taricCode: submodelMap.get('taricCode')?.value,
       supplier: supplier,
       importerName: importer?.name,
       importerAddress: importer
@@ -55,20 +55,17 @@ export class ProductImportService {
       importerPhone: importer?.phone,
     };
 
-    console.log('setIdentificationDetails');
-
     return submodelData;
   }
 
   getLegalComplianceSubmodel(submodelElements: ISubmodelElement[]) {
     const submodelMap = new Map<string, any>();
     this.mapSubmodelsToMap(submodelMap, submodelElements ?? []);
-    console.log(submodelMap);
 
     submodelMap.set('technicalDocumentation', {
       certificates: submodelMap
         .get('technicalDocumentation')
-        .value.get('certificates').value,
+        .value?.get('certificates').value,
     });
 
     const submodel: LegalComplianceSubmodule = Object.fromEntries(
@@ -204,6 +201,9 @@ export class ProductImportService {
 
   private submodelToCompany(map: Map<string, any>): CompanyDto {
     if (!map.get('name').value) return null;
+
+    console.log(map.get('name').value);
+
     let address: AddressDto | undefined = undefined;
     const addressAsString = map.get('address');
     if (addressAsString) {

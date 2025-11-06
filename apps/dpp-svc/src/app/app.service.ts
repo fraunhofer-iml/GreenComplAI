@@ -140,6 +140,8 @@ export class AppService {
   async getProductFromDpp(id: string): Promise<ProductDto> {
     const dpp = await this.getDpp(id);
 
+    // console.log(dpp);
+
     const submodelMap = new Map<string, ISubmodelElement[]>();
     dpp.connectedSubmodels.forEach((e) =>
       submodelMap.set(e.idShort, e.submodelElements)
@@ -152,15 +154,19 @@ export class AppService {
         submodelMap.get('product_identification')
       );
 
+    this.logger.debug('product_identification');
+
     const legalComplianceSubmodel: LegalComplianceSubmodule =
       this.privateProductImportService.getLegalComplianceSubmodel(
         submodelMap.get('legal_compliance')
       );
+    this.logger.debug('legal_compliance');
 
     const circiularProperties: CircularPropertiesSubmodule =
       this.privateProductImportService.getCircularProperties(
         submodelMap.get('circular_properties')
       );
+    this.logger.debug('circular_properties');
 
     const ESRSynergies: ESRSynergiesSubmodule =
       this.privateProductImportService.getESRSynergiesSubmodel(
@@ -193,6 +199,7 @@ export class AppService {
 
     product = {
       id: id,
+      name: dpp.displayName[0].text,
       productId: productIdentificationSubmodel.productId,
       supplier: {
         id: null,

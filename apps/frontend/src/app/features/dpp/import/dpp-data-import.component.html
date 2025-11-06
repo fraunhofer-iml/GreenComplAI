@@ -262,11 +262,7 @@
       @if (productId()) {
         <app-product-card [title]="'CO2-Fußabdruck'">
           <span
-            >{{
-              productQuery.data()?.productCarbonFootprint
-                ? productQuery.data()?.productCarbonFootprint + ''
-                : 'keine Angabe'
-            }}
+            >{{ productQuery.data()?.productCarbonFootprint ?? 'keine Angabe' }}
           </span>
         </app-product-card>
       }
@@ -275,12 +271,24 @@
         [form]="formGroup.controls.productCarbonFootprint"
         ><div class="flex flex-row gap-2">
           <span
-            >{{
-              dppQuery.data()?.productCarbonFootprint
-                ? dppQuery.data()?.productCarbonFootprint
-                : 'keine Angabe'
-            }}
+            >{{ dppQuery.data()?.productCarbonFootprint ?? 'keine Angabe' }}
           </span>
+        </div>
+      </app-dpp-card>
+
+      @if (productId()) {
+        <app-product-card class="grow" [title]="'Reparierbarkeit'">
+          <span
+            >{{ productQuery.data()?.reparability ?? 'keine Angabe' }}
+          </span>
+        </app-product-card>
+      }
+
+      <app-dpp-card
+        [title]="'Reparierbarkeit'"
+        [form]="formGroup.controls.reparability"
+        ><div class="flex flex-row gap-2">
+          <span>{{ dppQuery.data()?.reparability ?? 'keine Angabe' }} </span>
         </div>
       </app-dpp-card>
     </div>
