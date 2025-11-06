@@ -6,6 +6,18 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import {
+  AddressDto,
+  AuthRoles,
+  CompanyDto,
+  CRITICAL_RAW_MATERIALS,
+  PackagingDto,
+  ProductCreateDto,
+  ProductDto,
+  ProductGroupDto,
+  RARE_EARTHS,
+} from '@ap2/api-interfaces';
+import { toast } from 'ngx-sonner';
 import { Component, inject, input, signal } from '@angular/core';
 import {
   FormArray,
@@ -24,19 +36,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
-import {
-  AddressDto,
-  AuthRoles,
-  CompanyDto,
-  CRITICAL_RAW_MATERIALS,
-  PackagingDto,
-  ProductCreateDto,
-  ProductDto,
-  ProductGroupDto,
-  RARE_EARTHS,
-} from '@ap2/api-interfaces';
 import { injectMutation } from '@tanstack/angular-query-experimental';
-import { toast } from 'ngx-sonner';
 import { AuthenticationService } from '../../../core/services/authentication/authentication.service';
 import { DataService } from '../../../core/services/data-service/data.service';
 import { ProductsService } from '../../../core/services/products/products.service';
@@ -57,7 +57,7 @@ import {
   materialFormArrayGroup,
   regularMaterialFormArrayGroup,
   removeBasicMaterialFormGroup,
-  removeRegularMaterialFormGroup
+  removeRegularMaterialFormGroup,
 } from './material.form-group';
 import {
   BillOfMaterialFormGroup,
@@ -68,7 +68,6 @@ import {
 import { producedItemsFormGroup } from './produced-items.form-group';
 import { masterDataFormGroup } from './product.form-group';
 import { ProductionHistoryComponent } from './production-history/production-history.component';
-;
 
 @Component({
   selector: 'app-product-create',

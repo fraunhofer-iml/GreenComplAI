@@ -6,6 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { CRITICAL_RAW_MATERIALS, RARE_EARTHS } from '@ap2/api-interfaces';
 import {
   Component,
   computed,
@@ -26,12 +27,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-
 import {
   MaterialsFormGroup,
   RegularMaterialsFormGroup,
 } from './materials-form.model';
-import { CRITICAL_RAW_MATERIALS, RARE_EARTHS } from '@ap2/api-interfaces';
 
 @Component({
   selector: 'app-select-materials',

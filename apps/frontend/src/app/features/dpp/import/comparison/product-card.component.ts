@@ -15,7 +15,5 @@ import { Component, input } from '@angular/core';
   templateUrl: './product-card.component.html',
 })
 export class ProductCardComponent {
- 
   title = input<string>('');
-
 }
