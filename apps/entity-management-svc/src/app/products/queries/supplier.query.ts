@@ -8,7 +8,10 @@
 
 import { ProductUpdateDto } from '@ap2/api-interfaces';
 import { Prisma } from '@prisma/client';
-import { materialUpdateQuery } from './product-update.query';
+import {
+  materialUpdateQuery,
+  minimalMaterialUpdateQuery,
+} from './product-update.query';
 
 export const productFindManyOfSupplierQuery = ({
   filters,
@@ -27,9 +30,12 @@ export const productFindManyOfSupplierQuery = ({
     skip: skip,
     take: size,
     where: { ...filters, supplierId },
-    select: {
-      rareEarths: { include: { material: true } },
-      criticalRawMaterials: { include: { material: true } },
+    include: {
+      manufacturer: {
+        include: {
+          addresses: true,
+        },
+      },
       materials: {
         include: {
           material: true,
@@ -40,24 +46,19 @@ export const productFindManyOfSupplierQuery = ({
           addresses: true,
         },
       },
-      manufacturer: {
+      waste: {
         include: {
-          addresses: true,
+          wasteMaterials: {
+            include: {
+              material: true,
+            },
+          },
         },
       },
-      digitalProductPassportUrl: true,
       wasteFlow: true,
-      waterUsed: true,
-      name: true,
-      id: true,
-      description: true,
-      unit: true,
-      dimensions: true,
-      cascadePrinciple: true,
-      circularPrinciple: true,
-      weight: true,
-      percentageOfBiologicalMaterials: true,
-      certificationSystem: true,
+      productGroup: true,
+      rareEarths: { include: { material: true } },
+      criticalRawMaterials: { include: { material: true } },
     },
     orderBy: JSON.parse(sorting || '{}'),
   }) satisfies Prisma.ProductFindManyArgs;
@@ -71,32 +72,35 @@ export const productFindUniqueOfSupplierQuery = (
       id,
       supplierId,
     },
-    select: {
-      rareEarths: { include: { material: true } },
-      criticalRawMaterials: { include: { material: true } },
-      materials: {
-        include: {
-          material: true,
-        },
-      },
+    include: {
       manufacturer: {
         include: {
           addresses: true,
         },
       },
-      digitalProductPassportUrl: true,
+      materials: {
+        include: {
+          material: true,
+        },
+      },
+      supplier: {
+        include: {
+          addresses: true,
+        },
+      },
+      waste: {
+        include: {
+          wasteMaterials: {
+            include: {
+              material: true,
+            },
+          },
+        },
+      },
       wasteFlow: true,
-      waterUsed: true,
-      name: true,
-      id: true,
-      description: true,
-      unit: true,
-      dimensions: true,
-      cascadePrinciple: true,
-      circularPrinciple: true,
-      weight: true,
-      percentageOfBiologicalMaterials: true,
-      certificationSystem: true,
+      productGroup: true,
+      rareEarths: { include: { material: true } },
+      criticalRawMaterials: { include: { material: true } },
     },
   }) satisfies Prisma.ProductFindUniqueArgs;
 
@@ -111,6 +115,10 @@ export const updateProductOfSupplier = (dto: ProductUpdateDto, id: string) =>
       manufacturer: {
         connect: { id: dto.masterData.manufacturer },
       },
+      importerName: dto.masterData.importerName,
+      importerEmail: dto.masterData.importerEmail,
+      importerPhone: dto.masterData.importerPhone,
+      importerAddress: dto.masterData.importerAddress,
       unit: dto.masterData.unit,
       dimensions: dto.masterData.dimensions,
       weight: dto.masterData.weight,
@@ -120,9 +128,14 @@ export const updateProductOfSupplier = (dto: ProductUpdateDto, id: string) =>
       circularPrinciple: dto.masterData.circularPrinciple,
       cascadePrinciple: dto.masterData.cascadePrinciple,
       waterUsed: Number(dto.masterData.waterUsed) || 0,
+      productCarbonFootprint:
+        Number(dto.masterData.productCarbonFootprint) || 0,
       materials: materialUpdateQuery(dto.materials, id),
-      criticalRawMaterials: materialUpdateQuery(dto.criticalRawMaterials, id),
-      rareEarths: materialUpdateQuery(dto.rareEarths, id),
+      criticalRawMaterials: minimalMaterialUpdateQuery(
+        dto.criticalRawMaterials,
+        id
+      ),
+      rareEarths: minimalMaterialUpdateQuery(dto.rareEarths, id),
       digitalProductPassportUrl:
         dto.masterData.digitalProductPassportUrl ?? null,
     },

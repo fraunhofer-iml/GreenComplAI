@@ -15,5 +15,6 @@ import { ProductsService } from './products.service';
   imports: [new Broker().getEntityManagerBroker()],
   controllers: [ProductsController],
   providers: [ProductsService],
+  exports: [ProductsService],
 })
 export class ProductsModule {}

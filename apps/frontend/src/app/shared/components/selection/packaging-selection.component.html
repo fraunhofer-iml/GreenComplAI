@@ -10,7 +10,13 @@
     >
       @for (item of selectedPackagings; track item) {
         <mat-chip-row [value]="item">
-          {{ item[0].name }} | {{ item[0].material.name }} ({{ item[1] }})
+          {{ item[0].name }} |
+          @if (item[0].materials && item[0].materials.length > 0) {
+            {{ item[0].materials[0][0].name }}
+          } @else {
+            Keine Materialien
+          }
+          ({{ item[1] }})
         </mat-chip-row>
       }
     </mat-chip-grid>

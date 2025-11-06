@@ -7,31 +7,53 @@
  */
 
 import {
-  ProductDto,
+  ProductEntity,
+  ProductEntityList,
   ProductOutlierDto,
   UpdateFlagProductProps,
 } from '@ap2/api-interfaces';
 import { PrismaService } from '@ap2/database';
 import { Injectable } from '@nestjs/common';
+import { productFindUniqueQuery } from './queries/product-find-unique.query';
 
 @Injectable()
 export class ProductOutlierService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async getForOutlierDetection(): Promise<ProductDto[]> {
+  async getForOutlierDetection(): Promise<ProductEntityList[]> {
     return this.prismaService.product.findMany({
       where: {
         validated: true,
       },
       include: {
-        waste: {
-          select: {
-            recycledWastePercentage: true,
+        manufacturer: {
+          include: {
+            addresses: true,
           },
         },
-      },
-      omit: {
-        outlier: true,
+        materials: {
+          include: {
+            material: true,
+          },
+        },
+        supplier: {
+          include: {
+            addresses: true,
+          },
+        },
+        waste: {
+          include: {
+            wasteMaterials: {
+              include: {
+                material: true,
+              },
+            },
+          },
+        },
+        wasteFlow: true,
+        productGroup: true,
+        rareEarths: { include: { material: true } },
+        criticalRawMaterials: { include: { material: true } },
       },
     });
   }
@@ -67,7 +89,7 @@ export class ProductOutlierService {
   async validateOutlier({
     id,
     dto,
-  }: UpdateFlagProductProps): Promise<ProductDto> {
+  }: UpdateFlagProductProps): Promise<ProductEntity> {
     const { outlier } = await this.prismaService.product.findUnique({
       where: { id: id },
       select: { outlier: true },
@@ -77,7 +99,7 @@ export class ProductOutlierService {
       (key) => !dto.flags.includes(key)
     );
 
-    const validatedProduct = await this.prismaService.product.update({
+    await this.prismaService.product.update({
       where: { id: id },
       data: {
         outlier: filteredOutliers,
@@ -85,6 +107,8 @@ export class ProductOutlierService {
       },
     });
 
-    return validatedProduct;
+    return await this.prismaService.product.findUnique(
+      productFindUniqueQuery(id)
+    );
   }
 }

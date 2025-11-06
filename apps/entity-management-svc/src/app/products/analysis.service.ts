@@ -6,15 +6,17 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { AmqpException } from '@ap2/amqp';
 import {
   AnalysisDto,
   GenerateAnalysisProp,
   OutlierDetectionAnalysisDto,
   PackagingDto,
-  ProductDto,
+  PackagingEntity,
+  ProductEntity,
 } from '@ap2/api-interfaces';
 import { PrismaService } from '@ap2/database';
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import {
   getTotalWeightOfHazardousWaste,
@@ -33,16 +35,38 @@ export class ProductAnalysisService {
   public async getAnalysis(
     createAnalysisDto: GenerateAnalysisProp
   ): Promise<AnalysisDto> {
-    const product: ProductDto = await this.productService.findOne({
+    const product: ProductEntity | null = await this.productService.findOne({
       id: createAnalysisDto.productId,
     });
 
-    const preliminaryProducts: [ProductDto, number][] =
+    if (!product) {
+      throw new Error('Product not found');
+    }
+
+    const preliminaryProducts: [ProductEntity, number][] =
       await this.productService.findPreliminaryProducts({
         id: createAnalysisDto.productId,
       });
 
-    const packagingOfProduct: [PackagingDto, number][] = product.packagings;
+    const packagingEntities: [PackagingEntity, number][] =
+      await this.productService.findProductPackaging({
+        id: createAnalysisDto.productId,
+      });
+
+    const packagingOfProduct: [PackagingDto, number][] = packagingEntities.map(
+      ([pkg, amount]) => [
+        {
+          id: pkg.id,
+          name: pkg.name,
+          weight: pkg.weight,
+          percentageOfRenewableMaterial: pkg.percentageOfRenewableMaterial ?? 0,
+          percentageOfRecycledMaterial: pkg.percentageOfRecycledMaterial ?? 0,
+          percentageOfRStrategies: pkg.percentageOfRStrategies ?? 0,
+          flags: pkg.flags ?? [],
+        } as PackagingDto,
+        amount,
+      ]
+    );
     const weightOfProduct: number = product.weight;
     const weightOfPackaging: number =
       this.getWeightOfPackaging(packagingOfProduct);
@@ -102,20 +126,20 @@ export class ProductAnalysisService {
   }
 
   private async getWeightOfRecycledWasteOfPreProducts(
-    product: ProductDto,
-    preliminaryProducts: [ProductDto, number][]
+    product: ProductEntity,
+    preliminaryProducts: [ProductEntity, number][]
   ): Promise<number> {
     let weightOfRecycledWaste = 0;
 
-    for (const preliminaryProductDto of preliminaryProducts) {
+    for (const preliminaryProductEntity of preliminaryProducts) {
       weightOfRecycledWaste +=
-        this.getWeightOfRecycledWaste(preliminaryProductDto[0]) *
-        preliminaryProductDto[1];
+        this.getWeightOfRecycledWaste(preliminaryProductEntity[0]) *
+        preliminaryProductEntity[1];
     }
     return weightOfRecycledWaste;
   }
 
-  private getWeightOfRecycledWaste(product: ProductDto): number {
+  private getWeightOfRecycledWaste(product: ProductEntity): number {
     return product.waste == null
       ? 0
       : getTotalWeightOfWaste(product.waste) *
@@ -159,23 +183,30 @@ export class ProductAnalysisService {
   }
 
   async getWaterConsumption(
-    product: ProductDto,
-    preliminaryProducts: [ProductDto, number][],
+    product: ProductEntity,
+    preliminaryProducts: [ProductEntity, number][],
     userId: string
   ): Promise<{ upstreamWater: number; productionWater: number }> {
     const user = await this.prismaService.user.findUnique({
       where: { id: userId },
     });
 
+    if (!user) {
+      throw new AmqpException(
+        `User with id ${userId} not found`,
+        HttpStatus.NOT_FOUND
+      );
+    }
+
     let productionWater = 0;
 
     let preliminaryWater = preliminaryProducts.reduce(
-      (acc, curr: [ProductDto, number]) =>
+      (acc, curr: [ProductEntity, number]) =>
         acc + (curr[0].waterUsed ?? 0) * curr[1],
       0
     );
 
-    if (product.manufacturer.id === user.companyId)
+    if (product.manufacturer?.id === user.companyId)
       productionWater = product.waterUsed ?? 0;
     else preliminaryWater += product.waterUsed ?? 0;
 
@@ -211,12 +242,32 @@ export class ProductAnalysisService {
         productGroupId: productGroupId,
       });
     }
-
     const products = await this.prismaService.product.groupBy({
       by: [productGroupId ? 'id' : 'productGroupId'],
       where: productGroupId ? { productGroupId: productGroupId } : undefined,
       _count: true,
     });
+
+    let productGroupInfo: Prisma.ProductGroupGetPayload<true>[] | undefined;
+    let productInfo: Prisma.ProductGetPayload<true>[] | undefined;
+
+    if (productGroupId) {
+      productInfo = await this.prismaService.product.findMany({
+        where: {
+          id: {
+            in: products.map((p) => p.id ?? null),
+          },
+        },
+      });
+    } else {
+      productGroupInfo = await this.prismaService.productGroup.findMany({
+        where: {
+          id: {
+            in: products.map((p) => p.productGroupId ?? null),
+          },
+        },
+      });
+    }
 
     const outliers = await this.prismaService.product.groupBy({
       by: [productGroupId ? 'id' : 'productGroupId'],
@@ -234,6 +285,10 @@ export class ProductAnalysisService {
       dto.totalNumberOfProducts += product._count;
       dto.outliesByItem.push({
         id: productGroupId ? product.id : product.productGroupId,
+        name: productGroupId
+          ? productInfo.find((el) => el.id === product.id).name
+          : productGroupInfo.find((el) => el.id === product.productGroupId)
+              .name,
         numberOfOutliers: 0,
         numberOfProducts: product._count,
       });

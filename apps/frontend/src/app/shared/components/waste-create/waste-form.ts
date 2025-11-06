@@ -6,17 +6,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
+import { RegularMaterialsFormGroup } from '../../../features/materials/select-materials/materials-form.model';
 
 export interface WasteFormGroup {
-  wasteMaterials: FormGroup<{
-    materials: FormArray<
-      FormGroup<{
-        material: FormControl<string>;
-        percentage: FormControl<number>;
-      }>
-    >;
-  }>;
+  wasteMaterials: FormGroup<RegularMaterialsFormGroup>;
   radioactiveAmount: FormControl<number | null>;
   recycledWastePercentage: FormControl<number | null>;
   normalWaste: FormGroup<GeneralWasteFormGroup>;

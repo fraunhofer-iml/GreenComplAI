@@ -59,7 +59,11 @@ export const appRoutes: Route[] = [
     canActivateChild: [AuthenticationGuard, RoleGuard],
     data: { roles: [AuthRoles.SUSTAINABILITY_MANAGER] },
   },
-
+  {
+    path: 'dpp',
+    loadChildren: () =>
+      import('./features/dpp/dpp.routes').then((m) => m.dppRoutes),
+  },
   {
     path: '',
     loadComponent: () =>

@@ -10,6 +10,8 @@
 directories=(
     "apps/bff"
     "apps/bff-e2e"
+    "apps/dpp-svc"
+    "apps/dpp-svc-e2e"
     "apps/entity-management-svc"
     "apps/entity-management-svc-e2e"
     "apps/frontend"

@@ -6,6 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { DecimalPipe } from '@angular/common';
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -18,6 +19,7 @@ import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { DataService } from '../../../core/services/data-service/data.service';
+import { UnitPipe } from '../../utils/unit.pipe';
 import { TableProps } from './model/table-props.type';
 import { TABLE_PROPS } from './table-columns';
 import { ContentType } from './table-content-type.enum';
@@ -34,6 +36,8 @@ import { ContentType } from './table-content-type.enum';
     MatPaginatorModule,
     MatSelectModule,
     MatSortModule,
+    DecimalPipe,
+    UnitPipe,
   ],
   templateUrl: './overview.component.html',
 })

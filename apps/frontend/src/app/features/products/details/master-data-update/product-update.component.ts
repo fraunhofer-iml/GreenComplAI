@@ -9,7 +9,7 @@
 import { ProductDto, ProductUpdateDto } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
 import { Component, inject, input } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -27,6 +27,8 @@ import { ProductConstructionService } from '../../create/form-construction/produ
 import {
   materialFormArrayGroup,
   materialFormGroup,
+  regularMaterialFormArrayGroup,
+  regularMaterialFormGroup,
 } from '../../create/material.form-group';
 import { MasterDataFormGroup } from '../../create/model/product-form.model';
 import { masterDataFormGroup } from '../../create/product.form-group';
@@ -72,6 +74,8 @@ export class ProductUpdateComponent {
       FormGroup<{
         material: FormControl<string>;
         percentage: FormControl<number>;
+        renewable: FormControl<boolean | null>;
+        primary: FormControl<boolean | null>;
       }>
     >;
   }>;
@@ -108,16 +112,56 @@ export class ProductUpdateComponent {
 
   constructor() {
     this.form = masterDataFormGroup();
-    this.materialsForm = materialFormArrayGroup();
+    this.materialsForm = regularMaterialFormArrayGroup();
     this.rareEarthsForm = materialFormArrayGroup();
     this.criticalRawMaterialsForm = materialFormArrayGroup();
   }
 
   setFormData(dto: Partial<ProductDto>) {
+    // Check if supplier is the same as importer (when importer fields are populated from supplier)
+    const supplierIsImporter =
+      !dto.importerName || dto.importerName === dto.supplier?.name;
+
     this.form.patchValue({
       ...dto,
       variant: undefined,
+      supplierIsImporter: supplierIsImporter,
     });
+
+    // Set importer field state based on supplierIsImporter
+    if (supplierIsImporter) {
+      if (dto.supplier) {
+        this.form.controls.importerName.patchValue(dto.supplier.name);
+        this.form.controls.importerEmail.patchValue(dto.supplier.email);
+        this.form.controls.importerPhone.patchValue(dto.supplier.phone);
+        this.form.controls.importerAddress.patchValue(
+          dto.supplier.addresses?.[0]
+            ? `${dto.supplier.addresses[0].street}, ${dto.supplier.addresses[0].postalCode} ${dto.supplier.addresses[0].city}, ${dto.supplier.addresses[0].country}`
+            : ''
+        );
+      }
+      this.form.controls.importerName.disable();
+      this.form.controls.importerEmail.disable();
+      this.form.controls.importerPhone.disable();
+      this.form.controls.importerAddress.disable();
+    } else {
+      this.form.controls.importerName.patchValue(dto.importerName || '');
+      this.form.controls.importerEmail.patchValue(dto.importerEmail || '');
+      this.form.controls.importerPhone.patchValue(dto.importerPhone || '');
+      this.form.controls.importerAddress.patchValue(dto.importerAddress || '');
+      this.form.controls.importerName.enable();
+      this.form.controls.importerEmail.enable();
+      this.form.controls.importerPhone.enable();
+      this.form.controls.importerAddress.enable();
+      this.form.controls.importerName.setValidators([Validators.required]);
+      this.form.controls.importerEmail.setValidators([Validators.email]);
+      this.form.controls.importerPhone.setValidators([]);
+      this.form.controls.importerAddress.setValidators([]);
+    }
+    this.form.controls.importerName.updateValueAndValidity();
+    this.form.controls.importerEmail.updateValueAndValidity();
+    this.form.controls.importerPhone.updateValueAndValidity();
+    this.form.controls.importerAddress.updateValueAndValidity();
 
     this.rareEarthsForm.controls.materials.clear();
     this.materialsForm.controls.materials.clear();
@@ -135,9 +179,14 @@ export class ProductUpdateComponent {
       this.criticalRawMaterialsForm.controls.materials.push(newForm);
     });
 
-    dto.materials?.map((earth) => {
-      const newForm = materialFormGroup();
-      newForm.patchValue({ material: earth[0].name, percentage: earth[1] });
+    dto.materials?.map((material) => {
+      const newForm = regularMaterialFormGroup();
+      newForm.patchValue({
+        material: material[0].name,
+        percentage: material[1],
+        renewable: material[2],
+        primary: material[3],
+      });
       this.materialsForm.controls.materials.push(newForm);
     });
   }

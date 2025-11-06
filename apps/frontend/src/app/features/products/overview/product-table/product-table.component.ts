@@ -7,6 +7,7 @@
  */
 
 import { debounceTime } from 'rxjs';
+import { DecimalPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -24,6 +25,7 @@ import { AuthenticationService } from '../../../../core/services/authentication/
 import { ProductsService } from '../../../../core/services/products/products.service';
 import { SupplierService } from '../../../../core/services/suppliers/suppliers.service';
 import { TooltipMessages } from '../../../../shared/constants/messages';
+import { UnitPipe } from '../../../../shared/utils/unit.pipe';
 
 @Component({
   selector: 'app-product-table',
@@ -39,6 +41,8 @@ import { TooltipMessages } from '../../../../shared/constants/messages';
     MatSelectModule,
     MatSortModule,
     MatTooltipModule,
+    DecimalPipe,
+    UnitPipe,
   ],
   templateUrl: './product-table.component.html',
 })

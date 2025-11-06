@@ -8,8 +8,9 @@
 
 import { Prisma } from '@prisma/client';
 
-export const findProductGroupsQuery = () =>
+export const findProductGroupsQuery = (filter: string) =>
   ({
+    where: { name: { contains: filter } },
     include: {
       products: {
         include: {

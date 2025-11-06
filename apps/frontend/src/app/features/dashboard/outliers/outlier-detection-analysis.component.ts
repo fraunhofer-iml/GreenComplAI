@@ -7,8 +7,8 @@
  */
 
 import { OutlierDetectionAnalysisDto } from '@ap2/api-interfaces';
-import { EChartsOption, PieSeriesOption } from 'echarts';
 import * as echarts from 'echarts';
+import { EChartsOption, PieSeriesOption } from 'echarts';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
 import { CommonModule } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
@@ -30,14 +30,11 @@ import {
   templateUrl: './outlier-detection-analysis.component.html',
 })
 export class OutlierDetectionAnalysisComponent {
-  private readonly analysisService = inject(AnalysisService);
-
   productGroupId$ = input<string>('');
   productId$ = input<string>('');
-
   isOutlier = false;
   theme = SkalaTheme;
-
+  private readonly analysisService = inject(AnalysisService);
   analysisQuery = injectQuery(() => ({
     queryKey: ['outlier-analysis', this.productGroupId$(), this.productId$()],
     queryFn: async () => {
@@ -67,12 +64,15 @@ export class OutlierDetectionAnalysisComponent {
       [
         ...analysis.outliesByItem.map(
           (item) =>
-            ['Ausreißer ' + item.id, item.numberOfOutliers] as [string, number]
+            ['Ausreißer ' + item.name, item.numberOfOutliers] as [
+              string,
+              number,
+            ]
         ),
         ...analysis.outliesByItem.map(
           (item) =>
             [
-              'Validiert ' + item.id,
+              'Validiert ' + item.name,
               item.numberOfProducts - item.numberOfOutliers,
             ] as [string, number]
         ),
@@ -92,8 +92,19 @@ export class OutlierDetectionAnalysisComponent {
       top: 'center',
       textStyle: {
         color: '#fff',
+        overflow: 'truncate',
+        width: '200',
       },
-      data: [ChartLegends.OUTLIERS, ChartLegends.VALIDATED],
+      formatter: function (name) {
+        const value = dataTotal
+          .concat(dataByItems)
+          .find((item) => item[0] === name)?.[1];
+        return `${name} : ${value}`;
+      },
+      data: dataTotal
+        .concat(dataByItems)
+        .filter((item) => item[1] > 0)
+        .map((item) => item[0]),
     };
 
     if (dataTotal.length === 0) chartOption.title.subtext = 'Keine Daten';
@@ -107,6 +118,10 @@ export class OutlierDetectionAnalysisComponent {
           name: item[0],
         };
       });
+      outerPie.tooltip = {
+        ...outerPie.tooltip,
+        position: { right: 'center', top: 0 },
+      };
 
       const innerPie: PieSeriesOption = getDefaultPieSeries([0, '50 %']);
       innerPie.center = ['30%', '50%'];
@@ -123,6 +138,10 @@ export class OutlierDetectionAnalysisComponent {
           name: item[0],
         };
       });
+      innerPie.tooltip = {
+        ...innerPie.tooltip,
+        position: { right: 'center', top: 0 },
+      };
 
       chartOption.series = [outerPie, innerPie];
     }

@@ -13,13 +13,13 @@ import {
   PaginatedData,
   ProductGroupCreateDto,
   ProductGroupDto,
-  WasteMaterialEvaluationDto,
+  ProductGroupEntity,
+  ProductGroupEntityList,
 } from '@ap2/api-interfaces';
 import { PrismaService } from '@ap2/database';
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { FlagsService } from '../flags/flags.service';
-import { getTotalWeightOfWaste } from '../utils/weight.utils';
 import { productGroupCreateQuery } from './queries/product-group-create.query';
 import { productGroupFindManyQuery } from './queries/product-group-find-many.query';
 import { productGroupFindUniqueQuery } from './queries/product-group-find-unique.query';
@@ -31,22 +31,34 @@ export class ProductGroupService {
     private readonly flagsService: FlagsService
   ) {}
 
-  async create({ dto }: CreateProductGroupProps): Promise<ProductGroupDto> {
+  async create({ dto }: CreateProductGroupProps): Promise<ProductGroupEntity> {
     const evaluationElement = ProductGroupDto.createEmpty();
     dto.flags = dto.flags = this.flagsService.evaluateFlag(
       dto,
       evaluationElement,
       dto.flags
     );
-    return this.prismaService.productGroup.create(productGroupCreateQuery(dto));
+    const productGroup = await this.prismaService.productGroup.create(
+      productGroupCreateQuery(dto)
+    );
+    return await this.prismaService.productGroup.findUnique(
+      productGroupFindUniqueQuery(productGroup.id)
+    );
   }
 
-  async getAll(): Promise<ProductGroupDto[]> {
+  async getAll(): Promise<ProductGroupEntityList[]> {
     return this.prismaService.productGroup.findMany({
       include: {
         products: {
           include: {
             waste: true,
+          },
+        },
+        variants: true,
+        wasteFlow: true,
+        _count: {
+          select: {
+            products: true,
           },
         },
       },
@@ -58,7 +70,9 @@ export class ProductGroupService {
     size,
     filters,
     sorting,
-  }: FindAllProductGroupsProps): Promise<PaginatedData<ProductGroupDto>> {
+  }: FindAllProductGroupsProps): Promise<
+    PaginatedData<ProductGroupEntityList>
+  > {
     const skip: number = ((page || 1) - 1) * (size || 10);
     const where = await this.getWhereCondition(filters);
 
@@ -70,65 +84,24 @@ export class ProductGroupService {
     });
 
     return {
-      data: retVal.map(
-        (group) =>
-          ({
-            id: group.id,
-            name: group.name,
-            description: group.description,
-            amount: group._count.products,
-            wasteFlow: group.wasteFlow?.name,
-            variants: group.variants,
-            products: group.products,
-            flags: group.flags,
-          }) as ProductGroupDto
-      ),
+      data: retVal,
       meta: { page: page, pageSize: size, totalCount: totalCount },
     };
   }
 
-  async findOne({ id }: FindProductGroupByIdProps): Promise<ProductGroupDto> {
-    const res = await this.prismaService.productGroup.findUnique(
+  async findOne({
+    id,
+  }: FindProductGroupByIdProps): Promise<ProductGroupEntity | null> {
+    return await this.prismaService.productGroup.findUnique(
       productGroupFindUniqueQuery(id)
     );
-
-    const wasteMaterialEvaluation: WasteMaterialEvaluationDto[] = [];
-
-    res.products.forEach((product) => {
-      if (product.waste) {
-        const wasteWeight = getTotalWeightOfWaste(product.waste);
-        product.waste.wasteMaterials.forEach((item) => {
-          const wasteMaterialWeight = wasteWeight * item.percentage;
-          const existingMaterial = wasteMaterialEvaluation.find(
-            (x) => x.name === item.material.name
-          );
-          if (existingMaterial) {
-            existingMaterial.weightInKg += wasteMaterialWeight;
-          } else {
-            wasteMaterialEvaluation.push(
-              new WasteMaterialEvaluationDto(
-                item.material.name,
-                wasteMaterialWeight
-              )
-            );
-          }
-        });
-      }
-    });
-
-    return {
-      ...res,
-      wasteMaterialEvaluation,
-      wasteFlow: res.wasteFlow?.name,
-      products: res.products,
-    } as ProductGroupDto;
   }
 
   async update(
     id: string,
     dto: ProductGroupCreateDto
-  ): Promise<ProductGroupDto> {
-    return this.prismaService.productGroup.update({
+  ): Promise<ProductGroupEntity> {
+    await this.prismaService.productGroup.update({
       where: { id: id },
       data: {
         name: dto.name,
@@ -153,6 +126,9 @@ export class ProductGroupService {
         },
       },
     });
+    return await this.prismaService.productGroup.findUnique(
+      productGroupFindUniqueQuery(id)
+    );
   }
 
   private async getWhereCondition(

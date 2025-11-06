@@ -60,6 +60,7 @@ export class WasteflowAnalysisGraphComponent {
         await this.analysisService.getWasteFlowAnalysisOfProductGroups(
           this.from$().year(),
           this.to$().year(),
+          '',
           this.productGroupId$()
         );
       return this.toChartData(analysis);

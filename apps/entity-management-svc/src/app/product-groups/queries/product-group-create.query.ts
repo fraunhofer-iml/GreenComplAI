@@ -33,5 +33,12 @@ export const productGroupCreateQuery = (dto: ProductGroupCreateDto) => ({
       : undefined,
     flags: dto.flags,
   },
-  include: { variants: true },
+  include: {
+    variants: true,
+    _count: {
+      select: {
+        products: true,
+      },
+    },
+  },
 });

@@ -64,20 +64,18 @@ export class CompanyCreateComponent {
   isBuyer = false;
   id = input<string>();
   callback = input<string>();
-  companyData: CompanyDto | undefined;
   companyForm = new FormGroup({
     name: new FormControl<string | null>('', Validators.required),
     email: new FormControl<string | null>('', Validators.required),
     phone: new FormControl<string | null>('', Validators.required),
-    addresses: new FormArray<FormGroup>([this.getAddressForm()]),
+    addresses: new FormArray<FormGroup>([]),
   });
 
   companyQuery = injectQuery(() => ({
     queryKey: ['companies', this.id()],
     queryFn: async (): Promise<CompanyDto> => {
       const company = await this.companiesService.getById(this.id() ?? '');
-      this.companyForm.patchValue(company);
-      this.companyData = company;
+      this.setFormData(company);
       return company;
     },
     enabled: !!this.id(),
@@ -120,12 +118,10 @@ export class CompanyCreateComponent {
     );
   }
 
-  removeAddress(): void {
+  removeAddress(index: number): void {
     const length = this.companyForm.value.addresses?.length ?? 0;
     if (this.companyForm.value.addresses && length > 1)
-      (this.companyForm.get('addresses') as FormArray).removeAt(
-        this.companyForm.value.addresses?.length - 1
-      );
+      (this.companyForm.get('addresses') as FormArray).removeAt(index);
     else {
       toast.error(Messages.errorRemoveAddress);
     }
@@ -158,10 +154,21 @@ export class CompanyCreateComponent {
 
   private getAddressForm(): FormGroup {
     return new FormGroup({
+      id: new FormControl<string | null>(''),
       street: new FormControl<string | null>('', Validators.required),
       city: new FormControl<string | null>('', Validators.required),
       postalCode: new FormControl<string | null>('', Validators.required),
       country: new FormControl<string | null>('', Validators.required),
+    });
+  }
+
+  private setFormData(company: CompanyDto) {
+    this.companyForm.patchValue(company);
+    this.companyForm.controls.addresses.clear();
+    company.addresses.forEach((a) => {
+      const tmpFor = this.getAddressForm();
+      tmpFor.patchValue(a);
+      this.companyForm.controls.addresses.push(tmpFor);
     });
   }
 }

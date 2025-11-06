@@ -16,14 +16,57 @@ export const productUpdateQuery = (dto: ProductUpdateDto, id: string) =>
     where: { id: id },
     data: {
       ...upsertQuery(dto.masterData),
-
-      materials: materialUpdateQuery(dto.materials, id),
-      criticalRawMaterials: materialUpdateQuery(dto.criticalRawMaterials, id),
-      rareEarths: materialUpdateQuery(dto.rareEarths, id),
+      materials: dto.materials
+        ? materialUpdateQuery(dto.materials, id)
+        : undefined,
+      criticalRawMaterials: dto.criticalRawMaterials
+        ? minimalMaterialUpdateQuery(dto.criticalRawMaterials, id)
+        : undefined,
+      rareEarths: dto.rareEarths
+        ? minimalMaterialUpdateQuery(dto.rareEarths, id)
+        : undefined,
     },
   }) satisfies Prisma.ProductUpdateArgs;
 
 export const materialUpdateQuery = (
+  materials: {
+    material: string;
+    percentage: number;
+    renewable?: boolean;
+    primary?: boolean;
+  }[],
+  id: string
+) => ({
+  upsert: materials
+    .filter((mat) => mat?.material && mat?.percentage)
+    .map((mat) => ({
+      where: {
+        productId_materialName: { productId: id, materialName: mat.material },
+      },
+      create: {
+        material: {
+          connectOrCreate: {
+            where: {
+              name: mat.material,
+            },
+            create: {
+              name: mat.material,
+            },
+          },
+        },
+        percentage: mat.percentage,
+        renewable: mat.renewable,
+        primary: mat.primary,
+      },
+      update: {
+        percentage: mat.percentage,
+        renewable: mat.renewable,
+        primary: mat.primary,
+      },
+    })),
+});
+
+export const minimalMaterialUpdateQuery = (
   materials: {
     material: string;
     percentage: number;

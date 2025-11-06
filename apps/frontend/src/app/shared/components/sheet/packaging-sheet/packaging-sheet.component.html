@@ -13,7 +13,13 @@
             [value]="item"
             [aria-description]="'packaging'"
             (removed)="remove($index)"
-            >{{ item[0].name }} | {{ item[0].material.name }} ({{ item[1] }})
+            >{{ item[0].name }} |
+            @if (item[0].materials && item[0].materials.length > 0) {
+              {{ item[0].materials[0][0].name }}
+            } @else {
+              Keine Materialien
+            }
+            ({{ item[1] }})
             <button matChipRemove [attr.aria-label]="'remove ' + item[0]">
               <mat-icon>cancel</mat-icon>
             </button>
@@ -45,7 +51,18 @@
                 </span>
                 <div>
                   <span>Id: {{ item.packaging.id }} | </span>
-                  <span>Material: {{ item.packaging.material.name }} | </span>
+                  <span
+                    >Materialien:
+                    @if (
+                      item.packaging.materials &&
+                      item.packaging.materials.length > 0
+                    ) {
+                      {{ item.packaging.materials[0][0].name }}
+                    } @else {
+                      Keine Materialien
+                    }
+                  </span>
+                  |
                   <span>Lieferant: {{ item.packaging.supplierName }} </span>
                 </div>
               </div>

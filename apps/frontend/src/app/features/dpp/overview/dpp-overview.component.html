@@ -1,0 +1,37 @@
+<div class="p-4 md:p-8">
+  <!-- Header -->
+  <div class="mb-6">
+    <div class="mb-2 flex items-center gap-2 text-lg">
+      <a routerLink="/products" class="font-semibold hover:underline">
+        Digital Product Passport
+      </a>
+      <span class="material-symbols-outlined text-lg">chevron_right</span>
+      <span class="font-medium">{{ id() }}</span>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (dppQuery.isLoading()) {
+    <div class="flex items-center justify-center py-12">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (dppQuery.error()) {
+    <mat-card class="mb-6">
+      <mat-card-content class="py-8 text-center">
+        <mat-icon class="mb-4 text-4xl text-red-500">error</mat-icon>
+        <p class="mb-4 text-red-600">{{ dppQuery.error() }}</p>
+        <button mat-flat-button color="primary" (click)="refreshData()">
+          Erneut versuchen
+        </button>
+      </mat-card-content>
+    </mat-card>
+  }
+
+  <!-- DPP Data -->
+  @if (dppQuery.data(); as dpp) {
+    <app-generic-dpp-display [dppData]="dpp"></app-generic-dpp-display>
+  }
+</div>

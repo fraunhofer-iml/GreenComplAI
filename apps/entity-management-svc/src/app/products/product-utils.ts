@@ -25,7 +25,6 @@ export const getWhereCondition = (
   if (filter && filter !== '') {
     const orCondition: Prisma.ProductWhereInput = {
       OR: [
-        { id: { contains: filter } },
         { productId: { contains: filter } },
         { name: { contains: filter } },
         { description: { contains: filter } },

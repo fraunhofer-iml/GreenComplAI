@@ -75,9 +75,53 @@
             <mat-icon>add</mat-icon>
           </button>
         </mat-form-field>
+      </div>
+
+      <!-- Materials -->
+      <div
+        class="grid w-full grid-cols-1 gap-2 rounded-lg bg-neutral-200 p-8 md:grid-cols-3"
+      >
+        <span class="col-span-3">Angaben zu Materialien</span>
         <mat-form-field appearance="outline">
-          <mat-label i18n>Material</mat-label>
-          <input matInput formControlName="materialName" />
+          <mat-label>Materialien</mat-label>
+          <mat-chip-grid #materialsChips>
+            @for (
+              item of packagingForm.controls.materials.controls.materials
+                .controls;
+              track $index
+            ) {
+              @if (
+                item.controls.material.value && item.controls.percentage.value
+              ) {
+                <mat-chip-row [aria-description]="'material'"
+                  >{{ item.controls.material.value }} ({{
+                    item.controls.percentage.value
+                  }}
+                  %)
+                  @if (item.controls.renewable.value) {
+                    -
+                    {{
+                      item.controls.renewable.value
+                        ? 'Erneuerbar'
+                        : 'Nicht erneuerbar'
+                    }}
+                  }
+                  @if (item.controls.primary.value) {
+                    - {{ item.controls.primary.value ? 'Primär' : 'Sekundär' }}
+                  }
+                </mat-chip-row>
+              }
+            }
+            <input matInput readonly [matChipInputFor]="materialsChips" />
+          </mat-chip-grid>
+          <button
+            mat-icon-button
+            (click)="materialSheet.open()"
+            class="mr-2"
+            matSuffix
+          >
+            <mat-icon>add</mat-icon>
+          </button>
         </mat-form-field>
       </div>
 
@@ -112,3 +156,14 @@
   (resultEmitter)="addCompanyId($event)"
   [title]="'Lieferanten'"
 ></app-suppliers-sheet>
+
+<app-base-sheet #materialSheet>
+  <app-select-materials
+    (closeSheetEvent)="materialSheet.close()"
+    (addMaterialEvent)="addMaterialFormGroup(packagingForm.controls.materials)"
+    (removeMaterialEvent)="
+      removeMaterialFormGroup(packagingForm.controls.materials, $event)
+    "
+    [materialsForm]="packagingForm.controls.materials"
+  ></app-select-materials>
+</app-base-sheet>

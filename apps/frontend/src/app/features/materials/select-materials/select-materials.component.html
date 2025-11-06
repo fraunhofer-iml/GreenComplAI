@@ -1,13 +1,13 @@
 <div class="flex w-full flex-col gap-4">
   <span>Angaben zu Materialien</span>
 
-  @if (form) {
-    <form [formGroup]="form">
+  @if (materialsForm) {
+    <form [formGroup]="materialsForm">
       <div class="flex flex-col gap-2 rounded-lg bg-neutral-200 p-4">
         <span>Materialien</span>
         <div formArrayName="materials" class="space-y-4">
           @for (
-            material of materials.controls;
+            material of materialsForm.controls.materials.controls;
             track material;
             let pindex = $index
           ) {
@@ -23,6 +23,25 @@
                 <mat-label>Anteil</mat-label>
                 <input type="number" matInput formControlName="percentage" />
               </mat-form-field>
+
+              @if (!isWateMaterial) {
+                <mat-form-field appearance="outline">
+                  <mat-label>Erneuerbar</mat-label>
+                  <mat-select formControlName="renewable">
+                    <mat-option [value]="null">Nicht angegeben</mat-option>
+                    <mat-option [value]="true">Ja</mat-option>
+                    <mat-option [value]="false">Nein</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Materialtyp</mat-label>
+                  <mat-select formControlName="primary">
+                    <mat-option [value]="null">Nicht angegeben</mat-option>
+                    <mat-option [value]="true">Primär</mat-option>
+                    <mat-option [value]="false">Sekundär</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              }
               <button
                 mat-icon-button
                 (click)="removeMaterialEvent.emit(pindex)"

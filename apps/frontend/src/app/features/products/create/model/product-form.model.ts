@@ -33,6 +33,11 @@ export interface MasterDataFormGroup {
   dimensions: FormControl<string | null>;
   percentageOfBiologicalMaterials: FormControl<number | null>;
   supplier: FormControl<CompanyDto | string | null>;
+  supplierIsImporter: FormControl<boolean | null>;
+  importerName: FormControl<string | null>;
+  importerEmail: FormControl<string | null>;
+  importerPhone: FormControl<string | null>;
+  importerAddress: FormControl<string | null>;
   manufacturer: FormControl<CompanyDto | string | null>;
   productGroup: FormControl<ProductGroupDto | string | null>;
   variant: FormControl<VariantDto | null>;
@@ -40,6 +45,7 @@ export interface MasterDataFormGroup {
   warehouseLocation: FormControl<AddressDto | null>;
   wasteFlow: FormControl<string | null>;
   waterUsed: FormControl<number | null>;
+  productCarbonFootprint: FormControl<number | null>;
   cascadePrinciple: FormControl<string | null>;
   certification: FormControl<string | null>;
   durability: FormControl<number | null>;

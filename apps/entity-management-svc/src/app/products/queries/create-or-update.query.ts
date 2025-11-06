@@ -10,35 +10,42 @@ import { ProductCreateDto } from '@ap2/api-interfaces';
 
 export const upsertQuery = (dto: Partial<ProductCreateDto>) => ({
   id: dto.id ? dto.id.toString() : undefined,
-  name: dto.name ?? 'N/A',
-  isSellable: dto.isSellable ?? false,
-  productId: dto.productId?.toString() ?? 'N/A',
-  description: dto.description ? dto.description.toString() : 'N/A',
-  category: dto.category ?? 'N/A',
-  weight: Number(dto.weight) || 0,
-  unit: dto.unit ?? 'N/A',
-  price: Number(dto.price) || 0,
-  dimensions: dto.dimensions ?? 'N/A',
+  name: dto.name || undefined,
+  isSellable: dto.isSellable ?? undefined,
+  productId: dto.productId?.toString() || undefined,
+  description: dto.description ? dto.description.toString() : undefined,
+  category: dto.category || undefined,
+  weight: Number(dto.weight) || undefined,
+  unit: dto.unit || undefined,
+  price: Number(dto.price) || undefined,
+  dimensions: dto.dimensions || undefined,
   percentageOfBiologicalMaterials:
-    Number(dto.percentageOfBiologicalMaterials) || 0,
-  certificationSystem: dto.certification ?? 'N/A',
-  cascadePrinciple: dto.cascadePrinciple ?? 'N/A',
-  durability: Number(dto.durability) || 0,
-  durabilityDifference: Number(dto.durabilityDifference) || 0,
-  reparability: Number(dto.reparability) || 0,
-  circularPrinciple: dto.circularPrinciple ?? false,
-  circularPrincipleJustification: dto.circularPrincipleJustification ?? null,
-  circularPrincipleMeasureable: dto.circularPrincipleMeasureable ?? false,
-  circularPrincipleAssumption: dto.circularPrincipleAssumption ?? null,
-  digitalProductPassportUrl: dto.digitalProductPassportUrl ?? null,
-  taricCode: dto.taricCode ?? null,
-  gtin: dto.gtin ?? null,
-  supplier: {
-    connectOrCreate: {
-      where: { id: dto.supplier ?? 'N/A' },
-      create: { id: dto.supplier ?? 'N/A', name: dto.supplier ?? 'N/A' },
-    },
-  },
+    Number(dto.percentageOfBiologicalMaterials) || undefined,
+  certificationSystem: dto.certification || undefined,
+  cascadePrinciple: dto.cascadePrinciple || undefined,
+  durability: Number(dto.durability) || undefined,
+  durabilityDifference: Number(dto.durabilityDifference) || undefined,
+  reparability: Number(dto.reparability) || undefined,
+  circularPrinciple: dto.circularPrinciple || undefined,
+  circularPrincipleJustification:
+    dto.circularPrincipleJustification || undefined,
+  circularPrincipleMeasureable: dto.circularPrincipleMeasureable || undefined,
+  circularPrincipleAssumption: dto.circularPrincipleAssumption || undefined,
+  digitalProductPassportUrl: dto.digitalProductPassportUrl || undefined,
+  taricCode: dto.taricCode || undefined,
+  gtin: dto.gtin || undefined,
+  supplier: dto.supplier
+    ? {
+        connectOrCreate: {
+          where: { id: dto.supplier ?? 'N/A' },
+          create: { id: dto.supplier ?? 'N/A', name: dto.supplier ?? 'N/A' },
+        },
+      }
+    : undefined,
+  importerName: dto.importerName || undefined,
+  importerEmail: dto.importerEmail || undefined,
+  importerPhone: dto.importerPhone || undefined,
+  importerAddress: dto.importerAddress || undefined,
   manufacturer: dto.manufacturer
     ? {
         connect: {
@@ -52,26 +59,30 @@ export const upsertQuery = (dto: Partial<ProductCreateDto>) => ({
   productionLocation: dto.productionLocation
     ? { connect: { id: dto.productionLocation } }
     : undefined,
-  productGroup: {
-    connectOrCreate: {
-      where: { id: dto.productGroup ?? 'N/A' },
-      create: {
-        id: dto.productGroup ?? 'N/A',
-        name: dto.productGroup ?? 'N/A',
-        description: 'N/A',
-      },
-    },
-  },
-  wasteFlow: {
-    connectOrCreate: {
-      where: {
-        name: dto.wasteFlow ?? 'N/A',
-      },
-      create: {
-        name: dto.wasteFlow ?? 'N/A',
-      },
-    },
-  },
+  productGroup: dto.productGroup
+    ? {
+        connectOrCreate: {
+          where: { id: dto.productGroup },
+          create: {
+            id: dto.productGroup,
+            name: dto.productGroup,
+            description: 'N/A',
+          },
+        },
+      }
+    : undefined,
+  wasteFlow: dto.wasteFlow
+    ? {
+        connectOrCreate: {
+          where: {
+            name: dto.wasteFlow ?? 'N/A',
+          },
+          create: {
+            name: dto.wasteFlow ?? 'N/A',
+          },
+        },
+      }
+    : undefined,
   variants: dto.variant
     ? {
         connectOrCreate: {
@@ -92,6 +103,7 @@ export const upsertQuery = (dto: Partial<ProductCreateDto>) => ({
         },
       }
     : undefined,
-  waterUsed: Number(dto.waterUsed) || 0,
-  flags: dto.flags,
+  waterUsed: Number(dto.waterUsed) || undefined,
+  productCarbonFootprint: Number(dto.productCarbonFootprint) || undefined,
+  flags: dto.flags || undefined,
 });

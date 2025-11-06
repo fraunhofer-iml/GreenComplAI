@@ -12,8 +12,10 @@ import {
   PackagingUpdateDto,
 } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
+import { DecimalPipe } from '@angular/common';
 import { Component, inject, input, OnInit, signal } from '@angular/core';
 import {
+  FormArray,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -24,7 +26,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import {
   injectMutation,
   injectQuery,
@@ -35,6 +37,12 @@ import { DataService } from '../../../core/services/data-service/data.service';
 import { PackagingService } from '../../../core/services/packaging/packaging.service';
 import { BaseSheetComponent } from '../../../shared/components/sheet/base/sheet.component';
 import { Uris } from '../../../shared/constants/uris';
+import { SelectMaterialsComponent } from '../../materials/select-materials/select-materials.component';
+import {
+  addRegularMaterialFormGroup,
+  regularMaterialFormArrayGroup,
+  removeRegularMaterialFormGroup,
+} from '../../products/create/material.form-group';
 import { ProductWasteComponent } from '../../products/details/product-waste/product-waste.component';
 import { PartPackagingComponent } from './part-packaging/part-packaging.component';
 
@@ -51,6 +59,8 @@ import { PartPackagingComponent } from './part-packaging/part-packaging.componen
     MatInputModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
+    SelectMaterialsComponent,
+    DecimalPipe,
   ],
   providers: [
     QueryClient,
@@ -61,6 +71,9 @@ import { PartPackagingComponent } from './part-packaging/part-packaging.componen
 export class PackagingDetailsComponent implements OnInit {
   id = input<string>();
   supplierSearchValue = signal<string>('');
+
+  addMaterialFormGroup = addRegularMaterialFormGroup;
+  removeMaterialFormGroup = removeRegularMaterialFormGroup;
 
   Uris = Uris;
   packagingForm = new FormGroup({
@@ -79,22 +92,41 @@ export class PackagingDetailsComponent implements OnInit {
       Validators.required
     ),
 
-    materialName: new FormControl<string | null>('', Validators.required),
     supplier: new FormControl<CompanyDto | string | null>(null),
   });
+  materialsForm: FormGroup<{
+    materials: FormArray<
+      FormGroup<{
+        material: FormControl<string>;
+        percentage: FormControl<number>;
+        renewable: FormControl<boolean | null>;
+        primary: FormControl<boolean | null>;
+      }>
+    >;
+  }>;
+
   private readonly packagingService = inject(PackagingService);
+
   packagingQuery = injectQuery(() => ({
     queryKey: ['packaging', this.id()],
     queryFn: async (): Promise<PackagingDto> => {
       const res = await this.packagingService.getById(this.id() ?? '');
       this.packagingForm.patchValue({
         ...res,
-        materialName: res.material.name,
+      });
+      this.materialsForm.patchValue({
+        materials: res.materials?.map((material) => ({
+          material: material[0].name,
+          percentage: material[1],
+          renewable: material[2] ?? null,
+          primary: material[3] ?? null,
+        })),
       });
       return res;
     },
     enabled: !!this.id(),
   }));
+
   updateMutation = injectMutation(() => ({
     mutationFn: async (dto: PackagingUpdateDto) =>
       await this.packagingService.update(dto, this.id() ?? ''),
@@ -115,9 +147,10 @@ export class PackagingDetailsComponent implements OnInit {
       );
     },
   }));
-  private readonly router = inject(Router);
-  private readonly queryClient = inject(QueryClient);
 
+  constructor() {
+    this.materialsForm = regularMaterialFormArrayGroup();
+  }
   ngOnInit() {
     this.packagingForm.controls.supplier.valueChanges.subscribe((value) => {
       if (typeof value === 'string') {
@@ -131,14 +164,30 @@ export class PackagingDetailsComponent implements OnInit {
   }
 
   save() {
+    const materials = this.materialsForm.controls.materials.controls.map(
+      (material) => ({
+        material: material.controls.material.value as string,
+        percentage: material.controls.percentage.value as number,
+        renewable: material.controls.renewable?.value ?? undefined,
+        primary: material.controls.primary?.value ?? undefined,
+      })
+    );
+
     const dto: PackagingUpdateDto = {
-      ...this.packagingForm.value,
-      materialId: this.packagingForm.value.materialName ?? '',
+      weight: this.packagingForm.value.weight ?? undefined,
+      name: this.packagingForm.value.name ?? undefined,
+      percentageOfRenewableMaterial:
+        this.packagingForm.value.percentageOfRenewableMaterial ?? undefined,
+      percentageOfRecycledMaterial:
+        this.packagingForm.value.percentageOfRecycledMaterial ?? undefined,
+      percentageOfRStrategies:
+        this.packagingForm.value.percentageOfRStrategies ?? undefined,
       supplierId:
         typeof this.packagingForm.value.supplier === 'object'
-          ? (this.packagingForm.value.supplier?.id ?? '')
-          : '',
-    } as PackagingUpdateDto;
+          ? (this.packagingForm.value.supplier?.id ?? undefined)
+          : (this.packagingForm.value.supplier ?? undefined),
+      materials: materials,
+    };
 
     this.updateMutation.mutate(dto);
   }

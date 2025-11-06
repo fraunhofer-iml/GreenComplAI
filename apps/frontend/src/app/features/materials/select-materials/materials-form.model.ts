@@ -13,6 +13,19 @@ export interface MaterialsFormGroup {
     FormGroup<{
       material: FormControl<string>;
       percentage: FormControl<number>;
+      renewable?: FormControl<boolean | null>;
+      primary?: FormControl<boolean | null>;
+    }>
+  >;
+}
+
+export interface RegularMaterialsFormGroup {
+  materials: FormArray<
+    FormGroup<{
+      material: FormControl<string>;
+      percentage: FormControl<number>;
+      renewable: FormControl<boolean | null>;
+      primary: FormControl<boolean | null>;
     }>
   >;
 }

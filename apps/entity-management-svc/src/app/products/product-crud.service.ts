@@ -6,6 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { AmqpException } from '@ap2/amqp';
 import {
   CreateProductProps,
   DeleteProductProps,
@@ -13,15 +14,14 @@ import {
   FindProductByIdProps,
   PaginatedData,
   ProductCreateDto,
-  ProductDto,
+  ProductEntity,
+  ProductEntityList,
   SearchProductsProps,
   UpdateProductProps,
 } from '@ap2/api-interfaces';
 import { PrismaService } from '@ap2/database';
-import { Injectable, Logger } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { FlagsService } from '../flags/flags.service';
-import { getTotalWeightOfWaste } from '../utils/weight.utils';
 import { WasteService } from '../waste/waste.service';
 import { ProductRelationsService } from './product-relations.service';
 import { getWhereCondition } from './product-utils';
@@ -44,7 +44,7 @@ export class ProductCrudService {
   async create({
     dto,
     outlierDetectionResult,
-  }: CreateProductProps): Promise<ProductDto> {
+  }: CreateProductProps): Promise<ProductEntity> {
     dto.flags = this.flagService.evaluateFlag(
       dto,
       new ProductCreateDto('', []),
@@ -73,9 +73,9 @@ export class ProductCrudService {
         productId: product.id,
       });
 
-    return {
-      ...product,
-    };
+    return await this.prismaService.product.findUnique(
+      productFindUniqueQuery(product.id)
+    );
   }
 
   async findAll({
@@ -84,7 +84,7 @@ export class ProductCrudService {
     size,
     sorting,
     isSellable,
-  }: FindAllProductsProps): Promise<PaginatedData<ProductDto>> {
+  }: FindAllProductsProps): Promise<PaginatedData<ProductEntityList>> {
     const skip: number = (page - 1) * size;
     const f = getWhereCondition(filters, isSellable);
 
@@ -102,108 +102,64 @@ export class ProductCrudService {
     });
 
     return {
-      data: products.map((p) => ({
-        ...p,
-        materials: p.materials.map((m) => [m.material, m.percentage] as const),
-        wasteFlow: p.wasteFlow?.name,
-
-        rareEarths: p.rareEarths.map(
-          (m) => [m.material, m.percentage] as const
-        ),
-        criticalRawMaterials: p.criticalRawMaterials.map(
-          (m) => [m.material, m.percentage] as const
-        ),
-      })),
+      data: products,
       meta: { page: page, pageSize: size, totalCount: totalCount },
     };
   }
 
-  async findOne({ id }: FindProductByIdProps): Promise<ProductDto> {
-    const product = await this.prismaService.product.findUnique(
+  async findOne({ id }: FindProductByIdProps): Promise<ProductEntity | null> {
+    return await this.prismaService.product.findUnique(
       productFindUniqueQuery(id)
     );
-    const packagings = await this.relationsService.getProductPackagings(id);
-    const totalWeight = getTotalWeightOfWaste(product.waste);
-
-    return {
-      ...product,
-      packagings,
-      materials: product.materials.map(
-        (m) => [m.material, m.percentage] as const
-      ),
-      wasteFlow: product.wasteFlow?.name ? product.wasteFlow.name : 'N/A',
-      rareEarths: product.rareEarths.map(
-        (m) => [m.material, m.percentage] as const
-      ),
-      criticalRawMaterials: product.criticalRawMaterials.map(
-        (m) => [m.material, m.percentage] as const
-      ),
-      waste: {
-        ...product.waste,
-        wasteMaterials: product.waste
-          ? product.waste.wasteMaterials.map((mat) => ({
-              ...mat,
-              weightInKg: mat.percentage * totalWeight,
-            }))
-          : [],
-      },
-    };
   }
 
-  async update({ dto, id }: UpdateProductProps): Promise<ProductDto> {
-    await this.prismaService.productMaterials.deleteMany({
-      where: {
-        productId: id,
-        materialName: { notIn: dto.materials.map((m) => m.material) },
-      },
-    });
+  async update({ dto, id }: UpdateProductProps): Promise<ProductEntity> {
+    if (dto.materials)
+      await this.removeMaterials(
+        id,
+        dto.materials.map((m) => m.material)
+      );
 
-    await this.prismaService.rareEarths.deleteMany({
-      where: {
-        productId: id,
-        materialName: { notIn: dto.rareEarths.map((m) => m.material) },
-      },
-    });
+    if (dto.rareEarths)
+      await this.removeRareEarths(
+        id,
+        dto.rareEarths.map((m) => m.material)
+      );
 
-    await this.prismaService.criticalRawMaterials.deleteMany({
-      where: {
-        productId: id,
-        materialName: {
-          notIn: dto.criticalRawMaterials.map((m) => m.material),
-        },
-      },
-    });
+    if (dto.criticalRawMaterials)
+      await this.removeCriticalRawMaterials(
+        id,
+        dto.criticalRawMaterials.map((m) => m.material)
+      );
 
-    const product = await this.prismaService.product.update({
+    await this.prismaService.product.update({
       where: {
         id,
       },
       ...productUpdateQuery(dto, id),
     });
 
-    return {
-      ...product,
-      outlier: (product.outlier as Prisma.JsonArray).map(
-        (o: { key: string; value: number }) => o.key
-      ),
-    };
+    return await this.prismaService.product.findUnique(
+      productFindUniqueQuery(id)
+    );
   }
 
-  async delete({ id }: DeleteProductProps): Promise<ProductDto> {
-    const p = await this.prismaService.product.delete({
+  async delete({ id }: DeleteProductProps): Promise<ProductEntity> {
+    const product = await this.prismaService.product.findUnique(
+      productFindUniqueQuery(id)
+    );
+    if (!product) {
+      throw new AmqpException('Product not found', HttpStatus.NOT_FOUND);
+    }
+    await this.prismaService.product.delete({
       where: {
         id,
       },
     });
-    return {
-      ...p,
-      outlier: (p.outlier as Prisma.JsonArray).map(
-        (o: { key: string; value: number }) => o.key
-      ),
-    };
+    return product;
   }
 
-  async search({ value }: SearchProductsProps): Promise<ProductDto[]> {
+  async search({ value }: SearchProductsProps): Promise<ProductEntityList[]> {
     if (value === '') return [];
 
     const whereCondition = {
@@ -216,7 +172,7 @@ export class ProductCrudService {
         { productId: { contains: value } },
       ],
     };
-    const result = await this.prismaService.product.findMany({
+    return await this.prismaService.product.findMany({
       where: whereCondition,
       include: {
         supplier: { include: { addresses: true } },
@@ -224,17 +180,52 @@ export class ProductCrudService {
         productGroup: true,
         rareEarths: { include: { material: true } },
         criticalRawMaterials: { include: { material: true } },
+        materials: {
+          include: {
+            material: true,
+          },
+        },
+        waste: {
+          include: {
+            wasteMaterials: {
+              include: {
+                material: true,
+              },
+            },
+          },
+        },
+        wasteFlow: true,
       },
     });
-    return result.map((p) => ({
-      ...p,
-      rareEarths: p.rareEarths.map((m) => [m.material, m.percentage] as const),
-      criticalRawMaterials: p.criticalRawMaterials.map(
-        (m) => [m.material, m.percentage] as const
-      ),
-      outlier: ((p.outlier as Prisma.JsonArray) ?? []).map(
-        (o: { key: string; value: number }) => o.key
-      ),
-    }));
+  }
+
+  private async removeMaterials(productId: string, materials: string[]) {
+    await this.prismaService.productMaterials.deleteMany({
+      where: {
+        productId: productId,
+        materialName: { notIn: materials },
+      },
+    });
+  }
+
+  private async removeRareEarths(productId: string, materials: string[]) {
+    await this.prismaService.rareEarths.deleteMany({
+      where: {
+        productId: productId,
+        materialName: { notIn: materials },
+      },
+    });
+  }
+
+  private async removeCriticalRawMaterials(
+    productId: string,
+    materials: string[]
+  ) {
+    await this.prismaService.criticalRawMaterials.deleteMany({
+      where: {
+        productId: productId,
+        materialName: { notIn: materials },
+      },
+    });
   }
 }

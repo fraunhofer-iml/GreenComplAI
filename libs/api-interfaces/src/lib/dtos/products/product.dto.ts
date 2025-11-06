@@ -30,9 +30,13 @@ export class ProductDto {
   durabilityDifference: number;
   reparability: number;
   supplier?: CompanyDto;
+  importerName?: string;
+  importerEmail?: string;
+  importerPhone?: string;
+  importerAddress?: string;
   manufacturer?: CompanyDto;
   waste?: Partial<WasteDto>;
-  materials?: [MaterialDto, number][];
+  materials?: [MaterialDto, number, boolean?, boolean?][];
   productGroup?: ProductGroupDto;
   packagings?: [PackagingDto, number][];
   warehouseLocation?: AddressDto;
@@ -42,6 +46,7 @@ export class ProductDto {
   rareEarths?: [MaterialDto, number][];
   criticalRawMaterials?: [MaterialDto, number][];
   waterUsed?: number;
+  productCarbonFootprint?: number;
   isSellable?: boolean;
   cascadePrinciple?: string;
   certificationSystem?: string;
@@ -78,9 +83,13 @@ export class ProductDto {
     flags: string[],
     outlier?: string[],
     supplier?: CompanyDto,
+    importerName?: string,
+    importerEmail?: string,
+    importerPhone?: string,
+    importerAddress?: string,
     manufacturer?: CompanyDto,
     waste?: WasteDto,
-    materials?: [MaterialDto, number][],
+    materials?: [MaterialDto, number, boolean?, boolean?][],
     productId?: string,
     productGroup?: ProductGroupDto,
     packagings?: [PackagingDto, number][],
@@ -89,6 +98,7 @@ export class ProductDto {
     wasteFlow?: string,
     variant?: string,
     waterUsed?: number,
+    productCarbonFootprint?: number,
     isSellable?: boolean,
     cascadePrinciple?: string,
     certificationSystem?: string,
@@ -108,6 +118,10 @@ export class ProductDto {
     this.dimensions = dimensions;
     this.percentageOfBiologicalMaterials = percentageOfBiologicalMaterials;
     this.supplier = supplier;
+    this.importerName = importerName;
+    this.importerEmail = importerEmail;
+    this.importerPhone = importerPhone;
+    this.importerAddress = importerAddress;
     this.manufacturer = manufacturer;
     this.waste = waste;
     this.materials = materials;
@@ -121,6 +135,7 @@ export class ProductDto {
     this.rareEarths = rareEarths;
     this.criticalRawMaterials = criticalRawMaterials;
     this.waterUsed = waterUsed;
+    this.productCarbonFootprint = productCarbonFootprint;
     this.isSellable = isSellable;
     this.cascadePrinciple = cascadePrinciple;
     this.certificationSystem = certificationSystem;

@@ -8,9 +8,9 @@
 
 import {
   FindProductByIdProps,
-  PackagingDto,
+  PackagingEntity,
   ProductCreateDto,
-  ProductDto,
+  ProductEntity,
   UpdateFlagProductProps,
   UpdateProductDependenciesProps,
   UpdateProductionHistoryProps,
@@ -18,9 +18,9 @@ import {
 } from '@ap2/api-interfaces';
 import { PrismaService } from '@ap2/database';
 import { Injectable, Logger } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 import { FlagsService } from '../flags/flags.service';
 import { productCreateQuery } from './queries/product-create.query';
+import { productFindUniqueQuery } from './queries/product-find-unique.query';
 import {
   historyUpdateQuery,
   packagingConnectionUpdateQuery,
@@ -39,17 +39,51 @@ export class ProductRelationsService {
 
   async findPreliminaryProducts({
     id,
-  }: FindProductByIdProps): Promise<[ProductDto, number][]> {
+  }: FindProductByIdProps): Promise<[ProductEntity, number][]> {
     const products =
       await this.prismaService.productPreliminaryProduct.findMany({
         where: { productId: id?.toString() },
         include: {
           preliminaryProduct: {
             include: {
+              productionHistory: {
+                select: {
+                  amount: true,
+                  year: true,
+                },
+              },
+              manufacturer: {
+                include: {
+                  addresses: true,
+                },
+              },
+              materials: {
+                include: {
+                  material: true,
+                },
+              },
               supplier: { include: { addresses: true } },
               waste: {
-                include: { wasteMaterials: { include: { material: true } } },
+                include: {
+                  wasteMaterials: { include: { material: true } },
+                  normalWaste: {
+                    include: {
+                      nonUtilizableWaste: true,
+                      utilizableWaste: true,
+                    },
+                  },
+                  hazardousWaste: {
+                    include: {
+                      nonUtilizableWaste: true,
+                      utilizableWaste: true,
+                    },
+                  },
+                },
               },
+              productGroup: { include: { variants: true } },
+              warehouseLocation: true,
+              productionLocation: true,
+              wasteFlow: true,
               rareEarths: { include: { material: true } },
               criticalRawMaterials: { include: { material: true } },
             },
@@ -57,56 +91,49 @@ export class ProductRelationsService {
         },
       });
 
-    return products.map(
-      (p) =>
-        [
-          {
-            ...p.preliminaryProduct,
-            rareEarths: p.preliminaryProduct.rareEarths.map(
-              (m) => [m.material, m.percentage] as const
-            ),
-            criticalRawMaterials: p.preliminaryProduct.criticalRawMaterials.map(
-              (m) => [m.material, m.percentage] as const
-            ),
-            outlier: (p.preliminaryProduct.outlier as Prisma.JsonArray).map(
-              (o: { key: string; value: number }) => o.key
-            ),
-          },
-          p.amount,
-        ] as const
-    );
+    return products.map((p) => [p.preliminaryProduct, p.amount] as const);
   }
 
   async findProductPackaging({
     id,
-  }: FindProductByIdProps): Promise<[PackagingDto, number][]> {
+  }: FindProductByIdProps): Promise<[PackagingEntity, number][]> {
     const packagings = await this.prismaService.productPackaging.findMany({
       where: { productId: id },
       include: {
         packaging: {
           include: {
+            products: { include: { product: true } },
             supplier: { include: { addresses: true } },
-            material: true,
+            waste: {
+              include: {
+                hazardousWaste: {
+                  include: {
+                    utilizableWaste: true,
+                    nonUtilizableWaste: true,
+                  },
+                },
+                normalWaste: {
+                  include: {
+                    utilizableWaste: true,
+                    nonUtilizableWaste: true,
+                  },
+                },
+                wasteMaterials: { include: { material: true } },
+              },
+            },
+            materials: { include: { material: true } },
           },
         },
       },
     });
 
-    return packagings.map(
-      (p) =>
-        [
-          {
-            ...p.packaging,
-          },
-          p.amount,
-        ] as const
-    );
+    return packagings.map((p) => [p.packaging, p.amount] as const);
   }
 
   async updatePackaging({
     id,
     dto,
-  }: UpdateProductDependenciesProps): Promise<ProductDto> {
+  }: UpdateProductDependenciesProps): Promise<ProductEntity> {
     await this.prismaService.productPackaging.deleteMany({
       where: {
         productId: id,
@@ -116,12 +143,19 @@ export class ProductRelationsService {
       },
     });
 
-    return await this.prismaService.product.update(
+    await this.prismaService.product.update(
       packagingConnectionUpdateQuery(dto.map, id)
+    );
+
+    return await this.prismaService.product.findUnique(
+      productFindUniqueQuery(id)
     );
   }
 
-  async updateFlags({ id, dto }: UpdateFlagProductProps): Promise<ProductDto> {
+  async updateFlags({
+    id,
+    dto,
+  }: UpdateFlagProductProps): Promise<ProductEntity | null> {
     const product = await this.prismaService.product.findUnique({
       where: { id: id },
       select: { flags: true },
@@ -137,10 +171,15 @@ export class ProductRelationsService {
         data: { flags: { set: product.flags } },
       });
     }
-    return product as ProductDto;
+    return await this.prismaService.product.findUnique(
+      productFindUniqueQuery(id)
+    );
   }
 
-  async updateWaste({ id, dto }: UpdateProductWasteProps) {
+  async updateWaste({
+    id,
+    dto,
+  }: UpdateProductWasteProps): Promise<ProductEntity> {
     const { wasteId } = await this.prismaService.product.findFirst({
       select: { wasteId: true },
       where: { id: id },
@@ -152,15 +191,19 @@ export class ProductRelationsService {
       },
     });
 
-    return await this.prismaService.product.update(
+    await this.prismaService.product.update(
       productWasteUpdateQuery(id, dto, wasteId)
+    );
+
+    return await this.prismaService.product.findUnique(
+      productFindUniqueQuery(id)
     );
   }
 
   async updateBillOfMaterial({
     id,
     dto,
-  }: UpdateProductDependenciesProps): Promise<ProductDto> {
+  }: UpdateProductDependenciesProps): Promise<ProductEntity> {
     await this.prismaService.productPreliminaryProduct.deleteMany({
       where: {
         productId: id,
@@ -170,19 +213,27 @@ export class ProductRelationsService {
       },
     });
 
-    return await this.prismaService.product.update(
+    await this.prismaService.product.update(
       preliminaryConnectionUpdateQuery(dto.map, id, dto.description)
+    );
+
+    return await this.prismaService.product.findUnique(
+      productFindUniqueQuery(id)
     );
   }
 
   async updateProductionHistory({
     id,
     dto,
-  }: UpdateProductionHistoryProps): Promise<ProductDto> {
-    return await this.prismaService.product.update({
+  }: UpdateProductionHistoryProps): Promise<ProductEntity> {
+    await this.prismaService.product.update({
       where: { id: id },
       data: { productionHistory: historyUpdateQuery(dto.history, id) },
     });
+
+    return await this.prismaService.product.findUnique(
+      productFindUniqueQuery(id)
+    );
   }
 
   async createPreliminaryProductConnection({
@@ -205,7 +256,7 @@ export class ProductRelationsService {
   }
 
   async ensureProductExists(product: ProductCreateDto): Promise<string> {
-    let existing: ProductDto[] = await this.prismaService.product.findMany({
+    let existing = await this.prismaService.product.findMany({
       where: {
         OR: [
           { id: product.id?.toString() },
@@ -216,11 +267,10 @@ export class ProductRelationsService {
     });
     if (!existing || existing.length === 0) {
       this.logger.debug(`No product with id ${product.id} found. Creating...`);
-      existing = [
-        await this.prismaService.product.create(
-          productCreateQuery(product, [])
-        ),
-      ];
+      const created = await this.prismaService.product.create(
+        productCreateQuery(product, [])
+      );
+      existing = [created];
     }
     return existing[0].id;
   }
@@ -241,20 +291,37 @@ export class ProductRelationsService {
     });
   }
 
-  async getProductPackagings(id: string): Promise<[PackagingDto, number][]> {
+  async getProductPackagings(id: string): Promise<[PackagingEntity, number][]> {
     const packagings = await this.prismaService.productPackaging.findMany({
       where: { productId: id },
       include: {
         packaging: {
           include: {
-            waste: true,
-            material: true,
+            products: { include: { product: true } },
             supplier: { include: { addresses: true } },
+            waste: {
+              include: {
+                hazardousWaste: {
+                  include: {
+                    utilizableWaste: true,
+                    nonUtilizableWaste: true,
+                  },
+                },
+                normalWaste: {
+                  include: {
+                    utilizableWaste: true,
+                    nonUtilizableWaste: true,
+                  },
+                },
+                wasteMaterials: { include: { material: true } },
+              },
+            },
+            materials: { include: { material: true } },
           },
         },
       },
     });
 
-    return packagings.map((p) => [p.packaging, p.amount]);
+    return packagings.map((p) => [p.packaging, p.amount] as const);
   }
 }

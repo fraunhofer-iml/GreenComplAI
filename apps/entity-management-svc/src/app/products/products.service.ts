@@ -12,9 +12,10 @@ import {
   FindAllProductsProps,
   FindProductByIdProps,
   FindProductOfSupplierByIdProps,
-  PackagingDto,
+  PackagingEntity,
   PaginatedData,
-  ProductDto,
+  ProductEntity,
+  ProductEntityList,
   ProductOutlierDto,
   SearchProductsProps,
   UpdateFlagProductProps,
@@ -41,33 +42,33 @@ export class ProductService {
     private readonly fileService: ProductFileService
   ) {}
 
-  async create(props: CreateProductProps): Promise<ProductDto> {
+  async create(props: CreateProductProps): Promise<ProductEntity> {
     return this.crudService.create(props);
   }
 
-  async getForOutlierDetection(): Promise<ProductDto[]> {
+  async getForOutlierDetection(): Promise<ProductEntityList[]> {
     return this.outlierService.getForOutlierDetection();
   }
 
   async findAll(
     props: FindAllProductsProps
-  ): Promise<PaginatedData<ProductDto>> {
+  ): Promise<PaginatedData<ProductEntityList>> {
     return this.crudService.findAll(props);
   }
 
   async findAllOfSupplier(
     props: FindAllProductsProps & { supplierCompanyId: string }
-  ): Promise<PaginatedData<Partial<ProductDto>>> {
+  ): Promise<PaginatedData<ProductEntityList>> {
     return this.supplierService.findAll(props);
   }
 
-  async findOne(props: FindProductByIdProps): Promise<ProductDto> {
+  async findOne(props: FindProductByIdProps): Promise<ProductEntity | null> {
     return this.crudService.findOne(props);
   }
 
   async findOneOfSupplier(
     props: FindProductOfSupplierByIdProps
-  ): Promise<Partial<ProductDto>> {
+  ): Promise<ProductEntityList> {
     return this.supplierService.findOne(props);
   }
 
@@ -77,61 +78,61 @@ export class ProductService {
 
   async findPreliminaryProducts(
     props: FindProductByIdProps
-  ): Promise<[ProductDto, number][]> {
+  ): Promise<[ProductEntity, number][]> {
     return this.relationsService.findPreliminaryProducts(props);
   }
 
   async findProductPackaging(
     props: FindProductByIdProps
-  ): Promise<[PackagingDto, number][]> {
+  ): Promise<[PackagingEntity, number][]> {
     return this.relationsService.findProductPackaging(props);
   }
 
-  async update(props: UpdateProductProps): Promise<ProductDto> {
+  async update(props: UpdateProductProps): Promise<ProductEntity> {
     return this.crudService.update(props);
   }
 
   async updateSupplier(
     props: UpdateProductProps & { supplierCompanyId: string }
-  ): Promise<ProductDto> {
+  ): Promise<ProductEntity> {
     return this.supplierService.update(props);
   }
 
-  async delete(props: DeleteProductProps): Promise<ProductDto> {
+  async delete(props: DeleteProductProps): Promise<ProductEntity> {
     return this.crudService.delete(props);
   }
 
-  async search(props: SearchProductsProps): Promise<ProductDto[]> {
+  async search(props: SearchProductsProps): Promise<ProductEntityList[]> {
     return this.crudService.search(props);
   }
 
   async updatePackaging(
     props: UpdateProductDependenciesProps
-  ): Promise<ProductDto> {
+  ): Promise<ProductEntity> {
     return this.relationsService.updatePackaging(props);
   }
 
-  async updateFlags(props: UpdateFlagProductProps): Promise<ProductDto> {
+  async updateFlags(props: UpdateFlagProductProps): Promise<ProductEntity> {
     return this.relationsService.updateFlags(props);
   }
 
-  async validateOutlier(props: UpdateFlagProductProps): Promise<ProductDto> {
+  async validateOutlier(props: UpdateFlagProductProps): Promise<ProductEntity> {
     return this.outlierService.validateOutlier(props);
   }
 
-  async updateWaste(props: UpdateProductWasteProps) {
+  async updateWaste(props: UpdateProductWasteProps): Promise<ProductEntity> {
     return this.relationsService.updateWaste(props);
   }
 
   async updateBillOfMaterial(
     props: UpdateProductDependenciesProps
-  ): Promise<ProductDto> {
+  ): Promise<ProductEntity> {
     return this.relationsService.updateBillOfMaterial(props);
   }
 
   async updateProductionHistory(
     props: UpdateProductionHistoryProps
-  ): Promise<ProductDto> {
+  ): Promise<ProductEntity> {
     return this.relationsService.updateProductionHistory(props);
   }
 

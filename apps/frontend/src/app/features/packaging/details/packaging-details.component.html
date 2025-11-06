@@ -17,7 +17,7 @@
           </button>
         </div>
 
-        <div class="grid grid-cols-2 gap-1 text-sm">
+        <div class="grid grid-cols-2 gap-2 text-sm">
           <div class="flex justify-between">
             <span class="font-medium">Name</span>
             <span>{{ data.name }}</span>
@@ -25,25 +25,21 @@
 
           <div class="flex justify-between">
             <span class="font-medium">Anteil an R-Strategien</span>
-            <span>{{ data.percentageOfRStrategies }}</span>
+            <span>{{ data.percentageOfRStrategies | number }} %</span>
           </div>
 
           <div class="flex justify-between">
             <span class="font-medium">Anteil an erneuerbaren Materialien</span>
-            <span>{{ data.percentageOfRenewableMaterial }}</span>
+            <span>{{ data.percentageOfRenewableMaterial | number }} %</span>
           </div>
           <div class="flex justify-between">
             <span class="font-medium">Anteil an Recyclingmaterialien</span>
-            <span>{{ data.percentageOfRecycledMaterial }}</span>
+            <span>{{ data.percentageOfRecycledMaterial | number }} %</span>
           </div>
 
           <div class="flex justify-between">
             <span class="font-medium">Gewicht</span>
-            <span>{{ data.weight }}</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="font-medium">Material</span>
-            <span>{{ data.material.name }}</span>
+            <span>{{ data.weight | number }} kg</span>
           </div>
         </div>
       </div>
@@ -79,6 +75,51 @@
           }
         </div>
       </div>
+
+      <!-- Materials Card -->
+      @if (data.materials) {
+        <div class="col-span-3 rounded-lg bg-neutral-200 p-6">
+          <h2 class="mb-2 font-medium">Materialien</h2>
+          <div
+            class="grid grid-cols-1 gap-4 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-8"
+          >
+            @if (data.materials) {
+              @for (material of data.materials; track $index) {
+                <div class="flex-shrink-0 rounded-lg bg-neutral-300 p-4">
+                  <div class="flex flex-col gap-2">
+                    <div class="font-medium">
+                      {{ material[0].name }}
+                    </div>
+                    <div class="text-sm">{{ material[1] | number }} %</div>
+                    <div class="flex flex-wrap gap-2">
+                      @if (material[2] !== null && material[2] !== undefined) {
+                        <span
+                          class="rounded-full border border-gray-300 px-3 py-1 text-xs"
+                        >
+                          {{ material[2] ? 'Erneuerbar' : 'Nicht erneuerbar' }}
+                        </span>
+                      }
+                      @if (material[3]) {
+                        <span
+                          class="rounded-full border border-gray-300 px-3 py-1 text-xs"
+                        >
+                          {{ material[3] ? 'Primär' : 'Sekundär' }}
+                        </span>
+                      }
+                    </div>
+                  </div>
+                </div>
+              }
+              @if (data.materials.length === 0) {
+                <span class="text-neutral-600"
+                  >Keine Materialien angegeben.</span
+                >
+              }
+            }
+          </div>
+        </div>
+      }
+
       <app-part-packaging
         class="col-span-3"
         [id$]="id() ?? ''"
@@ -149,10 +190,13 @@
         </mat-autocomplete>
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label i18n>Material</mat-label>
-        <input matInput formControlName="materialName" />
-      </mat-form-field>
+      <div class="col-span-2 mt-4">
+        <app-select-materials
+          (addMaterialEvent)="addMaterialFormGroup(materialsForm)"
+          (removeMaterialEvent)="removeMaterialFormGroup(materialsForm, $event)"
+          [materialsForm]="materialsForm"
+        ></app-select-materials>
+      </div>
     </div>
     <div class="flex w-full justify-end">
       <button mat-flat-button (click)="sheet.close(); save()">Speichern</button>

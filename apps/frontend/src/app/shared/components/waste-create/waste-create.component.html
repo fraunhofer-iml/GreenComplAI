@@ -230,6 +230,7 @@
     (removeMaterialEvent)="
       removeMaterialFormGroup(waste().controls.wasteMaterials, $event)
     "
-    [form]="waste().controls.wasteMaterials"
+    [materialsForm]="waste().controls.wasteMaterials"
+    [isWateMaterial]="true"
   ></app-select-materials>
 </app-base-sheet>

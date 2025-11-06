@@ -10,6 +10,7 @@ import { KeycloakBearerInterceptor, KeycloakService } from 'keycloak-angular';
 import {
   HTTP_INTERCEPTORS,
   provideHttpClient,
+  withInterceptors,
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import {
@@ -26,6 +27,7 @@ import {
   QueryClient,
 } from '@tanstack/angular-query-experimental';
 import { appRoutes } from './app.routes';
+import { keycloakTokenRefreshInterceptor } from './core/interceptors/keycloak-token-refresh.interceptor';
 import { AuthenticationService } from './core/services/authentication/authentication.service';
 import { CompaniesService } from './core/services/companies/companies.service';
 import { PackagingService } from './core/services/packaging/packaging.service';
@@ -59,7 +61,10 @@ export const appConfig: ApplicationConfig = {
     KeycloakService,
     AuthenticationService,
     provideAnimationsAsync(),
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(
+      withInterceptorsFromDi(),
+      withInterceptors([keycloakTokenRefreshInterceptor])
+    ),
     provideQueryClient(new QueryClient()),
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,

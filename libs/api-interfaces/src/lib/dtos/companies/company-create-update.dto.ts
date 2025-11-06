@@ -16,11 +16,11 @@ export class CompanyCreateDto {
   flags: string[];
 
   constructor(
-    name: string,
-    email: string,
-    phone: string,
-    addresses: AddressDto[],
-    flags: string[]
+    name = '',
+    email = '',
+    phone = '',
+    addresses: AddressDto[] = [],
+    flags: string[] = []
   ) {
     this.name = name;
     this.email = email;
