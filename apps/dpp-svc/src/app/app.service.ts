@@ -25,7 +25,6 @@ import { Injectable, Logger } from '@nestjs/common';
 import {
   CircularPropertiesSubmodule,
   ESRSynergiesSubmodule,
-  LegalComplianceSubmodule,
   ProductImportService,
 } from './submodules';
 import { AasSubmoduleService } from './submodules/aas-submodule.service';
@@ -140,8 +139,6 @@ export class AppService {
   async getProductFromDpp(id: string): Promise<ProductDto> {
     const dpp = await this.getDpp(id);
 
-    // console.log(dpp);
-
     const submodelMap = new Map<string, ISubmodelElement[]>();
     dpp.connectedSubmodels.forEach((e) =>
       submodelMap.set(e.idShort, e.submodelElements)
@@ -154,19 +151,13 @@ export class AppService {
         submodelMap.get('product_identification')
       );
 
-    this.logger.debug('product_identification');
-
-    const legalComplianceSubmodel: LegalComplianceSubmodule =
-      this.privateProductImportService.getLegalComplianceSubmodel(
-        submodelMap.get('legal_compliance')
-      );
-    this.logger.debug('legal_compliance');
+    // TODO: legalComplianceSubmodel
+    // TODO: usagePhase
 
     const circiularProperties: CircularPropertiesSubmodule =
       this.privateProductImportService.getCircularProperties(
         submodelMap.get('circular_properties')
       );
-    this.logger.debug('circular_properties');
 
     const ESRSynergies: ESRSynergiesSubmodule =
       this.privateProductImportService.getESRSynergiesSubmodel(
@@ -178,8 +169,6 @@ export class AppService {
         submodelMap.get('packaging')
       );
 
-    console.log(packagingSubmodel);
-
     const materialComposition: {
       materials: [MaterialDto, number, boolean?, boolean?][];
       criticalRawMaterials: [MaterialDto, number][];
@@ -187,26 +176,13 @@ export class AppService {
       submodelMap.get('material_composition')
     );
 
-    const usagePhase = this.privateProductImportService.getUsagPhaseSubmodel(
-      submodelMap.get('usage_phase')
-    );
-
-    product.supplier = {
-      id: null,
-      ...productIdentificationSubmodel.supplier,
-      flags: [],
-    };
-
     product = {
       id: id,
       name: dpp.displayName[0].text,
       productId: productIdentificationSubmodel.productId,
-      supplier: {
-        id: null,
-        ...productIdentificationSubmodel.supplier,
-        flags: [],
-      },
-
+      supplier: productIdentificationSubmodel.supplier
+        ? { ...productIdentificationSubmodel.supplier }
+        : null,
       reparability: circiularProperties.repairabilityScore,
       productCarbonFootprint: ESRSynergies.productCarbonFootprint,
       waterUsed: ESRSynergies.waterFootprint,

@@ -529,16 +529,18 @@ export class ProductsController {
       userId: user.sub,
     });
   }
+
   @Roles(
     getRealmRole(AuthRoles.SUSTAINABILITY_MANAGER),
     getRealmRole(AuthRoles.BUYER)
   )
+  @ApiBearerAuth()
   @Post('import-dpp')
   importFromDpp(
     @Body() dto: ImportDppDto,
     @KeycloakUser() user: AuthenticatedKCUser
   ) {
     this.logger.debug(dto);
-    return this.productsService.importFromDpp(dto, user);
+    return this.productsService.importFromDpp(dto, user.sub);
   }
 }

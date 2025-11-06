@@ -1,7 +1,7 @@
 <div
   class="hover:border-primary-600 border-neutral-250 bg-neutral-250 flex h-full min-h-full w-full flex-row items-center justify-between gap-2 rounded-md border-2 p-4 hover:cursor-pointer"
-  [ngClass]="{ 'border-primary-700': !!form().value }"
-  (click)="form().patchValue(!form().value)"
+  [ngClass]="{ 'border-primary-700': form().value === true }"
+  (click)="form().patchValue(!checkbox.checked)"
   role="none"
 >
   <div class="flex h-full flex-col gap-2">
@@ -9,5 +9,9 @@
     <ng-content class="text-sm"></ng-content>
   </div>
 
-  <mat-checkbox #checkbox [formControl]="form()"></mat-checkbox>
+  <mat-checkbox
+    #checkbox
+    [formControl]="form()"
+    (change)="form().patchValue(!checkbox.checked)"
+  ></mat-checkbox>
 </div>

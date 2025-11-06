@@ -367,18 +367,19 @@ export class ProductsService {
     );
   }
 
-  async importFromDpp(dto: ImportDppDto, user: AuthenticatedKCUser) {
+  async importFromDpp(dto: ImportDppDto, userId: string) {
     let supplier: CompanyDto | undefined;
-    console.log('dto ', dto);
-    // TODO: fix create associated company endpoint
-    // if (dto.supplier) {
-    //   const { company, username } =
-    //     await this.companiesService.createAssociatedCompany({
-    //       dto: dto.supplier,
-    //       userId: user.sub,
-    //     });
-    //   supplier = company;
-    // }
+
+    this.logger.debug(userId);
+
+    if (dto.supplier) {
+      const { company, username } =
+        await this.companiesService.createAssociatedCompany({
+          dto: dto.supplier,
+          userId: userId,
+        });
+      supplier = company;
+    }
 
     this.logger.debug(supplier);
 
@@ -392,23 +393,28 @@ export class ProductsService {
     const masterData: Partial<ProductMasterDataDto> = {
       gtin: dto.gtin,
       taricCode: dto.taricCode,
-      supplier: supplier.id,
+      supplier: supplier?.id,
       name: dto.name,
       waterUsed: dto.waterUsed,
+      digitalProductPassportUrl: `dpp/${dto.aasIdentifier}`,
+      reparability: dto.reparability,
     };
+    this.logger.debug(dto.materials);
+    console.log('materials');
     const productUpdateDto: ProductUpdateDto = {
       masterData: masterData,
       criticalRawMaterials: dto.criticalRawMaterials,
       materials: dto.materials,
       rareEarths: undefined,
     };
+
+    this.logger.debug(dto.id);
     return this.update({ id: dto.id, dto: productUpdateDto });
   }
 
   createFromDpp(dto: ImportDppDto, supplier?: CompanyDto) {
-    console.log(supplier);
     const productCreateDto: ProductCreateDto = {
-      productId: dto.productId ?? `aas-id-${dto.aasIdentifier}`,
+      productId: `aas-id-${dto.productId ?? dto.aasIdentifier}`,
       gtin: dto.gtin,
       taricCode: dto.taricCode,
       supplier: supplier?.id ?? null,

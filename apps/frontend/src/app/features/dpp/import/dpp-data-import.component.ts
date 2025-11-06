@@ -62,7 +62,6 @@ export class DppDataImportComponent {
   urlInput = signal<string>('');
 
   aasIdentifier = computed(() => {
-    console.log(this.productId());
     return this.id() ?? this.urlInput();
   });
 
@@ -81,7 +80,6 @@ export class DppDataImportComponent {
   }));
 
   dppMaterials = computed(() => {
-    console.log(this.dppQuery.data());
     const res = {
       materials: this.dppQuery
         .data()
@@ -129,7 +127,7 @@ export class DppDataImportComponent {
     mutationFn: (dto: ImportDppDto) => {
       return this.productService.importDpp(dto);
     },
-    onSuccess: () => this.router.navigate(['/products', this.id()]),
+    onSuccess: () => this.router.navigate(['/products', this.productId()]),
     onError: (error) => {
       console.error(error);
       toast.error('Speichern fehlgeschlagen');
@@ -149,6 +147,9 @@ export class DppDataImportComponent {
     const dto = {} as ImportDppDto;
 
     dto.aasIdentifier = this.aasIdentifier();
+    dto.productId = data.productId;
+
+    if (this.productId()) dto.id = this.productId();
 
     if (formValue.name) dto.name = data.name;
 
@@ -158,7 +159,6 @@ export class DppDataImportComponent {
 
     if (formValue.waterUsed) dto.waterUsed = data.waterUsed;
 
-    if (formValue.productId) dto.productId = data.productId;
     if (formValue.productCarbonFootprint)
       dto.productCarbonFootprint = data.productCarbonFootprint;
 
