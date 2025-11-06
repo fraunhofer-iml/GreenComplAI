@@ -104,8 +104,6 @@ export class CompaniesService {
       include: { addresses: true },
     });
 
-    console.log(existingCompany);
-
     if (existingCompany) return { company: existingCompany, username: null };
 
     const userCreationResult = await this.userManagementService.createUser({

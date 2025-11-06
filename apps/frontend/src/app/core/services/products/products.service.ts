@@ -225,8 +225,6 @@ export class ProductsService extends DataService<PaginatedData<ProductDto>> {
   }
 
   importDpp(dto: ImportDppDto) {
-    console.log(dto);
-
     return lastValueFrom(
       this.http.post(`${this.url}${ApiUris.products}/import-dpp`, dto)
     );

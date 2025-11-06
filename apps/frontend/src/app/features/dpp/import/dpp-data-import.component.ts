@@ -93,7 +93,6 @@ export class DppDataImportComponent {
   });
 
   productMaterials = computed(() => {
-    console.log(this.productQuery.data());
     const res = {
       materials: this.productQuery
         .data()
@@ -134,50 +133,34 @@ export class DppDataImportComponent {
     },
   }));
 
-  constructor() {
-    this.formGroup.valueChanges.subscribe((val) => console.log(val));
-  }
-
   submit() {
     const data = this.dppQuery.data();
     if (!data) return;
-    console.log(this.formGroup.value);
-    const formValue = this.formGroup.value;
 
+    const formValue = this.formGroup.value;
     const dto = {} as ImportDppDto;
 
     dto.aasIdentifier = this.aasIdentifier$();
-
     if (formValue.productId) dto.productId = data.productId;
-
     if (this.productId()) dto.id = this.productId();
-
     if (formValue.name) dto.name = data.name;
-
     if (formValue.taricCode) dto.taricCode = data.taricCode;
-
     if (formValue.gtin) dto.gtin = data.gtin;
-
     if (formValue.waterUsed) dto.waterUsed = data.waterUsed;
-
     if (formValue.productCarbonFootprint)
       dto.productCarbonFootprint = data.productCarbonFootprint;
-
     if (formValue.supplier) {
       dto.supplier = data.supplier;
     }
-
     if (formValue.reparability) {
       dto.reparability = data.reparability;
     }
-
     if (formValue.importer) {
       dto.importerName = data.importerName;
       dto.importerPhone = data.importerPhone;
       dto.importerEmail = data.importerEmail;
       dto.importerAddress = data.importerAddress;
     }
-
     if (formValue.materials)
       dto.materials = (data.materials ?? []).map((m) => ({
         material: m[0].name,
@@ -185,7 +168,6 @@ export class DppDataImportComponent {
         primary: m[2],
         renewable: m[3],
       }));
-
     if (formValue.criticalRawMaterials) {
       dto.criticalRawMaterials = [];
       (data.criticalRawMaterials ?? []).forEach((m) => {
@@ -195,8 +177,6 @@ export class DppDataImportComponent {
         });
       });
     }
-
-    console.log(dto);
 
     this.mutation.mutate(dto);
   }
