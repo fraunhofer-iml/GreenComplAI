@@ -39,7 +39,7 @@ describe('BlockchainConnectorService', () => {
         {
           provide: TokenReadService,
           useValue: {
-            getToken: jest.fn(),
+            getTokens: jest.fn(),
           },
         },
         BlockchainConnectorService,
