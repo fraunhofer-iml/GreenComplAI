@@ -12,7 +12,7 @@ import { ConfigurationModule } from '@ap2/configuration';
 import { DatabaseModule } from '@ap2/database';
 import { NftDatabaseFactory } from './util/nft-database-factory';
 import { NftBlockchainFactory } from './util/nft-blockchain-factory';
-import { BlockchainConnectorModule } from '../../../../../libs/blockchain-connector/src';
+import { BlockchainConnectorModule } from '@ap2/blockchain-connector';
 
 @Module({
   imports: [ConfigurationModule, DatabaseModule, BlockchainConnectorModule],

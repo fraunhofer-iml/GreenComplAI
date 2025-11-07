@@ -8,3 +8,5 @@
 
 export * from './lib/blockchain-connector.module';
 export * from './lib/blockchain-connector.service';
+export * from './lib/mocks/token-read-dto.mock';
+export * from './lib/mocks/nft.mock';
