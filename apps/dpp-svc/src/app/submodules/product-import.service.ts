@@ -46,9 +46,10 @@ export class ProductImportService {
       taricCode: submodelMap.get('taricCode')?.value,
       supplier: supplier,
       importerName: importer?.name,
-      importerAddress: importer
-        ? `${importer.addresses[0]?.street}, ${importer.addresses[0]?.postalCode} ${importer.addresses[0]?.city}, ${importer.addresses[0]?.country}`
-        : null,
+      importerAddress:
+        importer && Array.isArray(importer.addresses) && importer.addresses.length > 0
+          ? `${importer.addresses[0].street}, ${importer.addresses[0].postalCode} ${importer.addresses[0].city}, ${importer.addresses[0].country}`
+          : null,
       importerEmail: importer?.email,
       importerPhone: importer?.phone,
     };
@@ -162,7 +163,7 @@ export class ProductImportService {
   }
 
   private submodelToCompany(map: Map<string, any>): CompanyDto {
-    if (!map || !map.get('name').value) return null;
+    if (!map || !map.get('name')?.value) return null;
 
     let address: AddressDto | undefined = undefined;
     const addressAsString = map.get('address');
@@ -206,9 +207,9 @@ export class ProductImportService {
   }): [MaterialDto, number, boolean?, boolean?] {
     return [
       new MaterialDto(data.name),
-      +data.value.get('percentage')?.value,
-      !!data.value.get('isRenewable').value,
-      !!data.value.get('isPrimary').value,
+      +(data.value.get('percentage')?.value ?? 0),
+      !!(data.value.get('isRenewable')?.value ?? false),
+      !!(data.value.get('isPrimary')?.value ?? false),
     ];
   }
 }

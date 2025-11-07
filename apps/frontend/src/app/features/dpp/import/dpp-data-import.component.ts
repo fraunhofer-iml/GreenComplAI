@@ -45,7 +45,7 @@ import { ProductCardComponent } from './comparison/product-card.component';
     ProductCardComponent,
     MatButtonModule,
     MatFormFieldModule,
-    MatFormFieldModule,
+
     MatInputModule,
   ],
   providers: [DppService],

@@ -144,7 +144,6 @@ export class AppService {
       submodelMap.set(e.idShort, e.submodelElements)
     );
 
-    let product = { id: id } as ProductDto;
 
     const productIdentificationSubmodel: Partial<ProductDto> =
       this.privateProductImportService.setIdentificationDetails(
@@ -178,7 +177,7 @@ export class AppService {
 
     product = {
       id: id,
-      name: dpp.displayName[0].text,
+      name: dpp.displayName?.[0]?.text ?? null,
       productId: productIdentificationSubmodel.productId,
       supplier: productIdentificationSubmodel.supplier
         ? { ...productIdentificationSubmodel.supplier }

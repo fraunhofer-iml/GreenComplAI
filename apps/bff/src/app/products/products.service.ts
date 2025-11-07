@@ -13,7 +13,7 @@ import {
 } from '@ap2/amqp';
 import {
   AnalysisDto,
-  AuthenticatedKCUser,
+
   CompanyDto,
   CreateProductProps,
   DeleteProductProps,
@@ -373,7 +373,7 @@ export class ProductsService {
     this.logger.debug(userId);
 
     if (dto.supplier) {
-      const { company, username } =
+      const { company } =
         await this.companiesService.createAssociatedCompany({
           dto: dto.supplier,
           userId: userId,
