@@ -9,12 +9,12 @@
 import { IdocMessagePatterns } from '@ap2/amqp';
 import {
   CreateProductFromIdocRawProps,
-  ProductCreateDto,
-  ProductDto,
+  ProductEntity,
 } from '@ap2/api-interfaces';
-import { Controller, Header, Logger } from '@nestjs/common';
+import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { IdocService } from './idoc.service';
+
 
 @Controller()
 export class IdocController {
@@ -25,7 +25,7 @@ export class IdocController {
   @MessagePattern(IdocMessagePatterns.CREATE)
   async createProductFromIdocRaw(
     @Payload() payload: CreateProductFromIdocRawProps
-  ): Promise<ProductDto> {
+  ): Promise<ProductEntity> {
     return await this.idocService.createProductFromIdocRaw(
       payload.idoc,
       payload.userId

@@ -7,7 +7,7 @@
  */
 
 import { AmqpClientEnum, IdocMessagePatterns } from '@ap2/amqp';
-import { CreateProductFromIdocRawProps, ProductDto } from '@ap2/api-interfaces';
+import { CreateProductFromIdocRawProps, ProductEntity } from '@ap2/api-interfaces';
 import { firstValueFrom } from 'rxjs';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
@@ -23,9 +23,9 @@ export class IdocService {
 
   createProductFromIdocRaw(
     props: CreateProductFromIdocRawProps
-  ): Promise<ProductDto> {
+  ): Promise<ProductEntity> {
     return firstValueFrom(
-      this.entityManagementService.send<ProductDto>(
+      this.entityManagementService.send<ProductEntity>(
         IdocMessagePatterns.CREATE,
         props
       )

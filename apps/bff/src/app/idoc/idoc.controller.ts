@@ -6,19 +6,19 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { AuthenticatedKCUser, AuthRoles, getRealmRole, ProductDto } from '@ap2/api-interfaces';
-import { KeycloakUser, Roles } from 'nest-keycloak-connect';
 import {
-  BadRequestException,
-  Controller,
-  Logger,
-  Post,
-  UploadedFile,
-  UseInterceptors,
-} from '@nestjs/common';
+  AuthenticatedKCUser,
+  AuthRoles,
+  getRealmRole,
+  ProductDto,
+  ProductEntity,
+} from '@ap2/api-interfaces';
+import { KeycloakUser, Roles } from 'nest-keycloak-connect';
+import { BadRequestException, Controller, Logger, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { IdocService } from './idoc.service';
+
 
 @ApiTags('Idoc')
 @ApiBearerAuth()
@@ -56,9 +56,7 @@ export class IdocController {
   async createProductFromIdocRaw(
     @KeycloakUser() user: AuthenticatedKCUser,
     @UploadedFile() file: Express.Multer.File
-  ): Promise<ProductDto> {
-    this.logger.log('[bff/IdocController] - Entered via file upload');
-
+  ): Promise<ProductEntity> {
     if (!file || !file.buffer?.length) {
       throw new BadRequestException('No XML file uploaded');
     }

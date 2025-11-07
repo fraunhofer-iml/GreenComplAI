@@ -52,18 +52,6 @@ export const productCreateQuery = (
             })),
           }
         : undefined,
-      productionLocation: {
-        connectOrCreate: {
-          where: { id: dto.productionLocation },
-          create: { id: dto.productionLocation, city: 'Unknown' },
-        },
-      },
-      warehouseLocation: {
-        connectOrCreate: {
-          where: { id: dto.warehouseLocation },
-          create: { id: dto.warehouseLocation, city: 'Unknown' },
-        },
-      },
     },
   }) satisfies Prisma.ProductCreateArgs;
 
