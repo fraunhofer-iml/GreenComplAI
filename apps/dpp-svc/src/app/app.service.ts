@@ -152,7 +152,7 @@ export class AppService {
     // TODO: legalComplianceSubmodel
     // TODO: usagePhase
 
-    const circiularProperties: CircularPropertiesSubmodule =
+    const circularProperties: CircularPropertiesSubmodule =
       this.productImportService.getCircularProperties(
         submodelMap.get('circular_properties')
       );
@@ -181,7 +181,7 @@ export class AppService {
       supplier: productIdentificationSubmodel.supplier
         ? { ...productIdentificationSubmodel.supplier }
         : null,
-      reparability: circiularProperties.repairabilityScore,
+      reparability: circularProperties.repairabilityScore,
       productCarbonFootprint: ESRSynergies.productCarbonFootprint,
       waterUsed: ESRSynergies.waterFootprint,
       packagings: packagingSubmodel.map((packaging) => [packaging, 0]),
