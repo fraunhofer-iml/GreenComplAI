@@ -38,7 +38,7 @@ export class AppService {
   private configuration: Configuration;
   private submoduleCreationService: SubmoduleCreationService;
   private aasSubmoduleService: AasSubmoduleService;
-  privateProductImportService: ProductImportService;
+  private productImportService: ProductImportService;
 
   constructor(private readonly configurationService: ConfigurationService) {
     this.client = new AasRepositoryClient();
@@ -53,7 +53,7 @@ export class AppService {
       this.submodelRepositoryClient
     );
 
-    this.privateProductImportService = new ProductImportService();
+    this.productImportService = new ProductImportService();
   }
 
   async getDpp(
@@ -144,9 +144,8 @@ export class AppService {
       submodelMap.set(e.idShort, e.submodelElements)
     );
 
-
     const productIdentificationSubmodel: Partial<ProductDto> =
-      this.privateProductImportService.setIdentificationDetails(
+      this.productImportService.setIdentificationDetails(
         submodelMap.get('product_identification')
       );
 
@@ -154,28 +153,28 @@ export class AppService {
     // TODO: usagePhase
 
     const circiularProperties: CircularPropertiesSubmodule =
-      this.privateProductImportService.getCircularProperties(
+      this.productImportService.getCircularProperties(
         submodelMap.get('circular_properties')
       );
 
     const ESRSynergies: ESRSynergiesSubmodule =
-      this.privateProductImportService.getESRSynergiesSubmodel(
+      this.productImportService.getESRSynergiesSubmodel(
         submodelMap.get('esr_synergies')
       );
 
     const packagingSubmodel: MaterialDto[] =
-      this.privateProductImportService.getPackagingSubmodule(
+      this.productImportService.getPackagingSubmodule(
         submodelMap.get('packaging')
       );
 
     const materialComposition: {
       materials: [MaterialDto, number, boolean?, boolean?][];
       criticalRawMaterials: [MaterialDto, number][];
-    } = this.privateProductImportService.getMaterialCompositionSubmodel(
+    } = this.productImportService.getMaterialCompositionSubmodel(
       submodelMap.get('material_composition')
     );
 
-    product = {
+    const product = {
       id: id,
       name: dpp.displayName?.[0]?.text ?? null,
       productId: productIdentificationSubmodel.productId,

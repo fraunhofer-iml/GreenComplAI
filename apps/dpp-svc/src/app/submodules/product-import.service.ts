@@ -47,7 +47,9 @@ export class ProductImportService {
       supplier: supplier,
       importerName: importer?.name,
       importerAddress:
-        importer && Array.isArray(importer.addresses) && importer.addresses.length > 0
+        importer &&
+        Array.isArray(importer.addresses) &&
+        importer.addresses.length > 0
           ? `${importer.addresses[0].street}, ${importer.addresses[0].postalCode} ${importer.addresses[0].city}, ${importer.addresses[0].country}`
           : null,
       importerEmail: importer?.email,
@@ -144,7 +146,7 @@ export class ProductImportService {
         let value = (element as Property).value;
         value = this.parseStringValue(value);
         map.set(element.idShort, {
-          name: element.displayName[0].text,
+          name: element.displayName[0]?.text,
           value: value,
         });
       }
@@ -155,7 +157,7 @@ export class ProductImportService {
           (element as SubmodelElementCollection).value
         );
         map.set(element.idShort, {
-          name: element.displayName[0].text,
+          name: element.displayName[0]?.text,
           value: nestedMap,
         });
       }

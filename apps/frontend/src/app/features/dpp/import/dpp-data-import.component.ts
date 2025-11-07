@@ -68,7 +68,7 @@ export class DppDataImportComponent {
   dppQuery = injectQuery(() => ({
     queryKey: ['dpp', this.aasIdentifier$()],
     queryFn: async (): Promise<ProductDto> =>
-      this.dppService.importProductFRomDpp(this.aasIdentifier$() ?? ''),
+      this.dppService.importProductFromDpp(this.aasIdentifier$() ?? ''),
     enabled: !!this.aasIdentifier$(),
   }));
 

@@ -79,5 +79,6 @@ export class ImportDppDto {
     this.importerPhone = importerPhone;
     this.waterUsed = waterUsed;
     this.productCarbonFootprint = productCarbonFootprint;
+    this.reparability = reparability;
   }
 }
