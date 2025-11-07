@@ -6,15 +6,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { BlockchainConnectorService } from '@ap2/blockchain-connector';
 import { TokenReadDto } from 'nft-folder-blockchain-connector-besu';
 import { Injectable } from '@nestjs/common';
 import { NftFactory } from './nft-factory';
-import { BlockchainConnectorService } from '@ap2/blockchain-connector';
 
 @Injectable()
 export class NftBlockchainFactory extends NftFactory {
-
-  constructor(private readonly blockchainConnectorService: BlockchainConnectorService) {
+  constructor(
+    private readonly blockchainConnectorService: BlockchainConnectorService
+  ) {
     super();
   }
 

@@ -35,7 +35,8 @@ services:
       context: ./blockchain/network-setup
       dockerfile: Dockerfile
       args:
-        DEPLOYMENT_MNEMONIC: 'test test test test test test test test test test test test'
+        DEPLOYMENT_MNEMONIC:
+          'test test test test test test test test test test test test'
         TOKEN_NAME: DPP
         TOKEN_SYMBOL: AP2
     depends_on:

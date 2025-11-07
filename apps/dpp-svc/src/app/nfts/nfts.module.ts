@@ -6,21 +6,28 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Module } from '@nestjs/common';
-import { NftsService } from './nfts.service';
+import { BlockchainConnectorModule } from '@ap2/blockchain-connector';
 import { ConfigurationModule } from '@ap2/configuration';
 import { DatabaseModule } from '@ap2/database';
-import { NftDatabaseFactory } from './util/nft-database-factory';
+import { Module } from '@nestjs/common';
+import { NftsService } from './nfts.service';
 import { NftBlockchainFactory } from './util/nft-blockchain-factory';
-import { BlockchainConnectorModule } from '@ap2/blockchain-connector';
+import { NftDatabaseFactory } from './util/nft-database-factory';
 
 @Module({
   imports: [ConfigurationModule, DatabaseModule, BlockchainConnectorModule],
-  providers: [NftsService, NftDatabaseFactory, NftBlockchainFactory,
-  {
-    provide: 'NftFactory',
-    useClass: process.env['BCC_ENABLED'] == 'true' ? NftBlockchainFactory : NftDatabaseFactory,
-  }],
-  exports: [NftsService]
+  providers: [
+    NftsService,
+    NftDatabaseFactory,
+    NftBlockchainFactory,
+    {
+      provide: 'NftFactory',
+      useClass:
+        process.env['BCC_ENABLED'] == 'true'
+          ? NftBlockchainFactory
+          : NftDatabaseFactory,
+    },
+  ],
+  exports: [NftsService],
 })
 export class NftsModule {}

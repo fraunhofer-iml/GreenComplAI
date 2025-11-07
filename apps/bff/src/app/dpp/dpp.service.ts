@@ -11,6 +11,7 @@ import {
   Submodel,
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { AmqpClientEnum, DppMessagePatterns } from '@ap2/amqp';
+import { TokenReadDto } from 'nft-folder-blockchain-connector-besu';
 import { firstValueFrom } from 'rxjs';
 import {
   HttpException,
@@ -21,7 +22,6 @@ import {
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { ProductsService } from '../products/products.service';
-import { TokenReadDto } from 'nft-folder-blockchain-connector-besu';
 
 @Injectable()
 export class DppService {
@@ -85,9 +85,7 @@ export class DppService {
     return dpp;
   }
 
-  async getDppNft(
-    dppId: string
-  ): Promise<TokenReadDto> {
+  async getDppNft(dppId: string): Promise<TokenReadDto> {
     return firstValueFrom(
       this.dppClient.send<TokenReadDto>(DppMessagePatterns.GET_NFT, {
         dppId,

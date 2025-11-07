@@ -17,10 +17,14 @@ export class NftsService {
 
   constructor(
     @Inject('NftFactory')
-    private readonly nftFactory: NftFactory){
-  }
+    private readonly nftFactory: NftFactory
+  ) {}
 
-  public async createNft(dppId: string, dpp: any, dppURL: string): Promise<TokenReadDto> {
+  public async createNft(
+    dppId: string,
+    dpp: any,
+    dppURL: string
+  ): Promise<TokenReadDto> {
     try {
       return this.nftFactory.mintNFT(dppId, dpp, dppURL);
     } catch (e) {

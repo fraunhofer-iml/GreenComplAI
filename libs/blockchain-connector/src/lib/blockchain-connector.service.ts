@@ -18,7 +18,6 @@ import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class BlockchainConnectorService {
-
   private logger = new Logger(BlockchainConnectorService.name);
 
   constructor(
@@ -61,7 +60,7 @@ export class BlockchainConnectorService {
   public async readNFT(dppId: string): Promise<TokenReadDto | null> {
     try {
       const foundTokens = await this.tokenReadService.getTokens(dppId);
-      if(foundTokens.length < 1) {
+      if (foundTokens.length < 1) {
         return null;
       }
       return foundTokens[0];

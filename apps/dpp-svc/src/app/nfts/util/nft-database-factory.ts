@@ -9,10 +9,19 @@
 import { createHash } from 'crypto';
 import util from 'node:util';
 import { PrismaService } from '@ap2/database';
-import { TokenAssetDto, TokenHierarchyDto, TokenMetadataDto, TokenReadDto } from 'nft-folder-blockchain-connector-besu';
+import {
+  TokenAssetDto,
+  TokenHierarchyDto,
+  TokenMetadataDto,
+  TokenReadDto,
+} from 'nft-folder-blockchain-connector-besu';
 import { Injectable, Logger } from '@nestjs/common';
 import { NftFactory } from './nft-factory';
-import { NFT_ADDRESS, NFT_MINTER_ADDRESS, NFT_OWNER_ADDRESS } from './nft.constants';
+import {
+  NFT_ADDRESS,
+  NFT_MINTER_ADDRESS,
+  NFT_OWNER_ADDRESS,
+} from './nft.constants';
 
 @Injectable()
 export class NftDatabaseFactory extends NftFactory {
@@ -45,8 +54,8 @@ export class NftDatabaseFactory extends NftFactory {
       });
       return this.convertToDto(createdNft);
     } catch (e) {
-        this.logger.error(util.inspect(e));
-        throw e;
+      this.logger.error(util.inspect(e));
+      throw e;
     }
   }
 

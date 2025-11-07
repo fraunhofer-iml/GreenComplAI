@@ -6,7 +6,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { DataIntegrityService, TokenMintService, TokenReadService } from 'nft-folder-blockchain-connector-besu';
+import {
+  DataIntegrityService,
+  TokenMintService,
+  TokenReadService,
+} from 'nft-folder-blockchain-connector-besu';
 import { Test, TestingModule } from '@nestjs/testing';
 import { BlockchainConnectorService } from './blockchain-connector.service';
 import { TokenReadDtoMock } from './mocks/token-read-dto.mock';
@@ -23,28 +27,31 @@ describe('BlockchainConnectorService', () => {
         {
           provide: DataIntegrityService,
           useValue: {
-            hashData: jest.fn()
-          }
+            hashData: jest.fn(),
+          },
         },
         {
           provide: TokenMintService,
           useValue: {
-            mintToken: jest.fn()
-          }
+            mintToken: jest.fn(),
+          },
         },
         {
           provide: TokenReadService,
           useValue: {
-            getToken: jest.fn()
-          }
+            getToken: jest.fn(),
+          },
         },
         BlockchainConnectorService,
       ],
     }).compile();
-    mockedDataIntegrityService = module.get<DataIntegrityService>(DataIntegrityService);
+    mockedDataIntegrityService =
+      module.get<DataIntegrityService>(DataIntegrityService);
     mockedTokenMintService = module.get<TokenMintService>(TokenMintService);
     mockedTokenReadService = module.get<TokenReadService>(TokenReadService);
-    service = module.get<BlockchainConnectorService>(BlockchainConnectorService);
+    service = module.get<BlockchainConnectorService>(
+      BlockchainConnectorService
+    );
   });
 
   it('mintNFT: should create a new NFT', async () => {

@@ -6,7 +6,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { DataIntegrityModule, TokenModule } from 'nft-folder-blockchain-connector-besu';
+import {
+  DataIntegrityModule,
+  TokenModule,
+} from 'nft-folder-blockchain-connector-besu';
 import { Module } from '@nestjs/common';
 import { BlockchainConnectorService } from './blockchain-connector.service';
 

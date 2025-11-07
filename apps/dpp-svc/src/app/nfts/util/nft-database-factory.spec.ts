@@ -32,11 +32,13 @@ describe('NftDatabaseFactory', () => {
       ],
     }).compile();
 
-    service = module.get<NftDatabaseFactory>(NftDatabaseFactory) as NftDatabaseFactory;
+    service = module.get<NftDatabaseFactory>(
+      NftDatabaseFactory
+    ) as NftDatabaseFactory;
   });
 
   it('mintNFT: should create a new nft', async () => {
-    const retVal = await service.mintNFT("testId", 'testDPP', 'testUrl');
+    const retVal = await service.mintNFT('testId', 'testDPP', 'testUrl');
     expect(retVal).toEqual(TokenReadDtoMock);
   });
 
