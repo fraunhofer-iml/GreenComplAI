@@ -61,20 +61,20 @@ export interface E1MBEWM {
 }
 
 export interface E1MLGNM {
-  MATNR?: string;   // Material number
-  LGNUM?: string;   // Warehouse number
-  LGORT?: string;   // Storage location
-  LGTYP?: string;   // Storage type
-  LGPLA?: string;   // Storage bin
+  MATNR?: string; // Material number
+  LGNUM?: string; // Warehouse number
+  LGORT?: string; // Storage location
+  LGTYP?: string; // Storage type
+  LGPLA?: string; // Storage bin
 }
 
 export interface E1MARDM {
-  MATNR?: string;   // Material number
-  WERKS?: string;   // Plant
-  LGORT?: string;   // Storage location
-  LABST?: string;   // Unrestricted stock
-  INSME?: string;   // Stock in quality inspection
-  SPEME?: string;   // Special stock
+  MATNR?: string; // Material number
+  WERKS?: string; // Plant
+  LGORT?: string; // Storage location
+  LABST?: string; // Unrestricted stock
+  INSME?: string; // Stock in quality inspection
+  SPEME?: string; // Special stock
 }
 
 export interface IdocMatmas05 {

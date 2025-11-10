@@ -7,7 +7,10 @@
  */
 
 import { AmqpClientEnum, IdocMessagePatterns } from '@ap2/amqp';
-import { CreateProductFromIdocRawProps, ProductEntity } from '@ap2/api-interfaces';
+import {
+  CreateProductFromIdocRawProps,
+  ProductEntity,
+} from '@ap2/api-interfaces';
 import { firstValueFrom } from 'rxjs';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';

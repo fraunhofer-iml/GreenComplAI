@@ -27,7 +27,6 @@ export class IdocService {
   ): Promise<ProductEntity> {
     this.logger.log('[ems/IdocService] - Entered createProductFromIdocRaw()');
 
-
     const parser = new XMLParser({
       ignoreAttributes: false,
       parseTagValue: true,
@@ -49,7 +48,7 @@ export class IdocService {
     }
 
     // --- Extract segments ---
-    const maram = idocObj.E1MARAM?.[0]// General material master data
+    const maram = idocObj.E1MARAM?.[0]; // General material master data
     const maktm = idocObj.E1MAKTM; // Texts (name, description, language)
     const marm = idocObj.E1MARM?.[0]; // Units of measure / GTIN
     const marcm = idocObj.E1MARCM?.[0]; // Plant view
@@ -115,7 +114,9 @@ export class IdocService {
       },
     ];
 
-    this.logger.verbose(`[ems/IdocService] ProductCreateDto as JSON: ${JSON.stringify(parsed, null, 2)}`);
+    this.logger.verbose(
+      `[ems/IdocService] ProductCreateDto as JSON: ${JSON.stringify(parsed, null, 2)}`
+    );
 
     const product = await this.productService.create({
       dto: dto,

@@ -15,7 +15,6 @@ import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { IdocService } from './idoc.service';
 
-
 @Controller()
 export class IdocController {
   private readonly logger: Logger = new Logger(IdocController.name);
