@@ -389,7 +389,7 @@ export class ProductsService {
 
   updateFromDpp(dto: ImportDppDto, supplier: CompanyDto) {
     const masterData: Partial<ProductMasterDataDto> = {
-      productId: dto.productId ?? `aas-id-${dto.aasIdentifier}`,
+      productId: dto.productId ?? dto.aasIdentifier,
       gtin: dto.gtin,
       taricCode: dto.taricCode,
       supplier: supplier?.id,
@@ -397,6 +397,7 @@ export class ProductsService {
       waterUsed: dto.waterUsed,
       digitalProductPassportUrl: `dpp/${dto.aasIdentifier}`,
       reparability: dto.reparability,
+      productCarbonFootprint: dto.productCarbonFootprint,
     };
 
     const productUpdateDto: ProductUpdateDto = {
@@ -411,7 +412,7 @@ export class ProductsService {
 
   createFromDpp(dto: ImportDppDto, supplier?: CompanyDto) {
     const productCreateDto: ProductCreateDto = {
-      productId: `aas-id-${dto.productId ?? dto.aasIdentifier}`,
+      productId: dto.productId ?? dto.aasIdentifier,
       gtin: dto.gtin,
       taricCode: dto.taricCode,
       supplier: supplier?.id ?? null,
@@ -422,6 +423,7 @@ export class ProductsService {
       digitalProductPassportUrl: `dpp/${dto.aasIdentifier}`,
       reparability: dto.reparability,
       flags: [],
+      productCarbonFootprint: dto.productCarbonFootprint,
     };
 
     if (!productCreateDto.name) {

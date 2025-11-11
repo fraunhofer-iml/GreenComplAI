@@ -126,8 +126,9 @@ export class DppDataImportComponent {
     mutationFn: (dto: ImportDppDto) => {
       return this.productService.importDpp(dto);
     },
-    onSuccess: () =>
-      this.router.navigate(['/products', this.productId() ?? '']),
+    onSuccess: (data: ProductDto) => {
+      this.router.navigate(['/products', data.id]);
+    },
     onError: (error) => {
       console.error(error);
       toast.error('Speichern fehlgeschlagen');

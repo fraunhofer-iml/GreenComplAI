@@ -65,7 +65,6 @@ export class ImportDppDto {
   ) {
     this.materials = materials;
     this.criticalRawMaterials = criticalRawMaterials;
-
     this.id = id;
     this.aasIdentifier = aasIdentifier;
     this.productId = productId;
