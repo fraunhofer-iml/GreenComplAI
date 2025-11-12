@@ -366,7 +366,7 @@ export class ProductsService {
     );
   }
 
-  async importFromDpp(dto: ImportDppDto, userId: string) {
+  async importFromDpp(dto: ImportDppDto, userId: string): Promise<ProductDto> {
     let supplier: CompanyDto | undefined;
 
     this.logger.debug(userId);
@@ -379,7 +379,7 @@ export class ProductsService {
       supplier = company;
     }
 
-    this.logger.debug(supplier);
+    this.logger.debug(`Importing DPP with supplier: ${supplier}`);
 
     if (dto.id) {
       return this.updateFromDpp(dto, supplier);
@@ -387,7 +387,7 @@ export class ProductsService {
     return this.createFromDpp(dto, supplier);
   }
 
-  updateFromDpp(dto: ImportDppDto, supplier: CompanyDto) {
+  updateFromDpp(dto: ImportDppDto, supplier: CompanyDto): Promise<ProductDto> {
     const masterData: Partial<ProductMasterDataDto> = {
       productId: dto.productId ?? dto.aasIdentifier,
       gtin: dto.gtin,
@@ -410,7 +410,7 @@ export class ProductsService {
     return this.update({ id: dto.id, dto: productUpdateDto });
   }
 
-  createFromDpp(dto: ImportDppDto, supplier?: CompanyDto) {
+  createFromDpp(dto: ImportDppDto, supplier?: CompanyDto): Promise<ProductDto> {
     const productCreateDto: ProductCreateDto = {
       productId: dto.productId ?? dto.aasIdentifier,
       gtin: dto.gtin,

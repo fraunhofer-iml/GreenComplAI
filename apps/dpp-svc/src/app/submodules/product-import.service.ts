@@ -140,7 +140,7 @@ export class ProductImportService {
   private mapSubmodelsToMap(
     map: Map<string, unknown>,
     submodelElements: ISubmodelElement[]
-  ) {
+  ): void {
     (submodelElements ?? []).forEach((element) => {
       if (element.modelType() === ModelType.Property) {
         let value = (element as Property).value;
