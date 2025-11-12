@@ -540,7 +540,6 @@ export class ProductsController {
     @Body() dto: ImportDppDto,
     @KeycloakUser() user: AuthenticatedKCUser
   ) {
-    this.logger.debug(dto);
     return this.productsService.importFromDpp(dto, user.sub);
   }
 }
