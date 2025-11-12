@@ -38,7 +38,7 @@ export class DppService {
     );
   }
 
-  importProductFromDpp(aasIdentifier: string) {
+  importProductFromDpp(aasIdentifier: string): Promise<ProductDto> {
     return lastValueFrom(
       this.http.get<ProductDto>(
         `${this.url}${ApiUris.dpp}/${aasIdentifier}/product`

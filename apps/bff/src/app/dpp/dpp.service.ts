@@ -11,7 +11,11 @@ import {
   Submodel,
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { AmqpClientEnum, DppMessagePatterns } from '@ap2/amqp';
-import { ProductDto } from '@ap2/api-interfaces';
+import {
+  PackagingEntity,
+  ProductDto,
+  ProductEntity,
+} from '@ap2/api-interfaces';
 import { firstValueFrom } from 'rxjs';
 import {
   HttpException,
@@ -21,6 +25,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { toProductDto } from '../products/product.mapper';
 import { ProductsService } from '../products/products.service';
 
 @Injectable()
@@ -87,11 +92,13 @@ export class DppService {
 
   async getProduct(id: string): Promise<ProductDto> {
     const productFromDpp = await firstValueFrom(
-      this.dppClient.send<ProductDto>(DppMessagePatterns.GET_PRODUCT, {
+      this.dppClient.send<
+        Promise<Partial<ProductEntity> & { packaging: PackagingEntity[] }>
+      >(DppMessagePatterns.GET_PRODUCT, {
         id,
       })
     );
 
-    return productFromDpp;
+    return toProductDto({ ...productFromDpp } as ProductEntity);
   }
 }

@@ -13,3 +13,5 @@ export * from './packaging.entity';
 export * from './product-group.entity';
 export * from './report.entity';
 export * from './waste.entity';
+export * from './address.entity';
+export * from './material.entity';

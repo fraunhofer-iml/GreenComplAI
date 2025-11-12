@@ -14,7 +14,13 @@ import {
   LangStringNameType,
   Submodel,
 } from '@aas-core-works/aas-core3.0-typescript/types';
-import { FileDto, MaterialDto, ProductDto } from '@ap2/api-interfaces';
+import {
+  FileDto,
+  MaterialEntity,
+  PackagingEntity,
+  ProductDto,
+  ProductEntity,
+} from '@ap2/api-interfaces';
 import { ConfigurationService } from '@ap2/configuration';
 import {
   AasRepositoryClient,
@@ -136,7 +142,9 @@ export class AppService {
     return result.data;
   }
 
-  async getProductFromDpp(id: string): Promise<ProductDto> {
+  async getProductFromDpp(
+    id: string
+  ): Promise<Partial<ProductEntity> & { packaging: PackagingEntity[] }> {
     const dpp = await this.getDpp(id);
 
     const submodelMap = new Map<string, ISubmodelElement[]>();
@@ -144,7 +152,7 @@ export class AppService {
       submodelMap.set(e.idShort, e.submodelElements)
     );
 
-    const productIdentificationSubmodel: Partial<ProductDto> =
+    const productIdentificationSubmodel: Partial<ProductEntity> =
       this.productImportService.setIdentificationDetails(
         submodelMap.get('product_identification')
       );
@@ -162,35 +170,42 @@ export class AppService {
         submodelMap.get('esr_synergies')
       );
 
-    const packagingSubmodel: MaterialDto[] =
+    const packagingSubmodel: PackagingEntity[] =
       this.productImportService.getPackagingSubmodule(
         submodelMap.get('packaging')
       );
 
     const materialComposition: {
-      materials: [MaterialDto, number, boolean?, boolean?][];
-      criticalRawMaterials: [MaterialDto, number][];
+      materials: MaterialEntity[];
+      criticalRawMaterials: MaterialEntity[];
     } = this.productImportService.getMaterialCompositionSubmodel(
       submodelMap.get('material_composition')
     );
 
-    const product = {
+    const product: Partial<ProductEntity> = {
       id: id,
       name: dpp.displayName?.[0]?.text ?? null,
       productId: productIdentificationSubmodel.productId,
       supplier: productIdentificationSubmodel.supplier
-        ? { ...productIdentificationSubmodel.supplier }
+        ? {
+            ...productIdentificationSubmodel.supplier,
+            addresses: productIdentificationSubmodel.supplier?.addresses.map(
+              (a) => ({ ...a, companyId: null })
+            ),
+          }
         : null,
       reparability: circularProperties.repairabilityScore,
       productCarbonFootprint: ESRSynergies.productCarbonFootprint,
       waterUsed: ESRSynergies.waterFootprint,
-      packagings: packagingSubmodel.map((packaging) => [packaging, 0]),
       materials: materialComposition.materials,
       criticalRawMaterials: materialComposition.criticalRawMaterials,
       taricCode: productIdentificationSubmodel.taricCode,
       gtin: productIdentificationSubmodel.gtin,
-    } as ProductDto;
+      waste: null,
+    };
 
-    return product;
+    console.log(product);
+
+    return { ...product, packaging: packagingSubmodel };
   }
 }

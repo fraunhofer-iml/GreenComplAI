@@ -13,13 +13,13 @@ import {
   SubmodelElementCollection,
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import {
-  AddressDto,
-  CompanyDto,
+  AddressEntity,
+  CompanyEntity,
   CRITICAL_RAW_MATERIALS,
   CriticalRawMaterials,
-  MaterialDto,
-  PackagingDto,
-  ProductDto,
+  MaterialEntity,
+  PackagingEntity,
+  ProductEntity,
 } from '@ap2/api-interfaces';
 import { Injectable } from '@nestjs/common';
 import {
@@ -31,7 +31,7 @@ import {
 export class ProductImportService {
   setIdentificationDetails(
     submodelElements: ISubmodelElement[]
-  ): Partial<ProductDto> {
+  ): Partial<ProductEntity> {
     const submodelMap = new Map<string, any>();
 
     this.mapSubmodelsToMap(submodelMap, submodelElements);
@@ -40,7 +40,7 @@ export class ProductImportService {
 
     const importer = this.submodelToCompany(submodelMap.get('importer')?.value);
 
-    const submodelData: Partial<ProductDto> = {
+    const submodelData: Partial<ProductEntity> = {
       productId: submodelMap.get('uniqueProductIdentifier')?.value,
       gtin: submodelMap.get('gtin')?.value,
       taricCode: submodelMap.get('taricCode')?.value,
@@ -88,20 +88,22 @@ export class ProductImportService {
     return submodel;
   }
 
-  getPackagingSubmodule(submodelElements: ISubmodelElement[]): PackagingDto[] {
+  getPackagingSubmodule(
+    submodelElements: ISubmodelElement[]
+  ): PackagingEntity[] {
     if (!submodelElements || submodelElements.length === 0) return [];
 
     const submodelMap = new Map<string, any>();
     this.mapSubmodelsToMap(submodelMap, submodelElements);
 
-    const materials: PackagingDto[] = [];
+    const materials: PackagingEntity[] = [];
     for (let index = 1; index < submodelElements.length; index++) {
       const element = submodelMap.get(`packagingMaterial_${index - 1}`);
 
-      const packaging: PackagingDto = {
+      const packaging: PackagingEntity = {
         name: element.value?.get('name'),
         weight: element.value?.get('weight'),
-      } as PackagingDto;
+      } as PackagingEntity;
 
       materials.push(packaging);
     }
@@ -110,13 +112,13 @@ export class ProductImportService {
   }
 
   getMaterialCompositionSubmodel(submodelElements: ISubmodelElement[]): {
-    criticalRawMaterials: [MaterialDto, number][];
-    materials: [MaterialDto, number, boolean?, boolean?][];
+    criticalRawMaterials: MaterialEntity[];
+    materials: MaterialEntity[];
   } {
     const submodelMap = new Map<string, any>();
     this.mapSubmodelsToMap(submodelMap, submodelElements);
 
-    const items: [MaterialDto, number, boolean?, boolean?][] = [];
+    const items: MaterialEntity[] = [];
     for (let index = 1; index < submodelElements.length; index++) {
       const element = this.submodelToMaterial(
         submodelMap.get(`material_${index - 1}`)
@@ -125,12 +127,12 @@ export class ProductImportService {
       items.push(element);
     }
 
-    const materials: [MaterialDto, number, boolean?, boolean?][] = [];
+    const materials: MaterialEntity[] = [];
 
-    const criticalRawMaterials: [MaterialDto, number][] = [];
+    const criticalRawMaterials: MaterialEntity[] = [];
     items.forEach((m) =>
-      CRITICAL_RAW_MATERIALS.includes(m[0].name as CriticalRawMaterials)
-        ? criticalRawMaterials.push([m[0], m[1]])
+      CRITICAL_RAW_MATERIALS.includes(m.materialName as CriticalRawMaterials)
+        ? criticalRawMaterials.push(m)
         : materials.push(m)
     );
 
@@ -143,11 +145,11 @@ export class ProductImportService {
   ): void {
     (submodelElements ?? []).forEach((element) => {
       if (element.modelType() === ModelType.Property) {
-        let value = (element as Property).value;
-        value = this.parseStringValue(value);
+        const value = (element as Property).value;
+        const parsedValue = this.parseStringValue(value);
         map.set(element.idShort, {
           name: element.displayName[0]?.text,
-          value: value,
+          value: parsedValue,
         });
       }
       if (element.modelType() === ModelType.SubmodelElementCollection) {
@@ -164,10 +166,10 @@ export class ProductImportService {
     });
   }
 
-  private submodelToCompany(map: Map<string, any>): CompanyDto {
+  private submodelToCompany(map: Map<string, any>): CompanyEntity {
     if (!map || !map.get('name')?.value) return null;
 
-    let address: AddressDto | undefined = undefined;
+    let address: AddressEntity | undefined = undefined;
     const addressAsString = map.get('address');
     if (addressAsString) {
       const [street, cityInformation, country] = map
@@ -176,10 +178,12 @@ export class ProductImportService {
 
       const [postcode, city] = cityInformation.trim().split(' ');
       address = {
+        id: null,
         street: street,
         city: city,
         postalCode: postcode,
         country: country,
+        companyId: null,
       };
     }
 
@@ -188,12 +192,14 @@ export class ProductImportService {
       email: map.get('email').value,
       phone: map.get('phone').value,
       addresses: [address],
-    } as CompanyDto;
+    } as CompanyEntity;
 
     return company;
   }
 
-  private parseStringValue(value: string) {
+  private parseStringValue(
+    value: string
+  ): string | string[] | number | boolean {
     if (!value) return null;
     if (typeof value === 'string' && value.startsWith('["'))
       return JSON.parse(value);
@@ -206,12 +212,14 @@ export class ProductImportService {
   submodelToMaterial(data: {
     name: string;
     value: Map<string, { name: string; value: string | number | boolean }>;
-  }): [MaterialDto, number, boolean?, boolean?] {
-    return [
-      new MaterialDto(data.name),
-      +(data.value.get('percentage')?.value ?? 0),
-      !!(data.value.get('isRenewable')?.value ?? false),
-      !!(data.value.get('isPrimary')?.value ?? false),
-    ];
+  }): MaterialEntity {
+    return {
+      material: { name: data.name, id: null },
+      productId: null,
+      materialName: data.name,
+      percentage: +(data.value.get('percentage')?.value ?? 0),
+      primary: !!(data.value.get('isPrimary')?.value ?? false),
+      renewable: !!(data.value.get('isRenewable')?.value ?? false),
+    };
   }
 }
