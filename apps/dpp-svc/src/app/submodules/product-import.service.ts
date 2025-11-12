@@ -59,7 +59,9 @@ export class ProductImportService {
     return submodelData;
   }
 
-  getCircularProperties(submodelElements: ISubmodelElement[]) {
+  getCircularProperties(
+    submodelElements: ISubmodelElement[]
+  ): CircularPropertiesSubmodule {
     const submodelMap = new Map<string, any>();
     this.mapSubmodelsToMap(submodelMap, submodelElements);
 
