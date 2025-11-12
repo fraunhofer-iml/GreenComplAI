@@ -369,7 +369,7 @@ export class ProductsService {
   async importFromDpp(dto: ImportDppDto, userId: string): Promise<ProductDto> {
     let supplier: CompanyDto | undefined;
 
-    this.logger.debug(userId);
+    this.logger.debug(`Importing DPP by user with ID: ${userId}`);
 
     if (dto.supplier) {
       const { company } = await this.companiesService.createAssociatedCompany({
