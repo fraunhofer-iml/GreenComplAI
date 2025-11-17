@@ -145,12 +145,7 @@
               [data]="data.flags"
               [topic]="'Preis'"
               [element]="'price'"
-              ><span
-                >{{
-                  (data.price ?? 0).toFixed(2) | number: '1.2'
-                }}
-                €</span
-              >
+              ><span>{{ (data.price ?? 0).toFixed(2) | number: '1.2' }} €</span>
             </app-flagable>
           }
 
