@@ -6,12 +6,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@ap2/database';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class DppCompletenessService {
-  constructor(
-    private readonly prisma: PrismaService,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 }
