@@ -23,7 +23,7 @@ import { NftDatabaseFactory } from './util/nft-database-factory';
     {
       provide: 'NftFactory',
       useClass:
-        process.env['BCC_ENABLED'] == 'true'
+        process.env['BCC_ENABLED'] === 'true'
           ? NftBlockchainFactory
           : NftDatabaseFactory,
     },

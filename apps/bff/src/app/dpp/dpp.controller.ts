@@ -17,7 +17,6 @@ import {
   Body,
   Controller,
   Get,
-  Logger,
   NotFoundException,
   Param,
   Post,
@@ -34,7 +33,6 @@ import { DppService } from './dpp.service';
 @ApiTags('DPP')
 @Controller('dpp')
 export class DppController {
-  private readonly logger: Logger = new Logger(DppController.name);
 
   constructor(private readonly dppService: DppService) {}
 
@@ -86,7 +84,6 @@ export class DppController {
     description: 'Successfully got NFT',
   })
   getDppNft(@Param('dppId') dppId: string): Promise<TokenReadDto> {
-    console.log('Fine NFT for remoteId: ', dppId);
     return this.dppService.getDppNft(dppId).then((foundToken) => {
       if (!foundToken) {
         throw new NotFoundException('Nft not found');

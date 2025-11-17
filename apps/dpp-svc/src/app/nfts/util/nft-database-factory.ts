@@ -64,6 +64,9 @@ export class NftDatabaseFactory extends NftFactory {
       const storedToken = await this.prismaService.nft.findFirst({
         where: { remoteId: dppId },
       });
+      if(!storedToken) {
+        return null;
+      }
       return this.convertToDto(storedToken);
     } catch (e) {
       this.logger.error(util.inspect(e));

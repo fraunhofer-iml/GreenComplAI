@@ -134,7 +134,7 @@ export class AppService {
     }
 
     try {
-      const createdDppData = this.getDpp(assetAdministrationShell.id);
+      const createdDppData = await this.getDpp(assetAdministrationShell.id);
       const dppUrl = `${process.env['BCC_DPP_TOKEN_BASE_URL']}/${assetAdministrationShell.id}`;
       await this.nftService.createNft(product.id, createdDppData, dppUrl);
     } catch (error) {

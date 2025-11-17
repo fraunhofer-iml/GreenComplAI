@@ -14,5 +14,5 @@ export abstract class NftFactory {
     dpp: any,
     dppURL: string
   ): Promise<TokenReadDto>;
-  abstract readNFT(dppId: string): Promise<TokenReadDto>;
+  abstract readNFT(dppId: string): Promise<TokenReadDto | null>;
 }

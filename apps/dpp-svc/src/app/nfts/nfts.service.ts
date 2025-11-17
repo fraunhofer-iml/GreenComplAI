@@ -24,7 +24,7 @@ export class NftsService {
     dppId: string,
     dpp: any,
     dppURL: string
-  ): Promise<TokenReadDto> {
+  ): Promise<TokenReadDto | null> {
     try {
       return this.nftFactory.mintNFT(dppId, dpp, dppURL);
     } catch (e) {

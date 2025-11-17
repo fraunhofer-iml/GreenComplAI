@@ -22,7 +22,7 @@ export class NftBlockchainFactory extends NftFactory {
   mintNFT(dppId: string, dpp: any, dppURL: string): Promise<TokenReadDto> {
     return this.blockchainConnectorService.mintNFT(dppId, dpp, dppURL);
   }
-  readNFT(dppId: string): Promise<TokenReadDto> {
+  readNFT(dppId: string): Promise<TokenReadDto | null> {
     return this.blockchainConnectorService.readNFT(dppId);
   }
 }
