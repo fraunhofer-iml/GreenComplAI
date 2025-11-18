@@ -102,7 +102,7 @@ export class OutlierDetectionAnalysisComponent {
         const maxLength = 15; // set fix text length of legend items
 
         const shortName =
-          name.length > maxLength ? name.substring(0, maxLength) + "…" : name;
+          name.length > maxLength ? name.substring(0, maxLength) + '…' : name;
 
         const value = dataTotal
           .concat(dataByItems)

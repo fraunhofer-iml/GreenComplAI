@@ -14,7 +14,7 @@ import * as echarts from 'echarts';
 import { EChartsOption, PieSeriesOption } from 'echarts';
 import moment, { Moment } from 'moment';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
-import { Component, inject, input, effect } from '@angular/core';
+import { Component, effect, inject, input } from '@angular/core';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { SkalaTheme } from '../../../../styles/chart-theme';
 import { AnalysisService } from '../../../core/services/analysis/analysis.service';
@@ -176,7 +176,6 @@ export class InflowAnalysisGraphComponent {
     unit?: string
   ): EChartsOption {
     const chartOption: EChartsOption = getDefaultOption(true, unit);
-    // chartOption.title = { text: title };
     chartOption.title = {
       text: this.wrapTitle(title),
       left: 'left',
