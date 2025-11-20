@@ -99,6 +99,13 @@ export class CompaniesService {
         HttpStatus.NOT_FOUND
       );
 
+    const existingCompany = await this.prismaService.company.findFirst({
+      where: { OR: [{ email: dto.email }, { name: dto.name }] },
+      include: { addresses: true },
+    });
+
+    if (existingCompany) return { company: existingCompany, username: null };
+
     const userCreationResult = await this.userManagementService.createUser({
       username: dto.name.toLocaleLowerCase().replace(/\s+/g, '_'),
       email: dto.email,

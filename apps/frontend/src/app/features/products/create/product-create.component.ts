@@ -10,10 +10,12 @@ import {
   AddressDto,
   AuthRoles,
   CompanyDto,
+  CRITICAL_RAW_MATERIALS,
   PackagingDto,
   ProductCreateDto,
   ProductDto,
   ProductGroupDto,
+  RARE_EARTHS,
 } from '@ap2/api-interfaces';
 import { toast } from 'ngx-sonner';
 import { Component, inject, input, signal } from '@angular/core';
@@ -47,20 +49,14 @@ import { ProductsSheetComponent } from '../../../shared/components/sheet/product
 import { WasteCreateComponent } from '../../../shared/components/waste-create/waste-create.component';
 import { WasteFormGroup } from '../../../shared/components/waste-create/waste-form';
 import { wasteFormGroup } from '../../../shared/components/waste-create/waste.form-group';
-import {
-  CRITICAL_RAW_MATERIAL,
-  RARE_EARTHS,
-} from '../../../shared/constants/inflows';
 import { SelectMaterialsComponent } from '../../materials/select-materials/select-materials.component';
 import { ProductConstructionService } from './form-construction/product-construction.service';
 import {
   addBasicMaterialFormGroup,
-  addMaterialFormGroup,
   addRegularMaterialFormGroup,
   materialFormArrayGroup,
   regularMaterialFormArrayGroup,
   removeBasicMaterialFormGroup,
-  removeMaterialFormGroup,
   removeRegularMaterialFormGroup,
 } from './material.form-group';
 import {
@@ -158,7 +154,7 @@ export class ProductCreateComponent {
 
   addresses: AddressDto[] = [];
   RARE_EARTHS = RARE_EARTHS;
-  CRITICAL_RAW_MATERIAL = CRITICAL_RAW_MATERIAL;
+  CRITICAL_RAW_MATERIAL = CRITICAL_RAW_MATERIALS;
 
   addMaterialFormGroup = addRegularMaterialFormGroup;
   removeMaterialFormGroup = removeRegularMaterialFormGroup;

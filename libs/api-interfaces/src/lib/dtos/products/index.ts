@@ -15,3 +15,4 @@ export * from './product-group.dto';
 export * from './update';
 export * from './product-master-data.dto';
 export * from './product-outlier.dto';
+export * from './import-dpp.dto';

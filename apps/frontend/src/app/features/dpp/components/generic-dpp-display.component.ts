@@ -17,11 +17,13 @@ import {
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { Component, inject, Input } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
+import { RouterModule } from '@angular/router';
 
 type DppResponse = AssetAdministrationShell & {
   connectedSubmodels: Submodel[];
@@ -37,6 +39,8 @@ type DppResponse = AssetAdministrationShell & {
     MatChipsModule,
     MatDividerModule,
     MatIconModule,
+    MatButtonModule,
+    RouterModule,
   ],
   providers: [DecimalPipe],
   templateUrl: './generic-dpp-display.component.html',

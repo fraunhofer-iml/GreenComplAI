@@ -6,8 +6,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export enum DppMessagePatterns {
-  CREATE_DPP = '/dpp/create',
-  GET_DPP = '/dpp/get',
-  GET_PRODUCT = '/dpp/product/get',
-}
+import { Prisma } from '@prisma/client';
+
+export type AddressEntity = Prisma.AddressGetPayload<true>;

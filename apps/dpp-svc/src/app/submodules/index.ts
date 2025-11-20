@@ -9,3 +9,4 @@
 export * from './submodule.types';
 export * from './submodule-creation.service';
 export * from './aas-submodule.service';
+export * from './product-import.service';

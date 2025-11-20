@@ -13,6 +13,7 @@ import {
 } from '@ap2/amqp';
 import {
   AnalysisDto,
+  CompanyDto,
   CreateProductProps,
   DeleteProductProps,
   DocumentType,
@@ -20,6 +21,7 @@ import {
   FindAllProductsProps,
   FindProductByIdProps,
   GenerateAnalysisProp,
+  ImportDppDto,
   PackagingDto,
   PackagingEntity,
   PaginatedData,
@@ -27,7 +29,9 @@ import {
   ProductDto,
   ProductEntity,
   ProductEntityList,
+  ProductMasterDataDto,
   ProductOutlierDto,
+  ProductUpdateDto,
   ProductUpdateFlagsDto,
   SearchProductsProps,
   UpdateFlagProductProps,
@@ -47,6 +51,7 @@ import {
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { GCFile } from '@prisma/client';
+import { CompaniesService } from '../companies/companies.service';
 import { toPackagingDto } from '../packaging/packaging.mapper';
 import { toProductDto, toProductDtoList } from './product.mapper';
 
@@ -56,7 +61,8 @@ export class ProductsService {
 
   constructor(
     @Inject(AmqpClientEnum.QUEUE_ENTITY_MANAGEMENT)
-    private readonly entityManagementService: ClientProxy
+    private readonly entityManagementService: ClientProxy,
+    private readonly companiesService: CompaniesService
   ) {}
 
   async create({ dto }: Partial<CreateProductProps>): Promise<ProductDto> {
@@ -358,5 +364,73 @@ export class ProductsService {
         { productId, fileId }
       )
     );
+  }
+
+  async importFromDpp(dto: ImportDppDto, userId: string): Promise<ProductDto> {
+    let supplier: CompanyDto | undefined;
+
+    this.logger.debug(`Importing DPP by user with ID: ${userId}`);
+
+    if (dto.supplier) {
+      const { company } = await this.companiesService.createAssociatedCompany({
+        dto: dto.supplier,
+        userId: userId,
+      });
+      supplier = company;
+    }
+
+    this.logger.debug(`Importing DPP with supplier: ${supplier}`);
+
+    if (dto.id) {
+      return this.updateFromDpp(dto, supplier);
+    }
+    return this.createFromDpp(dto, supplier);
+  }
+
+  updateFromDpp(dto: ImportDppDto, supplier: CompanyDto): Promise<ProductDto> {
+    const masterData: Partial<ProductMasterDataDto> = {
+      productId: dto.productId ?? dto.aasIdentifier,
+      gtin: dto.gtin,
+      taricCode: dto.taricCode,
+      supplier: supplier?.id,
+      name: dto.name,
+      waterUsed: dto.waterUsed,
+      digitalProductPassportUrl: `dpp/${dto.aasIdentifier}`,
+      reparability: dto.reparability,
+      productCarbonFootprint: dto.productCarbonFootprint,
+    };
+
+    const productUpdateDto: ProductUpdateDto = {
+      masterData: masterData,
+      criticalRawMaterials: dto.criticalRawMaterials,
+      materials: dto.materials,
+      rareEarths: undefined,
+    };
+
+    return this.update({ id: dto.id, dto: productUpdateDto });
+  }
+
+  createFromDpp(dto: ImportDppDto, supplier?: CompanyDto): Promise<ProductDto> {
+    const productCreateDto: ProductCreateDto = {
+      productId: dto.productId ?? dto.aasIdentifier,
+      gtin: dto.gtin,
+      taricCode: dto.taricCode,
+      supplier: supplier?.id ?? null,
+      name: dto.name,
+      waterUsed: dto.waterUsed,
+      materials: dto.materials,
+      criticalRawMaterials: dto.criticalRawMaterials,
+      digitalProductPassportUrl: `dpp/${dto.aasIdentifier}`,
+      reparability: dto.reparability,
+      flags: [],
+      productCarbonFootprint: dto.productCarbonFootprint,
+    };
+
+    if (!productCreateDto.name) {
+      productCreateDto.name = productCreateDto.productId;
+      productCreateDto.flags.push('name');
+    }
+
+    return this.create({ dto: productCreateDto });
   }
 }
