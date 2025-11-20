@@ -14,7 +14,7 @@ import * as echarts from 'echarts';
 import { EChartsOption, PieSeriesOption } from 'echarts';
 import moment, { Moment } from 'moment';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
-import { Component, inject, input } from '@angular/core';
+import { Component, effect, inject, input } from '@angular/core';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { SkalaTheme } from '../../../../styles/chart-theme';
 import { AnalysisService } from '../../../core/services/analysis/analysis.service';
@@ -58,6 +58,17 @@ export class InflowAnalysisGraphComponent {
       return this.toChartData(analysis);
     },
   }));
+
+  maxLegendCount = 1;
+
+  constructor() {
+    effect(() => {
+      const charts = this.analysisQuery.data();
+      if (charts) {
+        this.maxLegendCount = this.getMaxLegendCount(charts);
+      }
+    });
+  }
 
   toChartData(productGroupAnalysis: InFlowAnalysisDto): EChartsOption[] {
     if (productGroupAnalysis.amount === 0) return [];
@@ -141,13 +152,34 @@ export class InflowAnalysisGraphComponent {
     return [amount, water];
   }
 
+  private wrapTitle(text: string, maxChars = 15) {
+    const words = text.split(' ');
+    let line = '';
+    const lines = [];
+
+    for (const w of words) {
+      if ((line + w).length > maxChars) {
+        lines.push(line);
+        line = w;
+      } else {
+        line += (line ? ' ' : '') + w;
+      }
+    }
+    lines.push(line);
+
+    return lines.join('\n'); // ECharts akzeptiert \n für Zeilenumbruch
+  }
+
   private createChartOption(
     title: string,
     data: [string, number][],
     unit?: string
   ): EChartsOption {
     const chartOption: EChartsOption = getDefaultOption(true, unit);
-    chartOption.title = { text: title };
+    chartOption.title = {
+      text: this.wrapTitle(title),
+      left: 'left',
+    };
     chartOption.legend = {
       ...chartOption.legend,
       textStyle: {
@@ -168,5 +200,28 @@ export class InflowAnalysisGraphComponent {
     }
 
     return chartOption;
+  }
+
+  private getMaxLegendCount(charts: EChartsOption[]): number {
+    return charts.reduce((max, chart) => {
+      // series can be undefined, an object, or an array → normalize to array
+      const seriesArray = Array.isArray(chart.series)
+        ? chart.series
+        : chart.series
+          ? [chart.series]
+          : [];
+
+      // Pie-Charts only have one serie
+      const firstSeries = seriesArray[0] as echarts.PieSeriesOption | undefined;
+      const count = firstSeries?.data?.length ?? 1;
+
+      return Math.max(max, count);
+    }, 1);
+  }
+
+  getChartHeight() {
+    const base = 300;
+    const extra = this.maxLegendCount * 20;
+    return `${base + extra}px`;
   }
 }

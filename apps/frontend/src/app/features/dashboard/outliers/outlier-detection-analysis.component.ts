@@ -88,18 +88,27 @@ export class OutlierDetectionAnalysisComponent {
     chartOption.title = { text: '' };
     chartOption.legend = {
       orient: 'vertical',
-      right: 0,
       top: 'center',
+      right: '0',
       textStyle: {
         color: '#fff',
         overflow: 'truncate',
         width: '200',
       },
+      tooltip: {
+        show: true,
+      },
       formatter: function (name) {
+        const maxLength = 15; // set fix text length of legend items
+
+        const shortName =
+          name.length > maxLength ? name.substring(0, maxLength) + '…' : name;
+
         const value = dataTotal
           .concat(dataByItems)
           .find((item) => item[0] === name)?.[1];
-        return `${name} : ${value}`;
+
+        return `${shortName} : ${value}`;
       },
       data: dataTotal
         .concat(dataByItems)
