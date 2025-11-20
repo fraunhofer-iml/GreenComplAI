@@ -9,6 +9,7 @@
 import { Module } from '@nestjs/common';
 import { AnalysisModule } from './analysis/analysis.module';
 import { CompaniesModule } from './companies/companies.module';
+import { IdocModule } from './idoc/idoc.module';
 import { MappingModule } from './mapping/mapping.module';
 import { PackagingModule } from './packaging/packaging.module';
 import { ProductGroupModule } from './product-groups/product-group.module';
@@ -24,6 +25,7 @@ import { ReportsModule } from './reports/reports.module';
     ProductGroupModule,
     ReportsModule,
     MappingModule,
+    IdocModule,
   ],
   controllers: [],
   providers: [],
