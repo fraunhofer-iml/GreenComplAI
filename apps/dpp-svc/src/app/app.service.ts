@@ -204,7 +204,6 @@ export class AppService {
       waste: null,
     };
 
-    console.log(product);
 
     return { ...product, packaging: packagingSubmodel };
   }
