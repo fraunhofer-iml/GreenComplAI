@@ -10,6 +10,20 @@ import { Route } from '@angular/router';
 
 export const dppRoutes: Route[] = [
   {
+    path: 'data-import',
+    loadComponent: () =>
+      import('./import/dpp-data-import.component').then(
+        (m) => m.DppDataImportComponent
+      ),
+  },
+  {
+    path: ':aasIdentifier/data-import',
+    loadComponent: () =>
+      import('./import/dpp-data-import.component').then(
+        (m) => m.DppDataImportComponent
+      ),
+  },
+  {
     path: ':id',
     loadComponent: () =>
       import('./overview/dpp-overview.component').then(

@@ -9,7 +9,7 @@
 import { DppMessagePatterns } from '@ap2/amqp';
 import { FileDto, ProductDto } from '@ap2/api-interfaces';
 import { Controller } from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AppService } from './app.service';
 
 @Controller()
@@ -22,8 +22,13 @@ export class AppController {
   }
 
   @MessagePattern(DppMessagePatterns.GET_DPP)
-  getDpp(data: { aasIdentifier: string }) {
+  getDpp(@Payload() data: { aasIdentifier: string }) {
     return this.appService.getDpp(data.aasIdentifier);
+  }
+
+  @MessagePattern(DppMessagePatterns.GET_PRODUCT)
+  getProduct(data: { id: string }) {
+    return this.appService.getProductFromDpp(data.id);
   }
 
   @MessagePattern(DppMessagePatterns.GET_NFT)

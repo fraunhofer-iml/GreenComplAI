@@ -10,6 +10,7 @@ import {
   AnalysisDto,
   DocumentType,
   FileDto,
+  ImportDppDto,
   PackagingDto,
   PaginatedData,
   ProductCreateDto,
@@ -219,6 +220,15 @@ export class ProductsService extends DataService<PaginatedData<ProductDto>> {
     return lastValueFrom(
       this.http.delete<void>(
         `${this.url}${ApiUris.products}/${productId}/files/${fileId}`
+      )
+    );
+  }
+
+  importDpp(dto: ImportDppDto): Promise<ProductDto> {
+    return lastValueFrom(
+      this.http.post<ProductDto>(
+        `${this.url}${ApiUris.products}/import-dpp`,
+        dto
       )
     );
   }
