@@ -11,12 +11,12 @@ import {
   Submodel,
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { AmqpClientEnum, DppMessagePatterns } from '@ap2/amqp';
-import { TokenReadDto } from 'nft-folder-blockchain-connector-besu';
 import {
   PackagingEntity,
   ProductDto,
   ProductEntity,
 } from '@ap2/api-interfaces';
+import { TokenReadDto } from 'nft-folder-blockchain-connector-besu';
 import { firstValueFrom } from 'rxjs';
 import {
   HttpException,
