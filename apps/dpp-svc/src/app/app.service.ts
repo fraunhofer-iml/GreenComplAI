@@ -203,7 +203,7 @@ export class AppService {
       gtin: productIdentificationSubmodel.gtin,
       waste: null,
     };
-    
+
     return { ...product, packaging: packagingSubmodel };
   }
 }
