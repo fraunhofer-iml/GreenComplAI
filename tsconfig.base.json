@@ -17,6 +17,7 @@
     "paths": {
       "@ap2/amqp": ["libs/amqp/src/index.ts"],
       "@ap2/api-interfaces": ["libs/api-interfaces/src/index.ts"],
+      "@ap2/blockchain-connector": ["libs/blockchain-connector/src/index.ts"],
       "@ap2/configuration": ["libs/configuration/src/index.ts"],
       "@ap2/database": ["libs/database/src/index.ts"],
       "@ap2/util": ["libs/util/src/index.ts"],

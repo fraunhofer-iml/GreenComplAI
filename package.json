@@ -65,6 +65,7 @@
     "moment": "^2.30.1",
     "nest-keycloak-connect": "^2.0.0-alpha.2",
     "nestjs-minio": "^2.6.2",
+    "nft-folder-blockchain-connector-besu": "^0.0.1",
     "ngx-echarts": "^20.0.1",
     "ngx-papaparse": "^8.0.0",
     "ngx-sonner": "^3.1.0",

@@ -30,4 +30,9 @@ export class AppController {
   getProduct(data: { id: string }) {
     return this.appService.getProductFromDpp(data.id);
   }
+
+  @MessagePattern(DppMessagePatterns.GET_NFT)
+  getDppNft(data: { dppId: string }) {
+    return this.appService.getDPPNft(data.dppId);
+  }
 }

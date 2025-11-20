@@ -6,9 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export enum DppMessagePatterns {
-  CREATE_DPP = '/dpp/create',
-  GET_DPP = '/dpp/get',
-  GET_PRODUCT = '/dpp/product/get',
-  GET_NFT = '/dpp/nft/get',
-}
+export * from './lib/blockchain-connector.module';
+export * from './lib/blockchain-connector.service';
+export * from './lib/mocks/token-read-dto.mock';
+export * from './lib/mocks/nft.mock';
