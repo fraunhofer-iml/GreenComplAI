@@ -16,6 +16,7 @@ import {
   ProductDto,
   ProductEntity,
 } from '@ap2/api-interfaces';
+import { TokenReadDto } from 'nft-folder-blockchain-connector-besu';
 import { firstValueFrom } from 'rxjs';
 import {
   HttpException,
@@ -100,5 +101,13 @@ export class DppService {
     );
 
     return toProductDto({ ...productFromDpp } as ProductEntity);
+  }
+
+  async getDppNft(dppId: string): Promise<TokenReadDto> {
+    return firstValueFrom(
+      this.dppClient.send<TokenReadDto>(DppMessagePatterns.GET_NFT, {
+        dppId,
+      })
+    );
   }
 }
