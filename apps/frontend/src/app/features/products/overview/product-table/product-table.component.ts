@@ -8,7 +8,7 @@
 
 import { debounceTime } from 'rxjs';
 import { DecimalPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -17,7 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule, Sort } from '@angular/material/sort';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
@@ -56,6 +56,8 @@ export class ProductTableComponent {
   formGroup = new FormGroup({
     filter: new FormControl(''),
   });
+
+  dataSource = new MatTableDataSource<any>([]);
 
   displayedColumns = [
     'flagged',
@@ -107,8 +109,27 @@ export class ProductTableComponent {
 
   constructor() {
     this.formGroup.controls.filter.valueChanges
-      .pipe(debounceTime(500))
-      .subscribe((value) => this.onFilterChange(value ?? ''));
+      .pipe(debounceTime(300))
+      .subscribe((value) => {
+        this.dataSource.filter = value?.trim().toLowerCase() || '';
+      });
+
+    effect(() => {
+      const result = this.query.data(); // <=== Signal auslesen
+
+      if (result?.data) {
+        this.dataSource.data = result.data;
+      }
+    });
+
+    this.dataSource.filterPredicate = (data, filter) => {
+      const term = filter.trim().toLowerCase();
+
+      return (
+        data.name?.toLowerCase().includes(term) ||
+        data.description?.toLowerCase().includes(term)
+      );
+    };
   }
 
   updateTable(event: PageEvent): void {

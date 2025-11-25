@@ -22,7 +22,7 @@
   } @else if (query.isSuccess() && query.data().data) {
     <table
       mat-table
-      [dataSource]="query.data().data"
+      [dataSource]="dataSource"
       class="overflow-hidden !rounded-lg !bg-neutral-200"
       matSort
       (matSortChange)="onSortChange($event)"

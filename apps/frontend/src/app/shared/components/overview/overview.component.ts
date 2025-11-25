@@ -7,7 +7,7 @@
  */
 
 import { DecimalPipe } from '@angular/common';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, effect, inject, Input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,7 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule, Sort } from '@angular/material/sort';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { DataService } from '../../../core/services/data-service/data.service';
@@ -58,6 +58,8 @@ export class OverviewComponent<T> implements OnInit {
 
   _additionals: Map<string, string> = new Map();
 
+  dataSource = new MatTableDataSource<any>([]);
+
   @Input() set additionals(value: Map<string, string>) {
     if (
       !this._additionals ||
@@ -81,6 +83,24 @@ export class OverviewComponent<T> implements OnInit {
       ),
   }));
 
+  constructor() {
+    effect(() => {
+      const res = this.query.data();
+      const rows = res?.data ?? [];
+      this.dataSource.data = rows;
+      this.totalLength = res?.meta?.totalCount ?? this.totalLength;
+    });
+
+    this.dataSource.filterPredicate = (data: any, filter: string) => {
+      const term = filter?.trim().toLowerCase();
+      return (
+        (data.name ?? '').toString().toLowerCase().includes(term) ||
+        (data.description ?? '').toString().toLowerCase().includes(term) ||
+        (data.productId ?? '').toString().toLowerCase().includes(term)
+      );
+    };
+  }
+
   ngOnInit() {
     this.tableProperties = TABLE_PROPS.get(this.contentType) ?? {
       columns: [],
@@ -95,8 +115,11 @@ export class OverviewComponent<T> implements OnInit {
   }
 
   onFilterChange(value: string) {
-    this.filter = value;
-    this.query.refetch();
+    const term = value?.trim().toLowerCase() ?? '';
+    this.dataSource.filter = term;
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
   onSortChange(value: Sort) {
