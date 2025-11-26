@@ -25,16 +25,18 @@ export const getWhereCondition = (
   if (filter && filter !== '') {
     const orCondition: Prisma.ProductWhereInput = {
       OR: [
-        { productId: { contains: filter } },
-        { name: { contains: filter } },
-        { description: { contains: filter } },
-        { category: { contains: filter } },
-        { productGroup: { name: { contains: filter } } },
-        { wasteFlow: { name: { contains: filter } } },
-        { supplier: { name: { contains: filter } } },
+        { productId: { contains: filter, mode: 'insensitive' } },
+        { name: { contains: filter, mode: 'insensitive' } },
+        { description: { contains: filter, mode: 'insensitive' } },
+        { category: { contains: filter, mode: 'insensitive' } },
+        { productGroup: { name: { contains: filter, mode: 'insensitive' } } },
+        { wasteFlow: { name: { contains: filter, mode: 'insensitive' } } },
+        { supplier: { name: { contains: filter, mode: 'insensitive' } } },
         {
           materials: {
-            some: { material: { name: { contains: filter } } },
+            some: {
+              material: { name: { contains: filter, mode: 'insensitive' } },
+            },
           },
         },
         { circularPrinciple: { equals: filterAsBool } },

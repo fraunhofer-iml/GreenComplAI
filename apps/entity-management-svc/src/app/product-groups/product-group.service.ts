@@ -138,9 +138,9 @@ export class ProductGroupService {
 
     const filterAsNumber = Number(filters);
     const orConditions: Prisma.ProductGroupWhereInput[] = [
-      { name: { contains: filters } },
-      { id: { contains: filters } },
-      { wasteFlow: { name: { contains: filters } } },
+      { name: { contains: filters, mode: 'insensitive' } },
+      { id: { contains: filters, mode: 'insensitive' } },
+      { wasteFlow: { name: { contains: filters, mode: 'insensitive' } } },
     ];
 
     if (!isNaN(filterAsNumber)) {

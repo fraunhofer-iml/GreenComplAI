@@ -21,6 +21,7 @@ import {
   USER_MANAGEMENT_SERVICE_TOKEN,
 } from '@greencomplai/user-management';
 import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { FlagsService } from '../flags/flags.service';
 
 @Injectable()
@@ -181,17 +182,39 @@ export class CompaniesService {
             },
           },
         },
-        {
-          OR:
-            filters && filters !== ''
-              ? [
-                  { id: { contains: filters } },
-                  { name: { contains: filters } },
-                  { email: { contains: filters } },
-                  { phone: { contains: filters } },
-                ]
-              : [],
-        },
+
+        ...(filters && filters !== ''
+          ? [
+              {
+                OR: [
+                  {
+                    id: {
+                      contains: filters,
+                      mode: Prisma.QueryMode.insensitive,
+                    },
+                  },
+                  {
+                    name: {
+                      contains: filters,
+                      mode: Prisma.QueryMode.insensitive,
+                    },
+                  },
+                  {
+                    email: {
+                      contains: filters,
+                      mode: Prisma.QueryMode.insensitive,
+                    },
+                  },
+                  {
+                    phone: {
+                      contains: filters,
+                      mode: Prisma.QueryMode.insensitive,
+                    },
+                  },
+                ],
+              },
+            ]
+          : []),
       ],
     };
 

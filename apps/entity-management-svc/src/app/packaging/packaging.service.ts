@@ -283,10 +283,10 @@ export class PackagingService {
 
     const where: Prisma.PackagingWhereInput = {
       OR: [
-        { id: { contains: filter } },
-        { name: { contains: filter } },
-        { supplierId: { contains: filter } },
-        { supplier: { name: { contains: filter } } },
+        { id: { contains: filter, mode: 'insensitive' } },
+        { name: { contains: filter, mode: 'insensitive' } },
+        { supplierId: { contains: filter, mode: 'insensitive' } },
+        { supplier: { name: { contains: filter, mode: 'insensitive' } } },
       ],
     };
 
