@@ -10,8 +10,10 @@ import {
   AddressDto,
   AuthRoles,
   CompanyDto,
+  CRITICAL_RAW_MATERIALS,
   ProductDto,
   ProductGroupDto,
+  RARE_EARTHS,
   VariantDto,
 } from '@ap2/api-interfaces';
 import { Component, inject, input, OnInit, signal } from '@angular/core';
@@ -24,6 +26,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -31,6 +34,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterModule } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { AuthenticationService } from '../../../core/services/authentication/authentication.service';
 import { CompaniesService } from '../../../core/services/companies/companies.service';
@@ -46,7 +51,6 @@ import {
 } from '../../../features/products/create/material.form-group';
 import { MasterDataFormGroup } from '../../../features/products/create/model/product-form.model';
 import { UNITS } from '../../constants/available-units';
-import { CRITICAL_RAW_MATERIAL, RARE_EARTHS } from '../../constants/inflows';
 import { BaseSheetComponent } from '../sheet/base/sheet.component';
 
 @Component({
@@ -66,6 +70,9 @@ import { BaseSheetComponent } from '../sheet/base/sheet.component';
     SelectMaterialsComponent,
     MatCheckboxModule,
     MatRadioModule,
+    MatButtonModule,
+    MatTooltipModule,
+    RouterModule,
   ],
   templateUrl: './product-master-data-form.component.html',
 })
@@ -75,6 +82,7 @@ export class ProductMasterDataFormComponent implements OnInit {
   readonly authService = inject(AuthenticationService);
 
   productGroupId = input<string>();
+  id = input<string | null>();
   form = input.required<FormGroup<MasterDataFormGroup>>();
 
   materialsForm = input.required<FormGroup<RegularMaterialsFormGroup>>();
@@ -112,7 +120,7 @@ export class ProductMasterDataFormComponent implements OnInit {
   addresses: AddressDto[] = [];
 
   RARE_EARTHS = RARE_EARTHS;
-  CRITICAL_RAW_MATERIAL = CRITICAL_RAW_MATERIAL;
+  CRITICAL_RAW_MATERIAL = CRITICAL_RAW_MATERIALS;
 
   addMaterialFormGroup = addRegularMaterialFormGroup;
   removeMaterialFormGroup = removeRegularMaterialFormGroup;
@@ -358,5 +366,10 @@ export class ProductMasterDataFormComponent implements OnInit {
 
   compareVariants(v1: VariantDto, v2: VariantDto) {
     return v1.id === v2.id;
+  }
+
+  get dppUrl() {
+    return this.form().controls
+      .digitalProductPassportUrl as FormControl<string>;
   }
 }

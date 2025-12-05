@@ -11,9 +11,10 @@ import { DatabaseModule } from '@ap2/database';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { NftsModule } from './nfts/nfts.module';
 
 @Module({
-  imports: [ConfigurationModule, DatabaseModule],
+  imports: [ConfigurationModule, DatabaseModule, NftsModule],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -9,4 +9,6 @@
 export enum DppMessagePatterns {
   CREATE_DPP = '/dpp/create',
   GET_DPP = '/dpp/get',
+  GET_PRODUCT = '/dpp/product/get',
+  GET_NFT = '/dpp/nft/get',
 }

@@ -10,8 +10,7 @@ import {
   AssetAdministrationShell,
   Submodel,
 } from '@aas-core-works/aas-core3.0-typescript/types';
-import { AasDto } from '@ap2/api-interfaces';
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';

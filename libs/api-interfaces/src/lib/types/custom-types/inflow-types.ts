@@ -46,3 +46,46 @@ export type CriticalRawMaterials =
   | 'Phosphatgestein'
   | 'Scandium'
   | 'Strontium';
+
+export const CRITICAL_RAW_MATERIALS: CriticalRawMaterials[] = [
+  'Antimon',
+  'Arsen',
+  'Baryt',
+  'Beryllium',
+  'Bor',
+  'Feldspat',
+  'Flussspat',
+  'Graphit',
+  'Hafnium',
+  'Helium',
+  'Kokskohle',
+  'Kupfer',
+  'Lithium',
+  'Magnesium',
+  'Mangan',
+  'Niob',
+  'Phosphor',
+  'Phosphatgestein',
+  'Scandium',
+  'Strontium',
+];
+
+export const RARE_EARTHS: RareEarths[] = [
+  'Lanthan',
+  'Cer',
+  'Praseodym',
+  'Neodym',
+  'Promethium',
+  'Samarium',
+  'Europium',
+  'Gadolinium',
+  'Terbium',
+  'Dysprosium',
+  'Holmium',
+  'Erbium',
+  'Thulium',
+  'Ytterbium',
+  'Lutetium',
+  'Yttrium',
+  'Scandium',
+];

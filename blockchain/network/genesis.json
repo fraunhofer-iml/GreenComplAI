@@ -1,0 +1,38 @@
+{
+  "config": {
+    "chainId": 1337,
+    "grayGlacierBlock": 0,
+    "zeroBaseFee": true,
+    "contractSizeLimit": 2147483647,
+    "qbft": {
+      "blockperiodseconds": 1,
+      "requesttimeoutseconds": 2,
+      "epochlength": 3600
+    }
+  },
+  "nonce": "0x0",
+  "timestamp": "0x0",
+  "gasLimit": "0x1fffffffffffff",
+  "gasUsed": "0x0",
+  "baseFeePerGas": "0x0",
+  "difficulty": "0x0",
+  "coinbase": "0x0000000000000000000000000000000000000000",
+  "extraData": "0xf87aa00000000000000000000000000000000000000000000000000000000000000000f85494d586836722392d2b872a464cc8614ae554cabf3d947aab01373aadf658469a97a8be0ca7e7e1fb39059426c3a89ff0024c06a3e0a3c5adb83a146a54b9dd94d2ef76408037c86fe79f61457af0d945f0adbe9cc080c0",
+  "alloc": {
+    "fe3b557e8fb62b89f4916b721be55ceb828dbd73": {
+      "privateKey": "8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63",
+      "comment": "private key and this comment are ignored. In a real chain, the private key should NOT be stored",
+      "balance": "0xad78ebc5ac6200000"
+    },
+    "627306090abaB3A6e1400e9345bC60c78a8BEf57": {
+      "privateKey": "c87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3",
+      "comment": "private key and this comment are ignored. In a real chain, the private key should NOT be stored",
+      "balance": "90000000000000000000000"
+    },
+    "f17f52151EbEF6C7334FAD080c5704D77216b732": {
+      "privateKey": "ae6ae8e5ccbfb04590405997ee2d52d2b330726137b875053c36d94e974d162f",
+      "comment": "private key and this comment are ignored. In a real chain, the private key should NOT be stored",
+      "balance": "90000000000000000000000"
+    }
+  }
+}

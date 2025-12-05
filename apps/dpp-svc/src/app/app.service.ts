@@ -10,17 +10,31 @@ import {
   AssetAdministrationShell,
   AssetInformation,
   AssetKind,
+  ISubmodelElement,
   LangStringNameType,
   Submodel,
 } from '@aas-core-works/aas-core3.0-typescript/types';
-import { FileDto, ProductDto } from '@ap2/api-interfaces';
+import {
+  FileDto,
+  MaterialEntity,
+  PackagingEntity,
+  ProductDto,
+  ProductEntity,
+} from '@ap2/api-interfaces';
 import { ConfigurationService } from '@ap2/configuration';
 import {
   AasRepositoryClient,
   Configuration,
   SubmodelRepositoryClient,
 } from 'basyx-typescript-sdk';
+import { TokenReadDto } from 'nft-folder-blockchain-connector-besu';
 import { Injectable, Logger } from '@nestjs/common';
+import { NftsService } from './nfts/nfts.service';
+import {
+  CircularPropertiesSubmodule,
+  ESRSynergiesSubmodule,
+  ProductImportService,
+} from './submodules';
 import { AasSubmoduleService } from './submodules/aas-submodule.service';
 import { SubmoduleCreationService } from './submodules/submodule-creation.service';
 
@@ -32,8 +46,12 @@ export class AppService {
   private configuration: Configuration;
   private submoduleCreationService: SubmoduleCreationService;
   private aasSubmoduleService: AasSubmoduleService;
+  private productImportService: ProductImportService;
 
-  constructor(private readonly configurationService: ConfigurationService) {
+  constructor(
+    private readonly configurationService: ConfigurationService,
+    private readonly nftService: NftsService
+  ) {
     this.client = new AasRepositoryClient();
     this.submodelRepositoryClient = new SubmodelRepositoryClient();
     this.configuration = new Configuration({
@@ -45,6 +63,12 @@ export class AppService {
       this.configuration,
       this.submodelRepositoryClient
     );
+
+    this.productImportService = new ProductImportService();
+  }
+
+  async getDPPNft(dppId: string): Promise<TokenReadDto> {
+    return this.nftService.getNft(dppId);
   }
 
   async getDpp(
@@ -55,6 +79,7 @@ export class AppService {
       aasIdentifier: aasIdentifier,
     });
     if (!result.success) {
+      this.logger.debug(result);
       throw new Error('Failed to get DPP');
     }
 
@@ -123,6 +148,79 @@ export class AppService {
     if (!result.success) {
       throw new Error('Failed to create DPP');
     }
+
+    try {
+      const createdDppData = await this.getDpp(assetAdministrationShell.id);
+      const dppUrl = `${process.env['BCC_DPP_TOKEN_BASE_URL']}/${assetAdministrationShell.id}`;
+      await this.nftService.createNft(product.id, createdDppData, dppUrl);
+    } catch (error) {
+      this.logger.error('Failed to create NFT:', error);
+    }
     return result.data;
+  }
+
+  async getProductFromDpp(
+    id: string
+  ): Promise<Partial<ProductEntity> & { packaging: PackagingEntity[] }> {
+    const dpp = await this.getDpp(id);
+
+    const submodelMap = new Map<string, ISubmodelElement[]>();
+    dpp.connectedSubmodels.forEach((e) =>
+      submodelMap.set(e.idShort, e.submodelElements)
+    );
+
+    const productIdentificationSubmodel: Partial<ProductEntity> =
+      this.productImportService.setIdentificationDetails(
+        submodelMap.get('product_identification')
+      );
+
+    // TODO: legalComplianceSubmodel
+    // TODO: usagePhase
+
+    const circularProperties: CircularPropertiesSubmodule =
+      this.productImportService.getCircularProperties(
+        submodelMap.get('circular_properties')
+      );
+
+    const ESRSynergies: ESRSynergiesSubmodule =
+      this.productImportService.getESRSynergiesSubmodel(
+        submodelMap.get('esr_synergies')
+      );
+
+    const packagingSubmodel: PackagingEntity[] =
+      this.productImportService.getPackagingSubmodule(
+        submodelMap.get('packaging')
+      );
+
+    const materialComposition: {
+      materials: MaterialEntity[];
+      criticalRawMaterials: MaterialEntity[];
+    } = this.productImportService.getMaterialCompositionSubmodel(
+      submodelMap.get('material_composition')
+    );
+
+    const product: Partial<ProductEntity> = {
+      id: id,
+      name: dpp.displayName?.[0]?.text ?? null,
+      productId: productIdentificationSubmodel.productId,
+      supplier: productIdentificationSubmodel.supplier
+        ? {
+            ...productIdentificationSubmodel.supplier,
+            addresses: productIdentificationSubmodel.supplier?.addresses.map(
+              (a) => ({ ...a, companyId: null })
+            ),
+          }
+        : null,
+      reparability: circularProperties.repairabilityScore,
+      productCarbonFootprint: ESRSynergies.productCarbonFootprint,
+      waterUsed: ESRSynergies.waterFootprint,
+      materials: materialComposition.materials,
+      criticalRawMaterials: materialComposition.criticalRawMaterials,
+      taricCode: productIdentificationSubmodel.taricCode,
+      gtin: productIdentificationSubmodel.gtin,
+      waste: null,
+    };
+
+    return { ...product, packaging: packagingSubmodel };
   }
 }

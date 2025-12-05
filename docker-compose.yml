@@ -19,6 +19,32 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
+  ##############
+  # BLOCKCHAIN #
+  ##############
+  blockchain-network:
+    build:
+      context: ./blockchain/network
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - '8545:8545'
+
+  blockchain-network-setup:
+    build:
+      context: ./blockchain/network-setup
+      dockerfile: Dockerfile
+      args:
+        DEPLOYMENT_MNEMONIC:
+          'test test test test test test test test test test test test'
+        TOKEN_NAME: DPP
+        TOKEN_SYMBOL: AP2
+    depends_on:
+      blockchain-network:
+        condition: service_started
+    environment:
+      DEV_NODE_URL: 'http://blockchain-network:8545'
+
   #########
   # UTILS #
   #########
