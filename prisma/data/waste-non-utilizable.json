@@ -70,5 +70,353 @@
     "landfillWeight": 10,
     "combustionWeight": 20,
     "miscellaneousWeight": 30
+  },
+  {
+    "id": "cmh1rp33g001sl5012qh50r01-non",
+    "landfillWeight": 8,
+    "combustionWeight": 15,
+    "miscellaneousWeight": 22
+  },
+  {
+    "id": "cmh1rp33g001vl501kfgwfv6s-non",
+    "landfillWeight": 6,
+    "combustionWeight": 12,
+    "miscellaneousWeight": 18
+  },
+  {
+    "id": "cmh1qx9h2001dl5016rzdjs6a-non",
+    "landfillWeight": 10,
+    "combustionWeight": 18,
+    "miscellaneousWeight": 25
+  },
+  {
+    "id": "cmh1qx9h2001gl501duw556qd-non",
+    "landfillWeight": 12,
+    "combustionWeight": 21,
+    "miscellaneousWeight": 28
+  },
+  {
+    "id": "cmh1yb32k002nl501fm5uqqbk-non",
+    "landfillWeight": 9,
+    "combustionWeight": 16,
+    "miscellaneousWeight": 23
+  },
+  {
+    "id": "cmh1yb32k002ql5017pf0f6tq-non",
+    "landfillWeight": 11,
+    "combustionWeight": 19,
+    "miscellaneousWeight": 26
+  },
+  {
+    "id": "cmh1yo7e50031l5017ej0fvz1-non",
+    "landfillWeight": 12,
+    "combustionWeight": 20,
+    "miscellaneousWeight": 27
+  },
+  {
+    "id": "cmh1yo7e50034l5014te4m83l-non",
+    "landfillWeight": 14,
+    "combustionWeight": 23,
+    "miscellaneousWeight": 30
+  },
+  {
+    "id": "cmhj0mzq6003il50137ksoxy6-non",
+    "landfillWeight": 10,
+    "combustionWeight": 18,
+    "miscellaneousWeight": 24
+  },
+  {
+    "id": "cmhj0mzq6003ll501ak9lb8bv-non",
+    "landfillWeight": 8,
+    "combustionWeight": 15,
+    "miscellaneousWeight": 22
+  },
+  {
+    "id": "cmhj12wem004gl501jn2le4jq-non",
+    "landfillWeight": 9,
+    "combustionWeight": 17,
+    "miscellaneousWeight": 23
+  },
+  {
+    "id": "cmhj12wem004jl5010z3z76w0-non",
+    "landfillWeight": 11,
+    "combustionWeight": 19,
+    "miscellaneousWeight": 25
+  },
+  {
+    "id": "cmhj176x5004vl501poi0mvoa-non",
+    "landfillWeight": 6,
+    "combustionWeight": 11,
+    "miscellaneousWeight": 17
+  },
+  {
+    "id": "cmhj176x5004yl5017pdbtup4-non",
+    "landfillWeight": 4,
+    "combustionWeight": 8,
+    "miscellaneousWeight": 13
+  },
+  {
+    "id": "cmhj1e3je005al501ipf7mz69-non",
+    "landfillWeight": 5,
+    "combustionWeight": 10,
+    "miscellaneousWeight": 15
+  },
+  {
+    "id": "cmhj1e3jf005dl501mieixoh0-non",
+    "landfillWeight": 5,
+    "combustionWeight": 9,
+    "miscellaneousWeight": 14
+  },
+  {
+    "id": "cmhj1g0aw005kl501tlh4t6e1-non",
+    "landfillWeight": 10,
+    "combustionWeight": 18,
+    "miscellaneousWeight": 25
+  },
+  {
+    "id": "cmhj1g0aw005nl501gj48jnyc-non",
+    "landfillWeight": 12,
+    "combustionWeight": 20,
+    "miscellaneousWeight": 27
+  },
+  {
+    "id": "cmhj1wj8u005wl5017iiucunj-non",
+    "landfillWeight": 9,
+    "combustionWeight": 17,
+    "miscellaneousWeight": 23
+  },
+  {
+    "id": "cmhj1wj8u005zl501eaxmkgxr-non",
+    "landfillWeight": 11,
+    "combustionWeight": 19,
+    "miscellaneousWeight": 26
+  },
+  {
+    "id": "cmhj2ct0d006vl501wyrclip5-non",
+    "landfillWeight": 10,
+    "combustionWeight": 18,
+    "miscellaneousWeight": 24
+  },
+  {
+    "id": "cmhj2ct0d006yl501xx2xwezg-non",
+    "landfillWeight": 12,
+    "combustionWeight": 21,
+    "miscellaneousWeight": 28
+  },
+  {
+    "id": "cmhj2m9si0084l501b627lreb-non",
+    "landfillWeight": 9,
+    "combustionWeight": 17,
+    "miscellaneousWeight": 23
+  },
+  {
+    "id": "cmhj2m9si0087l501ih2f5ic9-non",
+    "landfillWeight": 11,
+    "combustionWeight": 20,
+    "miscellaneousWeight": 27
+  },
+  {
+    "id": "cmhj2ylfs008il5015b84oykm-non",
+    "landfillWeight": 5,
+    "combustionWeight": 10,
+    "miscellaneousWeight": 15
+  },
+  {
+    "id": "cmhj2ylfs008ll501650j0q6g-non",
+    "landfillWeight": 4,
+    "combustionWeight": 8,
+    "miscellaneousWeight": 13
+  },
+  {
+    "id": "cmhj2zshe008tl5014avqm4cz-non",
+    "landfillWeight": 6,
+    "combustionWeight": 11,
+    "miscellaneousWeight": 17
+  },
+  {
+    "id": "cmhj2zshe008wl501geynh0kx-non",
+    "landfillWeight": 5,
+    "combustionWeight": 10,
+    "miscellaneousWeight": 15
+  },
+  {
+    "id": "cmhj3d4c20095l501w4gi1ot2-non",
+    "landfillWeight": 8,
+    "combustionWeight": 15,
+    "miscellaneousWeight": 21
+  },
+  {
+    "id": "cmhj3d4c20098l501gjnevgbn-non",
+    "landfillWeight": 10,
+    "combustionWeight": 18,
+    "miscellaneousWeight": 24
+  },
+  {
+    "id": "cmhj3pcr600a2l501hf8qz7ic-non",
+    "landfillWeight": 9,
+    "combustionWeight": 16,
+    "miscellaneousWeight": 22
+  },
+  {
+    "id": "cmhj3pcr700a5l501ny3fzw2f-non",
+    "landfillWeight": 11,
+    "combustionWeight": 19,
+    "miscellaneousWeight": 25
+  },
+  {
+    "id": "cmhj3vzpx00ahl501k59itry3-non",
+    "landfillWeight": 10,
+    "combustionWeight": 18,
+    "miscellaneousWeight": 24
+  },
+  {
+    "id": "cmhj3vzpx00akl5010ffhri44-non",
+    "landfillWeight": 12,
+    "combustionWeight": 20,
+    "miscellaneousWeight": 27
+  },
+  {
+    "id": "cmhj401jo00awl501nnv4b1wj-non",
+    "landfillWeight": 4,
+    "combustionWeight": 8,
+    "miscellaneousWeight": 12
+  },
+  {
+    "id": "cmhj401jp00azl501k9fbqkhw-non",
+    "landfillWeight": 2,
+    "combustionWeight": 5,
+    "miscellaneousWeight": 9
+  },
+  {
+    "id": "cmhj4345100bbl5019czqvblp-non",
+    "landfillWeight": 11,
+    "combustionWeight": 19,
+    "miscellaneousWeight": 26
+  },
+  {
+    "id": "cmhj4345100bel501d0rxzhz8-non",
+    "landfillWeight": 13,
+    "combustionWeight": 22,
+    "miscellaneousWeight": 29
+  },
+  {
+    "id": "cmhj4gq4l00bql5019lvo46ea-non",
+    "landfillWeight": 14,
+    "combustionWeight": 24,
+    "miscellaneousWeight": 31
+  },
+  {
+    "id": "cmhj4gq4l00btl5013qehhk0w-non",
+    "landfillWeight": 16,
+    "combustionWeight": 26,
+    "miscellaneousWeight": 34
+  },
+  {
+    "id": "cmhj4m0ao00c5l501wkyvlgj0-non",
+    "landfillWeight": 12,
+    "combustionWeight": 21,
+    "miscellaneousWeight": 28
+  },
+  {
+    "id": "cmhj4m0ao00c8l50177n9zl6y-non",
+    "landfillWeight": 15,
+    "combustionWeight": 25,
+    "miscellaneousWeight": 32
+  },
+  {
+    "id": "cmhj4tdmg00d7l501n7yiv8z5-non",
+    "landfillWeight": 13,
+    "combustionWeight": 22,
+    "miscellaneousWeight": 29
+  },
+  {
+    "id": "cmhj4tdmh00dal501pxa1qtcq-non",
+    "landfillWeight": 15,
+    "combustionWeight": 25,
+    "miscellaneousWeight": 33
+  },
+  {
+    "id": "cmhj4wm8j00dml501oh4ezmw3-non",
+    "landfillWeight": 16,
+    "combustionWeight": 26,
+    "miscellaneousWeight": 34
+  },
+  {
+    "id": "cmhj4wm8k00dpl501bl90isj6-non",
+    "landfillWeight": 17,
+    "combustionWeight": 28,
+    "miscellaneousWeight": 36
+  },
+  {
+    "id": "cmhj5h3ij00dwl5019i74xuy5-non",
+    "landfillWeight": 6,
+    "combustionWeight": 11,
+    "miscellaneousWeight": 17
+  },
+  {
+    "id": "cmhj5h3ij00dzl5016vfgpqml-non",
+    "landfillWeight": 5,
+    "combustionWeight": 10,
+    "miscellaneousWeight": 15
+  },
+  {
+    "id": "cmhj62m0c00ecl501dd7zx9du-non",
+    "landfillWeight": 8,
+    "combustionWeight": 15,
+    "miscellaneousWeight": 21
+  },
+  {
+    "id": "cmhj62m0c00efl501fbzy2zff-non",
+    "landfillWeight": 10,
+    "combustionWeight": 18,
+    "miscellaneousWeight": 24
+  },
+  {
+    "id": "cmhj663bu00erl501ch9eadei-non",
+    "landfillWeight": 9,
+    "combustionWeight": 16,
+    "miscellaneousWeight": 22
+  },
+  {
+    "id": "cmhj663bu00eul501z0ywlbh0-non",
+    "landfillWeight": 11,
+    "combustionWeight": 19,
+    "miscellaneousWeight": 25
+  },
+  {
+    "id": "cmhj68d6100f6l50180jwpnaf-non",
+    "landfillWeight": 8,
+    "combustionWeight": 15,
+    "miscellaneousWeight": 20
+  },
+  {
+    "id": "cmhj68d6100f9l501xo8xs4xw-non",
+    "landfillWeight": 10,
+    "combustionWeight": 17,
+    "miscellaneousWeight": 23
+  },
+  {
+    "id": "cmhj6am7a00fll501aycdw8lx-non",
+    "landfillWeight": 7,
+    "combustionWeight": 13,
+    "miscellaneousWeight": 19
+  },
+  {
+    "id": "cmhj6am7a00fol5013fydf1zs-non",
+    "landfillWeight": 9,
+    "combustionWeight": 16,
+    "miscellaneousWeight": 22
+  },
+  {
+    "id": "cmhj6d1gb00g0l501bct4xluy-non",
+    "landfillWeight": 4,
+    "combustionWeight": 8,
+    "miscellaneousWeight": 12
+  },
+  {
+    "id": "cmhj6d1gb00g3l501plubn8ir-non",
+    "landfillWeight": 2,
+    "combustionWeight": 5,
+    "miscellaneousWeight": 9
   }
 ]

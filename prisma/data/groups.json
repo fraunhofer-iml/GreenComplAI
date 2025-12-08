@@ -12,5 +12,12 @@
     "description": "Fenster und Fensterzubehör wie Beschläge, Griffe und Dichtungen",
     "wasteFlowId": "flow-2",
     "flags": []
+  },
+  {
+    "id": "group-3",
+    "name": "Schläuche und Rohrbefestigungen",
+    "description": "Technische Schläuche (Silikon, ETFE, Edelstahl, Polyolefin, Glasseide) und Rohrklemmleisten für verschiedene industrielle Anwendungen",
+    "wasteFlowId": "flow-1",
+    "flags": []
   }
 ]

@@ -70,5 +70,353 @@
     "preparationForRecyclingWeight": 12,
     "recyclingWeight": 18,
     "miscellaneousWeight": 25
+  },
+  {
+    "id": "cmh1rp33g001sl5012qh50r01",
+    "preparationForRecyclingWeight": 10,
+    "recyclingWeight": 15,
+    "miscellaneousWeight": 20
+  },
+  {
+    "id": "cmh1rp33g001vl501kfgwfv6s",
+    "preparationForRecyclingWeight": 5,
+    "recyclingWeight": 8,
+    "miscellaneousWeight": 12
+  },
+  {
+    "id": "cmh1qx9h2001dl5016rzdjs6a",
+    "preparationForRecyclingWeight": 12,
+    "recyclingWeight": 18,
+    "miscellaneousWeight": 25
+  },
+  {
+    "id": "cmh1qx9h2001gl501duw556qd",
+    "preparationForRecyclingWeight": 15,
+    "recyclingWeight": 22,
+    "miscellaneousWeight": 28
+  },
+  {
+    "id": "cmh1yb32k002nl501fm5uqqbk",
+    "preparationForRecyclingWeight": 11,
+    "recyclingWeight": 17,
+    "miscellaneousWeight": 23
+  },
+  {
+    "id": "cmh1yb32k002ql5017pf0f6tq",
+    "preparationForRecyclingWeight": 13,
+    "recyclingWeight": 19,
+    "miscellaneousWeight": 26
+  },
+  {
+    "id": "cmh1yo7e50031l5017ej0fvz1",
+    "preparationForRecyclingWeight": 14,
+    "recyclingWeight": 21,
+    "miscellaneousWeight": 27
+  },
+  {
+    "id": "cmh1yo7e50034l5014te4m83l",
+    "preparationForRecyclingWeight": 16,
+    "recyclingWeight": 23,
+    "miscellaneousWeight": 30
+  },
+  {
+    "id": "cmhj0mzq6003il50137ksoxy6",
+    "preparationForRecyclingWeight": 12,
+    "recyclingWeight": 18,
+    "miscellaneousWeight": 24
+  },
+  {
+    "id": "cmhj0mzq6003ll501ak9lb8bv",
+    "preparationForRecyclingWeight": 10,
+    "recyclingWeight": 16,
+    "miscellaneousWeight": 22
+  },
+  {
+    "id": "cmhj12wem004gl501jn2le4jq",
+    "preparationForRecyclingWeight": 11,
+    "recyclingWeight": 17,
+    "miscellaneousWeight": 23
+  },
+  {
+    "id": "cmhj12wem004jl5010z3z76w0",
+    "preparationForRecyclingWeight": 13,
+    "recyclingWeight": 19,
+    "miscellaneousWeight": 25
+  },
+  {
+    "id": "cmhj176x5004vl501poi0mvoa",
+    "preparationForRecyclingWeight": 8,
+    "recyclingWeight": 12,
+    "miscellaneousWeight": 18
+  },
+  {
+    "id": "cmhj176x5004yl5017pdbtup4",
+    "preparationForRecyclingWeight": 5,
+    "recyclingWeight": 8,
+    "miscellaneousWeight": 13
+  },
+  {
+    "id": "cmhj1e3je005al501ipf7mz69",
+    "preparationForRecyclingWeight": 7,
+    "recyclingWeight": 11,
+    "miscellaneousWeight": 16
+  },
+  {
+    "id": "cmhj1e3jf005dl501mieixoh0",
+    "preparationForRecyclingWeight": 6,
+    "recyclingWeight": 9,
+    "miscellaneousWeight": 14
+  },
+  {
+    "id": "cmhj1g0aw005kl501tlh4t6e1",
+    "preparationForRecyclingWeight": 12,
+    "recyclingWeight": 18,
+    "miscellaneousWeight": 25
+  },
+  {
+    "id": "cmhj1g0aw005nl501gj48jnyc",
+    "preparationForRecyclingWeight": 14,
+    "recyclingWeight": 20,
+    "miscellaneousWeight": 27
+  },
+  {
+    "id": "cmhj1wj8u005wl5017iiucunj",
+    "preparationForRecyclingWeight": 11,
+    "recyclingWeight": 17,
+    "miscellaneousWeight": 23
+  },
+  {
+    "id": "cmhj1wj8u005zl501eaxmkgxr",
+    "preparationForRecyclingWeight": 13,
+    "recyclingWeight": 19,
+    "miscellaneousWeight": 26
+  },
+  {
+    "id": "cmhj2ct0d006vl501wyrclip5",
+    "preparationForRecyclingWeight": 12,
+    "recyclingWeight": 18,
+    "miscellaneousWeight": 24
+  },
+  {
+    "id": "cmhj2ct0d006yl501xx2xwezg",
+    "preparationForRecyclingWeight": 14,
+    "recyclingWeight": 21,
+    "miscellaneousWeight": 28
+  },
+  {
+    "id": "cmhj2m9si0084l501b627lreb",
+    "preparationForRecyclingWeight": 11,
+    "recyclingWeight": 17,
+    "miscellaneousWeight": 23
+  },
+  {
+    "id": "cmhj2m9si0087l501ih2f5ic9",
+    "preparationForRecyclingWeight": 13,
+    "recyclingWeight": 20,
+    "miscellaneousWeight": 27
+  },
+  {
+    "id": "cmhj2ylfs008il5015b84oykm",
+    "preparationForRecyclingWeight": 7,
+    "recyclingWeight": 11,
+    "miscellaneousWeight": 16
+  },
+  {
+    "id": "cmhj2ylfs008ll501650j0q6g",
+    "preparationForRecyclingWeight": 5,
+    "recyclingWeight": 8,
+    "miscellaneousWeight": 13
+  },
+  {
+    "id": "cmhj2zshe008tl5014avqm4cz",
+    "preparationForRecyclingWeight": 8,
+    "recyclingWeight": 12,
+    "miscellaneousWeight": 18
+  },
+  {
+    "id": "cmhj2zshe008wl501geynh0kx",
+    "preparationForRecyclingWeight": 6,
+    "recyclingWeight": 10,
+    "miscellaneousWeight": 15
+  },
+  {
+    "id": "cmhj3d4c20095l501w4gi1ot2",
+    "preparationForRecyclingWeight": 10,
+    "recyclingWeight": 15,
+    "miscellaneousWeight": 21
+  },
+  {
+    "id": "cmhj3d4c20098l501gjnevgbn",
+    "preparationForRecyclingWeight": 12,
+    "recyclingWeight": 18,
+    "miscellaneousWeight": 24
+  },
+  {
+    "id": "cmhj3pcr600a2l501hf8qz7ic",
+    "preparationForRecyclingWeight": 11,
+    "recyclingWeight": 16,
+    "miscellaneousWeight": 22
+  },
+  {
+    "id": "cmhj3pcr700a5l501ny3fzw2f",
+    "preparationForRecyclingWeight": 13,
+    "recyclingWeight": 19,
+    "miscellaneousWeight": 25
+  },
+  {
+    "id": "cmhj3vzpx00ahl501k59itry3",
+    "preparationForRecyclingWeight": 12,
+    "recyclingWeight": 18,
+    "miscellaneousWeight": 24
+  },
+  {
+    "id": "cmhj3vzpx00akl5010ffhri44",
+    "preparationForRecyclingWeight": 14,
+    "recyclingWeight": 20,
+    "miscellaneousWeight": 27
+  },
+  {
+    "id": "cmhj401jo00awl501nnv4b1wj",
+    "preparationForRecyclingWeight": 5,
+    "recyclingWeight": 8,
+    "miscellaneousWeight": 12
+  },
+  {
+    "id": "cmhj401jp00azl501k9fbqkhw",
+    "preparationForRecyclingWeight": 3,
+    "recyclingWeight": 5,
+    "miscellaneousWeight": 9
+  },
+  {
+    "id": "cmhj4345100bbl5019czqvblp",
+    "preparationForRecyclingWeight": 13,
+    "recyclingWeight": 19,
+    "miscellaneousWeight": 26
+  },
+  {
+    "id": "cmhj4345100bel501d0rxzhz8",
+    "preparationForRecyclingWeight": 15,
+    "recyclingWeight": 22,
+    "miscellaneousWeight": 29
+  },
+  {
+    "id": "cmhj4gq4l00bql5019lvo46ea",
+    "preparationForRecyclingWeight": 16,
+    "recyclingWeight": 24,
+    "miscellaneousWeight": 31
+  },
+  {
+    "id": "cmhj4gq4l00btl5013qehhk0w",
+    "preparationForRecyclingWeight": 18,
+    "recyclingWeight": 26,
+    "miscellaneousWeight": 34
+  },
+  {
+    "id": "cmhj4m0ao00c5l501wkyvlgj0",
+    "preparationForRecyclingWeight": 14,
+    "recyclingWeight": 21,
+    "miscellaneousWeight": 28
+  },
+  {
+    "id": "cmhj4m0ao00c8l50177n9zl6y",
+    "preparationForRecyclingWeight": 17,
+    "recyclingWeight": 25,
+    "miscellaneousWeight": 32
+  },
+  {
+    "id": "cmhj4tdmg00d7l501n7yiv8z5",
+    "preparationForRecyclingWeight": 15,
+    "recyclingWeight": 22,
+    "miscellaneousWeight": 29
+  },
+  {
+    "id": "cmhj4tdmh00dal501pxa1qtcq",
+    "preparationForRecyclingWeight": 17,
+    "recyclingWeight": 25,
+    "miscellaneousWeight": 33
+  },
+  {
+    "id": "cmhj4wm8j00dml501oh4ezmw3",
+    "preparationForRecyclingWeight": 18,
+    "recyclingWeight": 26,
+    "miscellaneousWeight": 34
+  },
+  {
+    "id": "cmhj4wm8k00dpl501bl90isj6",
+    "preparationForRecyclingWeight": 19,
+    "recyclingWeight": 28,
+    "miscellaneousWeight": 36
+  },
+  {
+    "id": "cmhj5h3ij00dwl5019i74xuy5",
+    "preparationForRecyclingWeight": 8,
+    "recyclingWeight": 12,
+    "miscellaneousWeight": 18
+  },
+  {
+    "id": "cmhj5h3ij00dzl5016vfgpqml",
+    "preparationForRecyclingWeight": 6,
+    "recyclingWeight": 10,
+    "miscellaneousWeight": 15
+  },
+  {
+    "id": "cmhj62m0c00ecl501dd7zx9du",
+    "preparationForRecyclingWeight": 10,
+    "recyclingWeight": 15,
+    "miscellaneousWeight": 21
+  },
+  {
+    "id": "cmhj62m0c00efl501fbzy2zff",
+    "preparationForRecyclingWeight": 12,
+    "recyclingWeight": 18,
+    "miscellaneousWeight": 24
+  },
+  {
+    "id": "cmhj663bu00erl501ch9eadei",
+    "preparationForRecyclingWeight": 11,
+    "recyclingWeight": 16,
+    "miscellaneousWeight": 22
+  },
+  {
+    "id": "cmhj663bu00eul501z0ywlbh0",
+    "preparationForRecyclingWeight": 13,
+    "recyclingWeight": 19,
+    "miscellaneousWeight": 25
+  },
+  {
+    "id": "cmhj68d6100f6l50180jwpnaf",
+    "preparationForRecyclingWeight": 10,
+    "recyclingWeight": 15,
+    "miscellaneousWeight": 20
+  },
+  {
+    "id": "cmhj68d6100f9l501xo8xs4xw",
+    "preparationForRecyclingWeight": 12,
+    "recyclingWeight": 17,
+    "miscellaneousWeight": 23
+  },
+  {
+    "id": "cmhj6am7a00fll501aycdw8lx",
+    "preparationForRecyclingWeight": 9,
+    "recyclingWeight": 14,
+    "miscellaneousWeight": 19
+  },
+  {
+    "id": "cmhj6am7a00fol5013fydf1zs",
+    "preparationForRecyclingWeight": 11,
+    "recyclingWeight": 16,
+    "miscellaneousWeight": 22
+  },
+  {
+    "id": "cmhj6d1gb00g0l501bct4xluy",
+    "preparationForRecyclingWeight": 5,
+    "recyclingWeight": 8,
+    "miscellaneousWeight": 12
+  },
+  {
+    "id": "cmhj6d1gb00g3l501plubn8ir",
+    "preparationForRecyclingWeight": 3,
+    "recyclingWeight": 5,
+    "miscellaneousWeight": 9
   }
 ]
