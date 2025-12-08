@@ -8,7 +8,7 @@
 
 export const environment = {
   production: true,
-  baseUrl: 'https://aniw-api.apps.blockchain-europe.iml.fraunhofer.de',
+  baseUrl: 'https://grc-api.oe260.iml.fhg.de',
   KEYCLOAK: {
     URL: 'https://kc.public.apps.blockchain-europe.iml.fraunhofer.de',
     REALM: 'skala',
