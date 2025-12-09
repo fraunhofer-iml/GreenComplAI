@@ -30,14 +30,20 @@ def main():
         print("[-] Error: pyproject.toml not found. Please run this script from the pkg/outlier_detection directory.")
         sys.exit(1)
     
-    # Check if root schema exists
+    # Prefer a package-local schema (e.g. a symlink) if present, else fallback to root schema
+    local_schema = current_dir / "schema.prisma"
+    local_prisma_sub = current_dir / "prisma" / "schema.prisma"
     root_schema = current_dir.parent.parent / "prisma" / "schema.prisma"
-    if not root_schema.exists():
-        print(f"[-] Error: Root schema not found at {root_schema}")
-        print("Please make sure you're running this from the correct directory.")
+
+    for schema in (local_schema, local_prisma_sub, root_schema):
+        if schema.exists():
+            chosen_schema = schema
+            break
+    else:
+        print(f"[-] Error: No schema found in {local_schema}, {local_prisma_sub} or {root_schema}")
         sys.exit(1)
-    
-    print(f"[*] Using root schema: {root_schema}")
+
+    print(f"[*] Using schema: {chosen_schema}")
     
     # Install dependencies
     if not run_command("uv sync", "Installing dependencies"):

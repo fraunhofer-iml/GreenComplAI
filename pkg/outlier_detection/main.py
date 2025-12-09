@@ -31,12 +31,20 @@ def setup_prisma():
     
     current_dir = Path(__file__).parent
     root_dir = current_dir.parent.parent
-    schema_path = root_dir / "prisma" / "schema.prisma"
-    
-    if not schema_path.exists():
-        logger.error(f"Schema file not found at {schema_path}")
+
+    # Prefer a local schema (could be a symlink) in the package directory
+    local_schema = current_dir / "schema.prisma"
+    local_prisma_sub = current_dir / "prisma" / "schema.prisma"
+    root_schema = root_dir / "prisma" / "schema.prisma"
+
+    for p in (local_schema, local_prisma_sub, root_schema):
+        if p.exists():
+            schema_path = p
+            break
+    else:
+        logger.error(f"Schema file not found in {local_schema}, {local_prisma_sub} or {root_schema}")
         return False
-    
+
     logger.info(f"Using schema file: {schema_path}")
     
     # Set the PRISMA_SCHEMA environment variable
