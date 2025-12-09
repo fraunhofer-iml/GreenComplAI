@@ -7,7 +7,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
@@ -16,13 +16,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
   imports: [CommonModule, MatCheckboxModule, FormsModule, ReactiveFormsModule],
   templateUrl: './dpp-card.component.html',
 })
-export class ProductDppCompareComponent implements OnChanges {
+export class ProductDppCompareComponent {
   title = input<string>('');
   form = input.required<FormControl<boolean | null>>();
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.form().valueChanges.subscribe((val) => console.log(val));
-  }
 
   onChange(event: Event) {
     event.preventDefault();

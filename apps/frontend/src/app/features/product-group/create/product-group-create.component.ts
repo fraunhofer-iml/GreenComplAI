@@ -6,11 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {
-  ProductGroupCreateDto,
-  ProductGroupDto,
-  VariantDto,
-} from '@ap2/api-interfaces';
+import { ProductGroupCreateDto, ProductGroupDto } from '@ap2/api-interfaces';
 import {
   Component,
   EventEmitter,
@@ -56,7 +52,7 @@ export class ProductGroupCreateComponent implements OnChanges {
     name: new FormControl<string>('', Validators.required),
     wasteFlow: new FormControl<string>('', Validators.required),
     description: new FormControl<string>('', Validators.required),
-    variants: new FormControl<VariantDto[] | null>([]),
+    variants: new FormControl<string[] | null>([]),
   });
 
   variants: string[] = [];
@@ -66,9 +62,7 @@ export class ProductGroupCreateComponent implements OnChanges {
   createMutation = injectMutation(() => ({
     mutationFn: (dto: ProductGroupCreateDto) =>
       this.productGroupService.create(dto),
-    onSuccess: async (res) => {
-      this.closeSheet(res);
-    },
+    onSuccess: async (res) => this.closeSheet(res),
   }));
 
   updateMutation = injectMutation(() => ({
@@ -82,14 +76,16 @@ export class ProductGroupCreateComponent implements OnChanges {
   @Output() closeSheetEvent = new EventEmitter<ProductGroupDto>();
 
   ngOnChanges() {
+    const variantNames = (this.data()?.variants ?? []).map((v) => v.name);
+
     this.form.patchValue({
       name: this.data()?.name,
       wasteFlow: this.data()?.wasteFlow,
       description: this.data()?.description,
-      variants: this.data()?.variants,
+      variants: variantNames,
     });
 
-    this.variants.push(...(this.data()?.variants ?? []).map((v) => v.name));
+    this.variants.push(...variantNames);
   }
 
   save() {
@@ -113,13 +109,20 @@ export class ProductGroupCreateComponent implements OnChanges {
     this.variants = [];
   }
 
+  private get variantsControl() {
+    return this.form.get('variants') as FormControl<string[] | null>;
+  }
+
   addVariant(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (value) this.variants.push(value);
     event.chipInput.clear();
+
+    this.variantsControl.value?.push(value);
   }
 
   removeVariant(variant: string): void {
     this.variants = this.variants.filter((item) => item !== variant);
+    this.variantsControl.value?.filter((item) => item !== variant);
   }
 }
