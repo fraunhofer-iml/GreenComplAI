@@ -35,7 +35,7 @@ export class AasCompletenessService {
       const taric = this.getValue(pid, 'taricCode');
       const importer = this.getValue(pid, 'importer');
 
-      if (uid){
+      if (uid) {
         this.logger.debug(
           `Found uniqueProductIdentifier in submodel product_identification`
         );
@@ -46,9 +46,7 @@ export class AasCompletenessService {
         hits++;
       }
       if (taric) {
-        this.logger.debug(
-          `Found taricCode in submodel product_identification`
-        );
+        this.logger.debug(`Found taricCode in submodel product_identification`);
         hits++;
       }
       if (importer) {
@@ -78,9 +76,7 @@ export class AasCompletenessService {
     if (mc) {
       const totalWeight = this.getValue(mc, 'totalWeight');
       if (totalWeight) {
-        this.logger.debug(
-          `Found totalWeight in submodel material_composition`
-        );
+        this.logger.debug(`Found totalWeight in submodel material_composition`);
         hits++;
       }
 
