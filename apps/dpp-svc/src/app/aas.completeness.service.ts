@@ -8,13 +8,6 @@
 
 import { Injectable, Logger } from '@nestjs/common';
 import { AppService } from './app.service';
-import {
-  CircularPropertiesSubmodule,
-  LegalComplianceSubmodule,
-  MaterialCompositionSubmodule,
-  PackagingSubmodule,
-  ProductIdentificationSubmodule,
-} from './submodules';
 
 @Injectable()
 export class AasCompletenessService {
@@ -24,78 +17,173 @@ export class AasCompletenessService {
 
   async aasCompletenessCheck(aasIdentifier: string): Promise<number> {
     let hits = 0;
+    const total = 13;
+
     const dpp = await this.appService.getDpp(aasIdentifier);
     if (!dpp) return 0;
 
-    // --- 1. ProductIdentificationSubmodule ---
-    const pid = dpp.connectedSubmodels.find((sm) =>
-      sm.id.endsWith('product_identification')
-    );
+    const find = (suffix: string) =>
+      dpp.connectedSubmodels.find((sm) => sm.id.endsWith(suffix));
+
+    // --------------------------------------------
+    // PRODUCT IDENTIFICATION
+    // --------------------------------------------
+    const pid = find('product_identification');
     if (pid) {
-      const sub = pid as unknown as ProductIdentificationSubmodule;
-      if (sub.uniqueProductIdentifier) hits++;
-      if (sub.gtin) hits++;
-      if (sub.taricCode) hits++;
-      if (sub.importer) hits++;
+      const uid = this.getValue(pid, 'uniqueProductIdentifier');
+      const gtin = this.getValue(pid, 'gtin');
+      const taric = this.getValue(pid, 'taricCode');
+      const importer = this.getValue(pid, 'importer');
+
+      if (uid){
+        this.logger.debug(
+          `Found uniqueProductIdentifier in submodel product_identification`
+        );
+        hits++;
+      }
+      if (gtin) {
+        this.logger.debug(`Found gtin in submodel product_identification`);
+        hits++;
+      }
+      if (taric) {
+        this.logger.debug(
+          `Found taricCode in submodel product_identification`
+        );
+        hits++;
+      }
+      if (importer) {
+        this.logger.debug(`Found importer in submodel product_identification`);
+        hits++;
+      }
     }
 
-    // --- 2. LegalComplianceSubmodule ---
-    const lc = dpp.connectedSubmodels.find((sm) =>
-      sm.id.endsWith('legal_compliance')
-    );
+    // --------------------------------------------
+    // LEGAL COMPLIANCE
+    // --------------------------------------------
+    const lc = find('legal_compliance');
     if (lc) {
-      const sub = lc as unknown as LegalComplianceSubmodule;
-      if (sub.technicalDocumentation.certificates?.length) hits++;
-      if (sub.technicalDocumentation.technicalDocuments?.length) hits++;
-      if (sub.technicalDocumentation.legalDocuments?.length) hits++;
+      const docs = this.getValue(pid, 'technicalDocumentation');
+      if (docs) {
+        this.logger.debug(
+          `Found technicalDocumentation in submodel legal_compliance`
+        );
+        hits++;
+      }
     }
 
-    // --- 3. MaterialCompositionSubmodule ---
-    const mc = dpp.connectedSubmodels.find((sm) =>
-      sm.id.endsWith('material_composition')
-    );
+    // --------------------------------------------
+    // MATERIAL COMPOSITION
+    // --------------------------------------------
+    const mc = find('material_composition');
     if (mc) {
-      const sub = mc as unknown as MaterialCompositionSubmodule;
-      if (sub.totalWeight) hits++;
+      const totalWeight = this.getValue(mc, 'totalWeight');
+      if (totalWeight) {
+        this.logger.debug(
+          `Found totalWeight in submodel material_composition`
+        );
+        hits++;
+      }
 
-      if (sub.materials && sub.materials.length) {
-        let materialHits = 0;
-        for (const m of sub.materials) {
-          if (m.weight != null) materialHits++;
-          if (m.isRenewable != null) materialHits++;
-          if (m.isPrimary != null) materialHits++;
+      const materials = this.getValue(mc, 'materials');
+      if (materials && Array.isArray(materials) && materials.length > 0) {
+        const allHaveWeight = materials.every((m) => m.value?.weight);
+        const allHaveRenewable = materials.every(
+          (m) => m.value?.isRenewable !== undefined
+        );
+        const allHavePrimary = materials.every(
+          (m) => m.value?.isPrimary !== undefined
+        );
+
+        if (allHaveWeight) {
+          this.logger.debug(
+            `Found allHaveWeight in submodel material_composition`
+          );
+          hits++;
         }
-        hits += Math.min(3, materialHits);
+        if (allHaveRenewable) {
+          this.logger.debug(
+            `Found allHaveRenewable in submodel material_composition`
+          );
+          hits++;
+        }
+        if (allHavePrimary) {
+          this.logger.debug(
+            `Found allHavePrimary in submodel material_composition`
+          );
+          hits++;
+        }
       }
     }
 
-    // --- 4. PackagingSubmodule ---
-    const pkg = dpp.connectedSubmodels.find((sm) =>
-      sm.id.endsWith('packaging')
-    );
+    // --------------------------------------------
+    // PACKAGING
+    // --------------------------------------------
+    const pkg = find('packaging');
     if (pkg) {
-      const sub = pkg as unknown as PackagingSubmodule;
-      if (sub.totalWeight) hits++;
+      const totalWeight = this.getValue(pkg, 'totalWeight');
+      if (totalWeight) {
+        this.logger.debug(`Found totalWeight in submodel packaging`);
+        hits++;
+      }
 
-      if (sub.packagingMaterials && sub.packagingMaterials.length) {
-        let packagingHits = 0;
-        for (const p of sub.packagingMaterials) {
-          if (p.isRenewable != null) packagingHits++;
-          if (p.isPrimary != null) packagingHits++;
+      const pm = this.getValue(pkg, 'packagingMaterials');
+      if (pm && Array.isArray(pm) && pm.length > 0) {
+        const allRenewable = pm.every(
+          (m) => m.value?.isRenewable !== undefined
+        );
+        const allPrimary = pm.every((m) => m.value?.isPrimary !== undefined);
+
+        if (allRenewable) {
+          this.logger.debug(`Found allRenewable in submodel packaging`);
+          hits++;
         }
-        hits += Math.min(2, packagingHits);
+        if (allPrimary) {
+          this.logger.debug(`Found allPrimary in submodel packaging`);
+          hits++;
+        }
       }
     }
 
-    // --- 5. CircularPropertiesSubmodule ---
-    const cp = dpp.connectedSubmodels.find((sm) =>
-      sm.id.endsWith('circular_properties')
-    );
+    // --------------------------------------------
+    // CIRCULAR PROPERTIES
+    // --------------------------------------------
+    const cp = find('circular_properties');
     if (cp) {
-      const sub = cp as unknown as CircularPropertiesSubmodule;
-      if (sub.concerningSubstances?.length) hits++;
+      const substances = this.getValue(cp, 'concerningSubstances');
+
+      if (substances && substances.length > 0) {
+        this.logger.debug(
+          `Found concerningSubstances in submodel circular_properties`
+        );
+        hits++;
+      }
     }
 
-    return hits / 15;
+    const score = hits / total;
+    return Number(score.toFixed(2));
+  }
+
+  private findElement(
+    elements: any[] | null | undefined,
+    idShort: string
+  ): any | undefined {
+    if (!elements) return undefined;
+
+    for (const el of elements) {
+      if (el.idShort === idShort) return el;
+
+      // Recursion through collections
+      if (Array.isArray(el.value)) {
+        const nested = this.findElement(el.value, idShort);
+        if (nested) return nested;
+      }
+    }
+
+    return undefined;
+  }
+
+  private getValue(submodel: any, idShort: string): any {
+    const el = this.findElement(submodel.submodelElements, idShort);
+    return el ? el.value : null;
   }
 }

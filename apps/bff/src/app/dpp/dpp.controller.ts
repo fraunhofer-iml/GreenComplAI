@@ -100,7 +100,7 @@ export class DppController {
     });
   }
 
-  @Get(':aasIdentifier')
+  @Get('completeness/:aasIdentifier')
   @Public()
   @ApiOperation({
     description: 'Get the completeness value for a DPP.',
