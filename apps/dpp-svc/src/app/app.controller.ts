@@ -10,11 +10,15 @@ import { DppMessagePatterns } from '@ap2/amqp';
 import { FileDto, ProductDto } from '@ap2/api-interfaces';
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
+import { AasCompletenessService } from './aas.completeness.service';
 import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private readonly completenessService: AasCompletenessService
+  ) {}
 
   @MessagePattern(DppMessagePatterns.CREATE_DPP)
   createDpp(data: { product: ProductDto; uploadedFiles: FileDto[] }) {
@@ -34,5 +38,10 @@ export class AppController {
   @MessagePattern(DppMessagePatterns.GET_NFT)
   getDppNft(data: { dppId: string }) {
     return this.appService.getDPPNft(data.dppId);
+  }
+
+  @MessagePattern(DppMessagePatterns.GET_COMPLETENESS)
+  getDppCompleteness(data: { aasIdentifier: string }) {
+    return this.completenessService.aasCompletenessCheck(data.aasIdentifier);
   }
 }

@@ -65,7 +65,6 @@ export class AasCompletenessService {
           if (m.isRenewable != null) materialHits++;
           if (m.isPrimary != null) materialHits++;
         }
-        // Wir zählen nur 3 Punkte maximal für MaterialComposition
         hits += Math.min(3, materialHits);
       }
     }
@@ -84,8 +83,7 @@ export class AasCompletenessService {
           if (p.isRenewable != null) packagingHits++;
           if (p.isPrimary != null) packagingHits++;
         }
-        // Wir zählen nur 3 Punkte maximal für Packaging
-        hits += Math.min(3, packagingHits);
+        hits += Math.min(2, packagingHits);
       }
     }
 
@@ -98,7 +96,6 @@ export class AasCompletenessService {
       if (sub.concerningSubstances?.length) hits++;
     }
 
-    // --- Score berechnen ---
-    return hits / 13;
+    return hits / 15;
   }
 }
