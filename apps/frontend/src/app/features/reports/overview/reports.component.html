@@ -1,5 +1,7 @@
-<div class="flex w-full justify-between px-8 pt-8">
-  <h2 class="text-xl" i18n>Berichte</h2>
-  <a class="" mat-flat-button routerLink="create">Hinzufügen</a>
+<div class="flex w-full flex-col gap-4 p-8">
+  <div class="flex w-full justify-between">
+    <h2 class="text-xl" i18n>Berichte</h2>
+    <a class="" mat-flat-button routerLink="create">Hinzufügen</a>
+  </div>
+  <app-overview [contentType]="ContentType.REPORTS"></app-overview>
 </div>
-<app-overview [contentType]="ContentType.REPORTS"></app-overview>

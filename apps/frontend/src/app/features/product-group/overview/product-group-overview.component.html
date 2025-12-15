@@ -1,23 +1,26 @@
-<div class="flex w-full justify-between px-8 pt-8">
-  <h2 class="text-xl" i18n>Meine Warengruppen</h2>
-  <button mat-flat-button (click)="sheet.open()">Hinzufügen</button>
+<div class="flex w-full flex-col gap-4 p-8">
+  <div class="flex w-full justify-between">
+    <h2 class="text-xl" i18n>Meine Warengruppen</h2>
+    <button mat-flat-button (click)="sheet.open()">Hinzufügen</button>
+  </div>
+
+  <app-overview
+    [contentType]="ContentType.PRODUCT_GROUPS"
+    #overview
+    class="mb-4"
+  ></app-overview>
+
+  <mat-accordion class="w-full">
+    <app-inflow [productGroupId]="productGroupId()"></app-inflow>
+  </mat-accordion>
+
+  <mat-accordion class="w-full">
+    <app-waste-flow [productGroupId]="productGroupId()"></app-waste-flow>
+  </mat-accordion>
+
+  <app-base-sheet #sheet>
+    <app-product-group-create
+      (closeSheetEvent)="sheet.close(); overview.query.refetch()"
+    ></app-product-group-create>
+  </app-base-sheet>
 </div>
-
-<app-overview
-  [contentType]="ContentType.PRODUCT_GROUPS"
-  #overview
-></app-overview>
-
-<mat-accordion class="flex w-full justify-between px-8 pt-4">
-  <app-inflow [productGroupId]="productGroupId()"></app-inflow>
-</mat-accordion>
-
-<mat-accordion class="flex w-full justify-between px-8 py-4">
-  <app-waste-flow [productGroupId]="productGroupId()"></app-waste-flow>
-</mat-accordion>
-
-<app-base-sheet #sheet>
-  <app-product-group-create
-    (closeSheetEvent)="sheet.close(); overview.query.refetch()"
-  ></app-product-group-create>
-</app-base-sheet>

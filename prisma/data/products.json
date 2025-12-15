@@ -201,5 +201,962 @@
       ]
     },
     "flags": []
+  },
+  {
+    "id": "cmh1rp33f001ol501gjnrkfeq",
+    "productId": "SIHOSE43911",
+    "name": "Silikon-Wärmeaustauscher-Profilschlauch",
+    "description": "Elastischer, thermoleitender Spezialschlauch mit optimiertem Kreisabschnitts-Profil, zum Umwickeln von Gerätesystemen aller Art und passenden Anschluss-Stücken zur Schlauch-Verbindung an Thermostate und andere Thermomedien fördernde Systeme",
+    "category": "Silikon",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 310,
+    "dimensions": "30mm",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.65,
+    "isSellable": true,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmh1rp33g001rl5014f5t8e7r",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 500
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmh1yo7e4002xl501k324y730",
+    "productId": "SIHOSE43904",
+    "name": "Silikon-Wärmeaustauscher-Profilschlauch",
+    "description": "Elastischer, thermoleitender Spezialschlauch mit optimiertem Kreisabschnitts-Profil, zum Umwickeln von Gerätesystemen aller Art und passenden Anschluss-Stücken zur Schlauch-Verbindung an Thermostate und andere Thermomedien fördernde Systeme",
+    "category": "Silikon",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 371,
+    "dimensions": "15",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.65,
+    "isSellable": false,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmh1yo7e50030l501d9bggckh",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 450
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmh1qv2d4000sl5015g0dbi79",
+    "productId": "SIHOSE43909",
+    "name": "Silikon-Wärmeaustauscher-Profilschlauch",
+    "description": "Elastischer, thermoleitender Spezialschlauch mit optimiertem Kreisabschnitts-Profil, zum Umwickeln von Gerätesystemen aller Art und passenden Anschluss-Stücken zur Schlauch-Verbindung an Thermostate und andere Thermomedien fördernde Systeme",
+    "category": "Silikon",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 101,
+    "dimensions": "9mm",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.65,
+    "isSellable": true,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmh1qv2d6000vl5010vfy17on",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 600
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmh1yb32j002jl501x1fb37p4",
+    "productId": "SIHOSE 43903",
+    "name": "Silikon-Wärmeaustauscher-Profilschlauch",
+    "description": "Elastischer, thermoleitender Spezialschlauch mit optimiertem Kreisabschnitts-Profil, zum Umwickeln von Gerätesystemen aller Art und passenden Anschluss-Stücken zur Schlauch-Verbindung an Thermostate und andere Thermomedien fördernde Systeme",
+    "category": "Silikon",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 223,
+    "dimensions": "9",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.65,
+    "isSellable": true,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmh1yb32k002ml501wxdapry2",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 550
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmhj0x9vx003yl5019eqndm7m",
+    "productId": "ETFEHOSE83293",
+    "name": "ETFE-Chemieschlauch",
+    "description": "Formbeständiger, chemisch inerter Schlauch aus opal-weißem Fluorcarbon-Polymerwerkstoff ETFE, biegsam und schlagzäh, frei von extrahierbaren Bestandteilen, physiologisch unbedenklich und bioverträglich",
+    "category": "ETFE",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 61,
+    "dimensions": "0,5mm",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.74,
+    "isSellable": true,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmhj0x9vy0040l501mj86c9pm",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 800
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmhj2ct0c006sl501gxuwg22w",
+    "productId": "STHOSE13962",
+    "name": "High-Tech-Edelstahl-Druckschlauch mit Gewindeanschlüssen",
+    "description": "Ringwellschlauch aus Edelstahl 1.4404 mit 1-facher Edelstahl-Drahtumflechtung 1.4301 sowie beidseitigen Endhülsen",
+    "category": "Edelstahl",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 125,
+    "dimensions": "10mm",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.72,
+    "isSellable": false,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmhj2ct0d006ul501fueghccz",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 400
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmhj176x4004sl501xq64vdnw",
+    "productId": "ETFEHOSE83333",
+    "name": "ETFE-Chemieschlauch",
+    "description": "Formbeständiger, chemisch inerter Schlauch aus opal-weißem Fluorcarbon-Polymerwerkstoff ETFE, biegsam und schlagzäh, frei von extrahierbaren Bestandteilen, physiologisch unbedenklich und bioverträglich",
+    "category": "ETFE",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 198,
+    "dimensions": "0,75mm",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.13,
+    "isSellable": false,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmhj176x5004ul50110qb9wa4",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 350
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmhj12wel004dl501022rh979",
+    "productId": "ETFEHOSE83331",
+    "name": "ETFE-Chemieschlauch",
+    "description": "Formbeständiger, chemisch inerter Schlauch aus opal-weißem Fluorcarbon-Polymerwerkstoff ETFE, biegsam und schlagzäh, frei von extrahierbaren Bestandteilen, physiologisch unbedenklich und bioverträglich",
+    "category": "ETFE",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 61,
+    "dimensions": "0,75mm",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.64,
+    "isSellable": true,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmhj12wel004fl501p20nxke7",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 650
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmhj0mzq5003fl501drsam4z9",
+    "productId": "ETFEHOSE83181",
+    "name": "ETFE-Chemieschlauch",
+    "description": "Formbeständiger, chemisch inerter Schlauch aus opal-weißem Fluorcarbon-Polymerwerkstoff ETFE, biegsam und schlagzäh, frei von extrahierbaren Bestandteilen, physiologisch unbedenklich und bioverträglich",
+    "category": "ETFE",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 61,
+    "dimensions": "0,25mm",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.7,
+    "isSellable": false,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmhj0mzq6003hl501rfnv8hj6",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 700
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmhj1wj8t005tl501fgsqvrwl",
+    "productId": "STHOSE13958",
+    "name": "High-Tech-Edelstahl-Druckschlauch mit Gewindeanschlüssen",
+    "description": "Ringwellschlauch aus Edelstahl 1.4404 mit 1-facher Edelstahl-Drahtumflechtung 1.4301 sowie beidseitigen Endhülsen",
+    "category": "Edelstahl",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 118,
+    "dimensions": "8mm",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.69,
+    "isSellable": false,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmhj1wj8u005vl501s8i73fey",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 420
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmhj1e3jc0057l501lrxfq3uy",
+    "productId": "ETFEHOSE19000",
+    "name": "ETFE-Chemieschlauch",
+    "description": "Formbeständiger, chemisch inerter Schlauch aus opal-weißem Fluorcarbon-Polymerwerkstoff ETFE, biegsam und schlagzäh, frei von extrahierbaren Bestandteilen, physiologisch unbedenklich und bioverträglich",
+    "category": "ETFE",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 155,
+    "dimensions": "1mm",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.11,
+    "isSellable": false,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmhj1e3je0059l501xebc4xdj",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 300
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmhj2m9si0081l501h7zf7zye",
+    "productId": "STHOSE13969",
+    "name": "High-Tech-Edelstahl-Druckschlauch mit Gewindeanschlüssen",
+    "description": "Ringwellschlauch aus Edelstahl 1.4404 mit 1-facher Edelstahl-Drahtumflechtung 1.4301 sowie beidseitigen Endhülsen",
+    "category": "Edelstahl",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 141,
+    "dimensions": "12mm",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.71,
+    "isSellable": false,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmhj2m9si0083l501albckqv5",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 380
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmhj2jl4a007ml50111najgbj",
+    "productId": "STHOSE13992",
+    "name": "High-Tech-Edelstahl-Druckschlauch mit Gewindeanschlüssen",
+    "description": "Ringwellschlauch aus Edelstahl 1.4404 mit 1-facher Edelstahl-Drahtumflechtung 1.4301 sowie beidseitigen Endhülsen",
+    "category": "Edelstahl",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 201,
+    "dimensions": "20mm",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.14,
+    "isSellable": false,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmhj2jl4a007ol501nd3btzdj",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 250
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmhj2gf7w0077l501mcg2kpfu",
+    "productId": "STHOSE13966",
+    "name": "High-Tech-Edelstahl-Druckschlauch mit Gewindeanschlüssen",
+    "description": "Ringwellschlauch aus Edelstahl 1.4404 mit 1-facher Edelstahl-Drahtumflechtung 1.4301 sowie beidseitigen Endhülsen",
+    "category": "Edelstahl",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 113,
+    "dimensions": "12mm",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.11,
+    "isSellable": false,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmhj2gf7x0079l5015mrad7xe",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 390
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmhj3d4c10092l501lbhsbh2m",
+    "productId": "POLYHOSE339536",
+    "name": "Polyolefin-Schrumpfschlauch, Schrumpfrate 2:1 - bis +125 °C - schwarz",
+    "description": "Hohe elektrische Durchschlagfestigkeit; wärmeschockbeständig (4 Std. bei +220 °C): keine Brüche, kein Fließen, kein Tropfen; Flexibilität nach Kälteeinfluss (4 Std. bei -55 °C) gegeben",
+    "category": "Polyolefin",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 35,
+    "dimensions": "1,2mm",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.59,
+    "isSellable": false,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmhj3d4c20094l501bxpiyhw4",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 900
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmhj3pcr5009zl5018wh9brtq",
+    "productId": "POLYHOSE339538",
+    "name": "Polyolefin-Schrumpfschlauch, Schrumpfrate 2:1 - bis +125 °C - schwarz",
+    "description": "Hohe elektrische Durchschlagfestigkeit; wärmeschockbeständig (4 Std. bei +220 °C): keine Brüche, kein Fließen, kein Tropfen; Flexibilität nach Kälteeinfluss (4 Std. bei -55 °C) gegeben",
+    "category": "Polyolefin",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 35,
+    "dimensions": "1,2mm",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.58,
+    "isSellable": false,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmhj3pcr600a1l501ziwvng9k",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 950
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmhj3vzpx00ael501m07f3i3c",
+    "productId": "POLYHOSE339541",
+    "name": "Polyolefin-Schrumpfschlauch, Schrumpfrate 2:1 - bis +125 °C - schwarz",
+    "description": "Hohe elektrische Durchschlagfestigkeit; wärmeschockbeständig (4 Std. bei +220 °C): keine Brüche, kein Fließen, kein Tropfen; Flexibilität nach Kälteeinfluss (4 Std. bei -55 °C) gegeben",
+    "category": "Polyolefin",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 35,
+    "dimensions": "4,8",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.62,
+    "isSellable": false,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmhj3vzpx00agl501clpaqqb5",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 880
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmhj401jn00atl501phqk5tvt",
+    "productId": "POLYHOSE339547",
+    "name": "Polyolefin-Schrumpfschlauch, Schrumpfrate 2:1 - bis +125 °C - schwarz",
+    "description": "Hohe elektrische Durchschlagfestigkeit; wärmeschockbeständig (4 Std. bei +220 °C): keine Brüche, kein Fließen, kein Tropfen; Flexibilität nach Kälteeinfluss (4 Std. bei -55 °C) gegeben",
+    "category": "Polyolefin",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 35,
+    "dimensions": "19mm",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.03,
+    "isSellable": false,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmhj401jo00avl5010fhdu1em",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 750
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmhj4345000b8l501ttagymgh",
+    "productId": "POLYHOSE339548",
+    "name": "Polyolefin-Schrumpfschlauch, Schrumpfrate 2:1 - bis +125 °C - schwarz",
+    "description": "Hohe elektrische Durchschlagfestigkeit; wärmeschockbeständig (4 Std. bei +220 °C): keine Brüche, kein Fließen, kein Tropfen; Flexibilität nach Kälteeinfluss (4 Std. bei -55 °C) gegeben",
+    "category": "Polyolefin",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 35,
+    "dimensions": "25,4",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.66,
+    "isSellable": false,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmhj4345000bal501k4ha1zp2",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 820
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmhj4m0an00c2l5012rs859eb",
+    "productId": "SLKHOSE48033",
+    "name": "High-Tech-Glasseide-Schlauch mit Isoliermantel",
+    "description": "Flexibler Sicherheits-Isolierschlauch aus dichtem Glasseiden-Geflecht mit kalibrierter, starker Silikonkautschuk-Ummantelung",
+    "category": "Glasseide/Glasgewebe",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 130,
+    "dimensions": "3mm",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.91,
+    "isSellable": false,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmhj4m0ao00c4l501j338q7pe",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 480
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmhj68d6000f3l501amit0edj",
+    "productId": "PIPECLAMP350017",
+    "name": "Rohrklemmleiste aus LDPE",
+    "description": "Rohr-Klemmleisten aus LDPE für die betriebssichere, platzsparende Befestigung von Kunststoff- und Metallrohren, kunststoff-ummantelte Kupferrohre, sowie von Schläuchen und Kabeln",
+    "category": "Rohrschellen und Rohrklemmen",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 44,
+    "dimensions": "12mm",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.49,
+    "isSellable": false,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmhj68d6000f5l501p2pm4lnh",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 1100
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmhj4gq4k00bnl5010zk1jhc0",
+    "productId": "SLKHOSE48031",
+    "name": "High-Tech-Glasseide-Schlauch mit Isoliermantel",
+    "description": "Flexibler Sicherheits-Isolierschlauch aus dichtem Glasseiden-Geflecht mit kalibrierter, starker Silikonkautschuk-Ummantelung",
+    "category": "Glasseide/Glasgewebe",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 32,
+    "dimensions": "3mm",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.93,
+    "isSellable": false,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmhj4gq4l00bpl501eq4fzphd",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 520
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmhj4tdmf00d4l501klh78d1s",
+    "productId": "SLKHOSE48037",
+    "name": "High-Tech-Glasseide-Schlauch mit Isoliermantel",
+    "description": "Flexibler Sicherheits-Isolierschlauch aus dichtem Glasseiden-Geflecht mit kalibrierter, starker Silikonkautschuk-Ummantelung",
+    "category": "Glasseide/Glasgewebe",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 69,
+    "dimensions": "8mm",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.9,
+    "isSellable": false,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmhj4tdmg00d6l501d674as7v",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 460
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmhj4wm8i00djl501lexi7a6y",
+    "productId": "SLKHOSE48039",
+    "name": "High-Tech-Glasseide-Schlauch mit Isoliermantel",
+    "description": "Flexibler Sicherheits-Isolierschlauch aus dichtem Glasseiden-Geflecht mit kalibrierter, starker Silikonkautschuk-Ummantelung",
+    "category": "Glasseide/Glasgewebe",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 299,
+    "dimensions": "8mm",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.94,
+    "isSellable": false,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmhj4wm8j00dll501k6o8c462",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 280
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmhj4qgnc00cpl501nwit0lg1",
+    "productId": "SLKHOSE48035",
+    "name": "High-Tech-Glasseide-Schlauch mit Isoliermantel",
+    "description": "Flexibler Sicherheits-Isolierschlauch aus dichtem Glasseiden-Geflecht mit kalibrierter, starker Silikonkautschuk-Ummantelung",
+    "category": "Glasseide/Glasgewebe",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 88,
+    "dimensions": "7,2mm",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.21,
+    "isSellable": false,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmhj4qgnc00crl501dzl5dxa4",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 440
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmhj62m0b00e9l5017fndf6mf",
+    "productId": "PIPECLAMP350014",
+    "name": "Rohrklemmleiste aus LDPE",
+    "description": "Rohr-Klemmleisten aus LDPE für die betriebssichere, platzsparende Befestigung von Kunststoff- und Metallrohren, kunststoff-ummantelte Kupferrohre, sowie von Schläuchen und Kabeln",
+    "category": "Rohrschellen und Rohrklemmen",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 34,
+    "dimensions": "6mm",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.51,
+    "isSellable": false,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmhj62m0c00ebl501bhb2uyv3",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 1200
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmhj663bt00eol501ue45xk99",
+    "productId": "PIPECLAMP350016",
+    "name": "Rohrklemmleiste aus LDPE",
+    "description": "Rohr-Klemmleisten aus LDPE für die betriebssichere, platzsparende Befestigung von Kunststoff- und Metallrohren, kunststoff-ummantelte Kupferrohre, sowie von Schläuchen und Kabeln",
+    "category": "Rohrschellen und Rohrklemmen",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 39,
+    "dimensions": "10mm",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.48,
+    "isSellable": false,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmhj663bt00eql501mwgkqot9",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 1150
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmhj6am7900fil501ttclxb85",
+    "productId": "PIPECLAMP350019",
+    "name": "Rohrklemmleiste aus LDPE",
+    "description": "Rohr-Klemmleisten aus LDPE für die betriebssichere, platzsparende Befestigung von Kunststoff- und Metallrohren, kunststoff-ummantelte Kupferrohre, sowie von Schläuchen und Kabeln",
+    "category": "Rohrschellen und Rohrklemmen",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 39,
+    "dimensions": "18mm",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.45,
+    "isSellable": false,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmhj6am7a00fkl501v76lvp0l",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 1080
+        }
+      ]
+    }
+  },
+  {
+    "id": "cmhj6d1gb00fxl5017kw21mdu",
+    "productId": "PIPECLAMP350021",
+    "name": "Rohrklemmleiste aus LDPE",
+    "description": "Rohr-Klemmleisten aus LDPE für die betriebssichere, platzsparende Befestigung von Kunststoff- und Metallrohren, kunststoff-ummantelte Kupferrohre, sowie von Schläuchen und Kabeln",
+    "category": "Rohrschellen und Rohrklemmen",
+    "weight": 0.1,
+    "unit": "kg",
+    "price": 50,
+    "dimensions": "28mm",
+    "supplierId": "company-2",
+    "manufacturerId": "company-1",
+    "billOfMaterialDescription": "",
+    "percentageOfBiologicalMaterials": 0.06,
+    "isSellable": false,
+    "wasteFlowId": "flow-1",
+    "productGroupId": "group-3",
+    "wasteId": "cmhj6d1gb00fzl50186daan23",
+    "waterUsed": 0,
+    "productCarbonFootprint": 0,
+    "durability": 120,
+    "durabilityDifference": 120,
+    "reparability": 5,
+    "flags": [],
+    "productionHistory": {
+      "create": [
+        {
+          "year": 2024,
+          "amount": 950
+        }
+      ]
+    }
   }
 ]
