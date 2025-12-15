@@ -1,3 +1,5 @@
+;
+
 /*
  * Copyright Fraunhofer Institute for Material Flow and Logistics
  *
@@ -8,6 +10,178 @@
 
 import { Injectable, Logger } from '@nestjs/common';
 import { AppService } from './app.service';
+import { CircularPropertiesSubmodule, LegalComplianceSubmodule, MaterialCompositionSubmodule, PackagingSubmodule, ProductIdentificationSubmodule } from './submodules';
+
+
+;
+
+
+
+
+
+
+
+
+;
+
+
+
+
+
+
+
+
+;
+
+
+
+
+
+
+
+
+;
+
+
+
+
+
+
+
+
+;
+
+
+
+
+
+
+
+
+;
+
+
+
+
+
+
+
+
+;
+
+
+
+
+
+
+
+
+;
+
+
+
+
+
+
+
+
+;
+
+
+
+
+
+
+
+
+;
+
+
+
+
+
+
+
+
+;
+
+
+
+
+
+
+
+
+;
+
+
+
+
+
+
+
+
+;
+
+
+
+
+
+
+
+
+;
+
+
+
+
+
+
+
+
+;
+
+
+
+
+
+
+
+
+;
+
+
+
+
+
+
+
+
+;
+
+
+
+
+
+
+
+
+;
+
+
+
+
+
+
+
+
+;
+
+
+
+
+
+
 
 @Injectable()
 export class AasCompletenessService {
@@ -25,62 +199,58 @@ export class AasCompletenessService {
     const find = (suffix: string) =>
       dpp.connectedSubmodels.find((sm) => sm.id.endsWith(suffix));
 
-    // --------------------------------------------
-    // PRODUCT IDENTIFICATION
-    // --------------------------------------------
-    const pid = find('product_identification');
-    if (pid) {
-      const uid = this.getValue(pid, 'uniqueProductIdentifier');
-      const gtin = this.getValue(pid, 'gtin');
-      const taric = this.getValue(pid, 'taricCode');
-      const importer = this.getValue(pid, 'importer');
+    const productIdentificationSubmodule = find('product_identification');
+    if (productIdentificationSubmodule) {
+      const uid = this.getValue(
+        productIdentificationSubmodule,
+        'uniqueProductIdentifier'
+      );
+      const gtin = this.getValue(productIdentificationSubmodule, 'gtin');
+      const taric = this.getValue(productIdentificationSubmodule, 'taricCode');
+      const importer = this.getValue(
+        productIdentificationSubmodule,
+        'importer'
+      );
 
       if (uid) {
-        this.logger.debug(
-          `Found uniqueProductIdentifier in submodel product_identification`
-        );
         hits++;
       }
       if (gtin) {
-        this.logger.debug(`Found gtin in submodel product_identification`);
         hits++;
       }
       if (taric) {
-        this.logger.debug(`Found taricCode in submodel product_identification`);
         hits++;
       }
       if (importer) {
-        this.logger.debug(`Found importer in submodel product_identification`);
         hits++;
       }
     }
 
-    // --------------------------------------------
-    // LEGAL COMPLIANCE
-    // --------------------------------------------
-    const lc = find('legal_compliance');
-    if (lc) {
-      const docs = this.getValue(pid, 'technicalDocumentation');
+    const legalComplianceSubmodule = find('legal_compliance');
+    if (legalComplianceSubmodule) {
+      const docs = this.getValue(
+        legalComplianceSubmodule,
+        'technicalDocumentation'
+      );
       if (docs) {
-        this.logger.debug(
-          `Found technicalDocumentation in submodel legal_compliance`
-        );
         hits++;
       }
     }
 
-    // --------------------------------------------
-    // MATERIAL COMPOSITION
-    // --------------------------------------------
-    const mc = find('material_composition');
-    if (mc) {
-      const totalWeight = this.getValue(mc, 'totalWeight');
+    const materialCompositionSubmodule = find('material_composition');
+    if (materialCompositionSubmodule) {
+      const totalWeight = this.getValue(
+        materialCompositionSubmodule,
+        'totalWeight'
+      );
       if (totalWeight) {
-        this.logger.debug(`Found totalWeight in submodel material_composition`);
         hits++;
       }
 
-      const materials = this.getValue(mc, 'materials');
+      const materials = this.getValue(
+        materialCompositionSubmodule,
+        'materials'
+      );
       if (materials && Array.isArray(materials) && materials.length > 0) {
         const allHaveWeight = materials.every((m) => m.value?.weight);
         const allHaveRenewable = materials.every(
@@ -91,38 +261,25 @@ export class AasCompletenessService {
         );
 
         if (allHaveWeight) {
-          this.logger.debug(
-            `Found allHaveWeight in submodel material_composition`
-          );
           hits++;
         }
         if (allHaveRenewable) {
-          this.logger.debug(
-            `Found allHaveRenewable in submodel material_composition`
-          );
           hits++;
         }
         if (allHavePrimary) {
-          this.logger.debug(
-            `Found allHavePrimary in submodel material_composition`
-          );
           hits++;
         }
       }
     }
 
-    // --------------------------------------------
-    // PACKAGING
-    // --------------------------------------------
-    const pkg = find('packaging');
-    if (pkg) {
-      const totalWeight = this.getValue(pkg, 'totalWeight');
+    const packagingSubmodule = find('packaging');
+    if (packagingSubmodule) {
+      const totalWeight = this.getValue(packagingSubmodule, 'totalWeight');
       if (totalWeight) {
-        this.logger.debug(`Found totalWeight in submodel packaging`);
         hits++;
       }
 
-      const pm = this.getValue(pkg, 'packagingMaterials');
+      const pm = this.getValue(packagingSubmodule, 'packagingMaterials');
       if (pm && Array.isArray(pm) && pm.length > 0) {
         const allRenewable = pm.every(
           (m) => m.value?.isRenewable !== undefined
@@ -130,27 +287,22 @@ export class AasCompletenessService {
         const allPrimary = pm.every((m) => m.value?.isPrimary !== undefined);
 
         if (allRenewable) {
-          this.logger.debug(`Found allRenewable in submodel packaging`);
           hits++;
         }
         if (allPrimary) {
-          this.logger.debug(`Found allPrimary in submodel packaging`);
           hits++;
         }
       }
     }
 
-    // --------------------------------------------
-    // CIRCULAR PROPERTIES
-    // --------------------------------------------
-    const cp = find('circular_properties');
-    if (cp) {
-      const substances = this.getValue(cp, 'concerningSubstances');
+    const circularPropertiesSubmodule = find('circular_properties');
+    if (circularPropertiesSubmodule) {
+      const substances = this.getValue(
+        circularPropertiesSubmodule,
+        'concerningSubstances'
+      );
 
       if (substances && substances.length > 0) {
-        this.logger.debug(
-          `Found concerningSubstances in submodel circular_properties`
-        );
         hits++;
       }
     }
