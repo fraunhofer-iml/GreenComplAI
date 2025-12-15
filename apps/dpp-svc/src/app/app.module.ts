@@ -9,6 +9,7 @@
 import { ConfigurationModule } from '@ap2/configuration';
 import { DatabaseModule } from '@ap2/database';
 import { Module } from '@nestjs/common';
+import { AasCompletenessService } from './aas.completeness.service';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { NftsModule } from './nfts/nfts.module';
@@ -16,6 +17,6 @@ import { NftsModule } from './nfts/nfts.module';
 @Module({
   imports: [ConfigurationModule, DatabaseModule, NftsModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AasCompletenessService],
 })
 export class AppModule {}

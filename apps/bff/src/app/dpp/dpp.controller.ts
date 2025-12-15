@@ -99,4 +99,18 @@ export class DppController {
       return foundToken;
     });
   }
+
+  @Get('completeness/:aasIdentifier')
+  @Public()
+  @ApiOperation({
+    description: 'Get the completeness value for a DPP.',
+  })
+  @ApiOkResponse({
+    description: 'Successfully got DPP completeness value',
+  })
+  getDppCompleteness(
+    @Param('aasIdentifier') aasIdentifier: string
+  ): Promise<number> {
+    return this.dppService.getDppCompleteness(aasIdentifier);
+  }
 }

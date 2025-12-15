@@ -110,4 +110,14 @@ export class DppService {
       })
     );
   }
+
+  async getDppCompleteness(aasIdentifier: string): Promise<number> {
+    const dpp = await firstValueFrom(
+      this.dppClient.send<number>(DppMessagePatterns.GET_COMPLETENESS, {
+        aasIdentifier,
+      })
+    );
+
+    return dpp;
+  }
 }

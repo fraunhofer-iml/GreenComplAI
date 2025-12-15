@@ -11,4 +11,5 @@ export enum DppMessagePatterns {
   GET_DPP = '/dpp/get',
   GET_PRODUCT = '/dpp/product/get',
   GET_NFT = '/dpp/nft/get',
+  GET_COMPLETENESS = '/dpp/completeness',
 }
