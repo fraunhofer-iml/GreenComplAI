@@ -17,7 +17,6 @@ import logging
 import subprocess
 import sys
 from pathlib import Path
-from api import app
 
 # Configure logging
 logging.basicConfig(
@@ -26,38 +25,58 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-def run_setup():
-    """Run the setup script before starting the application."""
-    logger.info("Running setup script...")
+def setup_prisma():
+    """Setup Prisma client before starting the application."""
+    logger.info("Setting up Prisma client...")
     
     current_dir = Path(__file__).parent
-    setup_script = current_dir / "setup.py"
+    root_dir = current_dir.parent.parent
+
+    # Prefer a local schema (could be a symlink) in the package directory
+    local_schema = current_dir / "schema.prisma"
+    local_prisma_sub = current_dir / "prisma" / "schema.prisma"
+    root_schema = root_dir / "prisma" / "schema.prisma"
+
+    for p in (local_schema, local_prisma_sub, root_schema):
+        if p.exists():
+            schema_path = p
+            break
+    else:
+        logger.error(f"Schema file not found in {local_schema}, {local_prisma_sub} or {root_schema}")
+        return False
+
+    logger.info(f"Using schema file: {schema_path}")
     
-    if not setup_script.exists():
-        logger.warning(f"Setup script not found at {setup_script}, skipping setup")
-        return True
+    # Set the PRISMA_SCHEMA environment variable
+    os.environ["PRISMA_SCHEMA"] = str(schema_path)
     
+    # Generate the Prisma client
     try:
-        result = subprocess.run(
-            [sys.executable, str(setup_script)],
+        subprocess.run(
+            ["prisma", "generate", "--schema", str(schema_path), "--generator", "pyclient"],
             check=True,
             capture_output=True,
             text=True
         )
-        logger.info("Setup completed successfully")
-        logger.debug(result.stdout)
+        logger.info("Prisma client generated successfully")
         return True
     except subprocess.CalledProcessError as e:
-        logger.error(f"Setup failed: {e}")
+        logger.error(f"Error generating Prisma client: {e}")
         logger.error(e.stderr)
+        return False
+    except FileNotFoundError:
+        logger.error("prisma command not found. Make sure Prisma CLI is installed.")
         return False
 
 def main():
     """Main function to run the FastAPI application."""
-    # Run setup before starting the application
-    if not run_setup():
-        logger.error("Setup failed, aborting application start")
+    # Setup Prisma before starting the application
+    if not setup_prisma():
+        logger.error("Prisma setup failed, aborting application start")
         sys.exit(1)
+    
+    # Import app AFTER setup to ensure Prisma client is generated
+    from api import app
     
     # Get configuration from environment variables
     host = os.getenv("HOST", "0.0.0.0")
