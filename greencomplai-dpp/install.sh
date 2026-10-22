@@ -4,6 +4,7 @@
 set -Eeuo pipefail
 
 IMAGE_PREFIX="ghcr.io/fraunhofer-iml/greencomplai-dpp"
+INSTALL_COMMAND="curl -fsSL https://raw.githubusercontent.com/fraunhofer-iml/GreenComplAI/main/greencomplai-dpp/install.sh | bash -s --"
 DEFAULT_VERSION="latest"
 
 VERSION="${DPP_VERSION:-$DEFAULT_VERSION}"
@@ -100,8 +101,9 @@ done
 [[ "$VERSION" =~ ^[a-zA-Z0-9_][a-zA-Z0-9_.-]{0,127}$ ]] \
   || die "--version must be a valid image tag, such as 1.2.3."
 
-INTERACTIVE=true
-[ -t 0 ] || INTERACTIVE=false
+# A piped installer reads its script from stdin; prompts use the terminal.
+INTERACTIVE=false
+if ( : </dev/tty ) 2>/dev/null; then INTERACTIVE=true; fi
 if [ "$INTERACTIVE" = false ] && [ "$ASSUME_YES" = false ]; then
   die "No terminal input available. Run with -y and the required options."
 fi
@@ -799,7 +801,7 @@ if [ "$SKIP_BOOTSTRAP" = false ] && [ "$READY" = true ]; then
     bootstrap_admin "$ORG_NAME" "$ADMIN_EMAIL" || true
   else
     warn "No email address supplied; no organization was created."
-    warn "Run later with: $0 --dir $INSTALL_DIR --admin-email <mail> --org-name <name>"
+    warn "Run later with: $INSTALL_COMMAND --dir $INSTALL_DIR --admin-email <mail> --org-name <name>"
   fi
 fi
 
@@ -852,7 +854,7 @@ printf '    Configuration    %s/.env\n' "$INSTALL_DIR"
 printf '    Status           cd %s && docker compose -f %s ps\n' "$INSTALL_DIR" "$COMPOSE_FILE_NAME"
 printf '    Logs             cd %s && docker compose -f %s logs -f\n' "$INSTALL_DIR" "$COMPOSE_FILE_NAME"
 printf '    Stop             cd %s && docker compose -f %s down\n' "$INSTALL_DIR" "$COMPOSE_FILE_NAME"
-printf '    Update           %s --dir %s --version <TAG>\n' "$0" "$INSTALL_DIR"
+printf '    Update           %s --dir %q --version <TAG>\n' "$INSTALL_COMMAND" "$INSTALL_DIR"
 printf '\n    Data is stored in Docker volumes greencomplai_postgres-data\n'
 printf '    (database) and greencomplai_minio-data (documents) and survives
     a restart.\n'

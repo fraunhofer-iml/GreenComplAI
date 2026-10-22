@@ -9,7 +9,19 @@ The existing GreenComplAI application's `dpp-svc` provides its BaSyx integration
 This application is a separate stack with its own authentication and database.
 The source is licensed under [Apache-2.0](LICENSE).
 
-## Quick start
+## Install
+
+Run on the target server:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/fraunhofer-iml/GreenComplAI/main/greencomplai-dpp/install.sh | bash
+```
+
+The installer asks for the hostname, organization name and administrator email,
+then starts the latest stable DPP release. It uses sudo when required.
+See [Installation and operations](docs/installation.md) for configuration and upgrades.
+
+## Local development
 
 Prerequisites: Node.js 22, the pnpm version declared in `package.json`, Docker
 Engine and the Compose plugin. Run from the repository root:
