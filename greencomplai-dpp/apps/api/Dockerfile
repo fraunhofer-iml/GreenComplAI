@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 # Build context must be the repository root: docker build -f apps/api/Dockerfile .
 
-FROM node:22-bookworm-slim AS base
+FROM node:25-bookworm-slim AS base
 ENV PNPM_HOME=/pnpm
 ENV PATH=$PNPM_HOME:$PATH
 RUN corepack enable
@@ -19,7 +19,7 @@ RUN pnpm --filter @dpp/api build && rm -f apps/api/dist/*.map
 RUN pnpm --filter @dpp/api deploy --prod --legacy /prod
 
 # --- Runtime: slim image, no devDeps, no build toolchain ---
-FROM node:22-bookworm-slim AS runtime
+FROM node:25-bookworm-slim AS runtime
 ENV NODE_ENV=production
 ENV PORT=3000
 WORKDIR /app
