@@ -1,0 +1,14 @@
+# Biome owns the web app; avoid conflicting formatters.
+apps/web
+
+# Generated output.
+**/routeTree.gen.ts
+**/dist
+**/.output
+**/.nitro
+**/.tanstack
+pnpm-lock.yaml
+packages/db/migrations
+
+# CI keeps the pnpm store in the workspace for caching.
+.pnpm-store

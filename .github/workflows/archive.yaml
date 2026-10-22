@@ -3,7 +3,9 @@ name: Deploy
 on:
   push:
     tags:
-      - '*/v*'
+      - 'frontend/v*'
+      - 'entity-management-svc/v*'
+      - 'bff/v*'
 
 jobs:
   build-and-push-frontend:

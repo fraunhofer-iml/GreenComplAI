@@ -1,0 +1,181 @@
+name: DPP release
+
+on:
+  push:
+    tags: ['greencomplai-dpp/v*']
+
+concurrency:
+  group: dpp-release
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  layout:
+    runs-on: ubuntu-latest
+    outputs:
+      workspace: ${{ steps.layout.outputs.workspace }}
+      version: ${{ steps.layout.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - id: layout
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          workspace=greencomplai-dpp
+          node "$workspace/scripts/prepare-release.mjs" "$RELEASE_TAG"
+          echo "workspace=$workspace" >> "$GITHUB_OUTPUT"
+          echo "version=${RELEASE_TAG#greencomplai-dpp/v}" >> "$GITHUB_OUTPUT"
+
+  checks:
+    needs: layout
+    uses: ./.github/workflows/dpp-checks.yml
+    with:
+      workspace: ${{ needs.layout.outputs.workspace }}
+
+  images:
+    needs: [layout, checks]
+    strategy:
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            arch: amd64
+          - runner: ubuntu-24.04-arm
+            arch: arm64
+    runs-on: ${{ matrix.runner }}
+    permissions:
+      contents: read
+      packages: write
+    defaults:
+      run:
+        working-directory: ${{ needs.layout.outputs.workspace }}
+    env:
+      IMAGE_PREFIX: ghcr.io/fraunhofer-iml/greencomplai-dpp
+      IMAGE_TAG: sha-${{ github.sha }}-${{ matrix.arch }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: ${{ needs.layout.outputs.workspace }}/package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+          cache-dependency-path:
+            ${{ needs.layout.outputs.workspace }}/pnpm-lock.yaml
+      - uses: docker/setup-buildx-action@v3
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @dpp/e2e exec playwright install --with-deps chromium
+      - name: Build release images
+        env:
+          SOURCE: https://github.com/${{ github.repository }}
+          REVISION: ${{ github.sha }}
+        run: |
+          for component in api web minio; do
+            dockerfile="apps/$component/Dockerfile"
+            license=Apache-2.0
+            if [ "$component" = minio ]; then
+              dockerfile=docker/minio/Dockerfile
+              license=AGPL-3.0-or-later
+            fi
+            docker build -f "$dockerfile" \
+              --label "org.opencontainers.image.source=$SOURCE" \
+              --label "org.opencontainers.image.revision=$REVISION" \
+              --label "org.opencontainers.image.licenses=$license" \
+              -t "$IMAGE_PREFIX/$component:$IMAGE_TAG" .
+          done
+      - name: Test the exact images before pushing
+        run: pnpm test:smoke
+        env:
+          SMOKE_SKIP_BUILD: '1'
+          SMOKE_API_IMAGE: ${{ env.IMAGE_PREFIX }}/api:${{ env.IMAGE_TAG }}
+          SMOKE_WEB_IMAGE: ${{ env.IMAGE_PREFIX }}/web:${{ env.IMAGE_TAG }}
+          SMOKE_MINIO_IMAGE: ${{ env.IMAGE_PREFIX }}/minio:${{ env.IMAGE_TAG }}
+      # Authentication is only for publishing from CI, never for installation.
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push tested images
+        run: |
+          docker push "$IMAGE_PREFIX/api:$IMAGE_TAG"
+          docker push "$IMAGE_PREFIX/web:$IMAGE_TAG"
+          docker push "$IMAGE_PREFIX/minio:$IMAGE_TAG"
+
+  release:
+    needs: [layout, images]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    defaults:
+      run:
+        working-directory: ${{ needs.layout.outputs.workspace }}
+    env:
+      IMAGE_PREFIX: ghcr.io/fraunhofer-iml/greencomplai-dpp
+      VERSION: ${{ needs.layout.outputs.version }}
+      RELEASE_TAG: ${{ github.ref_name }}
+      REVISION: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Assemble multi-platform images
+        run: |
+          for component in api web minio; do
+            image="$IMAGE_PREFIX/$component"
+            docker buildx imagetools create -t "$image:$VERSION" \
+              "$image:sha-$REVISION-amd64" "$image:sha-$REVISION-arm64"
+          done
+      - name: Verify anonymous access
+        run: |
+          anonymous_config=$(mktemp -d)
+          trap 'rm -rf "$anonymous_config"' EXIT
+          for component in api web minio; do
+            if ! DOCKER_CONFIG="$anonymous_config" docker manifest inspect "$IMAGE_PREFIX/$component:$VERSION" >/dev/null; then
+              echo "::error::Set all DPP packages to public in GHCR package settings, then rerun this workflow. Installation requires anonymous access."
+              exit 1
+            fi
+          done
+      - name: Update stable image aliases
+        run: |
+          case "$VERSION" in *-*) exit 0 ;; esac
+          minor=${VERSION%.*}
+          major=${minor%.*}
+          for component in api web minio; do
+            image="$IMAGE_PREFIX/$component"
+            for alias in "$minor" "$major" latest; do
+              docker buildx imagetools create -t "$image:$alias" "$image:$VERSION"
+            done
+          done
+      - name: Prepare versioned downloads
+        run: node scripts/prepare-release.mjs "$RELEASE_TAG"
+      - name: Publish the DPP release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          printf 'GreenComplAI DPP %s\n\n' "$VERSION" > build/release/notes.md
+          printf 'Standalone DPP application. API, web and storage images support linux/amd64 and linux/arm64.\n\n' >> build/release/notes.md
+          printf 'Images: `%s/api:%s` and `%s/web:%s`.\n\n' "$IMAGE_PREFIX" "$VERSION" "$IMAGE_PREFIX" "$VERSION" >> build/release/notes.md
+          printf 'Storage: `%s/minio:%s`.\n\n' "$IMAGE_PREFIX" "$VERSION" >> build/release/notes.md
+          printf 'Verify SHA256SUMS before running the version-pinned installer. See the installation guide in the release source.\n' >> build/release/notes.md
+          prerelease=()
+          case "$VERSION" in *-*) prerelease=(--prerelease) ;; esac
+          # Keep the shared repository's global latest-release selection unchanged.
+          gh release create "$RELEASE_TAG" --verify-tag --latest=false \
+            "${prerelease[@]}" --title "GreenComplAI DPP $VERSION" \
+            --notes-file build/release/notes.md \
+            build/release/install.sh build/release/docker-compose.selfhost.yml build/release/SHA256SUMS

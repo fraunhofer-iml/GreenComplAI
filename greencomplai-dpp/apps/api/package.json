@@ -1,0 +1,46 @@
+{
+  "name": "@dpp/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "check": "pnpm typecheck",
+    "dev": "tsx watch src/index.ts",
+    "lint": "tsc --noEmit",
+    "start": "node dist/index.js",
+    "test": "vitest run",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1155.0",
+    "@aws-sdk/s3-request-presigner": "^3.1155.0",
+    "@dpp/connector-sdk": "workspace:*",
+    "@dpp/connector-simpl": "workspace:*",
+    "@dpp/db": "workspace:*",
+    "@dpp/domain": "workspace:*",
+    "@dpp/schemas": "workspace:*",
+    "@hono/node-server": "^1.19.17",
+    "@hono/zod-validator": "^0.7.6",
+    "ajv": "^8.20.0",
+    "better-auth": "^1.7.12",
+    "dotenv": "^17.4.2",
+    "drizzle-orm": "^0.45.4",
+    "hono": "^4.13.13",
+    "nodemailer": "^10.2.0",
+    "pg-boss": "^10.4.2",
+    "postgres": "^3.4.9",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@dpp/config": "workspace:*",
+    "@types/node": "^24.19.2",
+    "@types/nodemailer": "^8.0.2",
+    "esbuild": "^0.28.2",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.12"
+  },
+  "license": "Apache-2.0"
+}

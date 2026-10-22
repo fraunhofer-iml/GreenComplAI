@@ -1,0 +1,123 @@
+# Deployable stack for self-hosting. Provide secrets via environment or a .env
+# file next to this compose file. The API refuses to start in production with
+# default/missing secrets, so BETTER_AUTH_SECRET, POSTGRES_PASSWORD and the S3
+# credentials must be set to real values.
+#
+#   docker compose -f docker-compose.prod.yml up -d --build
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-dpp}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-dpp}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-dpp} -d ${POSTGRES_DB:-dpp}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  minio:
+    image: greencomplai-dpp-minio:local
+    build:
+      context: .
+      dockerfile: docker/minio/Dockerfile
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${S3_ACCESS_KEY_ID:?set S3_ACCESS_KEY_ID}
+      MINIO_ROOT_PASSWORD: ${S3_SECRET_ACCESS_KEY:?set S3_SECRET_ACCESS_KEY}
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "mc ready local || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Creates the bucket so the API readiness probe (HeadBucket) succeeds.
+  createbuckets:
+    image: greencomplai-dpp-minio:local
+    depends_on:
+      minio:
+        condition: service_started
+    environment:
+      S3_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID:?}
+      S3_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY:?}
+      S3_BUCKET: ${S3_BUCKET:-dpp}
+    entrypoint: >
+      /bin/sh -c "
+      until mc alias set local http://minio:9000 \"$$S3_ACCESS_KEY_ID\" \"$$S3_SECRET_ACCESS_KEY\"; do sleep 1; done;
+      mc mb --ignore-existing local/\"$$S3_BUCKET\";
+      "
+
+  # One-shot: applies database migrations, then exits.
+  migrate:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    command: ["node", "dist/migrate.js"]
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-dpp}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-dpp}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    environment:
+      NODE_ENV: production
+      DEPLOYMENT_MODE: ${DEPLOYMENT_MODE:-self-hosted}
+      PORT: 3000
+      DATABASE_URL: postgres://${POSTGRES_USER:-dpp}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-dpp}
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?set BETTER_AUTH_SECRET}
+      BETTER_AUTH_URL: ${BETTER_AUTH_URL:?set BETTER_AUTH_URL}
+      API_ORIGIN: ${API_ORIGIN:?set API_ORIGIN}
+      WEB_ORIGINS: ${WEB_ORIGINS:?set WEB_ORIGINS}
+      S3_ENDPOINT: http://minio:9000
+      S3_REGION: ${S3_REGION:-local}
+      S3_BUCKET: ${S3_BUCKET:-dpp}
+      S3_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID}
+      S3_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+      createbuckets:
+        condition: service_completed_successfully
+    ports:
+      - "${API_PORT:-3000}:3000"
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          'node -e "fetch(''http://127.0.0.1:3000/ready'').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"',
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        VITE_API_ORIGIN: ${API_ORIGIN:?set API_ORIGIN}
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+    depends_on:
+      - api
+    ports:
+      - "${WEB_PORT:-8080}:3000"
+
+volumes:
+  postgres-data:
+  minio-data:

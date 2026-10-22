@@ -1,0 +1,20 @@
+title = "DPP secret scanning"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Public connector encryption fixture, only in the integration test configuration"
+condition = "AND"
+targetRules = ["generic-api-key"]
+paths = ['''(^|/)apps/api/vitest\.integration\.config\.ts$''']
+regexTarget = "secret"
+regexes = ['''^Y29ubmVjdG9yLXRlc3Qta2V5LTMyLWJ5dGVzISEhISE=$''']
+
+[[allowlists]]
+description = "Domain field identifier, not an API credential"
+condition = "AND"
+targetRules = ["generic-api-key"]
+paths = ['''(^|/)packages/domain/src/sustainability\.ts$''']
+regexTarget = "secret"
+regexes = ['''^e2-substances-of-concern$''']

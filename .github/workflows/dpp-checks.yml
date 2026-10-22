@@ -1,0 +1,266 @@
+name: DPP CI
+
+on:
+  workflow_call:
+    inputs:
+      workspace:
+        description: DPP workspace relative to the repository root
+        type: string
+        default: greencomplai-dpp
+
+concurrency:
+  group: dpp-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: '22'
+
+jobs:
+  secrets:
+    name: Secret scan
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.workspace || 'greencomplai-dpp' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # Scan the PR's commits too: removing a leaked key in a later commit
+      # does not remove it from the PR history. Never upload secret reports.
+      - name: Scan commits
+        env:
+          SCAN_BASE:
+            ${{ github.event.pull_request.base.sha || github.event.before }}
+          SCAN_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+          DPP_WORKSPACE: ${{ inputs.workspace || 'greencomplai-dpp' }}
+        run: |
+          docker run --rm -v "$GITHUB_WORKSPACE:/repo" -w "/repo/$DPP_WORKSPACE" \
+            -e SCAN_BASE -e SCAN_HEAD --entrypoint sh \
+            ghcr.io/gitleaks/gitleaks:v8.30.1 -c \
+            'git config --global --add safe.directory /repo; sh scripts/check-secrets.sh'
+
+  static:
+    name: Typecheck & lint
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.workspace || 'greencomplai-dpp' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file:
+            ${{ inputs.workspace || 'greencomplai-dpp' }}/package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path:
+            ${{ inputs.workspace || 'greencomplai-dpp' }}/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check:public-files
+      - run: pnpm check:dependencies
+      - run: pnpm format:check
+      - run: pnpm typecheck
+      - run: pnpm lint
+
+  unit:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.workspace || 'greencomplai-dpp' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file:
+            ${{ inputs.workspace || 'greencomplai-dpp' }}/package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path:
+            ${{ inputs.workspace || 'greencomplai-dpp' }}/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+
+  integration:
+    name: Migrations & integration tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.workspace || 'greencomplai-dpp' }}
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: dpp
+          POSTGRES_PASSWORD: dpp
+          POSTGRES_DB: dpp
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U dpp -d dpp" --health-interval 5s
+          --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file:
+            ${{ inputs.workspace || 'greencomplai-dpp' }}/package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path:
+            ${{ inputs.workspace || 'greencomplai-dpp' }}/pnpm-lock.yaml
+      - name: Start object storage
+        run: |
+          docker build -f docker/minio/Dockerfile -t dpp-minio:test .
+          docker run -d --name dpp-minio -p 9000:9000 \
+            -e MINIO_ROOT_USER=minio -e MINIO_ROOT_PASSWORD=minio123 \
+            dpp-minio:test server /data
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://localhost:9000/minio/health/ready; then exit 0; fi
+            sleep 2
+          done
+          docker logs dpp-minio
+          exit 1
+      - run: pnpm install --frozen-lockfile
+      # Applies every migration to an empty database, which is the only place
+      # that check happens: developers run against a database that is already
+      # migrated and would not notice a migration that only works incrementally.
+      - name: Apply migrations from scratch
+        run: pnpm db:migrate
+        env:
+          DATABASE_URL: postgres://dpp:dpp@localhost:5432/dpp
+
+      # The suite creates and migrates its own throwaway database (see
+      # test/global-setup.ts), so it needs the server, not the dpp database.
+      - name: Integration tests
+        run: pnpm test:integration
+        env:
+          TEST_DATABASE_URL: postgres://dpp:dpp@localhost:5432/dpp_test
+          TEST_S3_ENDPOINT: http://localhost:9000
+
+  e2e:
+    name: Browser E2E (Playwright)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.workspace || 'greencomplai-dpp' }}
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: dpp
+          POSTGRES_PASSWORD: dpp
+          # db:migrate only applies migrations, it does not create the
+          # database (unlike the integration suite's global-setup.ts) — so it
+          # has to already exist, same as dpp_test relies on the postgres
+          # image itself creating what POSTGRES_DB names.
+          POSTGRES_DB: dpp_e2e
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U dpp -d dpp_e2e" --health-interval 5s
+          --health-timeout 5s --health-retries 10
+    env:
+      E2E_DATABASE_URL: postgres://dpp:dpp@localhost:5432/dpp_e2e
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file:
+            ${{ inputs.workspace || 'greencomplai-dpp' }}/package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path:
+            ${{ inputs.workspace || 'greencomplai-dpp' }}/pnpm-lock.yaml
+      - name: Start object storage
+        run: |
+          docker build -f docker/minio/Dockerfile -t dpp-minio:test .
+          docker run -d --name dpp-minio -p 9000:9000 \
+            -e MINIO_ROOT_USER=minio -e MINIO_ROOT_PASSWORD=minio123 \
+            dpp-minio:test server /data
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://localhost:9000/minio/health/ready; then exit 0; fi
+            sleep 2
+          done
+          docker logs dpp-minio
+          exit 1
+      - run: pnpm install --frozen-lockfile
+      - name: Install Playwright browsers
+        run: pnpm --filter @dpp/e2e exec playwright install --with-deps chromium
+
+      # The web server's Vite dev process starts against E2E_DATABASE_URL
+      # (see playwright.config.ts webServer env), so that database must be
+      # migrated before playwright.config.ts boots it.
+      - name: Apply migrations to the e2e database
+        run: pnpm db:migrate
+        env:
+          DATABASE_URL: ${{ env.E2E_DATABASE_URL }}
+
+      - name: Browser E2E tests
+        run: pnpm test:e2e
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path:
+            ${{ inputs.workspace || 'greencomplai-dpp'
+            }}/apps/e2e/playwright-report/
+          retention-days: 7
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.workspace || 'greencomplai-dpp' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file:
+            ${{ inputs.workspace || 'greencomplai-dpp' }}/package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path:
+            ${{ inputs.workspace || 'greencomplai-dpp' }}/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+
+  container:
+    name: Container build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.workspace || 'greencomplai-dpp' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      # docker compose interpolates the whole file before building, so the
+      # required run-time variables must be set even though only the web image
+      # actually consumes one as a build arg. Dummy values: nothing here runs.
+      - name: Build images
+        run: docker compose -f docker-compose.prod.yml build
+        env:
+          POSTGRES_PASSWORD: ci-not-a-real-password
+          BETTER_AUTH_SECRET: ci-not-a-real-secret-value
+          BETTER_AUTH_URL: http://localhost:3000
+          API_ORIGIN: http://localhost:3000
+          WEB_ORIGINS: http://localhost:5173
+          S3_ACCESS_KEY_ID: ci-access-key
+          S3_SECRET_ACCESS_KEY: ci-secret-key

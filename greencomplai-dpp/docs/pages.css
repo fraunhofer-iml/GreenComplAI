@@ -1,0 +1,151 @@
+/* Styles for published documentation. */
+:root {
+  color-scheme: light dark;
+  --text: #16181d;
+  --muted: #5b6472;
+  --rule: #dfe3ea;
+  --accent: #1c6b4b;
+  --code-bg: #f4f6f9;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #e6e9ef;
+    --muted: #97a1b0;
+    --rule: #2b313b;
+    --accent: #5fbf95;
+    --code-bg: #1b1f26;
+  }
+  body {
+    background: #101319;
+  }
+}
+body {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 3rem 1.25rem 6rem;
+  font:
+    16px/1.65 system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
+  color: var(--text);
+}
+h1 {
+  font-size: 1.9rem;
+  line-height: 1.2;
+  margin: 0 0 0.5rem;
+}
+h2 {
+  font-size: 1.3rem;
+  margin: 2.75rem 0 0.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+}
+h3 {
+  font-size: 1.05rem;
+  margin: 1.75rem 0 0.5rem;
+}
+a {
+  color: var(--accent);
+}
+code {
+  /* Wrap long inline URLs on narrow screens. */
+  overflow-wrap: anywhere;
+  background: var(--code-bg);
+  padding: 0.12em 0.35em;
+  border-radius: 4px;
+  font-size: 0.89em;
+}
+pre {
+  background: var(--code-bg);
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+pre code {
+  background: none;
+  padding: 0;
+  /* Scroll code blocks without altering copyable command lines. */
+  overflow-wrap: normal;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.25rem 0;
+  font-size: 0.94rem;
+}
+th,
+td {
+  text-align: left;
+  padding: 0.5rem 0.7rem;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+th {
+  font-weight: 600;
+}
+blockquote {
+  margin: 1.25rem 0;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid var(--accent);
+  background: var(--code-bg);
+  border-radius: 0 6px 6px 0;
+}
+blockquote p {
+  margin: 0;
+}
+/* Widen screenshots on large screens while keeping body text readable. */
+figure {
+  margin: 2rem 0 2.5rem;
+}
+figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+}
+figcaption {
+  margin-top: 0.6rem;
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+
+/* Use fixed columns and wrapping for narrow-screen tables. */
+@media (max-width: 40rem) {
+  table {
+    table-layout: fixed;
+  }
+  th,
+  td {
+    overflow-wrap: anywhere;
+  }
+  /* Ignore Pandoc column percentages on small screens. */
+  colgroup {
+    display: none;
+  }
+}
+
+@media (min-width: 64rem) {
+  figure {
+    width: 60rem;
+    margin-left: -7rem;
+  }
+}
+
+#TOC {
+  margin: 2rem 0 3rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  font-size: 0.94rem;
+}
+#TOC ul {
+  margin: 0.25rem 0;
+  padding-left: 1.1rem;
+}
+.home {
+  display: inline-block;
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+}

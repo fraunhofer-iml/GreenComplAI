@@ -1,0 +1,26 @@
+{
+  "name": "@dpp/ui",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "check": "pnpm typecheck",
+    "lint": "tsc --noEmit",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.7.0"
+  },
+  "devDependencies": {
+    "@dpp/config": "workspace:*",
+    "@types/react": "^19.3.0",
+    "typescript": "^5.9.3"
+  },
+  "license": "Apache-2.0"
+}

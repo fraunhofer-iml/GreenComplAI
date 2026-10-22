@@ -1,0 +1,56 @@
+node_modules
+.pnpm-store
+
+# Intermediate output from the documentation job
+/public/
+/build/
+dist
+.turbo
+.vite
+.output
+.tanstack
+.env
+.env.*
+!.env.example
+# Local credentials and operational data. Keep schema migrations tracked.
+*.pem
+*.key
+*.p12
+*.pfx
+.npmrc
+.netrc
+.aws/
+.ssh/
+credentials.json
+*service-account*.json
+backups/
+dumps/
+coverage
+*.log
+tmp/
+
+# AI agent tooling (local configuration, not part of the application)
+.agents/
+.claude/
+.codex
+.codex/
+.cursor/
+.cursorrules
+**/.cursorrules
+.aider*
+.windsurf/
+.windsurfrules
+.mcp.json
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+.github/copilot-instructions.md
+
+# Internal planning and review documents (work in progress, not shipped)
+docs/umsetzungsplan-*.md
+docs/plattform-gap-analyse-*.md
+docs/abnahme-review-*.md
+
+# Licensed standards documents (DIN EN) - must not be redistributed
+norm/
+*:Zone.Identifier

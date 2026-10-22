@@ -4,3 +4,6 @@
 /.nx/cache
 /.nx/workspace-data
 .angular
+
+# The DPP workspace has its own Prettier and Biome configuration.
+/greencomplai-dpp
