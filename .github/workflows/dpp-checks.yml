@@ -51,7 +51,7 @@ jobs:
         working-directory: ${{ inputs.workspace || 'greencomplai-dpp' }}
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           package_json_file:
             ${{ inputs.workspace || 'greencomplai-dpp' }}/package.json
@@ -76,7 +76,7 @@ jobs:
         working-directory: ${{ inputs.workspace || 'greencomplai-dpp' }}
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           package_json_file:
             ${{ inputs.workspace || 'greencomplai-dpp' }}/package.json
@@ -109,7 +109,7 @@ jobs:
           --health-timeout 5s --health-retries 10
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           package_json_file:
             ${{ inputs.workspace || 'greencomplai-dpp' }}/package.json
@@ -174,7 +174,7 @@ jobs:
       E2E_DATABASE_URL: postgres://dpp:dpp@localhost:5432/dpp_e2e
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           package_json_file:
             ${{ inputs.workspace || 'greencomplai-dpp' }}/package.json
@@ -229,7 +229,7 @@ jobs:
         working-directory: ${{ inputs.workspace || 'greencomplai-dpp' }}
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           package_json_file:
             ${{ inputs.workspace || 'greencomplai-dpp' }}/package.json
