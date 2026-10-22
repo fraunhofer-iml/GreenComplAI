@@ -1,0 +1,4 @@
+{
+  "extends": "@dpp/config/tsconfig/node",
+  "include": ["src", "drizzle.config.ts"]
+}

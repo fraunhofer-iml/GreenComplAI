@@ -1,0 +1,7 @@
+# The standalone DPP stack builds from greencomplai-dpp/ as its context.
+greencomplai-dpp/
+.git/
+**/node_modules/
+**/.env
+**/.env.*
+!**/.env.example

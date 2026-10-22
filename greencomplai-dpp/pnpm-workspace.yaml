@@ -1,0 +1,8 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+# Upstream tooling pins vulnerable older releases; keep overrides scoped.
+overrides:
+  "@esbuild-kit/core-utils>esbuild": "^0.25.12"
+  "@tailwindcss/typography>postcss-selector-parser": "^7.1.6"

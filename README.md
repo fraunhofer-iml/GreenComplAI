@@ -96,6 +96,23 @@ The project consists of the following components:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## Standalone DPP application
+
+[`greencomplai-dpp/`](greencomplai-dpp/README.md) is an independently deployable
+Digital Product Passport application with a React web app, a Hono API, its own
+authentication, Postgres database and object storage. It is separate from the
+existing `apps/dpp-svc` BaSyx integration.
+
+Develop this application from `greencomplai-dpp/` using pnpm and Turbo. The
+existing applications continue to use npm and Nx from the repository root. DPP
+CI runs only for its workspace and workflow changes; DPP releases use tags such
+as `greencomplai-dpp/v0.1.0` and their own GHCR API/web images.
+
+See the DPP [quick start](greencomplai-dpp/README.md),
+[installation guide](greencomplai-dpp/docs/installation.md),
+[architecture](greencomplai-dpp/docs/architecture.md) and
+[release process](greencomplai-dpp/docs/releases.md).
+
 ## 🚀 Getting Started <a id="getting-started"></a>
 
 To set up and run GreenComplAI locally, please consult the chapters

@@ -4,7 +4,13 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'greencomplai-dpp/**'
+      - '.github/workflows/dpp-*.yml'
   pull_request:
+    paths-ignore:
+      - 'greencomplai-dpp/**'
+      - '.github/workflows/dpp-*.yml'
 
 permissions:
   actions: read

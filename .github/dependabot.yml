@@ -1,0 +1,32 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /greencomplai-dpp
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: 'chore(deps)'
+    groups:
+      minor-and-patch:
+        patterns: ['*']
+        update-types: [minor, patch]
+  - package-ecosystem: github-actions
+    directory: /
+    exclude-paths:
+      - .github/workflows/archive.yaml
+      - .github/workflows/test_and_build.yaml
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: 'ci'
+  - package-ecosystem: docker
+    directories:
+      - /greencomplai-dpp
+      - /greencomplai-dpp/apps/api
+      - /greencomplai-dpp/apps/web
+      - /greencomplai-dpp/docker/minio
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: 'chore(deps)'

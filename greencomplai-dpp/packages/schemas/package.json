@@ -1,0 +1,24 @@
+{
+  "name": "@dpp/schemas",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "check": "pnpm typecheck",
+    "lint": "tsc --noEmit",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@dpp/domain": "workspace:*",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@dpp/config": "workspace:*",
+    "typescript": "^5.9.3"
+  },
+  "license": "Apache-2.0"
+}

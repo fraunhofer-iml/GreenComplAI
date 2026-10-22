@@ -1,0 +1,246 @@
+@import url('https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+@import 'tw-animate-css';
+
+@import "tw-animate-css";
+
+@import "./vendor/shadcn-tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+
+    --font-heading: var(--font-sans);
+
+    --font-sans: 'Albert Sans', system-ui, sans-serif;
+
+    --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+    --color-sidebar-ring: var(--sidebar-ring);
+
+    --color-sidebar-border: var(--sidebar-border);
+
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+
+    --color-sidebar-accent: var(--sidebar-accent);
+
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+
+    --color-sidebar-primary: var(--sidebar-primary);
+
+    --color-sidebar-foreground: var(--sidebar-foreground);
+
+    --color-sidebar: var(--sidebar);
+
+    --color-chart-5: var(--chart-5);
+
+    --color-chart-4: var(--chart-4);
+
+    --color-chart-3: var(--chart-3);
+
+    --color-chart-2: var(--chart-2);
+
+    --color-chart-1: var(--chart-1);
+
+    --color-ring: var(--ring);
+
+    --color-input: var(--input);
+
+    --color-border: var(--border);
+
+    --color-destructive: var(--destructive);
+
+    --color-accent-foreground: var(--accent-foreground);
+
+    --color-accent: var(--accent);
+
+    --color-muted-foreground: var(--muted-foreground);
+
+    --color-muted: var(--muted);
+
+    --color-secondary-foreground: var(--secondary-foreground);
+
+    --color-secondary: var(--secondary);
+
+    --color-primary-foreground: var(--primary-foreground);
+
+    --color-primary: var(--primary);
+
+    --color-popover-foreground: var(--popover-foreground);
+
+    --color-popover: var(--popover);
+
+    --color-card-foreground: var(--card-foreground);
+
+    --color-card: var(--card);
+
+    --color-foreground: var(--foreground);
+
+    --color-background: var(--background);
+
+    --radius-sm: calc(var(--radius) * 0.6);
+
+    --radius-md: calc(var(--radius) * 0.8);
+
+    --radius-lg: var(--radius);
+
+    --radius-xl: calc(var(--radius) * 1.4);
+
+    --radius-2xl: calc(var(--radius) * 1.8);
+
+    --radius-3xl: calc(var(--radius) * 2.2);
+
+    --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/*
+ * GreenComplai theme — light, green.
+ * Palette from the GreenComplai design canvas:
+ * app bg #f7f8f6 · ink #15221a · topbar #12291d · accent green #35c477 · link green #146b41
+ */
+:root {
+
+    --background: #f7f8f6;
+
+    --foreground: #15221a;
+
+    --card: #ffffff;
+
+    --card-foreground: #15221a;
+
+    --popover: #ffffff;
+
+    --popover-foreground: #15221a;
+
+    --primary: #146b41;
+
+    --primary-foreground: #ffffff;
+
+    --secondary: #e7f3ec;
+
+    --secondary-foreground: #146b41;
+
+    --muted: #eef0ec;
+
+    --muted-foreground: #5c675f;
+
+    --accent: #e7f3ec;
+
+    --accent-foreground: #0e4a2e;
+
+    --destructive: oklch(0.577 0.245 27.325);
+
+    --border: #e2e6df;
+
+    --input: #d3d8cf;
+
+    --ring: #35c477;
+
+    --chart-1: #35c477;
+
+    --chart-2: #177a4b;
+
+    --chart-3: #146b41;
+
+    --chart-4: #c98a2e;
+
+    --chart-5: #12291d;
+
+    --radius: 0.5rem;
+
+    --sidebar: #12291d;
+
+    --sidebar-foreground: #e9efe8;
+
+    --sidebar-primary: #35c477;
+
+    --sidebar-primary-foreground: #12291d;
+
+    --sidebar-accent: #24513a;
+
+    --sidebar-accent-foreground: #ffffff;
+
+    --sidebar-border: rgba(255, 255, 255, 0.12);
+
+    --sidebar-ring: #35c477;
+}
+
+/* Dark variant: deep-green take on the same palette (also scopes the dark topbar). */
+.dark {
+
+    --background: #0c1a12;
+
+    --foreground: #e9efe8;
+
+    --card: #12291d;
+
+    --card-foreground: #e9efe8;
+
+    --popover: #12291d;
+
+    --popover-foreground: #e9efe8;
+
+    --primary: #35c477;
+
+    --primary-foreground: #12291d;
+
+    --secondary: #1d3a2a;
+
+    --secondary-foreground: #8fe3b4;
+
+    --muted: #1a3123;
+
+    --muted-foreground: #9db3a6;
+
+    --accent: #24513a;
+
+    --accent-foreground: #e9efe8;
+
+    --destructive: oklch(0.704 0.191 22.216);
+
+    --border: rgba(255, 255, 255, 0.12);
+
+    --input: rgba(255, 255, 255, 0.16);
+
+    --ring: #35c477;
+
+    --chart-1: #35c477;
+
+    --chart-2: #8fe3b4;
+
+    --chart-3: #177a4b;
+
+    --chart-4: #c98a2e;
+
+    --chart-5: #e9efe8;
+
+    --sidebar: #12291d;
+
+    --sidebar-foreground: #e9efe8;
+
+    --sidebar-primary: #35c477;
+
+    --sidebar-primary-foreground: #12291d;
+
+    --sidebar-accent: #24513a;
+
+    --sidebar-accent-foreground: #ffffff;
+
+    --sidebar-border: rgba(255, 255, 255, 0.12);
+
+    --sidebar-ring: #35c477;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    }
+  body {
+    @apply bg-background text-foreground;
+    }
+  html {
+    @apply font-sans;
+    }
+}

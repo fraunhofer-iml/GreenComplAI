@@ -1,0 +1,21 @@
+name: DPP CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'greencomplai-dpp/**'
+      - '.github/workflows/dpp-*.yml'
+  pull_request:
+    paths:
+      - 'greencomplai-dpp/**'
+      - '.github/workflows/dpp-*.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    uses: ./.github/workflows/dpp-checks.yml
+    with:
+      workspace: greencomplai-dpp

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "//": "Turbo filters a task's environment so that a cache hit means the same inputs produced the same outputs. The three tasks below are not cached, so the filter buys nothing there and only surprises: `FOO=bar pnpm dev` silently dropped FOO, and the process ran on its defaults as if nothing had been set.",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "check": {
+      "dependsOn": ["^check"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "passThroughEnv": ["*"]
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "typecheck": {
+      "dependsOn": ["^typecheck"]
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "test:integration": {
+      "cache": false,
+      "dependsOn": ["^build"],
+      "passThroughEnv": ["*"]
+    },
+    "test:e2e": {
+      "cache": false,
+      "passThroughEnv": ["*"]
+    }
+  }
+}
