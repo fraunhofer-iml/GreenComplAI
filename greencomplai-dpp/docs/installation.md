@@ -17,17 +17,16 @@ releases. Images are public on GHCR under
 `ghcr.io/fraunhofer-iml/greencomplai-dpp/api`,
 `ghcr.io/fraunhofer-iml/greencomplai-dpp/web` and
 `ghcr.io/fraunhofer-iml/greencomplai-dpp/minio`. Downloads require no account or token.
-The first public release will become available after the repository import and
-release workflow have completed.
 
 ## Install
 
 Select an existing DPP release from the
 [release list](https://github.com/fraunhofer-iml/GreenComplAI/releases).
-Replace `1.2.3` below with that release's version. Download into an empty directory:
+The example uses DPP 0.1.0. For a newer release, change `VERSION` to match.
+Download into an empty directory:
 
 ```sh
-VERSION=1.2.3
+VERSION=0.1.0
 RELEASE_URL="https://github.com/fraunhofer-iml/GreenComplAI/releases/download/greencomplai-dpp%2Fv$VERSION"
 curl --fail --location --output install.sh "$RELEASE_URL/install.sh"
 curl --fail --location --output docker-compose.selfhost.yml "$RELEASE_URL/docker-compose.selfhost.yml"
@@ -74,9 +73,15 @@ production `.env` as an example configuration.
 ## First account
 
 Use the invitation link printed by the installer. It expires after 30 days.
+The link opens the login page. Select "Einladung erhalten? Konto erstellen"
+(create account) to switch to registration.
 Register with the invited email address and a password of at least 12 characters.
 The account becomes an administrator and can invite other users from Team.
 Invitation-only registration remains enabled.
+
+In DPP 0.1.0, registering from the invitation link can show an already-used
+invitation error after successful registration. Select "Zur Übersicht" to open
+the dashboard; the administrator account and membership have already been created.
 
 Repeated installer runs preserve an existing organization and do not issue a new
 first-administrator invitation. Manage subsequent invitations through the UI.

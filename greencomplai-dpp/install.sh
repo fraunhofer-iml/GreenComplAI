@@ -828,7 +828,7 @@ printf '    Public passport  %s/dpp/<public-id>\n' "$WEB_URL"
 if [ -n "$ADMIN_EMAIL" ] && [ "$SKIP_BOOTSTRAP" = false ] && [ "$BOOTSTRAP_DONE_EARLIER" = false ]; then
   printf '\n%sCreate the first account%s\n\n' "$C_BOLD" "$C_RESET"
   printf '    1. %s/login\n' "$WEB_URL"
-  printf '    2. Select "Received an invitation? Create account"\n'
+  printf '    2. Select "Einladung erhalten? Konto erstellen" (create account)\n'
   printf '    3. Use %s to register (password: at least 12 characters)\n' "$ADMIN_EMAIL"
   printf '\n    Registration is restricted to invited email addresses. The administrator\n'
   printf '    can invite additional members at\n'
