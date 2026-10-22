@@ -81,7 +81,11 @@ function LoginPage() {
 			return;
 		}
 
-		window.location.assign(normalizeRedirect(redirect));
+		// Signup already accepts pending invitations and grants memberships.
+		// Returning to their acceptance URL would redeem the same token twice.
+		window.location.assign(
+			isSignup ? "/dashboard" : normalizeRedirect(redirect),
+		);
 	}
 
 	async function submitTotp(event: FormEvent<HTMLFormElement>) {

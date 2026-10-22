@@ -17,39 +17,23 @@ releases. Images are public on GHCR under
 `ghcr.io/fraunhofer-iml/greencomplai-dpp/api`,
 `ghcr.io/fraunhofer-iml/greencomplai-dpp/web` and
 `ghcr.io/fraunhofer-iml/greencomplai-dpp/minio`. Downloads require no account or token.
-The first public release will become available after the repository import and
-release workflow have completed.
 
 ## Install
 
-Select an existing DPP release from the
-[release list](https://github.com/fraunhofer-iml/GreenComplAI/releases).
-Replace `1.2.3` below with that release's version. Download into an empty directory:
+Run on the target server:
 
 ```sh
-VERSION=1.2.3
-RELEASE_URL="https://github.com/fraunhofer-iml/GreenComplAI/releases/download/greencomplai-dpp%2Fv$VERSION"
-curl --fail --location --output install.sh "$RELEASE_URL/install.sh"
-curl --fail --location --output docker-compose.selfhost.yml "$RELEASE_URL/docker-compose.selfhost.yml"
-curl --fail --location --output SHA256SUMS "$RELEASE_URL/SHA256SUMS"
-sha256sum --check SHA256SUMS
-chmod +x install.sh
-sudo ./install.sh \
-  --host dpp.example.com \
-  --org-name "Example organization" \
-  --admin-email admin@example.com
+curl -fsSL https://raw.githubusercontent.com/fraunhofer-iml/GreenComplAI/main/greencomplai-dpp/install.sh | bash
 ```
 
-Release installers default to their exact release version. The source checkout's
-installer defaults to the latest stable DPP images; use `--version` to select an
-explicit image tag. Avoid the repository-wide `/releases/latest` URL, which can
-refer to one of the older applications.
+The installer asks for the hostname, organization name and administrator email.
+It installs missing prerequisites after confirmation, generates configuration,
+starts the latest stable DPP release and prints the first administrator's
+invitation link. It uses sudo when required. No source checkout, separate
+Compose download or GitHub account is needed.
 
-The installer checks prerequisites, creates configuration with generated secrets,
-pulls images, applies migrations and starts the stack. It then creates the first
-organization and an administrator invitation if none exists.
-
-Use `./install.sh --help` for all options. Common options:
+Pass options with `bash -s --`, for example `bash -s -- --version 0.1.0`.
+Use `bash -s -- --help` in the command above for all options. Common options:
 
 | Option                     | Purpose                                               |
 | -------------------------- | ----------------------------------------------------- |
@@ -63,6 +47,25 @@ Use `./install.sh --help` for all options. Common options:
 | `--no-install`             | Report missing prerequisites without installing them  |
 | `-y`                       | Answer confirmation prompts automatically             |
 
+### Download a specific release
+
+For a version-pinned installer with checksum verification, download the assets
+from a DPP [release](https://github.com/fraunhofer-iml/GreenComplAI/releases).
+The Compose configuration is included in the installer:
+
+```sh
+VERSION=0.1.0
+RELEASE_URL="https://github.com/fraunhofer-iml/GreenComplAI/releases/download/greencomplai-dpp%2Fv$VERSION"
+curl -fsSL -o install.sh "$RELEASE_URL/install.sh"
+curl -fsSL -o docker-compose.selfhost.yml "$RELEASE_URL/docker-compose.selfhost.yml"
+curl -fsSL -o SHA256SUMS "$RELEASE_URL/SHA256SUMS"
+sha256sum --check SHA256SUMS
+bash install.sh
+```
+
+Release installers default to their exact version. Avoid the repository-wide
+`/releases/latest` URL, which can refer to one of the older applications.
+
 ### Offline installation
 
 On a connected machine, pull the API, web and storage images for the selected version
@@ -74,9 +77,15 @@ production `.env` as an example configuration.
 ## First account
 
 Use the invitation link printed by the installer. It expires after 30 days.
+The link opens the login page. Select "Einladung erhalten? Konto erstellen"
+(create account) to switch to registration.
 Register with the invited email address and a password of at least 12 characters.
 The account becomes an administrator and can invite other users from Team.
 Invitation-only registration remains enabled.
+
+In DPP 0.1.0, registering from the invitation link can show an already-used
+invitation error after successful registration. Select "Zur Übersicht" to open
+the dashboard; the administrator account and membership have already been created.
 
 Repeated installer runs preserve an existing organization and do not issue a new
 first-administrator invitation. Manage subsequent invitations through the UI.
@@ -171,11 +180,11 @@ passport access and document downloads. Rehearse recovery on a test system.
 
 ## Upgrades
 
-Download and verify the new release installer as described above, then run it
-against the existing installation directory:
+Run the installation command again to update to the latest stable DPP images.
+For a specific version or a custom installation directory, pass options:
 
 ```sh
-sudo ./install.sh --dir /opt/greencomplai --version 1.2.4
+curl -fsSL https://raw.githubusercontent.com/fraunhofer-iml/GreenComplAI/main/greencomplai-dpp/install.sh | bash -s -- --dir /opt/greencomplai --version 1.2.4
 ```
 
 Back up first. The installer preserves configuration and data while replacing
