@@ -42,7 +42,7 @@
     "date-fns": "^4.4.0",
     "embla-carousel-react": "^8.6.0",
     "input-otp": "^1.5.0",
-    "lucide-react": "^0.577.0",
+    "lucide-react": "^1.61.0",
     "next-themes": "^0.4.6",
     "nitro": "npm:nitro-nightly@3.0.1-20261022-060608-da176d5f",
     "qrcode.react": "^4.2.0",
