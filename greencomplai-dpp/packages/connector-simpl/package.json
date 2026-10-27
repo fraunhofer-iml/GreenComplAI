@@ -22,7 +22,7 @@
     "@dpp/config": "workspace:*",
     "@types/node": "^24.19.2",
     "tsx": "^4.23.15",
-    "typescript": "^5.9.3",
+    "typescript": "^7.0.2",
     "vitest": "^4.1.12"
   },
   "license": "Apache-2.0"
