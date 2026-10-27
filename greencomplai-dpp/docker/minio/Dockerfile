@@ -20,7 +20,7 @@ RUN git init . \
     && git checkout --detach FETCH_HEAD
 RUN go build -trimpath -ldflags="-s -w" -o /out/mc .
 
-FROM alpine:3.22
+FROM alpine:3.24
 RUN apk add --no-cache ca-certificates curl
 COPY --from=server /out/minio /usr/local/bin/minio
 COPY --from=client /out/mc /usr/local/bin/mc
