@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 # Build the storage service and its bucket-setup client from pinned upstream source.
-FROM golang:1.25-alpine AS source
+FROM golang:1.27-alpine AS source
 RUN apk add --no-cache git
 ENV CGO_ENABLED=0
 
